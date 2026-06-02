@@ -42,7 +42,10 @@ trap cleanup EXIT INT TERM
 
 # --- Notifier hors-bande (ntfy/telegram) ---
 NOTIFY="$SCRIPT_DIR/../notify/notify.sh"
-notify() { [ -x "$NOTIFY" ] && "$NOTIFY" "$1" "${2:-Bambuddy Pocket superviseur}" >>"$LOG_FILE" 2>&1 || true; }
+notify() {
+  [ -x "$NOTIFY" ] || return 0
+  "$NOTIFY" "$1" "${2:-Bambuddy Pocket superviseur}" >>"$LOG_FILE" 2>&1 || true
+}
 
 # --- Garde anti-collision avec une session interactive ---
 # Une session interactive « fraîche » touche ce heartbeat ; on saute alors le cycle.
