@@ -10,18 +10,18 @@ réseau/domaine/UI, tests sur chemins critiques, dépendances tierces minimales.
 ## Décision
 
 ### Modularisation (paquets SPM locaux + cible app)
-Un projet Xcode `Spoolside.xcodeproj` (cible app SwiftUI) qui dépend d'un paquet SPM local
-`Packages/SpoolsideKit` découpé en cibles à dépendances orientées :
+Un projet Xcode `Bambuddy Pocket.xcodeproj` (cible app SwiftUI) qui dépend d'un paquet SPM local
+`Packages/BambuddyPocketKit` découpé en cibles à dépendances orientées :
 
 ```
-SpoolsideDomain        // modèles métier + protocoles de service. AUCUNE dépendance.
-SpoolsideNetworking    // REST + WebSocket + caméra. dépend de Domain.
-SpoolsideDesignSystem  // tokens, couleurs, typo Dynamic Type, composants. dépend de Domain (types légers).
-SpoolsideFeatures      // (option, extrait plus tard) vues + view-models par feature.
+BambuddyPocketDomain        // modèles métier + protocoles de service. AUCUNE dépendance.
+BambuddyPocketNetworking    // REST + WebSocket + caméra. dépend de Domain.
+BambuddyPocketDesignSystem  // tokens, couleurs, typo Dynamic Type, composants. dépend de Domain (types légers).
+BambuddyPocketFeatures      // (option, extrait plus tard) vues + view-models par feature.
 + cibles de test : DomainTests, NetworkingTests, …
 ```
 La cible app contient le point d'entrée (`@main`), la composition root (DI) et, au début, les
-features ; on extrait `SpoolsideFeatures` quand ça stabilise. Bénéfice : tests unitaires rapides
+features ; on extrait `BambuddyPocketFeatures` quand ça stabilise. Bénéfice : tests unitaires rapides
 sans hôte d'app, frontières de dépendances imposées par le compilateur.
 
 ### MVVM + Observation

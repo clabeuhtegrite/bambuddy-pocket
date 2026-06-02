@@ -6,10 +6,10 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TEMPLATE="$SCRIPT_DIR/com.spoolside.supervisor.plist.template"
-WORKER="$SCRIPT_DIR/spoolside-supervisor.sh"
+TEMPLATE="$SCRIPT_DIR/com.bambuddypocket.supervisor.plist.template"
+WORKER="$SCRIPT_DIR/bambuddy-pocket-supervisor.sh"
 LOG_DIR="$SCRIPT_DIR/logs"
-LABEL="com.spoolside.supervisor"
+LABEL="com.bambuddypocket.supervisor"
 DEST="$HOME/Library/LaunchAgents/$LABEL.plist"
 
 mkdir -p "$LOG_DIR" "$HOME/Library/LaunchAgents"

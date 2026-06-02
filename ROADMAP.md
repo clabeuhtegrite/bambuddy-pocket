@@ -1,4 +1,4 @@
-# Roadmap — Spoolside
+# Roadmap — Bambuddy Pocket
 
 Roadmap priorisée, dérivée de la reconnaissance d'API (cf. [`docs/bambuddy-api.md`](docs/bambuddy-api.md)).
 État d'avancement vivant dans [`PROGRESS.md`](PROGRESS.md).

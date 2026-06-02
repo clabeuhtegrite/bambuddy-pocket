@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# spoolside-supervisor.sh — relance Claude Code en mode headless pour faire avancer
-# le projet Spoolside de façon autonome, avec retry/back-off sur erreur de quota.
+# bambuddy-pocket-supervisor.sh — relance Claude Code en mode headless pour faire avancer
+# le projet Bambuddy Pocket de façon autonome, avec retry/back-off sur erreur de quota.
 #
 # Conçu pour être déclenché toutes les heures par launchd (cf. README de ce dossier) ou cron.
 # Il NE peut PAS « réveiller » une session interactive bloquée : il démarre une NOUVELLE
@@ -9,7 +9,7 @@
 #
 # Variables d'environnement (optionnelles) :
 #   CLAUDE_BIN        chemin du binaire claude (sinon : recherche dans le PATH/emplacements connus)
-#   SPOOLSIDE_MODEL   modèle à utiliser (passe --model si défini)
+#   BAMBUDDYPOCKET_MODEL   modèle à utiliser (passe --model si défini)
 #   MAX_RETRIES       tentatives en cas de quota (défaut 5)
 #   BASE_BACKOFF      back-off initial en secondes (défaut 300 = 5 min ; doublé à chaque essai)
 #   RUN_TIMEOUT       durée max d'une exécution claude en secondes (défaut 5400 = 90 min ; 0 = illimité)
@@ -40,6 +40,19 @@ fi
 cleanup() { rmdir "$LOCK_DIR" 2>/dev/null || true; }
 trap cleanup EXIT INT TERM
 
+# --- Notifier hors-bande (ntfy/telegram) ---
+NOTIFY="$SCRIPT_DIR/../notify/notify.sh"
+notify() { [ -x "$NOTIFY" ] && "$NOTIFY" "$1" "${2:-Bambuddy Pocket superviseur}" >>"$LOG_FILE" 2>&1 || true; }
+
+# --- Garde anti-collision avec une session interactive ---
+# Une session interactive « fraîche » touche ce heartbeat ; on saute alors le cycle.
+HEARTBEAT="$SCRIPT_DIR/.interactive-active"
+HEARTBEAT_TTL_MIN="${HEARTBEAT_TTL_MIN:-45}"
+if [ -f "$HEARTBEAT" ] && [ -n "$(find "$HEARTBEAT" -mmin "-$HEARTBEAT_TTL_MIN" 2>/dev/null)" ]; then
+  log "Session interactive active (heartbeat < ${HEARTBEAT_TTL_MIN} min) — cycle ignoré."
+  exit 0
+fi
+
 # --- Résolution du binaire claude ---
 resolve_claude() {
   if [ -n "${CLAUDE_BIN:-}" ] && [ -x "$CLAUDE_BIN" ]; then echo "$CLAUDE_BIN"; return; fi
@@ -60,7 +73,7 @@ elif command -v timeout >/dev/null 2>&1; then TIMEOUT_BIN="timeout"; fi
 
 # --- Prompt de reprise ---
 read -r -d '' PROMPT <<'EOF' || true
-Tu es l'agent de développement autonome du projet Spoolside (client iOS open source pour le
+Tu es l'agent de développement autonome du projet Bambuddy Pocket (client iOS open source pour le
 serveur auto-hébergé Bambuddy). Tu tournes en mode non interactif, déclenché par un superviseur.
 
 1. Lis PROGRESS.md et ROADMAP.md à la racine du dépôt, et les ADR dans docs/adr/.
@@ -72,9 +85,11 @@ serveur auto-hébergé Bambuddy). Tu tournes en mode non interactif, déclenché
 4. Pour les builds iOS : exporte DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer.
    L'instance Bambuddy de dev tourne en Docker sur http://localhost:8000 (la relancer au besoin
    depuis /Users/ad/bambuddy-upstream : `docker compose up -d`).
-5. Si tu rencontres un VRAI point bloquant (décision utilisateur requise, ex. licence/viewer 3D),
-   documente-le clairement dans PROGRESS.md (section « Décisions en attente ») et arrête-toi
-   proprement sans bricoler de contournement risqué.
+5. Si tu rencontres un VRAI point bloquant (décision utilisateur requise), documente-le dans
+   PROGRESS.md (section « Décisions en attente »), PRÉVIENS l'utilisateur hors-bande en exécutant
+   `scripts/notify/notify.sh "Bambuddy Pocket bloqué : <raison courte>"`, puis arrête-toi proprement
+   sans bricoler de contournement risqué. Ne te bloque PAS pour des points décidables seul :
+   décide, documente, continue.
 6. Termine toujours par : mettre à jour PROGRESS.md (fait/en cours/à faire + journal daté) et
    commiter cette mise à jour.
 
@@ -84,7 +99,7 @@ EOF
 run_claude() {
   local out_file="$1"
   local -a cmd=("$CLAUDE" -p "$PROMPT" --dangerously-skip-permissions)
-  [ -n "${SPOOLSIDE_MODEL:-}" ] && cmd+=(--model "$SPOOLSIDE_MODEL")
+  [ -n "${BAMBUDDYPOCKET_MODEL:-}" ] && cmd+=(--model "$BAMBUDDYPOCKET_MODEL")
   if [ -n "$TIMEOUT_BIN" ] && [ "$RUN_TIMEOUT" != "0" ]; then
     "$TIMEOUT_BIN" "$RUN_TIMEOUT" "${cmd[@]}" >"$out_file" 2>&1
   else
@@ -120,12 +135,14 @@ while :; do
     log "Limite de quota détectée (rc=$rc)."
   else
     log "Échec non lié au quota (rc=$rc) — voir $OUT."
+    notify "Échec d'une exécution autonome (rc=$rc). Voir les logs du superviseur."
     # Échec « dur » : ne pas marteler ; laisser la prochaine planification réessayer.
     exit "$rc"
   fi
 
   if [ "$attempt" -ge "$MAX_RETRIES" ]; then
     log "Quota : $MAX_RETRIES tentatives épuisées. Abandon ; la prochaine planification réessaiera."
+    notify "Quota épuisé après $MAX_RETRIES tentatives. Reprise auto à la prochaine planification."
     exit 75   # EX_TEMPFAIL
   fi
 

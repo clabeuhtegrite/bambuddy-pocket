@@ -1,4 +1,4 @@
-# Bambuddy API — Contrat pour le client iOS (Spoolside)
+# Bambuddy API — Contrat pour le client iOS (Bambuddy Pocket)
 
 > **Statut** : rédigé à partir de la reconnaissance de l'Étape 1 (clone du dépôt
 > [`maziggy/bambuddy`](https://github.com/maziggy/bambuddy) + instance Docker locale).

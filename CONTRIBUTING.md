@@ -1,4 +1,4 @@
-# Contribuer à Spoolside
+# Contribuer à Bambuddy Pocket
 
 Merci de contribuer ! Ce projet vise une qualité **production / App Store**.
 
@@ -15,7 +15,7 @@ Merci de contribuer ! Ce projet vise une qualité **production / App Store**.
 1. **Brancher** depuis `main` : `git switch -c feat/ma-fonctionnalite`.
 2. Développer en **petits commits atomiques**.
 3. `swiftformat .` puis `swiftlint` — **zéro warning**.
-4. Lancer les tests (`xcodebuild test` ou `swift test` pour `SpoolsideKit`).
+4. Lancer les tests (`xcodebuild test` ou `swift test` pour `BambuddyPocketKit`).
 5. Ouvrir une **PR** vers `main`. La **CI doit être verte** avant merge.
 
 ## Convention de commits — [Conventional Commits](https://www.conventionalcommits.org/)

@@ -1,12 +1,12 @@
-# SwiftLint — configuration Spoolside
+# SwiftLint — configuration Bambuddy Pocket
 # Doc : https://github.com/realm/SwiftLint
 
 included:
-  - Spoolside
-  - Packages/SpoolsideKit/Sources
+  - BambuddyPocket
+  - Packages/BambuddyPocketKit/Sources
 
 excluded:
-  - Packages/SpoolsideKit/.build
+  - Packages/BambuddyPocketKit/.build
   - "**/.build"
   - DerivedData
   - "**/*.generated.swift"
