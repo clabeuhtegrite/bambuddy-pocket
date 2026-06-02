@@ -1,10 +1,10 @@
-# SwiftFormat — configuration Spoolside
+# SwiftFormat — configuration Bambuddy Pocket
 # Doc : https://github.com/nicklockwood/SwiftFormat
 
 --swiftversion 6.0
 
 # Exclusions
---exclude Packages/SpoolsideKit/.build,**/.build,DerivedData,**/*.generated.swift
+--exclude Packages/BambuddyPocketKit/.build,**/.build,DerivedData,**/*.generated.swift
 
 # Style
 --indent 4

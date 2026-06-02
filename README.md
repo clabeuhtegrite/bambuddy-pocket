@@ -1,12 +1,13 @@
-# Spoolside
+# Bambuddy Pocket
 
-> **Nom de code provisoire.** Client iOS natif (open source) pour
+> **Nom de code provisoire : « Bambuddy Pocket ».** Client iOS natif (open source) pour
 > [Bambuddy](https://github.com/maziggy/bambuddy), l'outil auto-hébergé de gestion d'imprimantes
-> 3D Bambu Lab. Spoolside **n'est pas affilié** à Bambuddy ni à Bambu Lab. Le nom
-> « Bambuddy »/« Bambu » est volontairement évité (nom, bundle ID, assets) tant que les droits
-> ne sont pas confirmés.
+> 3D Bambu Lab. Projet **tiers, non affilié** à Bambuddy ni à Bambu Lab.
+> ⚠️ Ce nom contient « Bambuddy » : une **vérification de marque** (et idéalement l'accord de
+> l'auteur amont) est requise **avant toute publication**. « Bambuddy » et « Bambu Lab » sont des
+> marques de leurs détenteurs. Contexte : [`docs/adr/0004-nommage.md`](docs/adr/0004-nommage.md).
 
-[![CI](https://github.com/clabeuhtegrite/spoolside/actions/workflows/ci.yml/badge.svg)](https://github.com/clabeuhtegrite/spoolside/actions/workflows/ci.yml)
+[![CI](https://github.com/clabeuhtegrite/bambuddy-pocket/actions/workflows/ci.yml/badge.svg)](https://github.com/clabeuhtegrite/bambuddy-pocket/actions/workflows/ci.yml)
 
 ## Qu'est-ce que c'est
 
@@ -69,6 +70,8 @@ La démo <https://bambuddy.cool> sert de **référence en lecture seule** (jamai
 
 ## Licence
 
-🟡 **En cours de décision** — voir [`docs/adr/0001-licence.md`](docs/adr/0001-licence.md) et
-[`NOTICE`](NOTICE). Bambuddy est sous AGPL-3.0 ; Spoolside, client indépendant, choisira une
-licence open source alignée ou compatible avant la publication.
+**GNU AGPL-3.0-or-later** (voir [`LICENSE`](LICENSE)) — aligné sur Bambuddy (lui-même AGPL-3.0),
+avec une **permission additionnelle (AGPLv3 §7)** autorisant la distribution via l'App Store et
+les plateformes analogues (voir [`LICENSE-APP-STORE-EXCEPTION.md`](LICENSE-APP-STORE-EXCEPTION.md)).
+Contexte et alternatives écartées : [`docs/adr/0001-licence.md`](docs/adr/0001-licence.md).
+En-têtes de fichiers : `SPDX-License-Identifier: AGPL-3.0-or-later`.

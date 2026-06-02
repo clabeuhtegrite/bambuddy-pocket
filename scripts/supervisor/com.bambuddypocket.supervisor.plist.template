@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
-  Agent launchd pour le superviseur Spoolside.
+  Agent launchd pour le superviseur Bambuddy Pocket.
   Ne PAS éditer/charger ce .template directement : install-supervisor.sh substitue les
   placeholders __SHELL__, __SCRIPT__, __LOG__, __PATH__, __DEVELOPER_DIR__ et installe le
-  résultat dans ~/Library/LaunchAgents/com.spoolside.supervisor.plist.
+  résultat dans ~/Library/LaunchAgents/com.bambuddypocket.supervisor.plist.
 -->
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.spoolside.supervisor</string>
+    <string>com.bambuddypocket.supervisor</string>
 
     <key>ProgramArguments</key>
     <array>

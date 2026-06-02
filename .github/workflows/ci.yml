@@ -47,14 +47,14 @@ jobs:
           DEST='platform=iOS Simulator,name=iPhone 16,OS=latest'
           if ls ./*.xcworkspace >/dev/null 2>&1; then
             WS=$(ls -d ./*.xcworkspace | head -1)
-            xcodebuild -workspace "$WS" -scheme Spoolside -destination "$DEST" clean build test | xcpretty || \
-            xcodebuild -workspace "$WS" -scheme Spoolside -destination "$DEST" clean build test
+            xcodebuild -workspace "$WS" -scheme BambuddyPocket -destination "$DEST" clean build test | xcpretty || \
+            xcodebuild -workspace "$WS" -scheme BambuddyPocket -destination "$DEST" clean build test
           elif ls ./*.xcodeproj >/dev/null 2>&1; then
             PROJ=$(ls -d ./*.xcodeproj | head -1)
-            xcodebuild -project "$PROJ" -scheme Spoolside -destination "$DEST" clean build test
-          elif [ -d Packages/SpoolsideKit ]; then
+            xcodebuild -project "$PROJ" -scheme BambuddyPocket -destination "$DEST" clean build test
+          elif [ -d Packages/BambuddyPocketKit ]; then
             echo "Pas de projet Xcode ; test du paquet SPM."
-            cd Packages/SpoolsideKit && swift test
+            cd Packages/BambuddyPocketKit && swift test
           else
             echo "Pas encore de projet Xcode ni de paquet — étape ignorée."
           fi

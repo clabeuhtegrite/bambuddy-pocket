@@ -1,4 +1,4 @@
-# === Spoolside .gitignore ===
+# === Bambuddy Pocket .gitignore ===
 
 # --- Secrets (jamais commiter) ---
 *.env
@@ -11,6 +11,7 @@ secrets/
 *.certSigningRequest
 **/CloudflareAccess*.plist
 **/Secrets.xcconfig
+scripts/notify/notify.env
 
 # --- macOS ---
 .DS_Store
@@ -71,6 +72,6 @@ scripts/supervisor/.lock/
 # --- Artefacts de reconnaissance / amont (hors du dépôt) ---
 # (situés hors du dépôt par défaut, mais filet de sécurité s'ils sont copiés ici)
 /bambuddy-upstream/
-/spoolside-recon/
+/bambuddy-pocket-recon/
 _recon/
 .reference/
