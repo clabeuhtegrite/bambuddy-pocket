@@ -1,0 +1,16 @@
+Spoolside (nom de code provisoire)
+Copyright (c) 2026 clabeuhtegrite
+
+==> LICENCE : EN COURS DE DÉCISION <==
+Aucune licence définitive n'est encore apposée. Voir docs/adr/0001-licence.md.
+Le dépôt est privé pendant le développement ; la licence sera figée avant toute
+publication. Tant qu'aucune licence n'est choisie, tous droits réservés par défaut.
+
+----------------------------------------------------------------------
+À propos de Bambuddy
+----------------------------------------------------------------------
+Spoolside est un client tiers, indépendant et non affilié, pour le logiciel
+auto-hébergé Bambuddy (https://github.com/maziggy/bambuddy), distribué sous
+GNU AGPL v3. Spoolside dialogue avec Bambuddy uniquement via son API réseau
+publique (REST + WebSocket) et n'incorpore aucun code source de Bambuddy.
+« Bambuddy » et « Bambu Lab » sont des marques de leurs détenteurs respectifs.

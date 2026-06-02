@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Agent launchd pour le superviseur Spoolside.
+  Ne PAS éditer/charger ce .template directement : install-supervisor.sh substitue les
+  placeholders __SHELL__, __SCRIPT__, __LOG__, __PATH__, __DEVELOPER_DIR__ et installe le
+  résultat dans ~/Library/LaunchAgents/com.spoolside.supervisor.plist.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.spoolside.supervisor</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>__SHELL__</string>
+        <string>__SCRIPT__</string>
+    </array>
+
+    <!-- Toutes les heures -->
+    <key>StartInterval</key>
+    <integer>3600</integer>
+
+    <!-- Lancer aussi au chargement (pratique pour tester) -->
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Environnement minimal : PATH (homebrew + node), DEVELOPER_DIR pour Xcode -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>__PATH__</string>
+        <key>DEVELOPER_DIR</key>
+        <string>__DEVELOPER_DIR__</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>__LOG__/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__LOG__/launchd.err.log</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>

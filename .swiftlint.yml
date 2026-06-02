@@ -1,0 +1,65 @@
+# SwiftLint — configuration Spoolside
+# Doc : https://github.com/realm/SwiftLint
+
+included:
+  - Spoolside
+  - Packages/SpoolsideKit/Sources
+
+excluded:
+  - Packages/SpoolsideKit/.build
+  - "**/.build"
+  - DerivedData
+  - "**/*.generated.swift"
+
+opt_in_rules:
+  - empty_count
+  - empty_string
+  - first_where
+  - contains_over_first_not_nil
+  - sorted_first_last
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - closure_spacing
+  - explicit_init
+  - redundant_nil_coalescing
+  - operator_usage_whitespace
+  - overridden_super_call
+  - prohibited_super_call
+  - unused_import
+  - vertical_whitespace_closing_braces
+  - toggle_bool
+  - last_where
+  - legacy_multiple
+
+disabled_rules:
+  - todo            # TODO/FIXME autorisés pendant le dev
+  - trailing_comma
+
+line_length:
+  warning: 120
+  error: 160
+  ignores_urls: true
+  ignores_comments: true
+
+identifier_name:
+  min_length: 2
+  excluded: [id, db, ws, ip, x, y, z, ok, to]
+
+type_name:
+  min_length: 3
+  max_length: 50
+
+function_body_length:
+  warning: 80
+  error: 150
+
+file_length:
+  warning: 500
+  error: 1000
+
+cyclomatic_complexity:
+  warning: 15
+
+force_cast: error
+force_try: error
+force_unwrapping: error

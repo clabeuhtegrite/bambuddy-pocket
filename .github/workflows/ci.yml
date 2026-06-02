@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint & format (SwiftLint / SwiftFormat)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: brew install swiftlint swiftformat
+      - name: SwiftFormat (lint mode)
+        run: |
+          if find . -path ./Packages/.build -prune -o -name '*.swift' -print | grep -q .; then
+            swiftformat --lint .
+          else
+            echo "Pas encore de fichiers Swift — étape ignorée."
+          fi
+      - name: SwiftLint (strict)
+        run: |
+          if find . -path ./Packages/.build -prune -o -name '*.swift' -print | grep -q .; then
+            swiftlint --strict
+          else
+            echo "Pas encore de fichiers Swift — étape ignorée."
+          fi
+
+  build-test:
+    name: Build & tests (iOS Simulator)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select latest stable Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Build & test
+        run: |
+          set -euo pipefail
+          DEST='platform=iOS Simulator,name=iPhone 16,OS=latest'
+          if ls ./*.xcworkspace >/dev/null 2>&1; then
+            WS=$(ls -d ./*.xcworkspace | head -1)
+            xcodebuild -workspace "$WS" -scheme Spoolside -destination "$DEST" clean build test | xcpretty || \
+            xcodebuild -workspace "$WS" -scheme Spoolside -destination "$DEST" clean build test
+          elif ls ./*.xcodeproj >/dev/null 2>&1; then
+            PROJ=$(ls -d ./*.xcodeproj | head -1)
+            xcodebuild -project "$PROJ" -scheme Spoolside -destination "$DEST" clean build test
+          elif [ -d Packages/SpoolsideKit ]; then
+            echo "Pas de projet Xcode ; test du paquet SPM."
+            cd Packages/SpoolsideKit && swift test
+          else
+            echo "Pas encore de projet Xcode ni de paquet — étape ignorée."
+          fi
+
+  shellcheck:
+    name: Shellcheck (scripts)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Run shellcheck
+        run: |
+          if find scripts -name '*.sh' | grep -q .; then
+            find scripts -name '*.sh' -print0 | xargs -0 shellcheck
+          else
+            echo "Aucun script shell — étape ignorée."
+          fi

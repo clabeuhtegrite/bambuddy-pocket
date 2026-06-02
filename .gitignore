@@ -1,0 +1,76 @@
+# === Spoolside .gitignore ===
+
+# --- Secrets (jamais commiter) ---
+*.env
+.env
+.env.*
+secrets/
+*.cer
+*.p12
+*.mobileprovision
+*.certSigningRequest
+**/CloudflareAccess*.plist
+**/Secrets.xcconfig
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# --- Xcode ---
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+DerivedData/
+build/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+timeline.xctimeline
+playground.xcworkspace
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# --- Swift Package Manager ---
+.build/
+.swiftpm/xcode/package.xcworkspace/xcuserdata/
+.swiftpm/configuration/
+Package.resolved.user
+# On versionne Package.resolved pour des builds reproductibles.
+
+# --- Fastlane / outils (le cas échéant) ---
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# --- Divers ---
+*.log
+.idea/
+*.swp
+
+# --- Superviseur (logs/verrou runtime) ---
+scripts/supervisor/logs/
+scripts/supervisor/.lock/
+
+# --- Artefacts de reconnaissance / amont (hors du dépôt) ---
+# (situés hors du dépôt par défaut, mais filet de sécurité s'ils sont copiés ici)
+/bambuddy-upstream/
+/spoolside-recon/
+_recon/
+.reference/

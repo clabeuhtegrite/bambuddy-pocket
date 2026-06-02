@@ -1,0 +1,30 @@
+# SwiftFormat — configuration Spoolside
+# Doc : https://github.com/nicklockwood/SwiftFormat
+
+--swiftversion 6.0
+
+# Exclusions
+--exclude Packages/SpoolsideKit/.build,**/.build,DerivedData,**/*.generated.swift
+
+# Style
+--indent 4
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--closingparen balanced
+--commas inline
+--trimwhitespace always
+--semicolons never
+--self remove
+--importgrouping testable-bottom
+--marktypes never
+
+# Règles activées notables
+--enable isEmpty
+--enable blankLinesAtStartOfScope
+--enable blankLinesAtEndOfScope
+--enable redundantReturn
+--enable redundantSelf
+--enable sortedImports
+--enable wrapMultilineStatementBraces
