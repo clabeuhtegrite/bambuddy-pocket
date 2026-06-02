@@ -3,14 +3,17 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-02 — Étape 1 (recon) terminée ; scaffolding du dépôt en cours.
+**Dernière mise à jour** : 2026-06-02 — Étape 1 + socle dépôt terminés ; dépôt poussé.
+Repo : https://github.com/clabeuhtegrite/spoolside (privé).
 
 ## 🔆 Prochaine action (point de reprise)
-1. Terminer le scaffolding (CONTRIBUTING, ADR-0002/0003, CI, superviseur, configs lint).
-2. Créer le dépôt GitHub privé `spoolside` + 1er commit + push.
-3. **Présenter à l'utilisateur** : proposition MVP + recommandation de licence (checkpoint
-   « avant le code applicatif »). En attendant la réponse licence, ne pas figer `LICENSE`.
-4. Démarrer **Phase 0** (projet Xcode + socle) — voir ROADMAP.
+1. **Checkpoint utilisateur présenté** : proposition MVP + recommandation de licence
+   (« avant le code applicatif »). Décisions en attente : licence, cadence d'autonomie.
+2. **Démarrer Phase 0** (projet Xcode + socle), voir ROADMAP. Le socle ne pose PAS d'en-têtes
+   de licence par fichier → il peut commencer **sans** attendre la décision licence (LICENSE
+   figé plus tard, avant publication). Travailler sur branche `feat/phase0-socle` + PR, CI verte.
+   → Si exécution **non supervisée/headless** : démarrer Phase 0 avec licence **provisoire
+     différée** ; ne pas figer `LICENSE`.
 
 ## ✅ Fait
 - **Recon environnement** : git (`clabeuhtegrite`), gh (scopes `repo`+`workflow`), Docker 29,
@@ -18,12 +21,14 @@
 - **Instance Bambuddy Docker locale** lancée (`/Users/ad/bambuddy-upstream`, ports 8000/3000/3002/8883).
 - **Cartographie API complète** → `docs/bambuddy-api.md`, `docs/api/openapi.json`,
   `docs/api/rest-endpoints.md` (621 ops, 346 schémas, événements WS, auth).
-- **ADR-0001 (licence)** rédigé — AGPL-3.0 amont + conflit App Store analysés ; **décision en attente**.
-- Gouvernance : README, ROADMAP, ce PROGRESS.
+- **ADR** : 0001 licence (décision en attente), 0002 architecture, 0003 connectivité/sécurité.
+- Gouvernance : README, ROADMAP, PROGRESS, CONTRIBUTING, NOTICE, configs SwiftLint/SwiftFormat/EditorConfig.
+- **CI** GitHub Actions (lint, build/test iOS, shellcheck).
+- **Superviseur externe** launchd (`scripts/supervisor/`) avec retry/back-off quota + doc d'install.
+- **Dépôt privé `spoolside` créé et poussé** (commit initial).
 
 ## 🟦 En cours
-- Scaffolding dépôt + création GitHub.
-- Proposition MVP (à présenter).
+- Checkpoint utilisateur (proposition MVP + licence) — présenté, en attente de réponse.
 
 ## ⬜ À faire (résumé)
 - Phases 0→3 (cf. ROADMAP). Superviseur externe (launchd) + docs.
