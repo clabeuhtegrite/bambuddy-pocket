@@ -31,6 +31,11 @@ public extension APIClient {
         try await get("/archives/\(id)")
     }
 
+    /// Statistiques globales d'impression (`GET /archives/stats`).
+    func archiveStats() async throws -> ArchiveStats {
+        try await get("/archives/stats")
+    }
+
     /// File d'attente d'impression (`GET /queue/`).
     func queue() async throws -> [QueueItem] {
         try await get("/queue/")

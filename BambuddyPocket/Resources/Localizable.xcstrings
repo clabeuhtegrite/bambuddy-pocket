@@ -1,6 +1,41 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Prints" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucke" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresiones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impressions" } }
+      }
+    },
+    "Statistics" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Statistiken" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estadísticas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Statistiques" } }
+      }
+    },
+    "Statistics unavailable" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Statistiken nicht verfügbar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estadísticas no disponibles" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Statistiques indisponibles" } }
+      }
+    },
+    "Successful" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erfolgreich" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exitosas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réussies" } }
+      }
+    },
+    "Usage" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbrauch" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Uso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Utilisation" } }
+      }
+    },
     "Add to queue" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Zur Warteschlange" } },

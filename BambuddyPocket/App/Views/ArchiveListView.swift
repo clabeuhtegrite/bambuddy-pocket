@@ -37,6 +37,16 @@ struct ArchiveListView: View {
         .overlay { placeholder }
         .navigationTitle("Print history")
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    ArchiveStatsView(model: model)
+                } label: {
+                    Image(systemName: "chart.bar")
+                }
+                .accessibilityLabel("Statistics")
+            }
+        }
         .refreshable { await model.load() }
         .task {
             if !model.hasLoaded {

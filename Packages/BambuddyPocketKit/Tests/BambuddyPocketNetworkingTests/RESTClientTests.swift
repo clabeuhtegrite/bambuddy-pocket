@@ -229,6 +229,25 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/notifications/logs")
     }
 
+    @Test("archiveStats cible /archives/stats et décode")
+    func fetchesArchiveStats() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"""
+            {"total_prints":10,"successful_prints":8,"failed_prints":2,"total_print_time_hours":5.5,
+             "total_filament_grams":120,"total_cost":3.2,"prints_by_filament_type":{},"prints_by_printer":{}}
+            """#
+        )
+        let client = try makeClient()
+        let stats = try await client.archiveStats()
+        #expect(stats.totalPrints == 10)
+        #expect(stats.successfulPrints == 8)
+        #expect(stats.totalCost == 3.2)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/stats")
+    }
+
     @Test("addToQueue poste sur /queue/")
     func addsToQueue() async throws {
         MockURLProtocol.reset()

@@ -31,6 +31,16 @@ final class ArchiveListModel {
         hasLoaded = true
     }
 
+    /// Récupère les statistiques globales d'impression (`nil` en cas d'échec).
+    func fetchStats() async -> ArchiveStats? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.archiveStats()
+        } catch {
+            return nil
+        }
+    }
+
     /// Ajoute une archive à la file d'attente d'impression. Renvoie `true` au succès.
     func enqueue(_ archive: Archive) async -> Bool {
         do {
