@@ -8,6 +8,7 @@ import SwiftUI
 struct ProjectListView: View {
     @State private var model: ProjectListModel
     @State private var query = ""
+    @State private var isCreating = false
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makeProjectListModel(for: server))
@@ -23,13 +24,36 @@ struct ProjectListView: View {
     var body: some View {
         List {
             ForEach(filtered) { project in
-                ProjectRow(project: project)
+                NavigationLink {
+                    ProjectDetailView(project: project, model: model)
+                } label: {
+                    ProjectRow(project: project)
+                }
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        Task { await model.delete(project) }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
         }
         .searchable(text: $query)
         .overlay { placeholder }
         .navigationTitle("Projects")
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isCreating = true
+                } label: {
+                    Label("New project", systemImage: "plus")
+                }
+            }
+        }
+        .sheet(isPresented: $isCreating) {
+            ProjectFormSheet(model: model)
+        }
         .refreshable { await model.load() }
         .task {
             if !model.hasLoaded {
