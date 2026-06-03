@@ -244,7 +244,10 @@ struct MockNetworkingTests {
     @Test("libraryFiles cible /library/files/ et décode")
     func listsLibrary() async throws {
         MockURLProtocol.reset()
-        respond(status: 200, json: #"[{"id":2,"filename":"benchy.3mf","file_type":"3mf","file_size":1024,"print_count":3}]"#)
+        respond(
+            status: 200,
+            json: #"[{"id":2,"filename":"benchy.3mf","file_type":"3mf","file_size":1024,"print_count":3}]"#
+        )
         let client = try makeClient()
         let files = try await client.libraryFiles()
         #expect(files.map(\.id) == [2])
@@ -256,7 +259,10 @@ struct MockNetworkingTests {
     @Test("projects cible /projects/ et décode (description → details)")
     func listsProjects() async throws {
         MockURLProtocol.reset()
-        respond(status: 200, json: #"[{"id":1,"name":"Gridfinity","status":"active","description":"Bins","progress_percent":50}]"#)
+        respond(
+            status: 200,
+            json: #"[{"id":1,"name":"Gridfinity","status":"active","description":"Bins","progress_percent":50}]"#
+        )
         let client = try makeClient()
         let projects = try await client.projects()
         #expect(projects.first?.name == "Gridfinity")
