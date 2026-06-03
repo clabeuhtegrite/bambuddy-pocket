@@ -14,18 +14,18 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ fait
 - ✅ Lire la LICENSE (AGPL-3.0) → ADR-0001 (décision en attente).
 - 🟦 Proposer périmètre MVP + roadmap (ce document) — **à valider**.
 
-## Phase 0 — Socle ⬜
+## Phase 0 — Socle 🟦
 Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
-- ⬜ Projet Xcode + structure de modules (App, DesignSystem, Networking, Domain, Features).
-- ⬜ Couche réseau : client REST (`async/await`) + client WebSocket (TLS, reconnexion, ping/pong).
+- ✅ Projet Xcode (XcodeGen) + structure de modules (App + paquet SPM Domain/Networking/DesignSystem).
+- 🟦 Couche réseau : client REST (`async/await`) + client WebSocket (TLS, reconnexion, ping/pong).
 - ⬜ Injection des en-têtes **Cloudflare Access** + Bearer/X-API-Key sur REST **et** WS **et** caméra.
-- ⬜ Modèles de domaine d'après le contrat (PrinterStatus, Archive, QueueItem, HMS, …).
+- 🟦 Modèles de domaine d'après le contrat (✅ PrinterStatus/AMS/HMS/Printer ; ⬜ Archive, QueueItem…).
 - ⬜ Multi-serveurs : ajout/édition par URL, test de connexion, stockage **Keychain** des secrets.
 - ⬜ Auth : détection `auth_status`, login user/pass + 2FA, clé d'API, sans-auth.
-- ⬜ Design system (couleurs, typographie Dynamic Type, composants), mode sombre.
-- ⬜ i18n FR/EN/ES/DE (catalogues String), accessibilité (VoiceOver).
-- ⬜ Privacy manifest + chaînes d'usage (`NSLocalNetworkUsageDescription`), ATS (exception HTTP local).
-- ⬜ CI : build + tests + lint (SwiftLint/SwiftFormat) sur push/PR.
+- 🟦 Design system (✅ tokens ; ⬜ composants, typographie Dynamic Type), mode sombre.
+- ✅ i18n FR/EN/ES/DE (String Catalog) ; ⬜ accessibilité (VoiceOver) au fil de l'eau.
+- ✅ Privacy manifest + `NSLocalNetworkUsageDescription` + ATS (exception HTTP local).
+- ✅ CI : build + tests + lint (SwiftLint/SwiftFormat) + shellcheck sur push/PR.
 
 ## Phase 1 — MVP cœur (lecture, testable sur la démo) ⬜
 - ⬜ **Liste multi-imprimantes** + statut **temps réel** (WebSocket, fusion des deltas).
