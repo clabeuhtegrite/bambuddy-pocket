@@ -212,4 +212,20 @@ struct MockNetworkingTests {
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/")
     }
+
+    @Test("activityLog() cible /notifications/logs et décode la liste")
+    func listsActivity() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":3,"event_type":"print_complete","title":"Done","message":"Benchy finished","success":true}]"#
+        )
+        let client = try makeClient()
+        let entries = try await client.activityLog()
+        #expect(entries.map(\.id) == [3])
+        #expect(entries.first?.eventType == "print_complete")
+        #expect(entries.first?.success == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/notifications/logs")
+    }
 }

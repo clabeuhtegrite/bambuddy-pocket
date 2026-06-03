@@ -72,6 +72,11 @@ final class ServerListModel {
         QueueListModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model du flux d'activité pour ce serveur.
+    func makeActivityListModel(for configuration: ServerConfiguration) -> ActivityListModel {
+        ActivityListModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     func delete(_ configuration: ServerConfiguration) throws {
         servers.removeAll { $0.id == configuration.id }
         try serverStore.save(servers)

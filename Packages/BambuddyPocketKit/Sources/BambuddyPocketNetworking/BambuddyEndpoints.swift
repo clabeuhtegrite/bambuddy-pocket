@@ -30,6 +30,11 @@ public extension APIClient {
         try await get("/queue/")
     }
 
+    /// Flux d'activité du serveur (`GET /notifications/logs`).
+    func activityLog() async throws -> [ActivityEntry] {
+        try await get("/notifications/logs")
+    }
+
     /// Requête `POST` sans réponse utile (actions de contrôle).
     func post(_ path: String, body: Data? = nil) async throws {
         let _: EmptyResponse = try await send(path, method: .post, body: body)

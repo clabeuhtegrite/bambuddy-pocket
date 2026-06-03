@@ -1,6 +1,34 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Activity" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktivität" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Actividad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activité" } }
+      }
+    },
+    "Couldn’t load activity" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktivität konnte nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo cargar la actividad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger l’activité" } }
+      }
+    },
+    "No activity" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Aktivität" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin actividad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune activité" } }
+      }
+    },
+    "No activity yet." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Aktivität." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aún no hay actividad." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune activité pour l’instant." } }
+      }
+    },
     "Couldn’t load the queue" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Warteschlange konnte nicht geladen werden" } },

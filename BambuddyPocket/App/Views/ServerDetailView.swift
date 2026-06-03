@@ -36,6 +36,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Print history", systemImage: "clock.arrow.circlepath")
                 }
+                NavigationLink {
+                    ActivityListView(server: current, serverList: model)
+                } label: {
+                    Label("Activity", systemImage: "bell")
+                }
             }
             connectionSection
             testSection
