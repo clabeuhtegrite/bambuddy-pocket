@@ -71,6 +71,15 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (24)** — Tier 1 (projets en profondeur) : **détail** (`GET /projects/{id}`, champs
+  riches : description, notes, tags, priorité, budget, URL), **création** (`POST /projects/`),
+  **édition** (`PATCH /projects/{id}` — statut, objectif, priorité, notes…), **suppression**
+  (`DELETE /projects/{id}`). Modèles `ProjectCreate`/`ProjectUpdate` + champs supplémentaires sur
+  `Project` (Domain). Note : `progress_percent` est top-niveau dans la liste mais sous `stats` dans
+  le détail — le détail réutilise la progression de la liste et enrichit le reste. Contrats vérifiés
+  au réel sur le Docker. UI : écran de détail, feuille création/édition partagée (`ProjectFormSheet`),
+  bouton « + » et swipe suppression. i18n FR/EN/ES/DE (13 clés). 122 tests SPM verts, 6 tests app,
+  lint/format OK.
 - **2026-06-04 (23)** — Tier 1 (bibliothèque en profondeur) : **détail de fichier** (`GET
   /library/files/{id}`), **ajout à la file** (via `POST /queue/` avec `library_file_id`, fichiers
   tranchés uniquement), **édition** nom + notes (`PUT /library/files/{id}`), **suppression/corbeille**

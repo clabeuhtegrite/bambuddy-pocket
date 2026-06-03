@@ -468,6 +468,63 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/")
     }
 
+    @Test("project(id:) cible /projects/{id} et décode")
+    func fetchesProject() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":1,"name":"Gridfinity","status":"active","description":"Bins","notes":"n"}"#)
+        let client = try makeClient()
+        let project = try await client.project(id: 1)
+        #expect(project.name == "Gridfinity")
+        #expect(project.details == "Bins")
+        #expect(project.notes == "n")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/1")
+    }
+
+    @Test("createProject poste sur /projects/ et décode")
+    func createsProject() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":3,"name":"New","status":"active","target_count":5}"#)
+        let client = try makeClient()
+        let created = try await client.createProject(ProjectCreate(name: "New", targetCount: 5, priority: "high"))
+        #expect(created.id == 3)
+        #expect(created.targetCount == 5)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["name"] as? String == "New")
+        #expect(json["priority"] as? String == "high")
+    }
+
+    @Test("updateProject PATCH /projects/{id} et omet les champs nil")
+    func updatesProject() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":1,"name":"Gridfinity","status":"completed","notes":"fini"}"#)
+        let client = try makeClient()
+        let updated = try await client.updateProject(id: 1, ProjectUpdate(status: "completed", notes: "fini"))
+        #expect(updated.status == "completed")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/1")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["status"] as? String == "completed")
+        #expect(json.keys.contains("name") == false)
+    }
+
+    @Test("deleteProject envoie DELETE /projects/{id}")
+    func deletesProject() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.deleteProject(id: 5)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/5")
+    }
+
     @Test("createPrinter poste sur /printers/ et décode la réponse")
     func createsPrinter() async throws {
         MockURLProtocol.reset()

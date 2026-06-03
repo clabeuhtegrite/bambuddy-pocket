@@ -133,6 +133,28 @@ public extension APIClient {
         try await get("/projects/")
     }
 
+    /// Détail d'un projet (`GET /projects/{id}`).
+    func project(id: Int) async throws -> Project {
+        try await get("/projects/\(id)")
+    }
+
+    /// Crée un projet (`POST /projects/`) et renvoie le projet créé.
+    func createProject(_ project: ProjectCreate) async throws -> Project {
+        let body = try JSONEncoder.bambuddy().encode(project)
+        return try await send("/projects/", method: .post, body: body)
+    }
+
+    /// Édite un projet (`PATCH /projects/{id}`) et renvoie le projet à jour.
+    func updateProject(id: Int, _ update: ProjectUpdate) async throws -> Project {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/projects/\(id)", method: .patch, body: body)
+    }
+
+    /// Supprime un projet (`DELETE /projects/{id}`).
+    func deleteProject(id: Int) async throws {
+        try await delete("/projects/\(id)")
+    }
+
     /// Réordonne la file d'attente (`POST /queue/reorder`).
     func reorderQueue(_ items: [QueueReorderItem]) async throws {
         let body = try JSONEncoder.bambuddy().encode(QueueReorder(items: items))
