@@ -7,24 +7,27 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Phases 0, 1 et 2 largement implémentées** (branche `claude/cloud-dev-environment-aAJAg`, dépôt
-public, CI verte). Fait : socle + multi-serveurs + **auth complète** (none / clé d'API / user-pass
-+ 2FA / Cloudflare, secrets Keychain) ; **temps réel WebSocket** (events + fusion deltas) ; liste +
-détail imprimantes (températures, HMS, AMS) ; **caméra** (snapshot) ; **archive** (liste/détail +
-recherche) ; **contrôles** (pause/reprise/stop, vitesse, lumière, clear HMS, AMS unload/séchage) ;
-**file d'attente** (liste + réordonnancement drag-drop) ; **flux d'activité**. ~70 tests unitaires.
+**Tier 1 largement approfondi** (`main`, dépôt public, CI verte, 128 tests SPM + 6 tests app). Au
+fil des vagues récentes (PR #10 → #15, toutes mergées) : **file d'attente** (édition PATCH,
+planification, lots/batches, bulk, stop) ; **archives** (favori, édition tags/notes/lien,
+suppression, recherche serveur) ; **inventaire bobines** (détail, édition, historique de
+consommation, reset, suppression) ; **bibliothèque** (détail, enqueue, édition nom/notes,
+suppression) ; **projets** (détail, création, édition, suppression) ; **caméra** (détection de
+plateau, status, stream-token). Tout vérifié au réel sur le Docker.
 
-Prochaines briques (par valeur) :
-1. **Notifications en-app dérivées du WebSocket** : exposer une session WS au niveau serveur
-   (pas seulement l'écran imprimantes) ; bannières/feed sur `print_complete`/`print_start`/
-   `missing_spool_assignment`/`plate_not_empty`/HMS sévère.
-2. **Caméra MJPEG réelle** (parseur multipart `x-mixed-replace`) + token de flux si auth.
-3. **File** : ajout/start/stop/cancel d'un job, lots (batches), planification.
-4. **État serveur** (`/system/info`, santé) ; gestion d'imprimante (`PrinterCreate`).
-5. **Phase 3** : viewer 3D (décision d'approche prise en autonomie : WebView Three.js en v1, ADR
-   à rédiger), slicing, inventaire.
-6. **Finitions App Store** : icône/launch screen, captures, accessibilité, build sans warning.
-Cadence : **autonomie complète** ; CI = juge (pas de toolchain en local sur l'env cloud).
+Prochaines briques recommandées (par valeur) :
+1. **Notifications en-app dérivées du WebSocket** : session WS au niveau serveur (pas seulement
+   l'écran imprimantes) ; bannières/feed sur `print_complete`/`print_start`/
+   `missing_spool_assignment`/`plate_not_empty`/HMS sévère. (Transverse, fort impact.)
+2. **Queue** : `background-dispatch` (cancel job), distribution auto par modèle (`target_model`).
+3. **Bibliothèque** : arbre de **dossiers** (`/library/folders/`), déplacement, upload, corbeille.
+4. **Projets** : items (add-archives/add-queue), BOM, timeline, templates.
+5. **Tier 2** : settings (langue/devise/imprimante par défaut), **system** (`/system/info`, santé,
+   storage), users (profil), **api-keys** (CRUD), notification-templates.
+6. **Tier 3** (vérifier le contrat au réel) : **smart-plugs** (alim on/off), spoolman, cloud Bambu,
+   makerworld, obico, maintenance, firmware.
+7. **Finitions App Store** : icône/launch screen, captures, **XCUITest** sur chemins critiques.
+Cadence : **autonomie complète** ; build en local (Mac+Xcode) AVANT de pousser ; CI = juge final.
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
 `xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
 
