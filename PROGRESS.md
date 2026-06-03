@@ -3,16 +3,20 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-03 — Étape 1 + socle + gouvernance terminés ; projet renommé
-« Bambuddy Pocket ». Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (privé).
+**Dernière mise à jour** : 2026-06-03 — Phase 0 en cours : socle app mergé (PR #2), modèles de
+domaine en revue (PR #3). Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (privé).
 
 ## 🔆 Prochaine action (point de reprise)
-**Démarrer la Phase 0 (socle app)** — voir [`ROADMAP.md`](ROADMAP.md). Branche `feat/phase0-socle`
-+ PR, CI verte avant merge. Première étape concrète : créer le projet Xcode (cible `BambuddyPocket`,
-iOS 18, iPhone+iPad) + le paquet SPM `BambuddyPocketKit` (modules Domain/Networking/DesignSystem)
-+ en-têtes SPDX `AGPL-3.0-or-later`.
-Cadence : **autonomie complète** (commits/PR réguliers ; n'arrêter que sur vrai blocage →
-documenter + `scripts/notify/notify.sh "…"`).
+**Phase 0 — couche réseau.** Le socle (projet XcodeGen, paquet SPM `BambuddyPocketKit`, app SwiftUI
+minimale, i18n, CI iOS) et les modèles de domaine (PrinterStatus/AMS/HMS/Printer + décodage testé)
+sont faits. Prochaine brique :
+1. `RESTClient` (URLSession, `async`) + `RequestFactory` injectant l'auth (Bearer/X-API-Key) **et**
+   les en-têtes Cloudflare Access ; gestion d'erreurs ; tests via `URLProtocol` stub.
+2. `SecretStore` (Keychain) + `ServerStore` + UI multi-serveurs (ajout/édition/test de connexion).
+3. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong) + fusion des deltas.
+Cadence : **autonomie complète** ; n'arrêter que sur vrai blocage → documenter + `scripts/notify/notify.sh "…"`.
+Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
+`xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
 
 ## ✅ Fait
 - **Recon environnement** : git (`clabeuhtegrite`), gh (`repo`+`workflow`), Docker 29, Xcode 26.5
@@ -57,6 +61,8 @@ documenter + `scripts/notify/notify.sh "…"`).
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (3)** — Phase 0 : modèles de domaine PrinterStatus/AMS/HMS/Printer + décodage (PR #3, 13 tests).
+- **2026-06-03 (2)** — Phase 0 : socle app (XcodeGen, SPM, i18n, CI iOS) — PR #2 mergée, CI verte.
 - **2026-06-03** — Décisions licence (AGPL+exception) & nom (Bambuddy Pocket) ; renommage complet ;
-  notifier ntfy + superviseur activés. Prêt pour la Phase 0.
+  notifier ntfy + superviseur activés.
 - **2026-06-02** — Étape 1 : recon API complète, contrat écrit, ADR, scaffolding, dépôt poussé.
