@@ -1,6 +1,62 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Couldn’t load projects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Projekte konnten nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudieron cargar los proyectos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger les projets" } }
+      }
+    },
+    "Couldn’t load the library" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bibliothek konnte nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo cargar la biblioteca" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger la bibliothèque" } }
+      }
+    },
+    "Library" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bibliothek" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Biblioteca" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bibliothèque" } }
+      }
+    },
+    "No files" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Dateien" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin archivos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun fichier" } }
+      }
+    },
+    "No projects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Projekte" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin proyectos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun projet" } }
+      }
+    },
+    "No projects yet." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Projekte." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aún no hay proyectos." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun projet pour l’instant." } }
+      }
+    },
+    "Projects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Projekte" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Proyectos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Projets" } }
+      }
+    },
+    "The library is empty." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Bibliothek ist leer." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La biblioteca está vacía." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La bibliothèque est vide." } }
+      }
+    },
     "Brand" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Marke" } },

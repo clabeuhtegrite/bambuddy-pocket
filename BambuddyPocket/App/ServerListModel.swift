@@ -82,6 +82,16 @@ final class ServerListModel {
         InventoryListModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de la bibliothèque de modèles pour ce serveur.
+    func makeLibraryListModel(for configuration: ServerConfiguration) -> LibraryListModel {
+        LibraryListModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
+    /// Construit le view-model des projets pour ce serveur.
+    func makeProjectListModel(for configuration: ServerConfiguration) -> ProjectListModel {
+        ProjectListModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Construit un `LoginModel` pour se connecter à un serveur **non encore enregistré**
     /// (identifié par son URL et ses éventuels secrets Cloudflare).
     func makeLoginModel(baseURL: URL, secrets: ServerSecrets, usesCloudflare: Bool) -> LoginModel {

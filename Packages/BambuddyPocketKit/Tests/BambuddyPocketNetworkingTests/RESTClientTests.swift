@@ -241,6 +241,31 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/inventory/spools")
     }
 
+    @Test("libraryFiles cible /library/files/ et décode")
+    func listsLibrary() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":2,"filename":"benchy.3mf","file_type":"3mf","file_size":1024,"print_count":3}]"#)
+        let client = try makeClient()
+        let files = try await client.libraryFiles()
+        #expect(files.map(\.id) == [2])
+        #expect(files.first?.filename == "benchy.3mf")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/")
+    }
+
+    @Test("projects cible /projects/ et décode (description → details)")
+    func listsProjects() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":1,"name":"Gridfinity","status":"active","description":"Bins","progress_percent":50}]"#)
+        let client = try makeClient()
+        let projects = try await client.projects()
+        #expect(projects.first?.name == "Gridfinity")
+        #expect(projects.first?.details == "Bins")
+        #expect(projects.first?.progressFraction == 0.5)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/")
+    }
+
     @Test("createPrinter poste sur /printers/ et décode la réponse")
     func createsPrinter() async throws {
         MockURLProtocol.reset()

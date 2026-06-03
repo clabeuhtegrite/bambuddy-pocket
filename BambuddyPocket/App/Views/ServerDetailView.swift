@@ -46,6 +46,16 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Filaments", systemImage: "circle.dashed")
                 }
+                NavigationLink {
+                    LibraryListView(server: current, serverList: model)
+                } label: {
+                    Label("Library", systemImage: "folder")
+                }
+                NavigationLink {
+                    ProjectListView(server: current, serverList: model)
+                } label: {
+                    Label("Projects", systemImage: "square.stack.3d.up")
+                }
             }
             connectionSection
             testSection
