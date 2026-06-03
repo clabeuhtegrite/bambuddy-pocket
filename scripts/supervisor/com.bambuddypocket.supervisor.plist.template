@@ -17,9 +17,9 @@
         <string>__SCRIPT__</string>
     </array>
 
-    <!-- Toutes les heures -->
+    <!-- Toutes les 15 minutes -->
     <key>StartInterval</key>
-    <integer>3600</integer>
+    <integer>900</integer>
 
     <!-- Lancer aussi au chargement (pratique pour tester) -->
     <key>RunAtLoad</key>

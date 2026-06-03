@@ -3,7 +3,7 @@
 # bambuddy-pocket-supervisor.sh — relance Claude Code en mode headless pour faire avancer
 # le projet Bambuddy Pocket de façon autonome, avec retry/back-off sur erreur de quota.
 #
-# Conçu pour être déclenché toutes les heures par launchd (cf. README de ce dossier) ou cron.
+# Conçu pour être déclenché toutes les 15 minutes par launchd (cf. README de ce dossier) ou cron.
 # Il NE peut PAS « réveiller » une session interactive bloquée : il démarre une NOUVELLE
 # exécution headless qui reprend l'état depuis PROGRESS.md.
 #
@@ -50,7 +50,7 @@ notify() {
 # --- Garde anti-collision avec une session interactive ---
 # Une session interactive « fraîche » touche ce heartbeat ; on saute alors le cycle.
 HEARTBEAT="$SCRIPT_DIR/.interactive-active"
-HEARTBEAT_TTL_MIN="${HEARTBEAT_TTL_MIN:-45}"
+HEARTBEAT_TTL_MIN="${HEARTBEAT_TTL_MIN:-20}"
 if [ -f "$HEARTBEAT" ] && [ -n "$(find "$HEARTBEAT" -mmin "-$HEARTBEAT_TTL_MIN" 2>/dev/null)" ]; then
   log "Session interactive active (heartbeat < ${HEARTBEAT_TTL_MIN} min) — cycle ignoré."
   exit 0
