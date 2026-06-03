@@ -15,13 +15,13 @@ public extension WebSocketEvent {
     var notableEvent: (kind: NotableEventKind, printerID: Int)? {
         switch self {
         case let .printStart(printerID, _):
-            (.printStarted, printerID)
+            (kind: .printStarted, printerID: printerID)
         case let .printComplete(printerID, _):
-            (.printCompleted, printerID)
+            (kind: .printCompleted, printerID: printerID)
         case let .missingSpoolAssignment(printerID, _):
-            (.missingSpool, printerID)
+            (kind: .missingSpool, printerID: printerID)
         case let .plateNotEmpty(printerID):
-            printerID.map { (.plateNotEmpty, $0) }
+            printerID.map { (kind: NotableEventKind.plateNotEmpty, printerID: $0) }
         case .printerStatus, .pong, .other:
             nil
         }
