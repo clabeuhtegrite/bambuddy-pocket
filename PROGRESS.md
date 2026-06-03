@@ -69,6 +69,13 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (8)** — Phase 1 (cœur) : événements WebSocket (`WebSocketEvent` + décodage) et
+  **fusion des deltas** (`PrinterStatus.merged(with:)`) ; endpoints REST typés (`printers()`,
+  `printerStatus(id:)`) ; **client WebSocket** (`WebSocketClient`, transport injectable, ping,
+  reconnexion côté appelant) ; en-têtes auth/Cloudflare factorisés (`RequestAuthorization.headerFields`,
+  appliqués aussi au WS). App : `PrinterListModel` (REST + temps réel fusionné), écrans **liste
+  imprimantes** (statut live, badge connexion) et **détail** (état, progression, températures,
+  erreurs HMS, AMS) ; i18n FR/EN/ES/DE. Tests : WS/merge/endpoints (+~10).
 - **2026-06-03 (7)** — Phase 0 : composition root `AppEnvironment` + view-model `ServerListModel`
   + UI multi-serveurs (liste/ajout/édition/détail, `ServerURLParser`, secrets Keychain, test de
   connexion `/auth/status`, avertissement HTTP, i18n FR/EN/ES/DE). Tests : parser (9) + view-model

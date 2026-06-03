@@ -1,6 +1,286 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld h %lld min" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld Std. %lld Min." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%lld h %lld min" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld h %lld min" } }
+      }
+    },
+    "%lld min" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld Min." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } }
+      }
+    },
+    "AMS %lld" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "AMS %lld" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "AMS %lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "AMS %lld" } }
+      }
+    },
+    "Bed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bett" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cama" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plateau" } }
+      }
+    },
+    "Chamber" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kammer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Caisson" } }
+      }
+    },
+    "Connecting…" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbinden…" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conectando…" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connexion…" } }
+      }
+    },
+    "Couldn’t load printers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker konnten nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudieron cargar las impresoras" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger les imprimantes" } }
+      }
+    },
+    "Current print" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktueller Druck" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresión actual" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression en cours" } }
+      }
+    },
+    "Empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Leer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vacío" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vide" } }
+      }
+    },
+    "Errors" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fehler" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Errores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Erreurs" } }
+      }
+    },
+    "Failed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fehlgeschlagen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fallido" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec" } }
+      }
+    },
+    "Fatal" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kritisch" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crítico" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Critique" } }
+      }
+    },
+    "Finished" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fertig" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Terminado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Terminé" } }
+      }
+    },
+    "Firmware" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Firmware" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Firmware" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Micrologiciel" } }
+      }
+    },
+    "Idle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Inaktiv" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Inactiva" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Inactif" } }
+      }
+    },
+    "Info" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Info" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Info" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Info" } }
+      }
+    },
+    "Information" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Informationen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Información" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Informations" } }
+      }
+    },
+    "IP address" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "IP-Adresse" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Dirección IP" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Adresse IP" } }
+      }
+    },
+    "Job" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Auftrag" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Trabajo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tâche" } }
+      }
+    },
+    "Layer" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schicht" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Capa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Couche" } }
+      }
+    },
+    "Live" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Live" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "En vivo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "En direct" } }
+      }
+    },
+    "Model" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Modell" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Modelo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modèle" } }
+      }
+    },
+    "No printers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Drucker" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin impresoras" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune imprimante" } }
+      }
+    },
+    "No printers are configured on this server." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Auf diesem Server sind keine Drucker konfiguriert." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No hay impresoras configuradas en este servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune imprimante n’est configurée sur ce serveur." } }
+      }
+    },
+    "Nozzle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Düse" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Boquilla" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Buse" } }
+      }
+    },
+    "Offline" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Offline" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Desconectada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Hors ligne" } }
+      }
+    },
+    "Paused" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pausiert" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "En pausa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "En pause" } }
+      }
+    },
+    "Preparing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Vorbereiten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Preparando" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Préparation" } }
+      }
+    },
+    "Printers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresoras" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Imprimantes" } }
+      }
+    },
+    "Printing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druckt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Imprimiendo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression" } }
+      }
+    },
+    "Reconnecting…" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Neu verbinden…" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Reconectando…" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Reconnexion…" } }
+      }
+    },
+    "Remaining" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbleibend" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Restante" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Restant" } }
+      }
+    },
+    "Serial number" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Seriennummer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Número de serie" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Numéro de série" } }
+      }
+    },
+    "Serious" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ernst" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Grave" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Sérieux" } }
+      }
+    },
+    "Slicing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Slicing" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Laminando" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Découpe" } }
+      }
+    },
+    "Stage" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Phase" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Etapa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Étape" } }
+      }
+    },
+    "Status" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Status" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Statut" } }
+      }
+    },
+    "Temperatures" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Temperaturen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Temperaturas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Températures" } }
+      }
+    },
+    "Unknown" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Unbekannt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Desconocido" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Inconnu" } }
+      }
+    },
+    "Warning" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warnung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Advertencia" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Avertissement" } }
+      }
+    },
     "Add a Bambuddy server to get started." : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Füge einen Bambuddy-Server hinzu, um zu beginnen." } },

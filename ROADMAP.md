@@ -17,9 +17,9 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ fait
 ## Phase 0 — Socle 🟦
 Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ Projet Xcode (XcodeGen) + structure de modules (App + paquet SPM Domain/Networking/DesignSystem).
-- 🟦 Couche réseau : client REST (`async/await`) + client WebSocket (TLS, reconnexion, ping/pong).
-- ⬜ Injection des en-têtes **Cloudflare Access** + Bearer/X-API-Key sur REST **et** WS **et** caméra.
-- 🟦 Modèles de domaine d'après le contrat (✅ PrinterStatus/AMS/HMS/Printer ; ⬜ Archive, QueueItem…).
+- ✅ Couche réseau : client REST (`async/await`) + client WebSocket (ping, reconnexion appelant).
+- 🟦 Injection des en-têtes **Cloudflare Access** + Bearer/X-API-Key sur REST **et** WS (✅) **et** caméra (⬜).
+- 🟦 Modèles de domaine d'après le contrat (✅ PrinterStatus/AMS/HMS/Printer + événements WS + fusion ; ⬜ Archive, QueueItem…).
 - ✅ Multi-serveurs : ajout/édition par URL, test de connexion, stockage **Keychain** des secrets.
 - 🟦 Auth : détection `auth_status` (✅ sonde), clé d'API (✅), sans-auth (✅) ; ⬜ login user/pass + 2FA.
 - 🟦 Design system (✅ tokens ; ⬜ composants, typographie Dynamic Type), mode sombre.
@@ -27,10 +27,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ Privacy manifest + `NSLocalNetworkUsageDescription` + ATS (exception HTTP local).
 - ✅ CI : build + tests + lint (SwiftLint/SwiftFormat) + shellcheck sur push/PR.
 
-## Phase 1 — MVP cœur (lecture, testable sur la démo) ⬜
-- ⬜ **Liste multi-imprimantes** + statut **temps réel** (WebSocket, fusion des deltas).
-- ⬜ **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
-  restant), état, AMS/bobines, ventilateurs, lumière chambre, **erreurs HMS** (code+sévérité+texte).
+## Phase 1 — MVP cœur (lecture, testable sur la démo) 🟦
+- ✅ **Liste multi-imprimantes** + statut **temps réel** (WebSocket, fusion des deltas).
+- 🟦 **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
+  restant), état, AMS/bobines, **erreurs HMS** (code+sévérité) ✅ ; ventilateurs/lumière chambre ⬜.
 - ⬜ **Caméra** : flux MJPEG + snapshot (token si auth).
 - ⬜ **Archive d'impressions** : liste (`ArchiveSlim`), détail (`ArchiveResponse`), vignettes,
   photos, métadonnées, coût/énergie, timelapse.

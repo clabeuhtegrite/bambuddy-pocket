@@ -57,6 +57,11 @@ final class ServerListModel {
         (try? secretStore.secrets(for: configuration.id)) ?? ServerSecrets()
     }
 
+    /// Construit le view-model des imprimantes (REST + temps réel) pour ce serveur.
+    func makePrinterListModel(for configuration: ServerConfiguration) -> PrinterListModel {
+        PrinterListModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     func delete(_ configuration: ServerConfiguration) throws {
         servers.removeAll { $0.id == configuration.id }
         try serverStore.save(servers)

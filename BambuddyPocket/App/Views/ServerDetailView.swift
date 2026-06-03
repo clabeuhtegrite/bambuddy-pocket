@@ -20,6 +20,13 @@ struct ServerDetailView: View {
 
     var body: some View {
         List {
+            Section {
+                NavigationLink {
+                    PrinterListView(server: current, serverList: model)
+                } label: {
+                    Label("Printers", systemImage: "printer")
+                }
+            }
             connectionSection
             testSection
             deleteSection
