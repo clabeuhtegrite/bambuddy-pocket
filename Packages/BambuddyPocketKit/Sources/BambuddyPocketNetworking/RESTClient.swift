@@ -75,6 +75,11 @@ public actor RESTClient: APIClient {
     public func cameraSnapshot(printerID: Int) async throws -> Data {
         try await data(forPath: "/printers/\(printerID)/camera/snapshot")
     }
+
+    /// Télécharge le fichier d'une archive (`GET /archives/{id}/download`) → données brutes.
+    public func downloadArchive(id: Int) async throws -> Data {
+        try await data(forPath: "/archives/\(id)/download")
+    }
 }
 
 /// Réponse vide (pour les endpoints qui ne renvoient pas de corps utile).

@@ -1,6 +1,27 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "3D model" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "3D-Modell" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Modelo 3D" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modèle 3D" } }
+      }
+    },
+    "3D preview unavailable" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "3D-Vorschau nicht verfügbar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista 3D no disponible" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aperçu 3D indisponible" } }
+      }
+    },
+    "View 3D model" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "3D-Modell ansehen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ver modelo 3D" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Voir le modèle 3D" } }
+      }
+    },
     "Auxiliary" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Hilfslüfter" } },

@@ -6,9 +6,27 @@ import SwiftUI
 /// Détail d'une archive d'impression (lecture seule).
 struct ArchiveDetailView: View {
     let archive: Archive
+    let model: ArchiveListModel
+
+    private var fileExtension: String? {
+        archive.filename?.split(separator: ".").last.map { $0.lowercased() }
+    }
+
+    private var isRenderable: Bool {
+        fileExtension == "stl" || fileExtension == "3mf"
+    }
 
     var body: some View {
         List {
+            if isRenderable {
+                Section {
+                    NavigationLink {
+                        Model3DScreen(archive: archive, model: model)
+                    } label: {
+                        Label("View 3D model", systemImage: "cube")
+                    }
+                }
+            }
             summarySection
             filamentSection
             costSection

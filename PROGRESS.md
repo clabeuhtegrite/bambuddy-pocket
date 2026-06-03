@@ -71,6 +71,11 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (17)** — Phase 3 : **viewer 3D** (décision : WebView + Three.js **embarqué**,
+  hors-ligne) — `Model3DView` (WKWebView + WKUserScript), `viewer.html` + Three.js/STLLoader/
+  3MFLoader/fflate bundlés, rendu STL/3MF, téléchargement archive (`/archives/{id}/download`),
+  lien depuis le détail archive. Aussi : flux **caméra MJPEG** réel (repli snapshots), section
+  ventilateurs, accessibilité (cloche).
 - **2026-06-03 (16)** — Phase 2 : contrôles **lumière de chambre** (`chamber-light?on=`) et
   **vitesse** (`print-speed?mode=`) — endpoints + UI (toggle « Appareil », sélecteur de vitesse).
   Dépôt passé **public** (CI gratuite) ; README/PROGRESS mis à jour.

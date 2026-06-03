@@ -27,7 +27,7 @@ struct ArchiveListView: View {
         List {
             ForEach(filtered) { archive in
                 NavigationLink {
-                    ArchiveDetailView(archive: archive)
+                    ArchiveDetailView(archive: archive, model: model)
                 } label: {
                     ArchiveRow(archive: archive)
                 }

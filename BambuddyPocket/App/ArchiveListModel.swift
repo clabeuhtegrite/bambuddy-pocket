@@ -30,4 +30,18 @@ final class ArchiveListModel {
         }
         hasLoaded = true
     }
+
+    /// Télécharge le fichier d'une archive et déduit son format (extension) pour le viewer 3D.
+    func downloadModel(_ archive: Archive) async -> ModelPayload? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            let data = try await client.downloadArchive(id: archive.id)
+            let ext = archive.filename
+                .map { ($0 as NSString).pathExtension.lowercased() }
+                .flatMap { $0.isEmpty ? nil : $0 } ?? "3mf"
+            return ModelPayload(data: data, ext: ext)
+        } catch {
+            return nil
+        }
+    }
 }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #1c1c1e; }
+    #c { width: 100%; height: 100%; display: block; touch-action: none; }
+    #err { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%);
+           text-align: center; color: #9b9b9f; font: 15px -apple-system, sans-serif; display: none; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div id="err">Aperçu 3D indisponible</div>
+  <script src="three.min.js"></script>
+  <script src="fflate.min.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="STLLoader.js"></script>
+  <script src="3MFLoader.js"></script>
+  <script>
+    // window.__MODEL_B64 / window.__MODEL_EXT sont injectés par l'app (WKUserScript, documentStart).
+    (function () {
+      function showError() { document.getElementById('err').style.display = 'block'; }
+      try {
+        var canvas = document.getElementById('c');
+        var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        function size() { return { w: window.innerWidth, h: window.innerHeight }; }
+        var s = size();
+        renderer.setSize(s.w, s.h, false);
+
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1c1c1e);
+        var camera = new THREE.PerspectiveCamera(45, s.w / s.h, 0.1, 10000);
+        camera.position.set(150, 150, 150);
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+        var key = new THREE.DirectionalLight(0xffffff, 0.85);
+        key.position.set(1, 1.5, 1);
+        scene.add(key);
+        scene.add(new THREE.GridHelper(256, 16, 0x3a3a3c, 0x2c2c2e));
+
+        function toBuffer(b64) {
+          var bin = atob(b64), len = bin.length, bytes = new Uint8Array(len);
+          for (var i = 0; i < len; i++) { bytes[i] = bin.charCodeAt(i); }
+          return bytes.buffer;
+        }
+
+        function frame(obj) {
+          var box = new THREE.Box3().setFromObject(obj);
+          var sz = box.getSize(new THREE.Vector3());
+          var ctr = box.getCenter(new THREE.Vector3());
+          obj.position.sub(ctr);
+          var maxDim = Math.max(sz.x, sz.y, sz.z) || 100;
+          camera.position.set(maxDim * 1.2, maxDim * 1.2, maxDim * 1.2);
+          camera.near = maxDim / 100;
+          camera.far = maxDim * 100;
+          camera.updateProjectionMatrix();
+          controls.target.set(0, 0, 0);
+          controls.update();
+        }
+
+        var ext = window.__MODEL_EXT;
+        var buf = toBuffer(window.__MODEL_B64);
+        var obj;
+        if (ext === 'stl') {
+          var geo = new THREE.STLLoader().parse(buf);
+          geo.computeVertexNormals();
+          var mat = new THREE.MeshPhongMaterial({ color: 0x00a3ad, specular: 0x222222, shininess: 40 });
+          obj = new THREE.Mesh(geo, mat);
+        } else if (ext === '3mf') {
+          obj = new THREE.ThreeMFLoader().parse(buf);
+        } else {
+          throw new Error('unsupported');
+        }
+        scene.add(obj);
+        frame(obj);
+
+        function animate() {
+          requestAnimationFrame(animate);
+          controls.update();
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', function () {
+          var r = size();
+          camera.aspect = r.w / r.h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(r.w, r.h, false);
+        });
+      } catch (e) {
+        showError();
+      }
+    })();
+  </script>
+</body>
+</html>
