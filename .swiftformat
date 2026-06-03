@@ -26,5 +26,5 @@
 --enable blankLinesAtEndOfScope
 --enable redundantReturn
 --enable redundantSelf
---enable sortedImports
+--enable sortImports
 --enable wrapMultilineStatementBraces

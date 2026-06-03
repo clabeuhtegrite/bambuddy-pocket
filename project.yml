@@ -1,0 +1,100 @@
+name: BambuddyPocket
+options:
+  bundleIdPrefix: app.bambuddy
+  deploymentTarget:
+    iOS: "18.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: "YES"
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: "NO"
+    GCC_TREAT_WARNINGS_AS_ERRORS: "NO"
+
+packages:
+  BambuddyPocketKit:
+    path: Packages/BambuddyPocketKit
+
+targets:
+  BambuddyPocket:
+    type: application
+    platform: iOS
+    sources:
+      - path: BambuddyPocket
+    dependencies:
+      - package: BambuddyPocketKit
+        product: BambuddyPocketDomain
+      - package: BambuddyPocketKit
+        product: BambuddyPocketNetworking
+      - package: BambuddyPocketKit
+        product: BambuddyPocketDesignSystem
+    info:
+      path: BambuddyPocket/Info.plist
+      properties:
+        CFBundleDisplayName: Bambuddy Pocket
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen:
+          UIColorName: AccentColor
+        ITSAppUsesNonExemptEncryption: false
+        # Accès aux serveurs/imprimantes sur le réseau local (cf. ADR-0003).
+        NSLocalNetworkUsageDescription: >-
+          Bambuddy Pocket se connecte à vos serveurs Bambuddy et imprimantes sur votre réseau
+          local pour afficher leur état et les piloter.
+        # ATS : HTTPS par défaut, exception limitée pour le HTTP sur adresses locales/privées.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.bambuddy.pocket
+        # PRODUCT_NAME reste "BambuddyPocket" (sans espace) ; le nom affiché est
+        # CFBundleDisplayName="Bambuddy Pocket" (cf. info.properties). Forcer PRODUCT_NAME
+        # avec un espace casserait TEST_HOST de la cible de tests.
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        SWIFT_EMIT_LOC_STRINGS: "YES"
+        CODE_SIGN_STYLE: Automatic
+
+  BambuddyPocketTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: BambuddyPocketTests
+    dependencies:
+      - target: BambuddyPocket
+      - package: BambuddyPocketKit
+        product: BambuddyPocketDomain
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.bambuddy.pocket.tests
+        GENERATE_INFOPLIST_FILE: "YES"
+
+schemes:
+  BambuddyPocket:
+    build:
+      targets:
+        BambuddyPocket: all
+        BambuddyPocketTests: [test]
+    test:
+      gatherCoverageData: true
+      targets:
+        - BambuddyPocketTests
+    run:
+      config: Debug
+    profile:
+      config: Release

@@ -15,6 +15,10 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      - name: Select latest stable Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
       - name: Install tools
         run: brew install swiftlint swiftformat
       - name: SwiftFormat (lint mode)
@@ -41,23 +45,30 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
-      - name: Build & test
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Pick an available iPhone simulator
+        id: sim
         run: |
           set -euo pipefail
-          DEST='platform=iOS Simulator,name=iPhone 16,OS=latest'
-          if ls ./*.xcworkspace >/dev/null 2>&1; then
-            WS=$(ls -d ./*.xcworkspace | head -1)
-            xcodebuild -workspace "$WS" -scheme BambuddyPocket -destination "$DEST" clean build test | xcpretty || \
-            xcodebuild -workspace "$WS" -scheme BambuddyPocket -destination "$DEST" clean build test
-          elif ls ./*.xcodeproj >/dev/null 2>&1; then
-            PROJ=$(ls -d ./*.xcodeproj | head -1)
-            xcodebuild -project "$PROJ" -scheme BambuddyPocket -destination "$DEST" clean build test
-          elif [ -d Packages/BambuddyPocketKit ]; then
-            echo "Pas de projet Xcode ; test du paquet SPM."
-            cd Packages/BambuddyPocketKit && swift test
-          else
-            echo "Pas encore de projet Xcode ni de paquet — étape ignorée."
-          fi
+          NAME=$(xcrun simctl list devices available | grep -E 'iPhone' | head -1 | sed -E 's/ \(.*//' | xargs)
+          if [ -z "$NAME" ]; then echo "Aucun simulateur iPhone disponible" >&2; exit 1; fi
+          echo "Simulateur : $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+      - name: Build & test (app)
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project BambuddyPocket.xcodeproj \
+            -scheme BambuddyPocket \
+            -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.name }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            clean test
+      - name: Test SPM package (swift test)
+        run: |
+          cd Packages/BambuddyPocketKit && swift test
 
   shellcheck:
     name: Shellcheck (scripts)
