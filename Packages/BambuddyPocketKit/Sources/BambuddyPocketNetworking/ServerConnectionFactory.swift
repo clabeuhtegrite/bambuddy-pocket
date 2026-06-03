@@ -39,6 +39,18 @@ public struct ServerConnectionFactory: Sendable {
         )
     }
 
+    /// Construit le client de flux caméra MJPEG pour une imprimante (mêmes en-têtes auth).
+    public func makeCameraStream(for configuration: ServerConfiguration, printerID: Int) throws -> CameraStreamClient {
+        let secrets = try secretStore.secrets(for: configuration.id)
+        let authorization = RequestAuthorization(configuration: configuration, secrets: secrets)
+        let url = configuration.apiBaseURL
+            .appending(path: "printers")
+            .appending(path: "\(printerID)")
+            .appending(path: "camera")
+            .appending(path: "stream")
+        return CameraStreamClient(url: url, headers: authorization.headerFields, session: session)
+    }
+
     /// Teste la connexion en interrogeant `/auth/status` (léger, ne requiert pas d'auth).
     /// Lève une `APIError` en cas d'échec (transport, HTTP, décodage).
     public func probe(_ configuration: ServerConfiguration) async throws -> AuthStatus {

@@ -114,6 +114,11 @@ final class PrinterListModel {
         await runControl { try await $0.stopDrying(id: printer.id, amsID: amsID) }
     }
 
+    /// Client de flux caméra MJPEG pour cette imprimante (`nil` si l'URL/secret échoue).
+    func cameraStream(for printer: Printer) -> CameraStreamClient? {
+        try? connectionFactory.makeCameraStream(for: server, printerID: printer.id)
+    }
+
     /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…).
     func cameraSnapshot(for printer: Printer) async -> Data? {
         do {
