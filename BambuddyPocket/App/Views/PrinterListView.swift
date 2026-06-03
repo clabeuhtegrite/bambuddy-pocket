@@ -39,6 +39,7 @@ struct PrinterListView: View {
                 } label: {
                     Image(systemName: model.notifications.isEmpty ? "bell" : "bell.badge")
                 }
+                .accessibilityLabel("Notifications")
             }
             ToolbarItem(placement: .topBarTrailing) {
                 RealtimeBadge(state: model.realtimeState)

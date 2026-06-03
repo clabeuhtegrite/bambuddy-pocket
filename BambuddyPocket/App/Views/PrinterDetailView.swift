@@ -24,6 +24,7 @@ struct PrinterDetailView: View {
                 controlsSection(status)
             }
             temperatureSection
+            fansSection
             if let status, status.hasActiveErrors {
                 errorsSection(status)
             }
@@ -160,6 +161,23 @@ struct PrinterDetailView: View {
 
     private func temperatureRow(_ label: LocalizedStringKey, _ current: Double?, _ target: Double?) -> some View {
         LabeledContent(label, value: PrinterPresentation.temperaturePair(current, target))
+    }
+
+    @ViewBuilder
+    private var fansSection: some View {
+        if let status, status.coolingFanSpeed != nil || status.bigFan1Speed != nil {
+            Section("Fans") {
+                if let speed = status.coolingFanSpeed {
+                    LabeledContent("Part cooling", value: "\(speed)%")
+                }
+                if let speed = status.bigFan1Speed {
+                    LabeledContent("Auxiliary", value: "\(speed)%")
+                }
+                if let speed = status.bigFan2Speed {
+                    LabeledContent("Chamber fan", value: "\(speed)%")
+                }
+            }
+        }
     }
 
     private func errorsSection(_ status: PrinterStatus) -> some View {

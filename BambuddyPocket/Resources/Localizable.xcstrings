@@ -1,6 +1,34 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Auxiliary" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Hilfslüfter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Auxiliar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Auxiliaire" } }
+      }
+    },
+    "Chamber fan" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kammerlüfter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventilador de cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ventilateur caisson" } }
+      }
+    },
+    "Fans" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Lüfter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventiladores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ventilateurs" } }
+      }
+    },
+    "Part cooling" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bauteilkühlung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Refrigeración de pieza" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Refroidissement pièce" } }
+      }
+    },
     "Access code" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Zugangscode" } },
