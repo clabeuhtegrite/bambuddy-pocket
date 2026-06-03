@@ -54,8 +54,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   ou WebView Three.js en v1 — cf. `gcode_viewer` amont). ADR à rédiger.
 - ⬜ **Slicing** : déclenchement du sidecar serveur (OrcaSlicer/Bambu Studio) s'il est activé
   (`use_slicer_api`, `slice-jobs`) — non testable sur la démo.
-- ⬜ Bibliothèque de modèles/projets, inventaire filaments/Spoolman/SpoolBuddy, intégrations
-  (cloud, smart-plugs, Obico, MakerWorld) selon priorité.
+- 🟦 Bibliothèque de modèles/projets (✅ liste + recherche), **inventaire filaments** (✅ liste,
+  détail, édition, historique de consommation, reset compteur, suppression) ; ⬜ Spoolman/SpoolBuddy,
+  intégrations (cloud, smart-plugs, Obico, MakerWorld) selon priorité.
 
 ## Transverse / sortie App Store ⬜
 - ⬜ Tests (unitaires + UI) sur chemins critiques ; build sans warning.

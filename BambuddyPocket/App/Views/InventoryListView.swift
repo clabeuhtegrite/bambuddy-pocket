@@ -27,9 +27,16 @@ struct InventoryListView: View {
         List {
             ForEach(filtered) { spool in
                 NavigationLink {
-                    SpoolDetailView(spool: spool)
+                    SpoolDetailView(spool: spool, model: model)
                 } label: {
                     SpoolRow(spool: spool)
+                }
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        Task { await model.delete(spool) }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
                 }
             }
         }
@@ -100,22 +107,32 @@ private struct SpoolRow: View {
     }
 }
 
-/// Détail d'une bobine.
+/// Détail d'une bobine : caractéristiques, poids, stockage, historique de consommation + édition.
 struct SpoolDetailView: View {
     let spool: Spool
+    let model: InventoryListModel
+
+    @State private var isEditing = false
+    @State private var usage: [SpoolUsage] = []
+    @State private var hasLoadedUsage = false
+
+    /// Bobine à jour depuis le view-model (reflète les éditions), sinon l'instance passée.
+    private var current: Spool {
+        model.spools.first { $0.id == spool.id } ?? spool
+    }
 
     var body: some View {
         List {
             Section("Filament") {
-                LabeledContent("Material", value: spool.material)
-                if let brand = spool.brand {
+                LabeledContent("Material", value: current.material)
+                if let brand = current.brand {
                     LabeledContent("Brand", value: brand)
                 }
-                if let color = spool.colorName {
+                if let color = current.colorName {
                     LabeledContent("Color") {
                         HStack(spacing: DSSpacing.sm) {
                             Circle()
-                                .fill(PrinterPresentation.color(hexRGBA: spool.rgba) ?? .secondary)
+                                .fill(PrinterPresentation.color(hexRGBA: current.rgba) ?? .secondary)
                                 .frame(width: 16, height: 16)
                                 .overlay(Circle().strokeBorder(.quaternary))
                             Text(color)
@@ -124,24 +141,47 @@ struct SpoolDetailView: View {
                 }
             }
             Section("Weight") {
-                if let remaining = spool.remainingGrams {
+                if let remaining = current.remainingGrams {
                     LabeledContent("Remaining", value: "\(Int(remaining)) g")
                 }
-                if let used = spool.weightUsed {
+                if let used = current.weightUsed {
                     LabeledContent("Used", value: "\(Int(used)) g")
                 }
-                if let total = spool.labelWeight {
+                if let total = current.labelWeight {
                     LabeledContent("Total", value: "\(total) g")
+                }
+                Button("Reset usage counter") {
+                    Task { await model.resetUsage(current) }
                 }
             }
             storageSection
+            usageSection
         }
-        .navigationTitle(spool.displayName)
+        .navigationTitle(current.displayName)
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isEditing = true
+                } label: {
+                    Label("Edit", systemImage: "pencil")
+                }
+            }
+        }
+        .sheet(isPresented: $isEditing) {
+            SpoolEditSheet(spool: current, model: model)
+        }
+        .task {
+            if !hasLoadedUsage {
+                usage = await model.usage(for: spool)
+                hasLoadedUsage = true
+            }
+        }
     }
 
     @ViewBuilder
     private var storageSection: some View {
+        let spool = current
         if spool.storageLocation != nil || spool.category != nil || spool.note != nil || spool.costPerKg != nil {
             Section("Storage") {
                 if let location = spool.storageLocation {
@@ -155,6 +195,33 @@ struct SpoolDetailView: View {
                 }
                 if let note = spool.note {
                     LabeledContent("Note", value: note)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var usageSection: some View {
+        if !usage.isEmpty {
+            Section("Usage history") {
+                ForEach(usage) { entry in
+                    VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                        HStack {
+                            Text(entry.printName ?? "#\(entry.id)")
+                                .font(.subheadline)
+                                .lineLimit(1)
+                            Spacer()
+                            Text("\(Int(entry.weightUsed)) g")
+                                .font(.caption.monospacedDigit())
+                                .foregroundStyle(.secondary)
+                        }
+                        if let date = ArchivePresentation.date(entry.createdAt) {
+                            Text(date)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .padding(.vertical, DSSpacing.xs)
                 }
             }
         }

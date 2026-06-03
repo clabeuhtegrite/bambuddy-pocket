@@ -52,3 +52,64 @@ public struct Spool: Codable, Sendable, Hashable, Identifiable {
         return min(1, max(0, remaining / Double(labelWeight)))
     }
 }
+
+/// Corps d'édition d'une bobine (`PATCH /inventory/spools/{id}`, `SpoolUpdate`). Tous les champs
+/// sont optionnels : seuls les champs non `nil` sont encodés (et donc appliqués via `exclude_unset`).
+public struct SpoolUpdate: Codable, Sendable, Hashable {
+    public var material: String?
+    public var subtype: String?
+    public var brand: String?
+    public var colorName: String?
+    public var labelWeight: Int?
+    public var weightUsed: Double?
+    public var costPerKg: Double?
+    public var category: String?
+    public var storageLocation: String?
+    public var note: String?
+
+    public init(
+        material: String? = nil,
+        subtype: String? = nil,
+        brand: String? = nil,
+        colorName: String? = nil,
+        labelWeight: Int? = nil,
+        weightUsed: Double? = nil,
+        costPerKg: Double? = nil,
+        category: String? = nil,
+        storageLocation: String? = nil,
+        note: String? = nil
+    ) {
+        self.material = material
+        self.subtype = subtype
+        self.brand = brand
+        self.colorName = colorName
+        self.labelWeight = labelWeight
+        self.weightUsed = weightUsed
+        self.costPerKg = costPerKg
+        self.category = category
+        self.storageLocation = storageLocation
+        self.note = note
+    }
+}
+
+/// Une entrée d'historique de consommation d'une bobine (`GET /inventory/spools/{id}/usage`,
+/// `SpoolUsageHistoryResponse`).
+public struct SpoolUsage: Codable, Sendable, Hashable, Identifiable {
+    public var id: Int
+    public var spoolId: Int
+    public var printerId: Int?
+    public var printName: String?
+    public var weightUsed: Double
+    public var percentUsed: Int
+    public var status: String
+    public var cost: Double?
+    public var createdAt: String?
+
+    public init(id: Int, spoolId: Int, weightUsed: Double, percentUsed: Int, status: String) {
+        self.id = id
+        self.spoolId = spoolId
+        self.weightUsed = weightUsed
+        self.percentUsed = percentUsed
+        self.status = status
+    }
+}

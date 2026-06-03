@@ -331,6 +331,66 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/inventory/spools")
     }
 
+    @Test("spool(id:) cible /inventory/spools/{id} et décode")
+    func fetchesSpool() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":4,"material":"PLA","brand":"Bambu","label_weight":1000,"weight_used":150}"#)
+        let client = try makeClient()
+        let spool = try await client.spool(id: 4)
+        #expect(spool.id == 4)
+        #expect(spool.remainingGrams == 850)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/inventory/spools/4")
+    }
+
+    @Test("updateSpool PATCH /inventory/spools/{id} et omet les champs nil")
+    func updatesSpool() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":4,"material":"PLA","note":"sèche","storage_location":"A"}"#)
+        let client = try makeClient()
+        let updated = try await client.updateSpool(id: 4, SpoolUpdate(storageLocation: "A", note: "sèche"))
+        #expect(updated.note == "sèche")
+        #expect(updated.storageLocation == "A")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/inventory/spools/4")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["storage_location"] as? String == "A")
+        #expect(json.keys.contains("material") == false)
+    }
+
+    @Test("spoolUsage cible /inventory/spools/{id}/usage et décode")
+    func fetchesSpoolUsage() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":2,"spool_id":4,"weight_used":12.5,"percent_used":3,"status":"completed","#
+                + #""print_name":"Cube","created_at":"2026-06-01T10:00:00Z"}]"#
+        )
+        let client = try makeClient()
+        let usage = try await client.spoolUsage(id: 4)
+        #expect(usage.first?.weightUsed == 12.5)
+        #expect(usage.first?.printName == "Cube")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/inventory/spools/4/usage")
+    }
+
+    @Test("resetSpoolUsage et deleteSpool ciblent les bons chemins")
+    func resetsAndDeletesSpool() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":4,"material":"PLA"}"#)
+        let client = try makeClient()
+        _ = try await client.resetSpoolUsage(id: 4)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/inventory/spools/4/reset-usage")
+        #expect(try #require(MockURLProtocol.lastRequest).httpMethod == "POST")
+        try await client.deleteSpool(id: 4)
+        #expect(try #require(MockURLProtocol.lastRequest).httpMethod == "DELETE")
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/inventory/spools/4")
+    }
+
     @Test("libraryFiles cible /library/files/ et décode")
     func listsLibrary() async throws {
         MockURLProtocol.reset()

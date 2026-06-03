@@ -1805,6 +1805,28 @@
         }
       }
     },
+    "Edit spool": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spule bearbeiten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar bobina"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier la bobine"
+          }
+        }
+      }
+    },
     "Empty": {
       "localizations": {
         "de": {
@@ -3898,6 +3920,28 @@
         }
       }
     },
+    "Reset usage counter": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zähler zurücksetzen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restablecer contador"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser le compteur"
+          }
+        }
+      }
+    },
     "Resume": {
       "localizations": {
         "de": {
@@ -4690,6 +4734,28 @@
         }
       }
     },
+    "Storage": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lagerung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Almacenamiento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stockage"
+          }
+        }
+      }
+    },
     "Successful": {
       "localizations": {
         "de": {
@@ -5086,6 +5152,28 @@
         }
       }
     },
+    "Total: %lld g": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesamt: %lld g"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total: %lld g"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total : %lld g"
+          }
+        }
+      }
+    },
     "Two-factor code": {
       "localizations": {
         "de": {
@@ -5261,6 +5349,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Utilisation"
+          }
+        }
+      }
+    },
+    "Usage history": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nutzungsverlauf"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historial de uso"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historique d’utilisation"
           }
         }
       }
@@ -5503,6 +5613,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Poids"
+          }
+        }
+      }
+    },
+    "Weight & cost": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gewicht & Kosten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peso y coste"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poids et coût"
           }
         }
       }
