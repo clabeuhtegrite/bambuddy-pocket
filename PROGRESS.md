@@ -71,6 +71,15 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (20)** — Tier 1 (file d'attente en profondeur) : **édition d'item** (`PATCH /queue/{id}`
+  — planification `scheduled_time`, réassignation d'imprimante, démarrage manuel, exiger succès
+  précédent, power-off, options bed-levelling/timelapse/AMS), **mise à jour en lot** (`PATCH /queue/bulk`),
+  **lots** (`GET /queue/batches` + annulation `DELETE /queue/batches/{id}`), **stop** d'un item en cours
+  (`POST /queue/{id}/stop`). Modèles `QueueItemUpdate`/`QueueBulkUpdate`/`QueueBulkUpdateResponse`/
+  `PrintBatch` + champs éditables sur `QueueItem` (Domain). Contrats vérifiés au réel sur le Docker
+  (archive + lot ×3 semés en base ; PATCH n'encode que les champs non-nil pour ne pas écraser via
+  `exclude_unset`). UI : section Lots (progression), feuille d'édition, swipes start/edit/stop/cancel.
+  i18n FR/EN/ES/DE (16 clés). 96 tests SPM verts, 6 tests app, lint/format OK.
 - **2026-06-03 (19)** — Tier 1 (contrôles imprimante en profondeur) : **clear-plate**, **home-axes**,
   **calibration** paramétrée (feuille à cocher), **connect/disconnect**, **AMS load** (par balayage,
   tray_id global = ams×4+slot) + **reset tray**, **skip-objects** (feuille listant `print/objects`),

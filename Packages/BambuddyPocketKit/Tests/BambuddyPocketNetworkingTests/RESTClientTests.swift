@@ -326,6 +326,88 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/8")
     }
 
+    @Test("stopQueueItem poste sur /queue/{id}/stop")
+    func stopsQueueItem() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.stopQueueItem(id: 6)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/6/stop")
+    }
+
+    @Test("updateQueueItem PATCH /queue/{id} et omet les champs nil")
+    func updatesQueueItem() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":2,"position":1,"status":"pending","manual_start":true,"#
+                + #""scheduled_time":"2026-06-10T08:00:00+00:00Z"}"#
+        )
+        let client = try makeClient()
+        let updated = try await client.updateQueueItem(
+            id: 2,
+            QueueItemUpdate(scheduledTime: "2026-06-10T08:00:00Z", manualStart: true)
+        )
+        #expect(updated.manualStart == true)
+        #expect(updated.scheduledTime == "2026-06-10T08:00:00+00:00Z")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/2")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["manual_start"] as? Bool == true)
+        #expect(json["scheduled_time"] as? String == "2026-06-10T08:00:00Z")
+        // Les champs non renseignés ne doivent PAS être encodés (sinon le serveur les remet à null).
+        #expect(json["printer_id"] == nil)
+        #expect(json.keys.contains("printer_id") == false)
+    }
+
+    @Test("bulkUpdateQueue PATCH /queue/bulk et décode la réponse")
+    func bulkUpdatesQueue() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"updated_count":2,"skipped_count":1,"message":"Updated 2 items"}"#)
+        let client = try makeClient()
+        let response = try await client.bulkUpdateQueue(QueueBulkUpdate(itemIds: [2, 3], manualStart: true))
+        #expect(response.updatedCount == 2)
+        #expect(response.skippedCount == 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/bulk")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["item_ids"] as? [Int] == [2, 3])
+    }
+
+    @Test("queueBatches cible /queue/batches et décode les compteurs")
+    func listsBatches() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":1,"name":"Cube ×3","quantity":3,"status":"active","pending_count":2,"#
+                + #""printing_count":0,"completed_count":1,"failed_count":0,"cancelled_count":0}]"#
+        )
+        let client = try makeClient()
+        let batches = try await client.queueBatches()
+        #expect(batches.first?.name == "Cube ×3")
+        #expect(batches.first?.pendingCount == 2)
+        #expect(batches.first?.resolvedCount == 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/batches")
+    }
+
+    @Test("cancelQueueBatch envoie DELETE /queue/batches/{id}")
+    func cancelsBatch() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.cancelQueueBatch(id: 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/batches/1")
+    }
+
     @Test("startDrying poste avec ?ams_id=1")
     func startsDrying() async throws {
         MockURLProtocol.reset()

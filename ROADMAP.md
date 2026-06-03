@@ -40,8 +40,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - 🟦 **Contrôles d'impression** : ✅ pause/reprise/stop, vitesse, lumière chambre, clear HMS,
   AMS unload/load/reset, séchage, **skip-objects**, **clear-plate**, **home-axes**, **calibration**,
   **connect/disconnect**, **suppression d'imprimante** ; ⬜ print-options, bed-jog, airduct-mode.
-- 🟦 **File d'attente** : ✅ liste + **réordonnancement (drag/drop)** ; ⬜ ajout,
-  start/stop/cancel, lots (batches), planification (`scheduled_time`), distribution auto.
+- 🟦 **File d'attente** : ✅ liste + **réordonnancement (drag/drop)**, ✅ ajout, ✅ start/stop/cancel/delete,
+  ✅ **édition d'item** (PATCH : planification `scheduled_time`, réassignation, options), ✅ **lots
+  (batches)** (liste + annulation), ✅ **mise à jour en lot** (`PATCH /queue/bulk`) ; ⬜ distribution
+  auto (`background-dispatch`).
 - 🟦 **Notifications EN-APP** : ✅ flux d'activité (`notifications/logs`) en lecture ; ⬜ dérivation
   temps réel depuis le WebSocket (fin/début d'impression, HMS sévère, bobine manquante…).
 - 🟦 Gestion d'imprimante côté serveur : ✅ ajout (`PrinterCreate`), ✅ suppression ; ⬜ édition (PATCH).
