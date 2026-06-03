@@ -20,6 +20,7 @@ final class PrinterListModel {
     private(set) var statuses: [Int: PrinterStatus] = [:]
     private(set) var realtimeState: RealtimeState = .connecting
     private(set) var hasLoaded = false
+    private(set) var notifications: [AppNotification] = []
     var loadError: String?
     var controlError: String?
 
@@ -146,6 +147,7 @@ final class PrinterListModel {
     }
 
     private func apply(_ event: WebSocketEvent) {
+        recordNotification(for: event)
         switch event {
         case let .printerStatus(id, delta):
             merge(delta, into: id)
@@ -155,6 +157,18 @@ final class PrinterListModel {
             }
         case .missingSpoolAssignment, .plateNotEmpty, .pong, .other:
             break
+        }
+    }
+
+    private func recordNotification(for event: WebSocketEvent) {
+        guard let notable = event.notableEvent else { return }
+        let name = printers.first { $0.id == notable.printerID }?.name
+        notifications.insert(
+            AppNotification(kind: notable.kind, printerName: name, date: Date()),
+            at: 0
+        )
+        if notifications.count > 50 {
+            notifications.removeLast(notifications.count - 50)
         }
     }
 

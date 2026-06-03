@@ -1,6 +1,55 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Done" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fertig" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Hecho" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Terminé" } }
+      }
+    },
+    "No notifications" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Benachrichtigungen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin notificaciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune notification" } }
+      }
+    },
+    "Notifications" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigungen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Notificaciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } }
+      }
+    },
+    "Plate not empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druckbett nicht leer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Bandeja no vacía" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plateau non vide" } }
+      }
+    },
+    "Print finished" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druck abgeschlossen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresión finalizada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression terminée" } }
+      }
+    },
+    "Print started" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druck gestartet" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresión iniciada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression démarrée" } }
+      }
+    },
+    "Spool missing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Spule fehlt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Bobina faltante" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bobine manquante" } }
+      }
+    },
     "Start drying" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Trocknen starten" } },

@@ -6,6 +6,7 @@ import SwiftUI
 /// Liste des imprimantes d'un serveur avec statut **temps réel** (REST initial + WebSocket).
 struct PrinterListView: View {
     @State private var model: PrinterListModel
+    @State private var showingNotifications = false
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makePrinterListModel(for: server))
@@ -25,8 +26,18 @@ struct PrinterListView: View {
         .navigationTitle(model.serverLabel)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showingNotifications = true
+                } label: {
+                    Image(systemName: model.notifications.isEmpty ? "bell" : "bell.badge")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
                 RealtimeBadge(state: model.realtimeState)
             }
+        }
+        .sheet(isPresented: $showingNotifications) {
+            NotificationsView(notifications: model.notifications)
         }
         .refreshable { await model.load() }
         .task { await model.run() }
