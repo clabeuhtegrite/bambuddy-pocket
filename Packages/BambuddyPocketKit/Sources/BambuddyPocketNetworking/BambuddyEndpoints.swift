@@ -112,6 +112,22 @@ public extension APIClient {
         try await get("/library/files/")
     }
 
+    /// Détail d'un fichier de bibliothèque (`GET /library/files/{id}`).
+    func libraryFile(id: Int) async throws -> LibraryFile {
+        try await get("/library/files/\(id)")
+    }
+
+    /// Édite un fichier de bibliothèque (`PUT /library/files/{id}`) et renvoie le fichier à jour.
+    func updateLibraryFile(id: Int, _ update: LibraryFileUpdate) async throws -> LibraryFile {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/library/files/\(id)", method: .put, body: body)
+    }
+
+    /// Supprime un fichier de bibliothèque — déplacé vers la corbeille (`DELETE /library/files/{id}`).
+    func deleteLibraryFile(id: Int) async throws {
+        try await delete("/library/files/\(id)")
+    }
+
     /// Projets d'impression (`GET /projects/`).
     func projects() async throws -> [Project] {
         try await get("/projects/")

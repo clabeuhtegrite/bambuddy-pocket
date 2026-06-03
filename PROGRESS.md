@@ -71,6 +71,13 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (23)** — Tier 1 (bibliothèque en profondeur) : **détail de fichier** (`GET
+  /library/files/{id}`), **ajout à la file** (via `POST /queue/` avec `library_file_id`, fichiers
+  tranchés uniquement), **édition** nom + notes (`PUT /library/files/{id}`), **suppression/corbeille**
+  (`DELETE /library/files/{id}`). Modèle `LibraryFileUpdate` + champs `folderId`/`notes`/
+  `slicedForModel` + `isSliced` sur `LibraryFile` (Domain). Contrats vérifiés au réel sur le Docker.
+  UI : écran de détail (métadonnées, estimation, notes), feuille d'édition, swipes enqueue/suppression.
+  i18n FR/EN/ES/DE (6 clés). 115 tests SPM verts, 6 tests app, lint/format OK.
 - **2026-06-03 (22)** — Tier 1 (inventaire bobines en profondeur) : **détail** (`GET
   /inventory/spools/{id}`), **édition** (`PATCH /inventory/spools/{id}` — matériau, marque, couleur,
   poids, coût, catégorie, stockage, note), **historique de consommation** (`GET
