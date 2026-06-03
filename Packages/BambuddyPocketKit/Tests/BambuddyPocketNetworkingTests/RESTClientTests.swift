@@ -229,6 +229,27 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/notifications/logs")
     }
 
+    @Test("setChamberLight poste avec ?on=true")
+    func setsChamberLight() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.setChamberLight(id: 3, on: true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3/chamber-light?on=true")
+    }
+
+    @Test("setPrintSpeed poste avec ?mode=3")
+    func setsPrintSpeed() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.setPrintSpeed(id: 3, mode: 3)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3/print-speed?mode=3")
+    }
+
     @Test("login() poste les identifiants sur /auth/login")
     func performsLogin() async throws {
         MockURLProtocol.reset()

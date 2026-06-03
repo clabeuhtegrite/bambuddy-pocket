@@ -80,6 +80,14 @@ final class PrinterListModel {
         await runControl { try await $0.clearHMS(id: printer.id) }
     }
 
+    func setChamberLight(_ printer: Printer, on: Bool) async {
+        await runControl { try await $0.setChamberLight(id: printer.id, on: on) }
+    }
+
+    func setSpeed(_ printer: Printer, mode: Int) async {
+        await runControl { try await $0.setPrintSpeed(id: printer.id, mode: mode) }
+    }
+
     /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…).
     func cameraSnapshot(for printer: Printer) async -> Data? {
         do {

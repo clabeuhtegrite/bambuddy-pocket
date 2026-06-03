@@ -1,6 +1,55 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Chamber light" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kammerlicht" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Luz de cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Lumière de chambre" } }
+      }
+    },
+    "Device" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gerät" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Dispositivo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Appareil" } }
+      }
+    },
+    "Ludicrous" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Extrem" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extremo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Extrême" } }
+      }
+    },
+    "Silent" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Leise" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Silencioso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Silencieux" } }
+      }
+    },
+    "Speed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Geschwindigkeit" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Velocidad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vitesse" } }
+      }
+    },
+    "Sport" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Sport" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Deporte" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Sport" } }
+      }
+    },
+    "Standard" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Standard" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estándar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Standard" } }
+      }
+    },
     "Code" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Code" } },

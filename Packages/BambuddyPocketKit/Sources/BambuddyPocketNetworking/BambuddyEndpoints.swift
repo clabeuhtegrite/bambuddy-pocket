@@ -81,4 +81,14 @@ public extension APIClient {
     func clearHMS(id: Int) async throws {
         try await post("/printers/\(id)/hms/clear")
     }
+
+    /// Allume/éteint la lumière de chambre (`POST /printers/{id}/chamber-light?on=<bool>`).
+    func setChamberLight(id: Int, on: Bool) async throws {
+        try await post("/printers/\(id)/chamber-light?on=\(on)")
+    }
+
+    /// Règle la vitesse d'impression (`POST /printers/{id}/print-speed?mode=<1…4>`).
+    func setPrintSpeed(id: Int, mode: Int) async throws {
+        try await post("/printers/\(id)/print-speed?mode=\(mode)")
+    }
 }

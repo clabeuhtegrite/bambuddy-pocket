@@ -18,6 +18,7 @@ struct PrinterDetailView: View {
         List {
             statusSection
             cameraLink
+            deviceSection
             if let status, status.isPrinting {
                 printSection(status)
                 controlsSection(status)
@@ -68,7 +69,36 @@ struct PrinterDetailView: View {
             } label: {
                 Label("Stop", systemImage: "stop.fill")
             }
+            Picker("Speed", selection: speedBinding(current: status.speedLevel)) {
+                Text("Silent").tag(1)
+                Text("Standard").tag(2)
+                Text("Sport").tag(3)
+                Text("Ludicrous").tag(4)
+            }
         }
+    }
+
+    @ViewBuilder
+    private var deviceSection: some View {
+        if status?.connected == true {
+            Section("Device") {
+                Toggle("Chamber light", isOn: lightBinding)
+            }
+        }
+    }
+
+    private var lightBinding: Binding<Bool> {
+        Binding(
+            get: { status?.chamberLight ?? false },
+            set: { newValue in Task { await model.setChamberLight(printer, on: newValue) } }
+        )
+    }
+
+    private func speedBinding(current: Int?) -> Binding<Int> {
+        Binding(
+            get: { current ?? 2 },
+            set: { newValue in Task { await model.setSpeed(printer, mode: newValue) } }
+        )
     }
 
     private var statusSection: some View {

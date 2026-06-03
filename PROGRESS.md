@@ -69,6 +69,9 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (16)** — Phase 2 : contrôles **lumière de chambre** (`chamber-light?on=`) et
+  **vitesse** (`print-speed?mode=`) — endpoints + UI (toggle « Appareil », sélecteur de vitesse).
+  Dépôt passé **public** (CI gratuite) ; README/PROGRESS mis à jour.
 - **2026-06-03 (15)** — Phase 0 (auth) : **UI de connexion** — `LoginModel` (flux credentials →
   2FA), `LoginView`, méthode `userPassword` dans le formulaire serveur (login avant enregistrement,
   JWT stocké au Keychain). `ServerConnectionFactory.makeClient(for:secrets:)` (secrets explicites).
