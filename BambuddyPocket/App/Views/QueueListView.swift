@@ -15,6 +15,27 @@ struct QueueListView: View {
         List {
             ForEach(model.items) { item in
                 QueueRow(item: item)
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            Task { await model.start(item) }
+                        } label: {
+                            Label("Start", systemImage: "play.fill")
+                        }
+                        .tint(.green)
+                    }
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            Task { await model.delete(item) }
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                        Button {
+                            Task { await model.cancel(item) }
+                        } label: {
+                            Label("Cancel", systemImage: "xmark")
+                        }
+                        .tint(.orange)
+                    }
             }
             .onMove { source, destination in
                 model.move(from: source, to: destination)

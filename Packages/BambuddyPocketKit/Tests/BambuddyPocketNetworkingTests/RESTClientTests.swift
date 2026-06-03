@@ -229,6 +229,17 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/notifications/logs")
     }
 
+    @Test("deleteQueueItem envoie DELETE /queue/{id}")
+    func deletesQueueItem() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.deleteQueueItem(id: 8)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/8")
+    }
+
     @Test("startDrying poste avec ?ams_id=1")
     func startsDrying() async throws {
         MockURLProtocol.reset()

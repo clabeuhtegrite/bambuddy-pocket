@@ -49,4 +49,26 @@ final class QueueListModel {
             loadError = ErrorMessage.text(for: error)
         }
     }
+
+    func start(_ item: QueueItem) async {
+        await act { try await $0.startQueueItem(id: item.id) }
+    }
+
+    func cancel(_ item: QueueItem) async {
+        await act { try await $0.cancelQueueItem(id: item.id) }
+    }
+
+    func delete(_ item: QueueItem) async {
+        await act { try await $0.deleteQueueItem(id: item.id) }
+    }
+
+    private func act(_ action: (RESTClient) async throws -> Void) async {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await action(client)
+            await load()
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+        }
+    }
 }

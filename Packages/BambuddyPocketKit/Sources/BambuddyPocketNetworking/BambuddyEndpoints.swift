@@ -66,6 +66,28 @@ public extension APIClient {
         let _: EmptyResponse = try await send(path, method: .post, body: body)
     }
 
+    /// Requête `DELETE` sans réponse utile.
+    func delete(_ path: String) async throws {
+        let _: EmptyResponse = try await send(path, method: .delete, body: nil)
+    }
+
+    // MARK: Actions sur la file
+
+    /// Démarre un élément de la file (`POST /queue/{id}/start`).
+    func startQueueItem(id: Int) async throws {
+        try await post("/queue/\(id)/start")
+    }
+
+    /// Annule un élément de la file (`POST /queue/{id}/cancel`).
+    func cancelQueueItem(id: Int) async throws {
+        try await post("/queue/\(id)/cancel")
+    }
+
+    /// Supprime un élément de la file (`DELETE /queue/{id}`).
+    func deleteQueueItem(id: Int) async throws {
+        try await delete("/queue/\(id)")
+    }
+
     // MARK: Contrôles d'impression (cf. docs/bambuddy-api.md §7)
 
     /// Met l'impression en pause (`POST /printers/{id}/print/pause`).

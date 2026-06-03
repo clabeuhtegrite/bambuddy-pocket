@@ -1,6 +1,13 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Start" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Starten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Iniciar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Démarrer" } }
+      }
+    },
     "Done" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Fertig" } },
