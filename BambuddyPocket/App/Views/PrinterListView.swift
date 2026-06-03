@@ -7,6 +7,7 @@ import SwiftUI
 struct PrinterListView: View {
     @State private var model: PrinterListModel
     @State private var showingNotifications = false
+    @State private var showingAddPrinter = false
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makePrinterListModel(for: server))
@@ -27,6 +28,13 @@ struct PrinterListView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
+                    showingAddPrinter = true
+                } label: {
+                    Label("Add printer", systemImage: "plus")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
                     showingNotifications = true
                 } label: {
                     Image(systemName: model.notifications.isEmpty ? "bell" : "bell.badge")
@@ -38,6 +46,9 @@ struct PrinterListView: View {
         }
         .sheet(isPresented: $showingNotifications) {
             NotificationsView(notifications: model.notifications)
+        }
+        .sheet(isPresented: $showingAddPrinter) {
+            AddPrinterView(model: model)
         }
         .refreshable { await model.load() }
         .task { await model.run() }

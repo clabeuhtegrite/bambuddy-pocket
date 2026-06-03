@@ -15,6 +15,12 @@ public extension APIClient {
         try await get("/printers/\(id)/status")
     }
 
+    /// Ajoute une imprimante côté serveur (`POST /printers/`).
+    func createPrinter(_ printer: PrinterCreate) async throws -> Printer {
+        let body = try JSONEncoder.bambuddy().encode(printer)
+        return try await send("/printers/", method: .post, body: body)
+    }
+
     /// Archive d'impressions (`GET /archives/`), la plus récente d'abord côté serveur.
     func archives() async throws -> [Archive] {
         try await get("/archives/")

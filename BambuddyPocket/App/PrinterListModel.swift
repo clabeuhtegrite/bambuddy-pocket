@@ -93,6 +93,19 @@ final class PrinterListModel {
         await runControl { try await $0.amsUnload(id: printer.id) }
     }
 
+    /// Ajoute une imprimante côté serveur puis recharge la liste. Renvoie `true` au succès.
+    func addPrinter(_ create: PrinterCreate) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            _ = try await client.createPrinter(create)
+            await load()
+            return true
+        } catch {
+            controlError = ErrorMessage.text(for: error)
+            return false
+        }
+    }
+
     func startDrying(_ printer: Printer, amsID: Int) async {
         await runControl { try await $0.startDrying(id: printer.id, amsID: amsID) }
     }

@@ -1,6 +1,41 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Access code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zugangscode" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código de acceso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code d’accès" } }
+      }
+    },
+    "Bambu LAN" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bambu LAN" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Bambu LAN" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bambu LAN" } }
+      }
+    },
+    "Location" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Standort" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ubicación" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Emplacement" } }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Name" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nombre" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nom" } }
+      }
+    },
+    "Printer" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresora" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Imprimante" } }
+      }
+    },
     "Start" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Starten" } },
