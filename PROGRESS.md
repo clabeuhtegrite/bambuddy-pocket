@@ -71,6 +71,14 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (22)** — Tier 1 (inventaire bobines en profondeur) : **détail** (`GET
+  /inventory/spools/{id}`), **édition** (`PATCH /inventory/spools/{id}` — matériau, marque, couleur,
+  poids, coût, catégorie, stockage, note), **historique de consommation** (`GET
+  /inventory/spools/{id}/usage`), **réinitialisation du compteur** (`POST …/reset-usage`),
+  **suppression** (`DELETE …`). Modèles `SpoolUpdate`/`SpoolUsage` (Domain). Contrats vérifiés au
+  réel sur le Docker. UI : feuille d'édition, section Historique + bouton Réinitialiser dans le
+  détail (qui reflète les éditions via le view-model), swipe suppression dans la liste. i18n
+  FR/EN/ES/DE (6 clés). 109 tests SPM verts, 6 tests app, lint/format OK.
 - **2026-06-03 (21)** — Tier 1 (archives en profondeur) : **favori** (`POST /archives/{id}/favorite`,
   bascule), **édition de métadonnées** (`PATCH /archives/{id}` — nom, étiquettes/tags, notes, lien
   externe, favori), **suppression** (`DELETE /archives/{id}`), **recherche serveur**

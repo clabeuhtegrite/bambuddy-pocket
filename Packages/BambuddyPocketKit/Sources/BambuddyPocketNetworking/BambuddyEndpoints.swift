@@ -76,6 +76,37 @@ public extension APIClient {
         try await get("/inventory/spools")
     }
 
+    /// Détail d'une bobine (`GET /inventory/spools/{id}`).
+    func spool(id: Int) async throws -> Spool {
+        try await get("/inventory/spools/\(id)")
+    }
+
+    /// Édite une bobine (`PATCH /inventory/spools/{id}`) et renvoie la bobine à jour.
+    func updateSpool(id: Int, _ update: SpoolUpdate) async throws -> Spool {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/inventory/spools/\(id)", method: .patch, body: body)
+    }
+
+    /// Historique de consommation d'une bobine (`GET /inventory/spools/{id}/usage`).
+    func spoolUsage(id: Int) async throws -> [SpoolUsage] {
+        try await get("/inventory/spools/\(id)/usage")
+    }
+
+    /// Remet à zéro le compteur de consommation affiché (`POST /inventory/spools/{id}/reset-usage`).
+    func resetSpoolUsage(id: Int) async throws -> Spool {
+        try await send("/inventory/spools/\(id)/reset-usage", method: .post, body: nil)
+    }
+
+    /// Archive une bobine (`POST /inventory/spools/{id}/archive`).
+    func archiveSpool(id: Int) async throws -> Spool {
+        try await send("/inventory/spools/\(id)/archive", method: .post, body: nil)
+    }
+
+    /// Supprime une bobine (`DELETE /inventory/spools/{id}`).
+    func deleteSpool(id: Int) async throws {
+        try await delete("/inventory/spools/\(id)")
+    }
+
     /// Fichiers de la bibliothèque de modèles (`GET /library/files/`).
     func libraryFiles() async throws -> [LibraryFile] {
         try await get("/library/files/")
