@@ -27,4 +27,29 @@ struct ArchiveTests {
         archive.filename = "plate_1.gcode.3mf"
         #expect(archive.displayName == "plate_1.gcode.3mf")
     }
+
+    @Test("Décode tags/notes/external_url et découpe les étiquettes")
+    func decodesMetadata() throws {
+        let json = #"""
+        {"id":1,"status":"completed","tags":"calibration, test ,",
+         "notes":"première impression","external_url":"https://example.com","is_favorite":true}
+        """#
+        let data = try #require(json.data(using: .utf8))
+        let archive = try JSONDecoder.bambuddy().decode(Archive.self, from: data)
+        #expect(archive.tagList == ["calibration", "test"])
+        #expect(archive.notes == "première impression")
+        #expect(archive.externalUrl == "https://example.com")
+        #expect(archive.isFavorite == true)
+    }
+
+    @Test("ArchiveUpdate omet les champs nil à l'encodage")
+    func updateOmitsNilFields() throws {
+        let update = ArchiveUpdate(tags: "a,b", isFavorite: true)
+        let data = try JSONEncoder.bambuddy().encode(update)
+        let json = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any])
+        #expect(json["tags"] as? String == "a,b")
+        #expect(json["is_favorite"] as? Bool == true)
+        #expect(json.keys.contains("notes") == false)
+        #expect(json.keys.contains("cost") == false)
+    }
 }

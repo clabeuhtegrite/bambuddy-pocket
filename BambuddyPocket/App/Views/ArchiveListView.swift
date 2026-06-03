@@ -8,32 +8,55 @@ import SwiftUI
 struct ArchiveListView: View {
     @State private var model: ArchiveListModel
     @State private var query = ""
+    @State private var editing: Archive?
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makeArchiveListModel(for: server))
     }
 
-    private var filtered: [Archive] {
-        guard !query.isEmpty else {
-            return model.archives
-        }
-        return model.archives.filter {
-            $0.displayName.localizedCaseInsensitiveContains(query)
-                || $0.status.localizedCaseInsensitiveContains(query)
-        }
-    }
-
     var body: some View {
         List {
-            ForEach(filtered) { archive in
+            ForEach(model.archives) { archive in
                 NavigationLink {
                     ArchiveDetailView(archive: archive, model: model)
                 } label: {
                     ArchiveRow(archive: archive)
                 }
+                .swipeActions(edge: .leading) {
+                    Button {
+                        Task { await model.toggleFavorite(archive) }
+                    } label: {
+                        Label("Favorite", systemImage: archive.isFavorite == true ? "star.slash" : "star")
+                    }
+                    .tint(.yellow)
+                    Button {
+                        editing = archive
+                    } label: {
+                        Label("Edit", systemImage: "pencil")
+                    }
+                    .tint(.blue)
+                }
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        Task { await model.delete(archive) }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
         }
         .searchable(text: $query)
+        .onSubmit(of: .search) {
+            Task { await model.search(query) }
+        }
+        .onChange(of: query) { _, newValue in
+            if newValue.isEmpty {
+                Task { await model.load() }
+            }
+        }
+        .sheet(item: $editing) { archive in
+            ArchiveEditSheet(archive: archive, model: model)
+        }
         .overlay { placeholder }
         .navigationTitle("Print history")
         .toolbarTitleDisplayMode(.inline)
@@ -85,6 +108,12 @@ private struct ArchiveRow: View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
             let elapsed = archive.printTimeSeconds ?? archive.actualTimeSeconds
             HStack {
+                if archive.isFavorite == true {
+                    Image(systemName: "star.fill")
+                        .font(.caption)
+                        .foregroundStyle(.yellow)
+                        .accessibilityLabel("Favorite")
+                }
                 Text(archive.displayName)
                     .font(.headline)
                     .lineLimit(1)
@@ -92,6 +121,12 @@ private struct ArchiveRow: View {
                 Text(archive.status.capitalized)
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(ArchivePresentation.statusColor(archive.status))
+            }
+            if !archive.tagList.isEmpty {
+                Text(archive.tagList.joined(separator: " · "))
+                    .font(.caption2)
+                    .foregroundStyle(.tint)
+                    .lineLimit(1)
             }
             HStack(spacing: DSSpacing.md) {
                 if let duration = ArchivePresentation.duration(seconds: elapsed) {
