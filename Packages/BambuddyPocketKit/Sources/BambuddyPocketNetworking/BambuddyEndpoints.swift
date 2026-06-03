@@ -35,6 +35,12 @@ public extension APIClient {
         try await get("/notifications/logs")
     }
 
+    /// Réordonne la file d'attente (`POST /queue/reorder`).
+    func reorderQueue(_ items: [QueueReorderItem]) async throws {
+        let body = try JSONEncoder.bambuddy().encode(QueueReorder(items: items))
+        try await post("/queue/reorder", body: body)
+    }
+
     // MARK: Authentification (cf. docs/bambuddy-api.md §3)
 
     /// Connexion par identifiants (`POST /auth/login`).

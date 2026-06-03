@@ -16,10 +16,20 @@ struct QueueListView: View {
             ForEach(model.items) { item in
                 QueueRow(item: item)
             }
+            .onMove { source, destination in
+                model.move(from: source, to: destination)
+            }
         }
         .overlay { placeholder }
         .navigationTitle("Print queue")
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            if !model.items.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) {
+                    EditButton()
+                }
+            }
+        }
         .refreshable { await model.load() }
         .task {
             if !model.hasLoaded {

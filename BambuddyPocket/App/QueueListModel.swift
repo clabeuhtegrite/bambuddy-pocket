@@ -30,4 +30,23 @@ final class QueueListModel {
         }
         hasLoaded = true
     }
+
+    /// Réordonne localement puis persiste le nouvel ordre sur le serveur.
+    func move(from source: IndexSet, to destination: Int) {
+        items.move(fromOffsets: source, toOffset: destination)
+        let reordered = items.enumerated().map { offset, item in
+            QueueReorderItem(id: item.id, position: offset + 1)
+        }
+        Task { await persist(reordered) }
+    }
+
+    private func persist(_ reordered: [QueueReorderItem]) async {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.reorderQueue(reordered)
+            loadError = nil
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+        }
+    }
 }

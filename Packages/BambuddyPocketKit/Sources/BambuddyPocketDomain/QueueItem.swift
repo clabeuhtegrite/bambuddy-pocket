@@ -36,3 +36,23 @@ public struct QueueItem: Codable, Sendable, Hashable, Identifiable {
         return "#\(id)"
     }
 }
+
+/// Une paire (id, position) pour le réordonnancement de la file.
+public struct QueueReorderItem: Codable, Sendable, Hashable {
+    public var id: Int
+    public var position: Int
+
+    public init(id: Int, position: Int) {
+        self.id = id
+        self.position = position
+    }
+}
+
+/// Corps de `POST /queue/reorder` (`PrintQueueReorder`).
+public struct QueueReorder: Codable, Sendable, Hashable {
+    public var items: [QueueReorderItem]
+
+    public init(items: [QueueReorderItem]) {
+        self.items = items
+    }
+}
