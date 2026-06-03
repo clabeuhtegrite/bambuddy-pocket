@@ -26,10 +26,21 @@ public struct Archive: Codable, Sendable, Hashable, Identifiable {
     public var isFavorite: Bool?
     public var designer: String?
     public var runCount: Int?
+    public var tags: String?
+    public var notes: String?
+    public var externalUrl: String?
 
     public init(id: Int, status: String) {
         self.id = id
         self.status = status
+    }
+
+    /// Étiquettes individuelles (le serveur stocke une chaîne séparée par des virgules).
+    public var tagList: [String] {
+        (tags ?? "")
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
     }
 
     /// Nom à afficher : nom d'impression si présent, sinon nom de fichier, sinon « #id ».
@@ -41,5 +52,38 @@ public struct Archive: Codable, Sendable, Hashable, Identifiable {
             return filename
         }
         return "#\(id)"
+    }
+}
+
+/// Corps d'édition d'une archive (`PATCH /archives/{id}`, `ArchiveUpdate`). Tous les champs sont
+/// optionnels : seuls les champs non `nil` sont encodés (et donc appliqués via `exclude_unset`).
+public struct ArchiveUpdate: Codable, Sendable, Hashable {
+    public var printName: String?
+    public var tags: String?
+    public var notes: String?
+    public var cost: Double?
+    public var isFavorite: Bool?
+    public var externalUrl: String?
+    public var printerId: Int?
+    public var projectId: Int?
+
+    public init(
+        printName: String? = nil,
+        tags: String? = nil,
+        notes: String? = nil,
+        cost: Double? = nil,
+        isFavorite: Bool? = nil,
+        externalUrl: String? = nil,
+        printerId: Int? = nil,
+        projectId: Int? = nil
+    ) {
+        self.printName = printName
+        self.tags = tags
+        self.notes = notes
+        self.cost = cost
+        self.isFavorite = isFavorite
+        self.externalUrl = externalUrl
+        self.printerId = printerId
+        self.projectId = projectId
     }
 }

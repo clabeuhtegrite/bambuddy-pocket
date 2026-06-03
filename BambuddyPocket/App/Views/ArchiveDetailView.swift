@@ -9,6 +9,7 @@ struct ArchiveDetailView: View {
     let model: ArchiveListModel
 
     @State private var showAdded = false
+    @State private var isEditing = false
 
     private var fileExtension: String? {
         archive.filename?.split(separator: ".").last.map { $0.lowercased() }
@@ -41,6 +42,7 @@ struct ArchiveDetailView: View {
                 }
             }
             summarySection
+            notesSection
             filamentSection
             costSection
             timelineSection
@@ -48,8 +50,39 @@ struct ArchiveDetailView: View {
         }
         .navigationTitle(archive.displayName)
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isEditing = true
+                } label: {
+                    Label("Edit", systemImage: "pencil")
+                }
+            }
+        }
+        .sheet(isPresented: $isEditing) {
+            ArchiveEditSheet(archive: archive, model: model)
+        }
         .alert("Added to queue", isPresented: $showAdded) {
             Button("OK", role: .cancel) {}
+        }
+    }
+
+    @ViewBuilder
+    private var notesSection: some View {
+        if !archive.tagList.isEmpty || !(archive.notes ?? "").isEmpty || !(archive.externalUrl ?? "").isEmpty {
+            Section("Notes") {
+                if !archive.tagList.isEmpty {
+                    LabeledContent("Tags", value: archive.tagList.joined(separator: ", "))
+                }
+                if let notes = archive.notes, !notes.isEmpty {
+                    Text(notes)
+                }
+                if let link = archive.externalUrl, !link.isEmpty, let url = URL(string: link) {
+                    Link(destination: url) {
+                        Label("Open link", systemImage: "link")
+                    }
+                }
+            }
         }
     }
 

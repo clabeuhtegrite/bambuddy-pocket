@@ -53,6 +53,66 @@ final class ArchiveListModel {
         }
     }
 
+    /// Recherche plein-texte côté serveur ; replie sur la dernière liste chargée si la requête
+    /// est trop courte. Met à jour `archives` avec les résultats.
+    func search(_ query: String) async {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.count >= 2 else {
+            await load()
+            return
+        }
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            archives = try await client.searchArchives(trimmed)
+            loadError = nil
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+        }
+        hasLoaded = true
+    }
+
+    /// Bascule le favori d'une archive et met à jour l'élément en place.
+    func toggleFavorite(_ archive: Archive) async {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            let updated = try await client.toggleArchiveFavorite(id: archive.id)
+            replace(updated)
+            loadError = nil
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+        }
+    }
+
+    /// Applique une édition de métadonnées (tags, notes, nom, lien) et met à jour en place.
+    func update(_ archive: Archive, with edit: ArchiveUpdate) async {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            let updated = try await client.updateArchive(id: archive.id, edit)
+            replace(updated)
+            loadError = nil
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+        }
+    }
+
+    /// Supprime une archive du serveur puis la retire de la liste.
+    func delete(_ archive: Archive) async {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.deleteArchive(id: archive.id)
+            archives.removeAll { $0.id == archive.id }
+            loadError = nil
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+        }
+    }
+
+    private func replace(_ archive: Archive) {
+        if let index = archives.firstIndex(where: { $0.id == archive.id }) {
+            archives[index] = archive
+        }
+    }
+
     /// Télécharge le fichier d'une archive et déduit son format (extension) pour le viewer 3D.
     func downloadModel(_ archive: Archive) async -> ModelPayload? {
         do {

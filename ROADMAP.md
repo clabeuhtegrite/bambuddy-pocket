@@ -33,7 +33,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   restant), état, AMS/bobines, **erreurs HMS** (code+sévérité). ⬜ ventilateurs détaillés.
 - 🟦 **Caméra** : ✅ snapshot rafraîchi ; ⬜ vrai flux MJPEG multipart + token si auth.
 - 🟦 **Archive d'impressions** : ✅ liste + détail (statut, durée, filament, coût/énergie,
-  chronologie) + recherche ; ⬜ vignettes, photos, timelapse.
+  chronologie) + **recherche serveur** (`/archives/search`), ✅ **favori** (PATCH/toggle),
+  ✅ **édition** (tags, notes, nom, lien), ✅ **suppression** ; ⬜ vignettes, photos, timelapse.
 - ⬜ État serveur (`/system/info`, santé) + sélecteur de serveur.
 
 ## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) 🟦

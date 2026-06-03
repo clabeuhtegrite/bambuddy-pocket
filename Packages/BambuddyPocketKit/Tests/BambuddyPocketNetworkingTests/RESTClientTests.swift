@@ -190,6 +190,66 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/")
     }
 
+    @Test("searchArchives encode la requête sur /archives/search?q=")
+    func searchesArchives() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":1,"status":"completed","print_name":"Test Cube"}]"#)
+        let client = try makeClient()
+        let results = try await client.searchArchives("Cube box")
+        #expect(results.first?.printName == "Test Cube")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/search?q=Cube%20box")
+    }
+
+    @Test("searchArchives renvoie [] pour une requête trop courte (sans appel réseau)")
+    func searchArchivesShortQuery() async throws {
+        MockURLProtocol.reset()
+        let client = try makeClient()
+        let results = try await client.searchArchives("a")
+        #expect(results.isEmpty)
+        #expect(MockURLProtocol.lastRequest == nil)
+    }
+
+    @Test("updateArchive PATCH /archives/{id} et omet les champs nil")
+    func updatesArchive() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":1,"status":"completed","tags":"a,b","notes":"hi"}"#)
+        let client = try makeClient()
+        let updated = try await client.updateArchive(id: 1, ArchiveUpdate(tags: "a,b", notes: "hi"))
+        #expect(updated.tagList == ["a", "b"])
+        #expect(updated.notes == "hi")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/1")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["tags"] as? String == "a,b")
+        #expect(json.keys.contains("cost") == false)
+    }
+
+    @Test("toggleArchiveFavorite poste sur /archives/{id}/favorite et décode")
+    func togglesArchiveFavorite() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":1,"status":"completed","is_favorite":true}"#)
+        let client = try makeClient()
+        let archive = try await client.toggleArchiveFavorite(id: 1)
+        #expect(archive.isFavorite == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/1/favorite")
+    }
+
+    @Test("deleteArchive envoie DELETE /archives/{id}")
+    func deletesArchive() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.deleteArchive(id: 7)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/7")
+    }
+
     @Test("cameraSnapshot cible /camera/snapshot et renvoie les données brutes")
     func fetchesCameraSnapshot() async throws {
         MockURLProtocol.reset()

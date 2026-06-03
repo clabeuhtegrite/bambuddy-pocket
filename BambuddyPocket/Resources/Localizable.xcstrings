@@ -969,6 +969,28 @@
         }
       }
     },
+    "Comma-separated tags": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tags durch Kommas getrennt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiquetas separadas por comas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Étiquettes séparées par des virgules"
+          }
+        }
+      }
+    },
     "Completed": {
       "localizations": {
         "de": {
@@ -1717,6 +1739,28 @@
         }
       }
     },
+    "Edit archive": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archiv bearbeiten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar archivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier l’archive"
+          }
+        }
+      }
+    },
     "Edit queue item": {
       "localizations": {
         "de": {
@@ -1871,6 +1915,28 @@
         }
       }
     },
+    "External URL": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Externe URL"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL externa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL externe"
+          }
+        }
+      }
+    },
     "Failed": {
       "localizations": {
         "de": {
@@ -1933,6 +1999,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Critique"
+          }
+        }
+      }
+    },
+    "Favorite": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favorito"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Favori"
           }
         }
       }
@@ -2351,6 +2439,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Licence"
+          }
+        }
+      }
+    },
+    "Link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lien"
           }
         }
       }
@@ -3059,6 +3169,28 @@
         }
       }
     },
+    "Notes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notizen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes"
+          }
+        }
+      }
+    },
     "Notifications": {
       "localizations": {
         "de": {
@@ -3146,6 +3278,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hors ligne"
+          }
+        }
+      }
+    },
+    "Open link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link öffnen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abrir enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvrir le lien"
           }
         }
       }
@@ -3344,6 +3498,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Historique d’impression"
+          }
+        }
+      }
+    },
+    "Print name": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druckname"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre de impresión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nom de l’impression"
           }
         }
       }
@@ -3850,6 +4026,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Les routines sélectionnées s’exécutent sur l’imprimante et peuvent prendre plusieurs minutes."
+          }
+        }
+      }
+    },
+    "Separate tags with commas.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tags durch Kommas trennen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Separe las etiquetas con comas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Séparez les étiquettes par des virgules."
           }
         }
       }
@@ -4532,6 +4730,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Résumé"
+          }
+        }
+      }
+    },
+    "Tags": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tags"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiquetas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Étiquettes"
           }
         }
       }

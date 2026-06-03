@@ -36,6 +36,31 @@ public extension APIClient {
         try await get("/archives/stats")
     }
 
+    /// Recherche plein-texte côté serveur (`GET /archives/search?q=…`). Le serveur exige au
+    /// moins deux caractères ; renvoie une liste vide pour une requête plus courte.
+    func searchArchives(_ query: String) async throws -> [Archive] {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed.count >= 2 else { return [] }
+        let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? trimmed
+        return try await get("/archives/search?q=\(encoded)")
+    }
+
+    /// Édite les métadonnées d'une archive (`PATCH /archives/{id}`) et renvoie l'archive à jour.
+    func updateArchive(id: Int, _ update: ArchiveUpdate) async throws -> Archive {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/archives/\(id)", method: .patch, body: body)
+    }
+
+    /// Bascule le statut « favori » d'une archive (`POST /archives/{id}/favorite`).
+    func toggleArchiveFavorite(id: Int) async throws -> Archive {
+        try await send("/archives/\(id)/favorite", method: .post, body: nil)
+    }
+
+    /// Supprime une archive (`DELETE /archives/{id}`).
+    func deleteArchive(id: Int) async throws {
+        try await delete("/archives/\(id)")
+    }
+
     /// File d'attente d'impression (`GET /queue/`).
     func queue() async throws -> [QueueItem] {
         try await get("/queue/")

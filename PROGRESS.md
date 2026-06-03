@@ -71,6 +71,14 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (21)** — Tier 1 (archives en profondeur) : **favori** (`POST /archives/{id}/favorite`,
+  bascule), **édition de métadonnées** (`PATCH /archives/{id}` — nom, étiquettes/tags, notes, lien
+  externe, favori), **suppression** (`DELETE /archives/{id}`), **recherche serveur**
+  (`GET /archives/search?q=…`, plein-texte, ≥2 caractères, repli sur la liste si court). Modèle
+  `ArchiveUpdate` + champs `tags`/`notes`/`externalUrl` + `tagList` sur `Archive` (Domain). Contrats
+  vérifiés au réel sur le Docker. UI : swipes favori/édition/suppression, étoile + tags dans la liste,
+  feuille d'édition, section Notes + bouton Éditer dans le détail, recherche serveur à la soumission.
+  i18n FR/EN/ES/DE (10 clés). 103 tests SPM verts, 6 tests app, lint/format OK.
 - **2026-06-03 (20)** — Tier 1 (file d'attente en profondeur) : **édition d'item** (`PATCH /queue/{id}`
   — planification `scheduled_time`, réassignation d'imprimante, démarrage manuel, exiger succès
   précédent, power-off, options bed-levelling/timelapse/AMS), **mise à jour en lot** (`PATCH /queue/bulk`),
