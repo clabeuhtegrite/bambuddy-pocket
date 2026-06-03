@@ -88,6 +88,18 @@ final class PrinterListModel {
         await runControl { try await $0.setPrintSpeed(id: printer.id, mode: mode) }
     }
 
+    func unloadFilament(_ printer: Printer) async {
+        await runControl { try await $0.amsUnload(id: printer.id) }
+    }
+
+    func startDrying(_ printer: Printer, amsID: Int) async {
+        await runControl { try await $0.startDrying(id: printer.id, amsID: amsID) }
+    }
+
+    func stopDrying(_ printer: Printer, amsID: Int) async {
+        await runControl { try await $0.stopDrying(id: printer.id, amsID: amsID) }
+    }
+
     /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…).
     func cameraSnapshot(for printer: Printer) async -> Data? {
         do {

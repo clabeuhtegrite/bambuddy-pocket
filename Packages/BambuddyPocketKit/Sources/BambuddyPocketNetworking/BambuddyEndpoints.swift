@@ -97,4 +97,19 @@ public extension APIClient {
     func setPrintSpeed(id: Int, mode: Int) async throws {
         try await post("/printers/\(id)/print-speed?mode=\(mode)")
     }
+
+    /// Décharge le filament courant (`POST /printers/{id}/ams/unload`).
+    func amsUnload(id: Int) async throws {
+        try await post("/printers/\(id)/ams/unload")
+    }
+
+    /// Démarre le séchage d'une unité AMS (`POST /printers/{id}/drying/start?ams_id=<int>`).
+    func startDrying(id: Int, amsID: Int) async throws {
+        try await post("/printers/\(id)/drying/start?ams_id=\(amsID)")
+    }
+
+    /// Arrête le séchage d'une unité AMS (`POST /printers/{id}/drying/stop?ams_id=<int>`).
+    func stopDrying(id: Int, amsID: Int) async throws {
+        try await post("/printers/\(id)/drying/stop?ams_id=\(amsID)")
+    }
 }

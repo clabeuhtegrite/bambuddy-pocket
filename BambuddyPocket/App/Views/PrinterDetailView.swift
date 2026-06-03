@@ -83,6 +83,9 @@ struct PrinterDetailView: View {
         if status?.connected == true {
             Section("Device") {
                 Toggle("Chamber light", isOn: lightBinding)
+                Button("Unload filament") {
+                    Task { await model.unloadFilament(printer) }
+                }
             }
         }
     }
@@ -186,6 +189,15 @@ struct PrinterDetailView: View {
                 Section {
                     ForEach(unit.tray ?? []) { tray in
                         TrayRow(tray: tray)
+                    }
+                    if (unit.dryStatus ?? 0) > 0 {
+                        Button("Stop drying") {
+                            Task { await model.stopDrying(printer, amsID: unit.id) }
+                        }
+                    } else {
+                        Button("Start drying") {
+                            Task { await model.startDrying(printer, amsID: unit.id) }
+                        }
                     }
                 } header: {
                     Text("AMS \(unit.id + 1)")

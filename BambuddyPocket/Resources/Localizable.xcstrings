@@ -1,6 +1,27 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Start drying" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trocknen starten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Iniciar secado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Démarrer le séchage" } }
+      }
+    },
+    "Stop drying" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trocknen stoppen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Detener secado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Arrêter le séchage" } }
+      }
+    },
+    "Unload filament" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filament entladen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Descargar filamento" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Décharger le filament" } }
+      }
+    },
     "Chamber light" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Kammerlicht" } },
