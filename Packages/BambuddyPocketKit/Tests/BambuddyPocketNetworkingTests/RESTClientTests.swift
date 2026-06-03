@@ -406,6 +406,52 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/")
     }
 
+    @Test("libraryFile(id:) cible /library/files/{id} et décode")
+    func fetchesLibraryFile() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":2,"filename":"gear.gcode.3mf","file_type":"3mf","file_size":4096,"notes":"hi"}"#
+        )
+        let client = try makeClient()
+        let file = try await client.libraryFile(id: 2)
+        #expect(file.notes == "hi")
+        #expect(file.isSliced == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/2")
+    }
+
+    @Test("updateLibraryFile PUT /library/files/{id} et omet les champs nil")
+    func updatesLibraryFile() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":2,"filename":"gear_v2.gcode.3mf","file_type":"3mf","notes":"calibré"}"#)
+        let client = try makeClient()
+        let updated = try await client.updateLibraryFile(
+            id: 2,
+            LibraryFileUpdate(filename: "gear_v2.gcode.3mf", notes: "calibré")
+        )
+        #expect(updated.filename == "gear_v2.gcode.3mf")
+        #expect(updated.notes == "calibré")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PUT")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/2")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["notes"] as? String == "calibré")
+        #expect(json.keys.contains("folder_id") == false)
+    }
+
+    @Test("deleteLibraryFile envoie DELETE /library/files/{id}")
+    func deletesLibraryFile() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"status":"success"}"#)
+        let client = try makeClient()
+        try await client.deleteLibraryFile(id: 2)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/2")
+    }
+
     @Test("projects cible /projects/ et décode (description → details)")
     func listsProjects() async throws {
         MockURLProtocol.reset()

@@ -12,6 +12,9 @@ public struct LibraryFile: Codable, Sendable, Hashable, Identifiable {
     public var printTimeSeconds: Int?
     public var filamentUsedGrams: Double?
     public var createdAt: String?
+    public var folderId: Int?
+    public var notes: String?
+    public var slicedForModel: String?
 
     public init(id: Int, filename: String) {
         self.id = id
@@ -24,5 +27,27 @@ public struct LibraryFile: Codable, Sendable, Hashable, Identifiable {
             return printName
         }
         return filename
+    }
+
+    /// `true` si le fichier est tranché (imprimable) — extension `.gcode` ou `.gcode.3mf`.
+    public var isSliced: Bool {
+        let lower = filename.lowercased()
+        return lower.hasSuffix(".gcode") || lower.hasSuffix(".gcode.3mf")
+    }
+}
+
+/// Corps d'édition d'un fichier de bibliothèque (`PUT /library/files/{id}`, `FileUpdate`). Tous les
+/// champs sont optionnels : seuls les champs non `nil` sont encodés.
+public struct LibraryFileUpdate: Codable, Sendable, Hashable {
+    public var filename: String?
+    public var notes: String?
+    public var folderId: Int?
+    public var projectId: Int?
+
+    public init(filename: String? = nil, notes: String? = nil, folderId: Int? = nil, projectId: Int? = nil) {
+        self.filename = filename
+        self.notes = notes
+        self.folderId = folderId
+        self.projectId = projectId
     }
 }

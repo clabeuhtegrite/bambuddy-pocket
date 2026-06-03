@@ -23,7 +23,28 @@ struct LibraryListView: View {
     var body: some View {
         List {
             ForEach(filtered) { file in
-                LibraryRow(file: file)
+                NavigationLink {
+                    LibraryFileDetailView(file: file, model: model)
+                } label: {
+                    LibraryRow(file: file)
+                }
+                .swipeActions(edge: .leading) {
+                    if file.isSliced {
+                        Button {
+                            Task { await model.enqueue(file) }
+                        } label: {
+                            Label("Add to queue", systemImage: "text.append")
+                        }
+                        .tint(.green)
+                    }
+                }
+                .swipeActions(edge: .trailing) {
+                    Button(role: .destructive) {
+                        Task { await model.delete(file) }
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
         }
         .searchable(text: $query)
