@@ -8,6 +8,8 @@ struct PrinterDetailView: View {
     let printer: Printer
     let model: PrinterListModel
 
+    @State private var confirmingStop = false
+
     private var status: PrinterStatus? {
         model.status(for: printer)
     }
@@ -17,6 +19,7 @@ struct PrinterDetailView: View {
             statusSection
             if let status, status.isPrinting {
                 printSection(status)
+                controlsSection(status)
             }
             temperatureSection
             if let status, status.hasActiveErrors {
@@ -27,6 +30,44 @@ struct PrinterDetailView: View {
         }
         .navigationTitle(printer.name)
         .toolbarTitleDisplayMode(.inline)
+        .confirmationDialog("Stop print?", isPresented: $confirmingStop, titleVisibility: .visible) {
+            Button("Stop", role: .destructive) {
+                Task { await model.stop(printer) }
+            }
+        } message: {
+            Text("This will cancel the current print.")
+        }
+        .alert(
+            "Action failed",
+            isPresented: Binding(get: { model.controlError != nil }, set: { if !$0 { model.controlError = nil } })
+        ) {
+            Button("OK", role: .cancel) { model.controlError = nil }
+        } message: {
+            Text(model.controlError ?? "")
+        }
+    }
+
+    private func controlsSection(_ status: PrinterStatus) -> some View {
+        Section("Controls") {
+            if status.state == .pause {
+                Button {
+                    Task { await model.resume(printer) }
+                } label: {
+                    Label("Resume", systemImage: "play.fill")
+                }
+            } else {
+                Button {
+                    Task { await model.pause(printer) }
+                } label: {
+                    Label("Pause", systemImage: "pause.fill")
+                }
+            }
+            Button(role: .destructive) {
+                confirmingStop = true
+            } label: {
+                Label("Stop", systemImage: "stop.fill")
+            }
+        }
     }
 
     private var statusSection: some View {
@@ -38,7 +79,6 @@ struct PrinterDetailView: View {
         }
     }
 
-    @ViewBuilder
     private func printSection(_ status: PrinterStatus) -> some View {
         Section("Current print") {
             if let name = status.subtaskName ?? status.currentPrint {
@@ -92,6 +132,9 @@ struct PrinterDetailView: View {
                     }
                 }
             }
+            Button("Clear errors") {
+                Task { await model.clearErrors(printer) }
+            }
         }
     }
 
@@ -110,7 +153,6 @@ struct PrinterDetailView: View {
         }
     }
 
-    @ViewBuilder
     private var informationSection: some View {
         Section("Information") {
             if let value = printer.model {

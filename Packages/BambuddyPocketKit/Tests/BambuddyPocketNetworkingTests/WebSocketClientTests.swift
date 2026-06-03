@@ -16,9 +16,7 @@ private final class ScriptedChannel: WebSocketChannel, @unchecked Sendable {
     func send(_: String) async throws {}
 
     func receiveText() async throws -> String {
-        lock.lock()
-        let next = frames.isEmpty ? nil : frames.removeFirst()
-        lock.unlock()
+        let next = lock.withLock { frames.isEmpty ? nil : frames.removeFirst() }
         if let next {
             return next
         }
