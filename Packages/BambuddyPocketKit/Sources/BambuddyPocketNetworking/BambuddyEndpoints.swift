@@ -62,6 +62,12 @@ public extension APIClient {
         try await post("/queue/reorder", body: body)
     }
 
+    /// Ajoute un élément à la file (`POST /queue/`).
+    func addToQueue(_ item: QueueItemCreate) async throws {
+        let body = try JSONEncoder.bambuddy().encode(item)
+        try await post("/queue/", body: body)
+    }
+
     // MARK: Authentification (cf. docs/bambuddy-api.md §3)
 
     /// Connexion par identifiants (`POST /auth/login`).

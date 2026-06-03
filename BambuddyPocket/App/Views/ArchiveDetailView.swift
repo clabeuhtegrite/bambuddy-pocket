@@ -8,6 +8,8 @@ struct ArchiveDetailView: View {
     let archive: Archive
     let model: ArchiveListModel
 
+    @State private var showAdded = false
+
     private var fileExtension: String? {
         archive.filename?.split(separator: ".").last.map { $0.lowercased() }
     }
@@ -27,6 +29,17 @@ struct ArchiveDetailView: View {
                     }
                 }
             }
+            Section {
+                Button {
+                    Task {
+                        if await model.enqueue(archive) {
+                            showAdded = true
+                        }
+                    }
+                } label: {
+                    Label("Add to queue", systemImage: "text.append")
+                }
+            }
             summarySection
             filamentSection
             costSection
@@ -35,6 +48,9 @@ struct ArchiveDetailView: View {
         }
         .navigationTitle(archive.displayName)
         .toolbarTitleDisplayMode(.inline)
+        .alert("Added to queue", isPresented: $showAdded) {
+            Button("OK", role: .cancel) {}
+        }
     }
 
     private var summarySection: some View {

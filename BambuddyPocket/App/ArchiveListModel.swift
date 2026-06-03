@@ -31,6 +31,18 @@ final class ArchiveListModel {
         hasLoaded = true
     }
 
+    /// Ajoute une archive à la file d'attente d'impression. Renvoie `true` au succès.
+    func enqueue(_ archive: Archive) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.addToQueue(QueueItemCreate(archiveId: archive.id))
+            return true
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return false
+        }
+    }
+
     /// Télécharge le fichier d'une archive et déduit son format (extension) pour le viewer 3D.
     func downloadModel(_ archive: Archive) async -> ModelPayload? {
         do {

@@ -1,6 +1,20 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Add to queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zur Warteschlange" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añadir a la cola" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouter à la file" } }
+      }
+    },
+    "Added to queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zur Warteschlange hinzugefügt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añadido a la cola" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouté à la file" } }
+      }
+    },
     "Couldn’t load projects" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Projekte konnten nicht geladen werden" } },

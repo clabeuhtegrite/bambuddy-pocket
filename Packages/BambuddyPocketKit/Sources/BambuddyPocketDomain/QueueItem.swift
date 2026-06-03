@@ -56,3 +56,19 @@ public struct QueueReorder: Codable, Sendable, Hashable {
         self.items = items
     }
 }
+
+/// Corps minimal d'ajout à la file (`POST /queue/`, `PrintQueueItemCreate`) : depuis une archive
+/// ou un fichier de bibliothèque. Les nombreux autres champs gardent leurs valeurs serveur.
+public struct QueueItemCreate: Codable, Sendable, Hashable {
+    public var archiveId: Int?
+    public var libraryFileId: Int?
+    public var printerId: Int?
+    public var quantity: Int
+
+    public init(archiveId: Int? = nil, libraryFileId: Int? = nil, printerId: Int? = nil, quantity: Int = 1) {
+        self.archiveId = archiveId
+        self.libraryFileId = libraryFileId
+        self.printerId = printerId
+        self.quantity = quantity
+    }
+}
