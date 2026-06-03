@@ -9,11 +9,12 @@ domaine en revue (PR #3). Repo : https://github.com/clabeuhtegrite/bambuddy-pock
 ## 🔆 Prochaine action (point de reprise)
 **Phase 0 — couche réseau.** Le socle (projet XcodeGen, paquet SPM `BambuddyPocketKit`, app SwiftUI
 minimale, i18n, CI iOS) et les modèles de domaine (PrinterStatus/AMS/HMS/Printer + décodage testé)
-sont faits. Prochaine brique :
-1. `RESTClient` (URLSession, `async`) + `RequestFactory` injectant l'auth (Bearer/X-API-Key) **et**
-   les en-têtes Cloudflare Access ; gestion d'erreurs ; tests via `URLProtocol` stub.
-2. `SecretStore` (Keychain) + `ServerStore` + UI multi-serveurs (ajout/édition/test de connexion).
-3. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong) + fusion des deltas.
+sont faits. ✅ `RESTClient` + `RequestFactory` (auth Bearer/X-API-Key + Cloudflare) + mapping
+d'erreurs + tests `URLProtocol` (PR #4). Prochaine brique :
+1. `SecretStore` (Keychain) + `ServerStore` (persistance liste serveurs) + provider d'auth
+   reliant `ServerConfiguration` → `RequestAuthorization`.
+2. UI multi-serveurs (ajout/édition par URL, test de connexion via `GET /system/info` ou `/auth/status`).
+3. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong) + fusion des deltas `PrinterStatus`.
 Cadence : **autonomie complète** ; n'arrêter que sur vrai blocage → documenter + `scripts/notify/notify.sh "…"`.
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
 `xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
@@ -61,6 +62,7 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (4)** — Phase 0 : couche REST (RESTClient + RequestFactory auth/Cloudflare) + tests (PR #4, 18 tests).
 - **2026-06-03 (3)** — Phase 0 : modèles de domaine PrinterStatus/AMS/HMS/Printer + décodage (PR #3, 13 tests).
 - **2026-06-03 (2)** — Phase 0 : socle app (XcodeGen, SPM, i18n, CI iOS) — PR #2 mergée, CI verte.
 - **2026-06-03** — Décisions licence (AGPL+exception) & nom (Bambuddy Pocket) ; renommage complet ;
