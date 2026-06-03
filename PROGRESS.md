@@ -9,12 +9,14 @@ domaine en revue (PR #3). Repo : https://github.com/clabeuhtegrite/bambuddy-pock
 ## 🔆 Prochaine action (point de reprise)
 **Phase 0 — couche réseau.** Le socle (projet XcodeGen, paquet SPM `BambuddyPocketKit`, app SwiftUI
 minimale, i18n, CI iOS) et les modèles de domaine (PrinterStatus/AMS/HMS/Printer + décodage testé)
-sont faits. ✅ `RESTClient` + `RequestFactory` (auth Bearer/X-API-Key + Cloudflare) + mapping
-d'erreurs + tests `URLProtocol` (PR #4). Prochaine brique :
-1. `SecretStore` (Keychain) + `ServerStore` (persistance liste serveurs) + provider d'auth
-   reliant `ServerConfiguration` → `RequestAuthorization`.
-2. UI multi-serveurs (ajout/édition par URL, test de connexion via `GET /system/info` ou `/auth/status`).
+sont faits. ✅ `RESTClient`/`RequestFactory` (PR #4). ✅ `SecretStore` (Keychain + InMemory),
+`ServerStore` (UserDefaults), mapping `ServerSecrets`→`RequestAuthorization` (PR #5). Prochaine brique :
+1. **Composition root / DI** (`AppEnvironment`) + `ServerConnectionFactory`
+   (`ServerConfiguration` + `SecretStore` → `RESTClient` configuré).
+2. **UI multi-serveurs** : liste, ajout/édition par URL, saisie secrets (Keychain), test de
+   connexion (`GET /system/info` ou `/auth/status`), avertissement HTTP en clair.
 3. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong) + fusion des deltas `PrinterStatus`.
+Puis **Phase 1** (liste imprimantes temps réel, détail, archive).
 Cadence : **autonomie complète** ; n'arrêter que sur vrai blocage → documenter + `scripts/notify/notify.sh "…"`.
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
 `xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
@@ -62,6 +64,7 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (5)** — Phase 0 : secrets/persistance (Keychain SecretStore, ServerStore, mapping auth) — PR #5, 25 tests.
 - **2026-06-03 (4)** — Phase 0 : couche REST (RESTClient + RequestFactory auth/Cloudflare) + tests (PR #4, 18 tests).
 - **2026-06-03 (3)** — Phase 0 : modèles de domaine PrinterStatus/AMS/HMS/Printer + décodage (PR #3, 13 tests).
 - **2026-06-03 (2)** — Phase 0 : socle app (XcodeGen, SPM, i18n, CI iOS) — PR #2 mergée, CI verte.
