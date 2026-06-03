@@ -80,6 +80,16 @@ final class PrinterListModel {
         await runControl { try await $0.clearHMS(id: printer.id) }
     }
 
+    /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…).
+    func cameraSnapshot(for printer: Printer) async -> Data? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.cameraSnapshot(printerID: printer.id)
+        } catch {
+            return nil
+        }
+    }
+
     private func runControl(_ action: (RESTClient) async throws -> Void) async {
         do {
             let client = try connectionFactory.makeClient(for: server)

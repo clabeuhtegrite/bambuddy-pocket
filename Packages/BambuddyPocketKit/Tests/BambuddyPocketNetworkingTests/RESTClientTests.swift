@@ -189,4 +189,15 @@ struct MockNetworkingTests {
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/")
     }
+
+    @Test("cameraSnapshot cible /camera/snapshot et renvoie les données brutes")
+    func fetchesCameraSnapshot() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "jpeg-bytes")
+        let client = try makeClient()
+        let data = try await client.cameraSnapshot(printerID: 2)
+        #expect(data == Data("jpeg-bytes".utf8))
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/2/camera/snapshot")
+    }
 }

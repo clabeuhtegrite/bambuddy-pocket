@@ -17,6 +17,7 @@ struct PrinterDetailView: View {
     var body: some View {
         List {
             statusSection
+            cameraLink
             if let status, status.isPrinting {
                 printSection(status)
                 controlsSection(status)
@@ -75,6 +76,16 @@ struct PrinterDetailView: View {
             StateBadge(state: status?.state, connected: status?.connected)
             if let stage = status?.stgCurName, !stage.isEmpty {
                 LabeledContent("Stage", value: stage)
+            }
+        }
+    }
+
+    private var cameraLink: some View {
+        Section {
+            NavigationLink {
+                CameraView(printer: printer, model: model)
+            } label: {
+                Label("Camera", systemImage: "video")
             }
         }
     }

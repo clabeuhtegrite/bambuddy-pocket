@@ -1,6 +1,20 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Camera" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kamera" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Caméra" } }
+      }
+    },
+    "Camera unavailable" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kamera nicht verfügbar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cámara no disponible" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Caméra indisponible" } }
+      }
+    },
     "%lld g" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld g" } },
