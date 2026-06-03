@@ -1426,6 +1426,160 @@
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Usuario y contraseña" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant et mot de passe" } }
       }
+    },
+    "Bed leveling" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bett-Nivellierung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nivelación de la cama" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nivellement du plateau" } }
+      }
+    },
+    "Calibration" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kalibrierung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Calibración" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Calibration" } }
+      }
+    },
+    "Clear plate" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Platte freigeben" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Liberar placa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Libérer la plaque" } }
+      }
+    },
+    "Connect" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbinden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conectar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecter" } }
+      }
+    },
+    "Disconnect" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trennen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Desconectar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Déconnecter" } }
+      }
+    },
+    "High-temp heatbed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Hochtemperatur-Heizbett" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cama de alta temperatura" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plateau haute température" } }
+      }
+    },
+    "Home axes" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Achsen kalibrieren" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Posicionar ejes" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Calage des axes" } }
+      }
+    },
+    "Load" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Laden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cargar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Charger" } }
+      }
+    },
+    "Maintenance" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wartung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Mantenimiento" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Maintenance" } }
+      }
+    },
+    "Motor noise cancellation" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Motorgeräuschunterdrückung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cancelación de ruido del motor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réduction du bruit moteur" } }
+      }
+    },
+    "No objects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Objekte" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin objetos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun objet" } }
+      }
+    },
+    "Nozzle offset" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Düsenversatz" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Desfase de boquilla" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Décalage de buse" } }
+      }
+    },
+    "Remove" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Entfernen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Eliminar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer" } }
+      }
+    },
+    "Remove printer" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker entfernen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Eliminar impresora" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer l’imprimante" } }
+      }
+    },
+    "Remove printer?" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker entfernen?" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "¿Eliminar la impresora?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer l’imprimante ?" } }
+      }
+    },
+    "Selected routines run on the printer and may take several minutes." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die ausgewählten Routinen laufen auf dem Drucker und können mehrere Minuten dauern." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Las rutinas seleccionadas se ejecutan en la impresora y pueden tardar varios minutos." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Les routines sélectionnées s’exécutent sur l’imprimante et peuvent prendre plusieurs minutes." } }
+      }
+    },
+    "Skip" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Überspringen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Omitir" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ignorer" } }
+      }
+    },
+    "Skip objects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Objekte überspringen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Omitir objetos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ignorer des objets" } }
+      }
+    },
+    "Skipped" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Übersprungen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Omitido" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ignoré" } }
+      }
+    },
+    "This print has no skippable objects yet." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dieser Druck hat noch keine überspringbaren Objekte." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esta impresión aún no tiene objetos que se puedan omitir." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cette impression n’a pas encore d’objets ignorables." } }
+      }
+    },
+    "This removes the printer from the server." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dies entfernt den Drucker vom Server." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esto quita la impresora del servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cela retire l’imprimante du serveur." } }
+      }
+    },
+    "Vibration compensation" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Vibrationskompensation" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Compensación de vibraciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Compensation des vibrations" } }
+      }
     }
   },
   "version" : "1.0"

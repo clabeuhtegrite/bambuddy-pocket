@@ -93,6 +93,58 @@ final class PrinterListModel {
         await runControl { try await $0.amsUnload(id: printer.id) }
     }
 
+    func loadFilament(_ printer: Printer, trayID: Int) async {
+        await runControl { try await $0.amsLoad(id: printer.id, trayID: trayID) }
+    }
+
+    func clearPlate(_ printer: Printer) async {
+        await runControl { try await $0.clearPlate(id: printer.id) }
+    }
+
+    func homeAxes(_ printer: Printer) async {
+        await runControl { try await $0.homeAxes(id: printer.id) }
+    }
+
+    func connect(_ printer: Printer) async {
+        await runControl { try await $0.connectPrinter(id: printer.id) }
+    }
+
+    func disconnect(_ printer: Printer) async {
+        await runControl { try await $0.disconnectPrinter(id: printer.id) }
+    }
+
+    func calibrate(_ printer: Printer, options: CalibrationOptions) async {
+        await runControl { try await $0.calibrate(id: printer.id, options: options) }
+    }
+
+    func skipObjects(_ printer: Printer, objectIDs: [Int]) async {
+        await runControl { try await $0.skipObjects(id: printer.id, objectIDs: objectIDs) }
+    }
+
+    /// Charge les objets imprimables de la plaque courante (`nil` en cas d'échec).
+    func printObjects(for printer: Printer) async -> PrintObjects? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.printObjects(id: printer.id)
+        } catch {
+            controlError = Self.message(for: error)
+            return nil
+        }
+    }
+
+    /// Supprime une imprimante côté serveur puis recharge la liste. Renvoie `true` au succès.
+    func deletePrinter(_ printer: Printer) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.deletePrinter(id: printer.id)
+            await load()
+            return true
+        } catch {
+            controlError = Self.message(for: error)
+            return false
+        }
+    }
+
     /// Ajoute une imprimante côté serveur puis recharge la liste. Renvoie `true` au succès.
     func addPrinter(_ create: PrinterCreate) async -> Bool {
         do {

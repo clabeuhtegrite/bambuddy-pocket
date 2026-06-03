@@ -380,4 +380,104 @@ struct MockNetworkingTests {
         #expect(request.httpMethod == "POST")
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/login")
     }
+
+    @Test("clearPlate poste sur /printers/{id}/clear-plate")
+    func clearsPlate() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.clearPlate(id: 7)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/7/clear-plate")
+    }
+
+    @Test("homeAxes poste sur /printers/{id}/home-axes")
+    func homesAxes() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.homeAxes(id: 4)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/4/home-axes")
+    }
+
+    @Test("connectPrinter et disconnectPrinter ciblent les bons chemins")
+    func connectsAndDisconnects() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.connectPrinter(id: 2)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.path == "/api/v1/printers/2/connect")
+        try await client.disconnectPrinter(id: 2)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.path == "/api/v1/printers/2/disconnect")
+    }
+
+    @Test("calibrate encode les drapeaux en paramètres de requête")
+    func calibratesWithFlags() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.calibrate(id: 1, options: CalibrationOptions(bedLeveling: true, vibration: true))
+        let request = try #require(MockURLProtocol.lastRequest)
+        let url = try #require(request.url?.absoluteString)
+        #expect(url.contains("/printers/1/calibration?"))
+        #expect(url.contains("bed_leveling=true"))
+        #expect(url.contains("vibration=true"))
+        #expect(url.contains("motor_noise=false"))
+    }
+
+    @Test("printObjects cible /print/objects et décode")
+    func fetchesPrintObjects() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"objects":[{"id":1,"name":"A","x":1,"y":2,"skipped":false}],"#
+                + #""total":1,"skipped_count":0,"is_printing":true}"#
+        )
+        let client = try makeClient()
+        let objects = try await client.printObjects(id: 3)
+        #expect(objects.total == 1)
+        #expect(objects.objects.first?.name == "A")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3/print/objects")
+    }
+
+    @Test("skipObjects poste un tableau d'identifiants")
+    func skipsObjects() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.skipObjects(id: 5, objectIDs: [1, 3])
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/5/print/skip-objects")
+        let body = try #require(MockURLProtocol.lastBody)
+        let decoded = try JSONDecoder().decode([Int].self, from: body)
+        #expect(decoded == [1, 3])
+    }
+
+    @Test("amsLoad et amsResetTray ciblent les bons chemins")
+    func loadsAndResetsAMS() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.amsLoad(id: 1, trayID: 2)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/printers/1/ams/load?tray_id=2")
+        try await client.amsResetTray(id: 1, amsID: 0, trayID: 2)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/printers/1/ams/0/tray/2/reset")
+    }
+
+    @Test("deletePrinter envoie DELETE /printers/{id}")
+    func deletesPrinter() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.deletePrinter(id: 9)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/9")
+    }
 }

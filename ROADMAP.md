@@ -38,12 +38,13 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 
 ## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) 🟦
 - 🟦 **Contrôles d'impression** : ✅ pause/reprise/stop, vitesse, lumière chambre, clear HMS,
-  AMS unload, séchage ; ⬜ skip-objects, clear-plate, AMS load (mapping tray).
+  AMS unload/load/reset, séchage, **skip-objects**, **clear-plate**, **home-axes**, **calibration**,
+  **connect/disconnect**, **suppression d'imprimante** ; ⬜ print-options, bed-jog, airduct-mode.
 - 🟦 **File d'attente** : ✅ liste + **réordonnancement (drag/drop)** ; ⬜ ajout,
   start/stop/cancel, lots (batches), planification (`scheduled_time`), distribution auto.
 - 🟦 **Notifications EN-APP** : ✅ flux d'activité (`notifications/logs`) en lecture ; ⬜ dérivation
   temps réel depuis le WebSocket (fin/début d'impression, HMS sévère, bobine manquante…).
-- ⬜ Gestion d'imprimante côté serveur (ajout/édition `PrinterCreate`).
+- 🟦 Gestion d'imprimante côté serveur : ✅ ajout (`PrinterCreate`), ✅ suppression ; ⬜ édition (PATCH).
 
 ## Phase 3 — Avancé ⬜
 - ⬜ **Viewer 3D** des 3MF/STL/gcode (décision d'approche : SceneKit/RealityKit + parseur natif,
