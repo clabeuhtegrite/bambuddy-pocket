@@ -30,6 +30,10 @@ struct ServerEditView: View {
     @State private var cloudflareID: String
     @State private var cloudflareSecret: String
     @State private var saveError: String?
+    @State private var loginToken: String?
+    @State private var loginUsername: String?
+    @State private var showingLogin = false
+    @State private var loginModel: LoginModel?
 
     init(model: ServerListModel, mode: ServerFormMode) {
         self.model = model
@@ -43,15 +47,17 @@ struct ServerEditView: View {
             _usesCloudflare = State(initialValue: false)
             _cloudflareID = State(initialValue: "")
             _cloudflareSecret = State(initialValue: "")
+            _loginToken = State(initialValue: nil)
         case let .edit(server):
             let secrets = model.secrets(for: server)
             _urlText = State(initialValue: server.baseURL.absoluteString)
             _label = State(initialValue: server.label)
-            _authMethod = State(initialValue: server.authMethod == .userPassword ? .none : server.authMethod)
+            _authMethod = State(initialValue: server.authMethod)
             _apiKey = State(initialValue: secrets.apiKey ?? "")
             _usesCloudflare = State(initialValue: server.usesCloudflareAccess)
             _cloudflareID = State(initialValue: secrets.cloudflareClientID ?? "")
             _cloudflareSecret = State(initialValue: secrets.cloudflareClientSecret ?? "")
+            _loginToken = State(initialValue: secrets.bearerToken)
         }
     }
 
@@ -84,6 +90,14 @@ struct ServerEditView: View {
             } message: {
                 Text(saveError ?? "")
             }
+            .sheet(isPresented: $showingLogin) {
+                if let loginModel {
+                    LoginView(model: loginModel) { token, user in
+                        loginToken = token
+                        loginUsername = user?.username
+                    }
+                }
+            }
         }
     }
 
@@ -115,13 +129,51 @@ struct ServerEditView: View {
             Picker("Method", selection: $authMethod) {
                 Text("None").tag(AuthMethod.none)
                 Text("API key").tag(AuthMethod.apiKey)
+                Text("Username & password").tag(AuthMethod.userPassword)
             }
             if authMethod == .apiKey {
                 SecureField("API key", text: $apiKey)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+            } else if authMethod == .userPassword {
+                loginRow
             }
         }
+    }
+
+    @ViewBuilder
+    private var loginRow: some View {
+        if loginToken != nil {
+            Label {
+                if let loginUsername {
+                    Text("Signed in as \(loginUsername)")
+                } else {
+                    Text("Signed in")
+                }
+            } icon: {
+                Image(systemName: "checkmark.seal.fill")
+                    .foregroundStyle(.green)
+            }
+        }
+        Button(loginButtonTitle) { startLogin() }
+            .disabled(parsedURL == nil)
+    }
+
+    private var loginButtonTitle: LocalizedStringKey {
+        loginToken == nil ? "Log in" : "Log in again"
+    }
+
+    private var draftSecrets: ServerSecrets {
+        ServerSecrets(
+            cloudflareClientID: usesCloudflare ? cloudflareID.trimmedNonEmpty : nil,
+            cloudflareClientSecret: usesCloudflare ? cloudflareSecret.trimmedNonEmpty : nil
+        )
+    }
+
+    private func startLogin() {
+        guard let url = parsedURL else { return }
+        loginModel = model.makeLoginModel(baseURL: url, secrets: draftSecrets, usesCloudflare: usesCloudflare)
+        showingLogin = true
     }
 
     private var cloudflareSection: some View {
@@ -176,7 +228,7 @@ struct ServerEditView: View {
             )
             let secrets = ServerSecrets(
                 apiKey: authMethod == .apiKey ? apiKey.trimmedNonEmpty : nil,
-                bearerToken: nil,
+                bearerToken: authMethod == .userPassword ? loginToken : nil,
                 cloudflareClientID: usesCloudflare ? cloudflareID.trimmedNonEmpty : nil,
                 cloudflareClientSecret: usesCloudflare ? cloudflareSecret.trimmedNonEmpty : nil
             )

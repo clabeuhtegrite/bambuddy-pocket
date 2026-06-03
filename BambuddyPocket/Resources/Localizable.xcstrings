@@ -1,6 +1,90 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Code" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code" } }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Weiter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Continuar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Continuer" } }
+      }
+    },
+    "Credentials" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anmeldedaten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Credenciales" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiants" } }
+      }
+    },
+    "Log in" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anmelden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Iniciar sesión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Se connecter" } }
+      }
+    },
+    "Log in again" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erneut anmelden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Volver a iniciar sesión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Se reconnecter" } }
+      }
+    },
+    "Login failed." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anmeldung fehlgeschlagen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Error de inicio de sesión." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec de la connexion." } }
+      }
+    },
+    "Password" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Passwort" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contraseña" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Mot de passe" } }
+      }
+    },
+    "Signed in" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Angemeldet" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sesión iniciada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté" } }
+      }
+    },
+    "Signed in as %@" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Angemeldet als %@" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sesión iniciada como %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté en tant que %@" } }
+      }
+    },
+    "Two-factor code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zwei-Faktor-Code" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código de dos factores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code à deux facteurs" } }
+      }
+    },
+    "Username" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benutzername" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usuario" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant" } }
+      }
+    },
+    "Verify" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bestätigen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Verificar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vérifier" } }
+      }
+    },
     "Activity" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktivität" } },

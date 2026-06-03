@@ -16,6 +16,12 @@ public struct ServerConnectionFactory: Sendable {
     /// Construit un client REST authentifié pour ce serveur.
     public func makeClient(for configuration: ServerConfiguration) throws -> RESTClient {
         let secrets = try secretStore.secrets(for: configuration.id)
+        return makeClient(for: configuration, secrets: secrets)
+    }
+
+    /// Construit un client REST avec des secrets **explicites** (sans passer par le store) —
+    /// utile pour se connecter avant l'enregistrement du serveur (login user/pass).
+    public func makeClient(for configuration: ServerConfiguration, secrets: ServerSecrets) -> RESTClient {
         let authorization = RequestAuthorization(configuration: configuration, secrets: secrets)
         let factory = RequestFactory(apiBaseURL: configuration.apiBaseURL, authorization: authorization)
         return RESTClient(factory: factory, session: session)
