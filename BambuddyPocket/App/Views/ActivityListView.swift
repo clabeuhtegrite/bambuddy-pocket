@@ -6,17 +6,29 @@ import SwiftUI
 /// Flux d'activité d'un serveur (historique des notifications émises).
 struct ActivityListView: View {
     @State private var model: ActivityListModel
+    @State private var query = ""
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makeActivityListModel(for: server))
     }
 
+    private var filtered: [ActivityEntry] {
+        guard !query.isEmpty else {
+            return model.entries
+        }
+        return model.entries.filter {
+            $0.title.localizedCaseInsensitiveContains(query)
+                || $0.message.localizedCaseInsensitiveContains(query)
+        }
+    }
+
     var body: some View {
         List {
-            ForEach(model.entries) { entry in
+            ForEach(filtered) { entry in
                 ActivityRow(entry: entry)
             }
         }
+        .searchable(text: $query)
         .overlay { placeholder }
         .navigationTitle("Activity")
         .toolbarTitleDisplayMode(.inline)

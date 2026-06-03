@@ -6,14 +6,25 @@ import SwiftUI
 /// Archive d'impressions d'un serveur (liste, lecture seule).
 struct ArchiveListView: View {
     @State private var model: ArchiveListModel
+    @State private var query = ""
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makeArchiveListModel(for: server))
     }
 
+    private var filtered: [Archive] {
+        guard !query.isEmpty else {
+            return model.archives
+        }
+        return model.archives.filter {
+            $0.displayName.localizedCaseInsensitiveContains(query)
+                || $0.status.localizedCaseInsensitiveContains(query)
+        }
+    }
+
     var body: some View {
         List {
-            ForEach(model.archives) { archive in
+            ForEach(filtered) { archive in
                 NavigationLink {
                     ArchiveDetailView(archive: archive)
                 } label: {
@@ -21,6 +32,7 @@ struct ArchiveListView: View {
                 }
             }
         }
+        .searchable(text: $query)
         .overlay { placeholder }
         .navigationTitle("Print history")
         .toolbarTitleDisplayMode(.inline)
