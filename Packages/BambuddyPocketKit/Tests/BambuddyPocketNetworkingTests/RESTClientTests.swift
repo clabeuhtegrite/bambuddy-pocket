@@ -229,6 +229,18 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/notifications/logs")
     }
 
+    @Test("inventorySpools cible /inventory/spools et décode")
+    func listsSpools() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":4,"material":"PLA","label_weight":1000,"weight_used":100}]"#)
+        let client = try makeClient()
+        let spools = try await client.inventorySpools()
+        #expect(spools.map(\.id) == [4])
+        #expect(spools.first?.remainingGrams == 900)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/inventory/spools")
+    }
+
     @Test("createPrinter poste sur /printers/ et décode la réponse")
     func createsPrinter() async throws {
         MockURLProtocol.reset()

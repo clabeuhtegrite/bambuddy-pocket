@@ -41,6 +41,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Activity", systemImage: "bell")
                 }
+                NavigationLink {
+                    InventoryListView(server: current, serverList: model)
+                } label: {
+                    Label("Filaments", systemImage: "circle.dashed")
+                }
             }
             connectionSection
             testSection

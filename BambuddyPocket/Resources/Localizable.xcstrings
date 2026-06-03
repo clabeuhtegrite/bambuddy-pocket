@@ -1,6 +1,83 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Brand" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Marke" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marca" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Marque" } }
+      }
+    },
+    "Category" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kategorie" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Categoría" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Catégorie" } }
+      }
+    },
+    "Cost per kg" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kosten pro kg" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Costo por kg" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Coût par kg" } }
+      }
+    },
+    "Couldn’t load filaments" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filamente konnten nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudieron cargar los filamentos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger les filaments" } }
+      }
+    },
+    "Filaments" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filamente" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Filamentos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Filaments" } }
+      }
+    },
+    "Material" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Material" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Material" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Matériau" } }
+      }
+    },
+    "No filament in inventory." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kein Filament im Bestand." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No hay filamento en el inventario." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun filament dans l’inventaire." } }
+      }
+    },
+    "No spools" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Spulen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin bobinas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune bobine" } }
+      }
+    },
+    "Note" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Notiz" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nota" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Note" } }
+      }
+    },
+    "Total" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gesamt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Total" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Total" } }
+      }
+    },
+    "Weight" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gewicht" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Peso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Poids" } }
+      }
+    },
     "About" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Über" } },

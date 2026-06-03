@@ -41,6 +41,11 @@ public extension APIClient {
         try await get("/notifications/logs")
     }
 
+    /// Inventaire des bobines de filament (`GET /inventory/spools`).
+    func inventorySpools() async throws -> [Spool] {
+        try await get("/inventory/spools")
+    }
+
     /// Réordonne la file d'attente (`POST /queue/reorder`).
     func reorderQueue(_ items: [QueueReorderItem]) async throws {
         let body = try JSONEncoder.bambuddy().encode(QueueReorder(items: items))
