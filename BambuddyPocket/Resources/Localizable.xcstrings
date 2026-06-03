@@ -617,6 +617,28 @@
         }
       }
     },
+    "Calibration required.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalibrierung erforderlich."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se requiere calibración."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibration requise."
+          }
+        }
+      }
+    },
     "Camera": {
       "localizations": {
         "de": {
@@ -789,6 +811,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lumière de chambre"
+          }
+        }
+      }
+    },
+    "Check plate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platte prüfen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprobar la bandeja"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifier le plateau"
           }
         }
       }
@@ -1031,6 +1075,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Terminé le"
+          }
+        }
+      }
+    },
+    "Confidence: %lld%": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konfidenz: %lld %"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confianza: %lld %"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confiance : %lld %"
           }
         }
       }
@@ -3634,6 +3700,28 @@
         }
       }
     },
+    "Plate looks empty": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platte scheint leer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La bandeja parece vacía"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le plateau semble vide"
+          }
+        }
+      }
+    },
     "Plate not empty": {
       "localizations": {
         "de": {
@@ -5588,6 +5676,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Total : %lld g"
+          }
+        }
+      }
+    },
+    "Turn on the chamber light for reliable detection.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kammerlicht für zuverlässige Erkennung einschalten."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encienda la luz de la cámara para una detección fiable."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allumez la lumière de chambre pour une détection fiable."
           }
         }
       }

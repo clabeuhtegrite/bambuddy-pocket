@@ -11,6 +11,9 @@ struct CameraView: View {
 
     @State private var image: UIImage?
     @State private var failed = false
+    @State private var plateCheck: PlateCheck?
+    @State private var showsPlateResult = false
+    @State private var isChecking = false
 
     var body: some View {
         Group {
@@ -26,7 +29,54 @@ struct CameraView: View {
         }
         .navigationTitle("Camera")
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task { await runPlateCheck() }
+                } label: {
+                    Label("Check plate", systemImage: "checkmark.rectangle.stack")
+                }
+                .disabled(isChecking)
+            }
+        }
+        .alert(
+            plateCheck?.isEmpty == true ? "Plate looks empty" : "Plate not empty",
+            isPresented: $showsPlateResult,
+            presenting: plateCheck
+        ) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { result in
+            Text(plateMessage(for: result))
+        }
         .task { await run() }
+    }
+
+    private func runPlateCheck() async {
+        isChecking = true
+        if let result = await model.checkPlate(for: printer) {
+            plateCheck = result
+            showsPlateResult = true
+        }
+        isChecking = false
+    }
+
+    private func plateMessage(for result: PlateCheck) -> String {
+        var parts: [String] = []
+        if let message = result.message, !message.isEmpty {
+            parts.append(message)
+        }
+        let confidence = String(
+            localized: "Confidence: \(result.confidencePercent)%",
+            comment: "Plate detection confidence level"
+        )
+        parts.append(confidence)
+        if result.needsCalibration == true {
+            parts.append(String(localized: "Calibration required.", comment: "Plate detection hint"))
+        }
+        if result.lightWarning == true {
+            parts.append(String(localized: "Turn on the chamber light for reliable detection.", comment: "Plate hint"))
+        }
+        return parts.joined(separator: "\n")
     }
 
     private func run() async {

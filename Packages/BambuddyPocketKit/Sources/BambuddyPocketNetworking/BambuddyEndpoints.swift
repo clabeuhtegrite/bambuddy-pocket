@@ -242,6 +242,23 @@ public extension APIClient {
         try await delete("/queue/batches/\(id)")
     }
 
+    // MARK: Caméra
+
+    /// État du flux caméra (`GET /printers/{id}/camera/status`).
+    func cameraStatus(printerID: Int) async throws -> CameraStatus {
+        try await get("/printers/\(printerID)/camera/status")
+    }
+
+    /// Détecte si le plateau est vide par vision (`GET /printers/{id}/camera/check-plate`).
+    func checkPlate(printerID: Int) async throws -> PlateCheck {
+        try await get("/printers/\(printerID)/camera/check-plate")
+    }
+
+    /// Crée un jeton de flux caméra réutilisable (`POST /printers/camera/stream-token`).
+    func cameraStreamToken() async throws -> CameraStreamToken {
+        try await send("/printers/camera/stream-token", method: .post, body: nil)
+    }
+
     // MARK: Contrôles d'impression (cf. docs/bambuddy-api.md §7)
 
     /// Met l'impression en pause (`POST /printers/{id}/print/pause`).

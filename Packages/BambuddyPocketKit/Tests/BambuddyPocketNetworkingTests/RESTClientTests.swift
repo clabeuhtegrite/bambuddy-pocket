@@ -261,6 +261,51 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/2/camera/snapshot")
     }
 
+    @Test("cameraStatus cible /camera/status et décode")
+    func fetchesCameraStatus() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"active":true,"has_frames":true,"seconds_since_frame":0.5,"stream_uptime":30,"stalled":false}"#
+        )
+        let client = try makeClient()
+        let status = try await client.cameraStatus(printerID: 2)
+        #expect(status.active == true)
+        #expect(status.hasFrames == true)
+        #expect(status.stalled == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/2/camera/status")
+    }
+
+    @Test("checkPlate cible /camera/check-plate et décode")
+    func checksPlate() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"is_empty":true,"confidence":0.92,"difference_percent":1.2,"#
+                + #""message":"Plate looks empty","needs_calibration":false,"light_warning":false}"#
+        )
+        let client = try makeClient()
+        let result = try await client.checkPlate(printerID: 3)
+        #expect(result.isEmpty == true)
+        #expect(result.confidencePercent == 92)
+        #expect(result.needsCalibration == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3/camera/check-plate")
+    }
+
+    @Test("cameraStreamToken poste sur /printers/camera/stream-token et décode")
+    func createsStreamToken() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"token":"abc123"}"#)
+        let client = try makeClient()
+        let token = try await client.cameraStreamToken()
+        #expect(token.token == "abc123")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/camera/stream-token")
+    }
+
     @Test("queue() cible /queue/ et décode la liste")
     func listsQueue() async throws {
         MockURLProtocol.reset()

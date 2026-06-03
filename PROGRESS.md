@@ -71,6 +71,13 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (25)** — Tier 1 (caméra en profondeur) : **détection de plateau vide** par vision
+  (`GET /printers/{id}/camera/check-plate`), **état du flux** (`GET …/camera/status`), **jeton de
+  flux** (`POST /printers/camera/stream-token`). Modèles `PlateCheck`/`CameraStatus`/
+  `CameraStreamToken` (Domain). Contrats vérifiés au réel sur le Docker (l'imprimante virtuelle n'a
+  pas de flux → message « Failed to capture camera frame », confiance 0). UI : bouton « Vérifier le
+  plateau » dans l'écran caméra avec alerte de résultat (confiance %, besoin de calibration, alerte
+  lumière). i18n FR/EN/ES/DE (5 clés). 128 tests SPM verts, 6 tests app, lint/format OK.
 - **2026-06-04 (24)** — Tier 1 (projets en profondeur) : **détail** (`GET /projects/{id}`, champs
   riches : description, notes, tags, priorité, budget, URL), **création** (`POST /projects/`),
   **édition** (`PATCH /projects/{id}` — statut, objectif, priorité, notes…), **suppression**

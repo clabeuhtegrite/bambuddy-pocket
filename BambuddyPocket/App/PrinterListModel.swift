@@ -171,6 +171,17 @@ final class PrinterListModel {
         try? connectionFactory.makeCameraStream(for: server, printerID: printer.id)
     }
 
+    /// Détecte si le plateau est vide par vision (`nil` en cas d'échec). Met `controlError` à jour.
+    func checkPlate(for printer: Printer) async -> PlateCheck? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.checkPlate(printerID: printer.id)
+        } catch {
+            controlError = Self.message(for: error)
+            return nil
+        }
+    }
+
     /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…).
     func cameraSnapshot(for printer: Printer) async -> Data? {
         do {
