@@ -7,22 +7,24 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Phase 0 — couche réseau.** Le socle (projet XcodeGen, paquet SPM `BambuddyPocketKit`, app SwiftUI
-minimale, i18n, CI iOS) et les modèles de domaine (PrinterStatus/AMS/HMS/Printer + décodage testé)
-sont faits. ✅ `RESTClient`/`RequestFactory` (PR #4). ✅ `SecretStore` (Keychain + InMemory),
-`ServerStore` (UserDefaults), mapping `ServerSecrets`→`RequestAuthorization` (PR #5).
-✅ `ServerConnectionFactory` + sonde `/auth/status` (PR #6).
-✅ **Composition root** `AppEnvironment` (live/inMemory) + view-model `ServerListModel` (`@MainActor
-@Observable`) + **UI multi-serveurs** : liste, ajout/édition par URL (`ServerURLParser`), secrets
-Keychain (clé d'API + Cloudflare Access), test de connexion `/auth/status`, avertissement HTTP en
-clair, i18n FR/EN/ES/DE (branche `claude/cloud-dev-environment-aAJAg`). Prochaine brique :
-1. **Auth interactive** : login user/pass → JWT (`POST /auth/login`), 2FA (`/auth/2fa/verify`),
-   `GET /auth/me` ; rafraîchissement/relogin du JWT. (La méthode `userPassword` est déjà modélisée
-   mais non exposée dans le formulaire tant que le flux login n'est pas implémenté.)
-2. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong, en-têtes auth + Cloudflare)
-   + fusion des deltas `PrinterStatus`.
-Puis **Phase 1** (liste imprimantes temps réel, détail, archive).
-Cadence : **autonomie complète** ; n'arrêter que sur vrai blocage → documenter + `scripts/notify/notify.sh "…"`.
+**Phases 0, 1 et 2 largement implémentées** (branche `claude/cloud-dev-environment-aAJAg`, dépôt
+public, CI verte). Fait : socle + multi-serveurs + **auth complète** (none / clé d'API / user-pass
++ 2FA / Cloudflare, secrets Keychain) ; **temps réel WebSocket** (events + fusion deltas) ; liste +
+détail imprimantes (températures, HMS, AMS) ; **caméra** (snapshot) ; **archive** (liste/détail +
+recherche) ; **contrôles** (pause/reprise/stop, vitesse, lumière, clear HMS, AMS unload/séchage) ;
+**file d'attente** (liste + réordonnancement drag-drop) ; **flux d'activité**. ~70 tests unitaires.
+
+Prochaines briques (par valeur) :
+1. **Notifications en-app dérivées du WebSocket** : exposer une session WS au niveau serveur
+   (pas seulement l'écran imprimantes) ; bannières/feed sur `print_complete`/`print_start`/
+   `missing_spool_assignment`/`plate_not_empty`/HMS sévère.
+2. **Caméra MJPEG réelle** (parseur multipart `x-mixed-replace`) + token de flux si auth.
+3. **File** : ajout/start/stop/cancel d'un job, lots (batches), planification.
+4. **État serveur** (`/system/info`, santé) ; gestion d'imprimante (`PrinterCreate`).
+5. **Phase 3** : viewer 3D (décision d'approche prise en autonomie : WebView Three.js en v1, ADR
+   à rédiger), slicing, inventaire.
+6. **Finitions App Store** : icône/launch screen, captures, accessibilité, build sans warning.
+Cadence : **autonomie complète** ; CI = juge (pas de toolchain en local sur l'env cloud).
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
 `xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
 

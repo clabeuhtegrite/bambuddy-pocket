@@ -29,20 +29,20 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 
 ## Phase 1 — MVP cœur (lecture, testable sur la démo) 🟦
 - ✅ **Liste multi-imprimantes** + statut **temps réel** (WebSocket, fusion des deltas).
-- 🟦 **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
-  restant), état, AMS/bobines, **erreurs HMS** (code+sévérité) ✅ ; ventilateurs/lumière chambre ⬜.
-- ⬜ **Caméra** : flux MJPEG + snapshot (token si auth).
-- 🟦 **Archive d'impressions** : liste + détail (`ArchiveResponse`) ✅ (statut, durée, filament,
-  coût/énergie, chronologie) ; ⬜ vignettes, photos, timelapse.
+- ✅ **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
+  restant), état, AMS/bobines, **erreurs HMS** (code+sévérité). ⬜ ventilateurs détaillés.
+- 🟦 **Caméra** : ✅ snapshot rafraîchi ; ⬜ vrai flux MJPEG multipart + token si auth.
+- 🟦 **Archive d'impressions** : ✅ liste + détail (statut, durée, filament, coût/énergie,
+  chronologie) + recherche ; ⬜ vignettes, photos, timelapse.
 - ⬜ État serveur (`/system/info`, santé) + sélecteur de serveur.
 
-## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) ⬜
-- ⬜ **Contrôles d'impression** : pause/reprise/stop, skip-objects, vitesse, lumière, clear-plate,
-  AMS load/unload, séchage, clear HMS.
-- ⬜ **File d'attente & planification** : liste, ajout, **réordonnancement (drag/drop)**,
+## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) 🟦
+- 🟦 **Contrôles d'impression** : ✅ pause/reprise/stop, vitesse, lumière chambre, clear HMS,
+  AMS unload, séchage ; ⬜ skip-objects, clear-plate, AMS load (mapping tray).
+- 🟦 **File d'attente** : ✅ liste + **réordonnancement (drag/drop)** ; ⬜ ajout,
   start/stop/cancel, lots (batches), planification (`scheduled_time`), distribution auto.
-- ⬜ **Notifications EN-APP** dérivées du WebSocket (fin d'impression, début, HMS sévère,
-  bobine manquante, plateau non vide) + flux d'activité (`notifications/logs`).
+- 🟦 **Notifications EN-APP** : ✅ flux d'activité (`notifications/logs`) en lecture ; ⬜ dérivation
+  temps réel depuis le WebSocket (fin/début d'impression, HMS sévère, bobine manquante…).
 - ⬜ Gestion d'imprimante côté serveur (ajout/édition `PrinterCreate`).
 
 ## Phase 3 — Avancé ⬜
