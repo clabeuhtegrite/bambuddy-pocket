@@ -21,6 +21,18 @@ public struct ServerConnectionFactory: Sendable {
         return RESTClient(factory: factory, session: session)
     }
 
+    /// Construit le client WebSocket temps réel pour ce serveur (mêmes en-têtes auth/Cloudflare).
+    public func makeWebSocketClient(for configuration: ServerConfiguration) throws -> WebSocketClient {
+        guard let url = configuration.webSocketURL else { throw APIError.invalidURL }
+        let secrets = try secretStore.secrets(for: configuration.id)
+        let authorization = RequestAuthorization(configuration: configuration, secrets: secrets)
+        return WebSocketClient(
+            url: url,
+            headers: authorization.headerFields,
+            connector: URLSessionWebSocketConnector(session: session)
+        )
+    }
+
     /// Teste la connexion en interrogeant `/auth/status` (léger, ne requiert pas d'auth).
     /// Lève une `APIError` en cas d'échec (transport, HTTP, décodage).
     public func probe(_ configuration: ServerConfiguration) async throws -> AuthStatus {

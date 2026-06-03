@@ -140,4 +140,30 @@ struct MockNetworkingTests {
             _ = try await factory.probe(config)
         }
     }
+
+    // MARK: - Endpoints typés
+
+    @Test("printers() cible /printers/ et décode la liste")
+    func listsPrinters() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":1,"name":"X1C","model":"X1 Carbon"}]"#)
+        let client = try makeClient()
+        let printers = try await client.printers()
+        #expect(printers.map(\.id) == [1])
+        #expect(printers.first?.name == "X1C")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/")
+    }
+
+    @Test("printerStatus(id:) cible /printers/{id}/status")
+    func fetchesPrinterStatus() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"name":"X1C","state":"RUNNING","progress":42}"#)
+        let client = try makeClient()
+        let status = try await client.printerStatus(id: 9)
+        #expect(status.state == .running)
+        #expect(status.progress == 42)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/9/status")
+    }
 }
