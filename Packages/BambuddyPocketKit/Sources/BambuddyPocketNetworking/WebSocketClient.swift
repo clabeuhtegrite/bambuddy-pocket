@@ -113,7 +113,7 @@ private final class URLSessionWebSocketChannel: WebSocketChannel, @unchecked Sen
         case let .string(text):
             text
         case let .data(data):
-            String(decoding: data, as: UTF8.self)
+            String(bytes: data, encoding: .utf8) ?? ""
         @unknown default:
             ""
         }
