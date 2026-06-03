@@ -4,7 +4,7 @@
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
 **Dernière mise à jour** : 2026-06-03 — Phase 0 en cours : socle + couche réseau + persistance
-faits ; UI multi-serveurs câblée. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (privé).
+faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
 **Phase 0 — couche réseau.** Le socle (projet XcodeGen, paquet SPM `BambuddyPocketKit`, app SwiftUI

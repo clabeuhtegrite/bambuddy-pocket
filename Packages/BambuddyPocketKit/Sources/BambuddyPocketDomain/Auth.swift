@@ -34,6 +34,8 @@ public struct User: Codable, Sendable, Hashable, Identifiable {
 public struct LoginResponse: Decodable, Sendable, Hashable {
     public var accessToken: String?
     public var tokenType: String?
+    /// Un second facteur est-il requis ? La clé serveur `requires_2fa` se convertit en
+    /// `requires2Fa` (mot commençant par un chiffre) ; le décodage accepte les deux orthographes.
     public var requires2fa: Bool?
     public var preAuthToken: String?
     public var twoFaMethods: [String]?
@@ -46,8 +48,6 @@ public struct LoginResponse: Decodable, Sendable, Hashable {
         requires2fa ?? false
     }
 
-    // `requires_2fa` : la conversion snake→camel de Foundation produit `requires2Fa` (mot
-    // commençant par un chiffre) ; on accepte les deux orthographes pour robustesse.
     private enum CodingKeys: String, CodingKey {
         case accessToken
         case tokenType

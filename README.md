@@ -20,8 +20,13 @@ UX mobile de qualité production.
 
 ## État du projet
 
-🚧 **Développement initial** — dépôt **privé** pendant le dev, public à la sortie.
+🚧 **En cours de développement actif** — dépôt **public** dès la phase de dev (pour profiter de
+l'intégration continue GitHub Actions, gratuite sur les dépôts publics). **L'application n'est pas
+encore terminée ni prête pour la production** : fonctionnalités, API et UI évoluent rapidement.
 Voir [`PROGRESS.md`](PROGRESS.md) (état détaillé) et [`ROADMAP.md`](ROADMAP.md) (phases).
+
+> ⚠️ Avant toute **publication de l'app** (App Store) : vérification de marque « Bambuddy » et
+> relecture juridique AGPL/exception requises (cf. README ci-dessus et `docs/adr/`).
 
 ## Pile technique
 
