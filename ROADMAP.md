@@ -20,8 +20,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - 🟦 Couche réseau : client REST (`async/await`) + client WebSocket (TLS, reconnexion, ping/pong).
 - ⬜ Injection des en-têtes **Cloudflare Access** + Bearer/X-API-Key sur REST **et** WS **et** caméra.
 - 🟦 Modèles de domaine d'après le contrat (✅ PrinterStatus/AMS/HMS/Printer ; ⬜ Archive, QueueItem…).
-- ⬜ Multi-serveurs : ajout/édition par URL, test de connexion, stockage **Keychain** des secrets.
-- ⬜ Auth : détection `auth_status`, login user/pass + 2FA, clé d'API, sans-auth.
+- ✅ Multi-serveurs : ajout/édition par URL, test de connexion, stockage **Keychain** des secrets.
+- 🟦 Auth : détection `auth_status` (✅ sonde), clé d'API (✅), sans-auth (✅) ; ⬜ login user/pass + 2FA.
 - 🟦 Design system (✅ tokens ; ⬜ composants, typographie Dynamic Type), mode sombre.
 - ✅ i18n FR/EN/ES/DE (String Catalog) ; ⬜ accessibilité (VoiceOver) au fil de l'eau.
 - ✅ Privacy manifest + `NSLocalNetworkUsageDescription` + ATS (exception HTTP local).

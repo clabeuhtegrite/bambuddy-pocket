@@ -3,19 +3,24 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-03 — Phase 0 en cours : socle app mergé (PR #2), modèles de
-domaine en revue (PR #3). Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (privé).
+**Dernière mise à jour** : 2026-06-03 — Phase 0 en cours : socle + couche réseau + persistance
+faits ; UI multi-serveurs câblée. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (privé).
 
 ## 🔆 Prochaine action (point de reprise)
 **Phase 0 — couche réseau.** Le socle (projet XcodeGen, paquet SPM `BambuddyPocketKit`, app SwiftUI
 minimale, i18n, CI iOS) et les modèles de domaine (PrinterStatus/AMS/HMS/Printer + décodage testé)
 sont faits. ✅ `RESTClient`/`RequestFactory` (PR #4). ✅ `SecretStore` (Keychain + InMemory),
-`ServerStore` (UserDefaults), mapping `ServerSecrets`→`RequestAuthorization` (PR #5). Prochaine brique :
-1. **Composition root / DI** : `AppEnvironment` exposant `ServerStore` + `SecretStore` +
-   `ServerConnectionFactory` (✅ fait, avec sonde `/auth/status`) — à câbler dans la cible app.
-2. **UI multi-serveurs** : liste, ajout/édition par URL, saisie secrets (Keychain), test de
-   connexion (`GET /system/info` ou `/auth/status`), avertissement HTTP en clair.
-3. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong) + fusion des deltas `PrinterStatus`.
+`ServerStore` (UserDefaults), mapping `ServerSecrets`→`RequestAuthorization` (PR #5).
+✅ `ServerConnectionFactory` + sonde `/auth/status` (PR #6).
+✅ **Composition root** `AppEnvironment` (live/inMemory) + view-model `ServerListModel` (`@MainActor
+@Observable`) + **UI multi-serveurs** : liste, ajout/édition par URL (`ServerURLParser`), secrets
+Keychain (clé d'API + Cloudflare Access), test de connexion `/auth/status`, avertissement HTTP en
+clair, i18n FR/EN/ES/DE (branche `claude/cloud-dev-environment-aAJAg`). Prochaine brique :
+1. **Auth interactive** : login user/pass → JWT (`POST /auth/login`), 2FA (`/auth/2fa/verify`),
+   `GET /auth/me` ; rafraîchissement/relogin du JWT. (La méthode `userPassword` est déjà modélisée
+   mais non exposée dans le formulaire tant que le flux login n'est pas implémenté.)
+2. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong, en-têtes auth + Cloudflare)
+   + fusion des deltas `PrinterStatus`.
 Puis **Phase 1** (liste imprimantes temps réel, détail, archive).
 Cadence : **autonomie complète** ; n'arrêter que sur vrai blocage → documenter + `scripts/notify/notify.sh "…"`.
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
@@ -64,6 +69,10 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (7)** — Phase 0 : composition root `AppEnvironment` + view-model `ServerListModel`
+  + UI multi-serveurs (liste/ajout/édition/détail, `ServerURLParser`, secrets Keychain, test de
+  connexion `/auth/status`, avertissement HTTP, i18n FR/EN/ES/DE). Tests : parser (9) + view-model
+  (5). Branche `claude/cloud-dev-environment-aAJAg`.
 - **2026-06-03 (6)** — Phase 0 : ServerConnectionFactory + sonde `/auth/status` (AuthStatus) ; tests mock fusionnés en 1 suite sérialisée (PR #6, 27 tests).
 - **2026-06-03 (5)** — Phase 0 : secrets/persistance (Keychain SecretStore, ServerStore, mapping auth) — PR #5, 25 tests.
 - **2026-06-03 (4)** — Phase 0 : couche REST (RESTClient + RequestFactory auth/Cloudflare) + tests (PR #4, 18 tests).

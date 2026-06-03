@@ -15,11 +15,53 @@
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouter un serveur" } }
       }
     },
+    "API key" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "API-Schlüssel" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Clave de API" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Clé d’API" } }
+      }
+    },
+    "Authentication" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Authentifizierung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Autenticación" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Authentification" } }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abbrechen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cancelar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Annuler" } }
+      }
+    },
+    "Client ID" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Client-ID" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "ID de cliente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant client" } }
+      }
+    },
+    "Client Secret" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Client-Geheimnis" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Secreto de cliente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Secret client" } }
+      }
+    },
     "Close" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Schließen" } },
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Fermer" } }
+      }
+    },
+    "Cloudflare Access" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access" } }
       }
     },
     "Coming soon" : {
@@ -29,11 +71,161 @@
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bientôt disponible" } }
       }
     },
+    "Connected. Authentication is disabled on this server." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbunden. Die Authentifizierung ist auf diesem Server deaktiviert." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conectado. La autenticación está desactivada en este servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté. L’authentification est désactivée sur ce serveur." } }
+      }
+    },
+    "Connected. Authentication is enabled on this server." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbunden. Die Authentifizierung ist auf diesem Server aktiviert." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conectado. La autenticación está activada en este servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté. L’authentification est activée sur ce serveur." } }
+      }
+    },
+    "Connection" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conexión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connexion" } }
+      }
+    },
+    "Connection failed: %@" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindung fehlgeschlagen: %@" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Error de conexión: %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec de la connexion : %@" } }
+      }
+    },
+    "Connection is not encrypted (HTTP)." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Verbindung ist nicht verschlüsselt (HTTP)." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La conexión no está cifrada (HTTP)." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La connexion n’est pas chiffrée (HTTP)." } }
+      }
+    },
+    "Connection test" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindungstest" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prueba de conexión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Test de connexion" } }
+      }
+    },
+    "Could not save server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server konnte nicht gespeichert werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo guardar el servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible d’enregistrer le serveur" } }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Löschen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Eliminar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer" } }
+      }
+    },
+    "Delete server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server löschen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Eliminar servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer le serveur" } }
+      }
+    },
+    "Delete this server?" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diesen Server löschen?" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "¿Eliminar este servidor?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer ce serveur ?" } }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bearbeiten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Editar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modifier" } }
+      }
+    },
+    "Edit server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server bearbeiten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Editar servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modifier le serveur" } }
+      }
+    },
+    "Enabled" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktiviert" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Activado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activé" } }
+      }
+    },
+    "Enter a server URL." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gib eine Server-URL ein." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Introduce la URL de un servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Saisis l’URL d’un serveur." } }
+      }
+    },
+    "Insecure connection (HTTP)" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Unsichere Verbindung (HTTP)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conexión no segura (HTTP)" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connexion non sécurisée (HTTP)" } }
+      }
+    },
+    "Its stored credentials will be removed from this device." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die gespeicherten Zugangsdaten werden von diesem Gerät entfernt." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sus credenciales guardadas se eliminarán de este dispositivo." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ses identifiants enregistrés seront supprimés de cet appareil." } }
+      }
+    },
+    "Label" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bezeichnung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Etiqueta" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Libellé" } }
+      }
+    },
+    "Method" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Methode" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Método" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Méthode" } }
+      }
+    },
+    "New server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Neuer Server" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nuevo servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nouveau serveur" } }
+      }
+    },
     "No servers" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Server" } },
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin servidores" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun serveur" } }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ninguna" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune" } }
+      }
+    },
+    "OK" : {
+      "shouldTranslate" : false
+    },
+    "Server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Serveur" } }
       }
     },
     "Server management arrives in the next milestone." : {
@@ -43,11 +235,98 @@
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "La gestion des serveurs arrive au prochain jalon." } }
       }
     },
+    "Server URL" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server-URL" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "URL del servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "URL du serveur" } }
+      }
+    },
     "Servers" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Server" } },
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Servidores" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Serveurs" } }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Speichern" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Enregistrer" } }
+      }
+    },
+    "Test connection" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindung testen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Probar conexión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tester la connexion" } }
+      }
+    },
+    "The server response could not be read." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Serverantwort konnte nicht gelesen werden." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo leer la respuesta del servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La réponse du serveur n’a pas pu être lue." } }
+      }
+    },
+    "The server returned an unexpected status (%lld)." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Der Server hat einen unerwarteten Status zurückgegeben (%lld)." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "El servidor devolvió un estado inesperado (%lld)." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Le serveur a renvoyé un statut inattendu (%lld)." } }
+      }
+    },
+    "The server URL is not valid." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Server-URL ist ungültig." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La URL del servidor no es válida." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "L’URL du serveur n’est pas valide." } }
+      }
+    },
+    "This server uses plain HTTP. Traffic is not encrypted; use only on a trusted network." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dieser Server verwendet unverschlüsseltes HTTP. Der Datenverkehr ist nicht verschlüsselt; nur in einem vertrauenswürdigen Netzwerk verwenden." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Este servidor usa HTTP sin cifrar. El tráfico no está cifrado; úsalo solo en una red de confianza." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ce serveur utilise du HTTP en clair. Le trafic n’est pas chiffré ; à n’utiliser que sur un réseau de confiance." } }
+      }
+    },
+    "This URL is not valid." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diese URL ist ungültig." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esta URL no es válida." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cette URL n’est pas valide." } }
+      }
+    },
+    "Unauthorized — check your credentials." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht autorisiert – überprüfe deine Zugangsdaten." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No autorizado: comprueba tus credenciales." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Non autorisé — vérifie tes identifiants." } }
+      }
+    },
+    "Unsupported scheme “%@”. Use http or https." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schema „%@“ nicht unterstützt. Verwende http oder https." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esquema «%@» no admitido. Usa http o https." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Schéma « %@ » non pris en charge. Utilise http ou https." } }
+      }
+    },
+    "URL" : {
+      "shouldTranslate" : false
+    },
+    "Use Cloudflare Access" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access verwenden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usar Cloudflare Access" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Utiliser Cloudflare Access" } }
+      }
+    },
+    "Username & password" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benutzername und Passwort" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usuario y contraseña" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant et mot de passe" } }
       }
     }
   },
