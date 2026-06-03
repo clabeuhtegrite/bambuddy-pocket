@@ -60,6 +60,21 @@ open http://localhost:8000/docs                  # Swagger
 ```
 La démo <https://bambuddy.cool> sert de **référence en lecture seule** (jamais d'écriture).
 
+### Projet iOS (génération & build)
+Le projet Xcode est **généré** depuis [`project.yml`](project.yml) via
+[XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — le `.xcodeproj`
+n'est pas versionné (source de vérité = `project.yml`).
+```bash
+xcodegen generate              # crée BambuddyPocket.xcodeproj
+open BambuddyPocket.xcodeproj  # ouvrir dans Xcode, ou builder en CLI ↓
+xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket \
+  -destination 'platform=iOS Simulator,name=iPhone 17' build test
+(cd Packages/BambuddyPocketKit && swift test)   # tests du paquet SPM
+```
+> Le code est organisé en : cible app `BambuddyPocket` (SwiftUI) + paquet SPM local
+> `BambuddyPocketKit` (modules `…Domain`, `…Networking`, `…DesignSystem`). Cf.
+> [`docs/adr/0002-architecture.md`](docs/adr/0002-architecture.md).
+
 ## Documentation
 
 - [`docs/bambuddy-api.md`](docs/bambuddy-api.md) — **contrat d'API** (REST + WebSocket + modèles).

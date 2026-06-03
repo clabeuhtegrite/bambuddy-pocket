@@ -25,7 +25,6 @@ opt_in_rules:
   - operator_usage_whitespace
   - overridden_super_call
   - prohibited_super_call
-  - unused_import
   - vertical_whitespace_closing_braces
   - toggle_bool
   - last_where

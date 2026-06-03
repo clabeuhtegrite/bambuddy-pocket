@@ -1,0 +1,55 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add a Bambuddy server to get started." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Füge einen Bambuddy-Server hinzu, um zu beginnen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añade un servidor Bambuddy para empezar." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajoute un serveur Bambuddy pour commencer." } }
+      }
+    },
+    "Add server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server hinzufügen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añadir servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouter un serveur" } }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schließen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Fermer" } }
+      }
+    },
+    "Coming soon" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Demnächst" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Próximamente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bientôt disponible" } }
+      }
+    },
+    "No servers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Server" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin servidores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun serveur" } }
+      }
+    },
+    "Server management arrives in the next milestone." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Serververwaltung kommt im nächsten Meilenstein." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La gestión de servidores llegará en el próximo hito." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La gestion des serveurs arrive au prochain jalon." } }
+      }
+    },
+    "Servers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Servidores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Serveurs" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

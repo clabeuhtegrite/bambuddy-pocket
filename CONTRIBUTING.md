@@ -5,7 +5,7 @@ Merci de contribuer ! Ce projet vise une qualité **production / App Store**.
 ## Pré-requis
 - macOS + **Xcode 26+** (iOS 18 SDK minimum).
 - [SwiftLint](https://github.com/realm/SwiftLint) + [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
-  (`brew install swiftlint swiftformat`).
+  + [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install swiftlint swiftformat xcodegen`).
 - Docker (pour l'instance Bambuddy de dev — cf. [README](README.md)).
 
 > Si `xcodebuild` cible les Command Line Tools au lieu d'Xcode :
@@ -13,10 +13,11 @@ Merci de contribuer ! Ce projet vise une qualité **production / App Store**.
 
 ## Flux de travail
 1. **Brancher** depuis `main` : `git switch -c feat/ma-fonctionnalite`.
-2. Développer en **petits commits atomiques**.
-3. `swiftformat .` puis `swiftlint` — **zéro warning**.
-4. Lancer les tests (`xcodebuild test` ou `swift test` pour `BambuddyPocketKit`).
-5. Ouvrir une **PR** vers `main`. La **CI doit être verte** avant merge.
+2. `xcodegen generate` (re)crée `BambuddyPocket.xcodeproj` depuis `project.yml`.
+3. Développer en **petits commits atomiques**.
+4. `swiftformat .` puis `swiftlint --strict` — **zéro warning**.
+5. Lancer les tests : `xcodebuild test` (app) **et** `swift test` dans `Packages/BambuddyPocketKit`.
+6. Ouvrir une **PR** vers `main`. La **CI doit être verte** avant merge.
 
 ## Convention de commits — [Conventional Commits](https://www.conventionalcommits.org/)
 Format : `type(scope): sujet` (impératif, ≤ ~72 car.).

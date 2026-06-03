@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Bambuddy Pocket ne fait aucun tracking et ne collecte aucune donnée utilisateur.
+         Le trafic ne va que vers les serveurs auto-hébergés configurés par l'utilisateur. -->
+    <key>NSPrivacyTracking</key>
+    <false/>
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array/>
+    <!-- Les "required reason API" (ex. UserDefaults CA92.1) seront déclarées ici dès leur
+         utilisation effective (couche de persistance, Phase 0). -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array/>
+</dict>
+</plist>

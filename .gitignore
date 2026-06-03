@@ -75,3 +75,8 @@ scripts/supervisor/.lock/
 /bambuddy-pocket-recon/
 _recon/
 .reference/
+
+# Projet Xcode généré (dossier complet) — source de vérité = project.yml
+BambuddyPocket.xcodeproj/
+# Heartbeat runtime du superviseur
+scripts/supervisor/.interactive-active
