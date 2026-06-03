@@ -71,6 +71,13 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (19)** — Tier 1 (contrôles imprimante en profondeur) : **clear-plate**, **home-axes**,
+  **calibration** paramétrée (feuille à cocher), **connect/disconnect**, **AMS load** (par balayage,
+  tray_id global = ams×4+slot) + **reset tray**, **skip-objects** (feuille listant `print/objects`),
+  **suppression d'imprimante**. Modèle `PrintObjects`/`PrintObject` + `CalibrationOptions` (Domain),
+  endpoints + 10 tests (contrats vérifiés au réel sur le Docker via imprimante virtuelle). UI :
+  sections Maintenance/Device/Management dans le détail + 2 feuilles (`PrinterMaintenanceSheets`).
+  i18n FR/EN/ES/DE (22 clés). 88 tests SPM verts, build iOS OK, lint/format OK.
 - **2026-06-03 (18)** — Longue traîne (lecture) : **inventaire bobines** (`/inventory/spools`),
   **bibliothèque de modèles** (`/library/files/`), **projets** (`/projects/`) — modèles, endpoints,
   écrans liste + recherche, liens depuis le détail serveur. Aussi : About/crédits, attribution JS.

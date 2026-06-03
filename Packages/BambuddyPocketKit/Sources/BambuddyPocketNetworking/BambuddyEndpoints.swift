@@ -166,4 +166,57 @@ public extension APIClient {
     func stopDrying(id: Int, amsID: Int) async throws {
         try await post("/printers/\(id)/drying/stop?ams_id=\(amsID)")
     }
+
+    /// Charge le filament d'un plateau AMS (`POST /printers/{id}/ams/load?tray_id=<int>`).
+    func amsLoad(id: Int, trayID: Int) async throws {
+        try await post("/printers/\(id)/ams/load?tray_id=\(trayID)")
+    }
+
+    /// Réinitialise un plateau AMS (`POST /printers/{id}/ams/{ams}/tray/{tray}/reset`).
+    func amsResetTray(id: Int, amsID: Int, trayID: Int) async throws {
+        try await post("/printers/\(id)/ams/\(amsID)/tray/\(trayID)/reset")
+    }
+
+    // MARK: Contrôles avancés (cf. docs/bambuddy-api.md §7)
+
+    /// Confirme le retrait de la plaque (`POST /printers/{id}/clear-plate`).
+    func clearPlate(id: Int) async throws {
+        try await post("/printers/\(id)/clear-plate")
+    }
+
+    /// Lance un cycle de calage automatique des axes (`POST /printers/{id}/home-axes`).
+    func homeAxes(id: Int) async throws {
+        try await post("/printers/\(id)/home-axes")
+    }
+
+    /// Connecte l'imprimante au serveur (`POST /printers/{id}/connect`).
+    func connectPrinter(id: Int) async throws {
+        try await post("/printers/\(id)/connect")
+    }
+
+    /// Déconnecte l'imprimante du serveur (`POST /printers/{id}/disconnect`).
+    func disconnectPrinter(id: Int) async throws {
+        try await post("/printers/\(id)/disconnect")
+    }
+
+    /// Lance une calibration ciblée (`POST /printers/{id}/calibration?<flags>`).
+    func calibrate(id: Int, options: CalibrationOptions) async throws {
+        try await post("/printers/\(id)/calibration?\(options.queryString)")
+    }
+
+    /// Objets imprimables de la plaque courante (`GET /printers/{id}/print/objects`).
+    func printObjects(id: Int) async throws -> PrintObjects {
+        try await get("/printers/\(id)/print/objects")
+    }
+
+    /// Demande à ignorer les objets indiqués (`POST /printers/{id}/print/skip-objects`).
+    func skipObjects(id: Int, objectIDs: [Int]) async throws {
+        let body = try JSONEncoder.bambuddy().encode(objectIDs)
+        try await post("/printers/\(id)/print/skip-objects", body: body)
+    }
+
+    /// Supprime une imprimante côté serveur (`DELETE /printers/{id}`).
+    func deletePrinter(id: Int) async throws {
+        try await delete("/printers/\(id)")
+    }
 }
