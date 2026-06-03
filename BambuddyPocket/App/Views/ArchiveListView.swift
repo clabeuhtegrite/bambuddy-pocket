@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
+import Foundation
 import SwiftUI
 
 /// Archive d'impressions d'un serveur (liste, lecture seule).
