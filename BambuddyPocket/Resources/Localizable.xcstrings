@@ -1,6 +1,62 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Action failed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktion fehlgeschlagen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Acción fallida" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec de l’action" } }
+      }
+    },
+    "Clear errors" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fehler löschen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Borrar errores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Effacer les erreurs" } }
+      }
+    },
+    "Controls" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Steuerung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Controles" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Contrôles" } }
+      }
+    },
+    "Pause" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pause" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pausar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pause" } }
+      }
+    },
+    "Resume" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fortsetzen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Reanudar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Reprendre" } }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Stoppen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Detener" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Arrêter" } }
+      }
+    },
+    "Stop print?" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druck stoppen?" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "¿Detener la impresión?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Arrêter l’impression ?" } }
+      }
+    },
+    "This will cancel the current print." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dadurch wird der aktuelle Druck abgebrochen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esto cancelará la impresión actual." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cela annulera l’impression en cours." } }
+      }
+    },
     "%lld h %lld min" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld Std. %lld Min." } },

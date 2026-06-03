@@ -166,4 +166,15 @@ struct MockNetworkingTests {
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/9/status")
     }
+
+    @Test("pausePrint poste sur /print/pause")
+    func pausesPrint() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.pausePrint(id: 4)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/4/print/pause")
+    }
 }

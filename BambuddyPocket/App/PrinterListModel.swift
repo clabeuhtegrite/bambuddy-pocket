@@ -21,6 +21,7 @@ final class PrinterListModel {
     private(set) var realtimeState: RealtimeState = .connecting
     private(set) var hasLoaded = false
     var loadError: String?
+    var controlError: String?
 
     private let server: ServerConfiguration
     private let connectionFactory: ServerConnectionFactory
@@ -59,6 +60,34 @@ final class PrinterListModel {
     func run() async {
         await load()
         await realtimeLoop()
+    }
+
+    // MARK: Contrôles d'impression
+
+    func pause(_ printer: Printer) async {
+        await runControl { try await $0.pausePrint(id: printer.id) }
+    }
+
+    func resume(_ printer: Printer) async {
+        await runControl { try await $0.resumePrint(id: printer.id) }
+    }
+
+    func stop(_ printer: Printer) async {
+        await runControl { try await $0.stopPrint(id: printer.id) }
+    }
+
+    func clearErrors(_ printer: Printer) async {
+        await runControl { try await $0.clearHMS(id: printer.id) }
+    }
+
+    private func runControl(_ action: (RESTClient) async throws -> Void) async {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await action(client)
+            controlError = nil
+        } catch {
+            controlError = Self.message(for: error)
+        }
     }
 
     private func realtimeLoop() async {
