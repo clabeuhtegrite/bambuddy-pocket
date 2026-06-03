@@ -32,8 +32,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - 🟦 **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
   restant), état, AMS/bobines, **erreurs HMS** (code+sévérité) ✅ ; ventilateurs/lumière chambre ⬜.
 - ⬜ **Caméra** : flux MJPEG + snapshot (token si auth).
-- ⬜ **Archive d'impressions** : liste (`ArchiveSlim`), détail (`ArchiveResponse`), vignettes,
-  photos, métadonnées, coût/énergie, timelapse.
+- 🟦 **Archive d'impressions** : liste + détail (`ArchiveResponse`) ✅ (statut, durée, filament,
+  coût/énergie, chronologie) ; ⬜ vignettes, photos, timelapse.
 - ⬜ État serveur (`/system/info`, santé) + sélecteur de serveur.
 
 ## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) ⬜

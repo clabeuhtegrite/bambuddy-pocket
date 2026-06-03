@@ -177,4 +177,16 @@ struct MockNetworkingTests {
         #expect(request.httpMethod == "POST")
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/4/print/pause")
     }
+
+    @Test("archives() cible /archives/ et décode la liste")
+    func listsArchives() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":12,"status":"success","print_name":"Benchy","filament_used_grams":12.5}]"#)
+        let client = try makeClient()
+        let archives = try await client.archives()
+        #expect(archives.map(\.id) == [12])
+        #expect(archives.first?.printName == "Benchy")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/")
+    }
 }

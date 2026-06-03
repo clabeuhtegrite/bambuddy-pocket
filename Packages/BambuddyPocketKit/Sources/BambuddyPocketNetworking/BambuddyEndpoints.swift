@@ -15,6 +15,16 @@ public extension APIClient {
         try await get("/printers/\(id)/status")
     }
 
+    /// Archive d'impressions (`GET /archives/`), la plus récente d'abord côté serveur.
+    func archives() async throws -> [Archive] {
+        try await get("/archives/")
+    }
+
+    /// Détail d'une archive (`GET /archives/{id}`).
+    func archive(id: Int) async throws -> Archive {
+        try await get("/archives/\(id)")
+    }
+
     /// Requête `POST` sans réponse utile (actions de contrôle).
     func post(_ path: String, body: Data? = nil) async throws {
         let _: EmptyResponse = try await send(path, method: .post, body: body)

@@ -62,6 +62,11 @@ final class ServerListModel {
         PrinterListModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de l'archive d'impressions pour ce serveur.
+    func makeArchiveListModel(for configuration: ServerConfiguration) -> ArchiveListModel {
+        ArchiveListModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     func delete(_ configuration: ServerConfiguration) throws {
         servers.removeAll { $0.id == configuration.id }
         try serverStore.save(servers)

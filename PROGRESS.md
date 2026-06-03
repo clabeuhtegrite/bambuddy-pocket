@@ -69,6 +69,10 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (10)** — Phase 1 : **archive d'impressions** — modèle `Archive` (sous-ensemble
+  robuste d'`ArchiveResponse`, dates en `String`), endpoints `archives()`/`archive(id:)`, écrans
+  liste + détail (statut, durée, filament, coût/énergie, chronologie), helper `ErrorMessage`
+  partagé, i18n FR/EN/ES/DE. Tests : décodage `Archive` + endpoint.
 - **2026-06-03 (9)** — Phase 2 (début) : contrôles d'impression (pause/reprise/arrêt, clear HMS)
   — endpoints REST + boutons dans le détail (confirmation d'arrêt). Correctifs CI : `@ViewBuilder`
   redondants (SwiftFormat) et verrou scopé `NSLock.withLock` dans un helper de test (Swift 6).
