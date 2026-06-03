@@ -26,6 +26,25 @@ public struct RequestAuthorization: Sendable, Hashable {
     }
 
     public static let none = RequestAuthorization()
+
+    /// En-têtes HTTP correspondants (auth + Cloudflare Access), à appliquer de façon identique
+    /// sur **toutes** les surfaces : REST, WebSocket et caméra.
+    public var headerFields: [String: String] {
+        var fields: [String: String] = [:]
+        if let bearerToken {
+            fields["Authorization"] = "Bearer \(bearerToken)"
+        }
+        if let apiKey {
+            fields["X-API-Key"] = apiKey
+        }
+        if let cloudflareClientID {
+            fields["CF-Access-Client-Id"] = cloudflareClientID
+        }
+        if let cloudflareClientSecret {
+            fields["CF-Access-Client-Secret"] = cloudflareClientSecret
+        }
+        return fields
+    }
 }
 
 /// Construit les `URLRequest` vers l'API Bambuddy en injectant de façon centralisée l'auth
@@ -52,17 +71,8 @@ public struct RequestFactory: Sendable {
             request.httpBody = body
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
-        if let bearer = authorization.bearerToken {
-            request.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
-        }
-        if let key = authorization.apiKey {
-            request.setValue(key, forHTTPHeaderField: "X-API-Key")
-        }
-        if let clientID = authorization.cloudflareClientID {
-            request.setValue(clientID, forHTTPHeaderField: "CF-Access-Client-Id")
-        }
-        if let clientSecret = authorization.cloudflareClientSecret {
-            request.setValue(clientSecret, forHTTPHeaderField: "CF-Access-Client-Secret")
+        for (field, value) in authorization.headerFields {
+            request.setValue(value, forHTTPHeaderField: field)
         }
         return request
     }

@@ -140,4 +140,244 @@ struct MockNetworkingTests {
             _ = try await factory.probe(config)
         }
     }
+
+    // MARK: - Endpoints typés
+
+    @Test("printers() cible /printers/ et décode la liste")
+    func listsPrinters() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":1,"name":"X1C","model":"X1 Carbon"}]"#)
+        let client = try makeClient()
+        let printers = try await client.printers()
+        #expect(printers.map(\.id) == [1])
+        #expect(printers.first?.name == "X1C")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/")
+    }
+
+    @Test("printerStatus(id:) cible /printers/{id}/status")
+    func fetchesPrinterStatus() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"name":"X1C","state":"RUNNING","progress":42}"#)
+        let client = try makeClient()
+        let status = try await client.printerStatus(id: 9)
+        #expect(status.state == .running)
+        #expect(status.progress == 42)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/9/status")
+    }
+
+    @Test("pausePrint poste sur /print/pause")
+    func pausesPrint() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.pausePrint(id: 4)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/4/print/pause")
+    }
+
+    @Test("archives() cible /archives/ et décode la liste")
+    func listsArchives() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":12,"status":"success","print_name":"Benchy","filament_used_grams":12.5}]"#)
+        let client = try makeClient()
+        let archives = try await client.archives()
+        #expect(archives.map(\.id) == [12])
+        #expect(archives.first?.printName == "Benchy")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/")
+    }
+
+    @Test("cameraSnapshot cible /camera/snapshot et renvoie les données brutes")
+    func fetchesCameraSnapshot() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "jpeg-bytes")
+        let client = try makeClient()
+        let data = try await client.cameraSnapshot(printerID: 2)
+        #expect(data == Data("jpeg-bytes".utf8))
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/2/camera/snapshot")
+    }
+
+    @Test("queue() cible /queue/ et décode la liste")
+    func listsQueue() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":5,"position":1,"status":"pending","archive_name":"Gear"}]"#)
+        let client = try makeClient()
+        let items = try await client.queue()
+        #expect(items.map(\.id) == [5])
+        #expect(items.first?.displayName == "Gear")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/")
+    }
+
+    @Test("activityLog() cible /notifications/logs et décode la liste")
+    func listsActivity() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":3,"event_type":"print_complete","title":"Done","message":"Benchy finished","success":true}]"#
+        )
+        let client = try makeClient()
+        let entries = try await client.activityLog()
+        #expect(entries.map(\.id) == [3])
+        #expect(entries.first?.eventType == "print_complete")
+        #expect(entries.first?.success == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/notifications/logs")
+    }
+
+    @Test("archiveStats cible /archives/stats et décode")
+    func fetchesArchiveStats() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"""
+            {"total_prints":10,"successful_prints":8,"failed_prints":2,"total_print_time_hours":5.5,
+             "total_filament_grams":120,"total_cost":3.2,"prints_by_filament_type":{},"prints_by_printer":{}}
+            """#
+        )
+        let client = try makeClient()
+        let stats = try await client.archiveStats()
+        #expect(stats.totalPrints == 10)
+        #expect(stats.successfulPrints == 8)
+        #expect(stats.totalCost == 3.2)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/stats")
+    }
+
+    @Test("addToQueue poste sur /queue/")
+    func addsToQueue() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.addToQueue(QueueItemCreate(archiveId: 7))
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/")
+    }
+
+    @Test("inventorySpools cible /inventory/spools et décode")
+    func listsSpools() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":4,"material":"PLA","label_weight":1000,"weight_used":100}]"#)
+        let client = try makeClient()
+        let spools = try await client.inventorySpools()
+        #expect(spools.map(\.id) == [4])
+        #expect(spools.first?.remainingGrams == 900)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/inventory/spools")
+    }
+
+    @Test("libraryFiles cible /library/files/ et décode")
+    func listsLibrary() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":2,"filename":"benchy.3mf","file_type":"3mf","file_size":1024,"print_count":3}]"#
+        )
+        let client = try makeClient()
+        let files = try await client.libraryFiles()
+        #expect(files.map(\.id) == [2])
+        #expect(files.first?.filename == "benchy.3mf")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/")
+    }
+
+    @Test("projects cible /projects/ et décode (description → details)")
+    func listsProjects() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":1,"name":"Gridfinity","status":"active","description":"Bins","progress_percent":50}]"#
+        )
+        let client = try makeClient()
+        let projects = try await client.projects()
+        #expect(projects.first?.name == "Gridfinity")
+        #expect(projects.first?.details == "Bins")
+        #expect(projects.first?.progressFraction == 0.5)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/")
+    }
+
+    @Test("createPrinter poste sur /printers/ et décode la réponse")
+    func createsPrinter() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":1,"name":"X1C"}"#)
+        let client = try makeClient()
+        let create = PrinterCreate(name: "X1C", serialNumber: "SER", ipAddress: "1.2.3.4", accessCode: "0000")
+        let created = try await client.createPrinter(create)
+        #expect(created.id == 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/")
+    }
+
+    @Test("deleteQueueItem envoie DELETE /queue/{id}")
+    func deletesQueueItem() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.deleteQueueItem(id: 8)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/8")
+    }
+
+    @Test("startDrying poste avec ?ams_id=1")
+    func startsDrying() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.startDrying(id: 5, amsID: 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/5/drying/start?ams_id=1")
+    }
+
+    @Test("reorderQueue poste sur /queue/reorder")
+    func reordersQueue() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.reorderQueue([QueueReorderItem(id: 2, position: 1), QueueReorderItem(id: 1, position: 2)])
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/reorder")
+    }
+
+    @Test("setChamberLight poste avec ?on=true")
+    func setsChamberLight() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.setChamberLight(id: 3, on: true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3/chamber-light?on=true")
+    }
+
+    @Test("setPrintSpeed poste avec ?mode=3")
+    func setsPrintSpeed() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.setPrintSpeed(id: 3, mode: 3)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3/print-speed?mode=3")
+    }
+
+    @Test("login() poste les identifiants sur /auth/login")
+    func performsLogin() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"access_token":"jwt-xyz","token_type":"bearer","requires_2fa":false}"#)
+        let client = try makeClient()
+        let response = try await client.login(username: "ad", password: "pw")
+        #expect(response.accessToken == "jwt-xyz")
+        #expect(response.needsTwoFactor == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/login")
+    }
 }

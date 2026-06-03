@@ -3,21 +3,28 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-03 — Phase 0 en cours : socle app mergé (PR #2), modèles de
-domaine en revue (PR #3). Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (privé).
+**Dernière mise à jour** : 2026-06-03 — Phase 0 en cours : socle + couche réseau + persistance
+faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Phase 0 — couche réseau.** Le socle (projet XcodeGen, paquet SPM `BambuddyPocketKit`, app SwiftUI
-minimale, i18n, CI iOS) et les modèles de domaine (PrinterStatus/AMS/HMS/Printer + décodage testé)
-sont faits. ✅ `RESTClient`/`RequestFactory` (PR #4). ✅ `SecretStore` (Keychain + InMemory),
-`ServerStore` (UserDefaults), mapping `ServerSecrets`→`RequestAuthorization` (PR #5). Prochaine brique :
-1. **Composition root / DI** : `AppEnvironment` exposant `ServerStore` + `SecretStore` +
-   `ServerConnectionFactory` (✅ fait, avec sonde `/auth/status`) — à câbler dans la cible app.
-2. **UI multi-serveurs** : liste, ajout/édition par URL, saisie secrets (Keychain), test de
-   connexion (`GET /system/info` ou `/auth/status`), avertissement HTTP en clair.
-3. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong) + fusion des deltas `PrinterStatus`.
-Puis **Phase 1** (liste imprimantes temps réel, détail, archive).
-Cadence : **autonomie complète** ; n'arrêter que sur vrai blocage → documenter + `scripts/notify/notify.sh "…"`.
+**Phases 0, 1 et 2 largement implémentées** (branche `claude/cloud-dev-environment-aAJAg`, dépôt
+public, CI verte). Fait : socle + multi-serveurs + **auth complète** (none / clé d'API / user-pass
++ 2FA / Cloudflare, secrets Keychain) ; **temps réel WebSocket** (events + fusion deltas) ; liste +
+détail imprimantes (températures, HMS, AMS) ; **caméra** (snapshot) ; **archive** (liste/détail +
+recherche) ; **contrôles** (pause/reprise/stop, vitesse, lumière, clear HMS, AMS unload/séchage) ;
+**file d'attente** (liste + réordonnancement drag-drop) ; **flux d'activité**. ~70 tests unitaires.
+
+Prochaines briques (par valeur) :
+1. **Notifications en-app dérivées du WebSocket** : exposer une session WS au niveau serveur
+   (pas seulement l'écran imprimantes) ; bannières/feed sur `print_complete`/`print_start`/
+   `missing_spool_assignment`/`plate_not_empty`/HMS sévère.
+2. **Caméra MJPEG réelle** (parseur multipart `x-mixed-replace`) + token de flux si auth.
+3. **File** : ajout/start/stop/cancel d'un job, lots (batches), planification.
+4. **État serveur** (`/system/info`, santé) ; gestion d'imprimante (`PrinterCreate`).
+5. **Phase 3** : viewer 3D (décision d'approche prise en autonomie : WebView Three.js en v1, ADR
+   à rédiger), slicing, inventaire.
+6. **Finitions App Store** : icône/launch screen, captures, accessibilité, build sans warning.
+Cadence : **autonomie complète** ; CI = juge (pas de toolchain en local sur l'env cloud).
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
 `xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
 
@@ -64,6 +71,47 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (18)** — Longue traîne (lecture) : **inventaire bobines** (`/inventory/spools`),
+  **bibliothèque de modèles** (`/library/files/`), **projets** (`/projects/`) — modèles, endpoints,
+  écrans liste + recherche, liens depuis le détail serveur. Aussi : About/crédits, attribution JS.
+- **2026-06-03 (17)** — Phase 3 : **viewer 3D** (décision : WebView + Three.js **embarqué**,
+  hors-ligne) — `Model3DView` (WKWebView + WKUserScript), `viewer.html` + Three.js/STLLoader/
+  3MFLoader/fflate bundlés, rendu STL/3MF, téléchargement archive (`/archives/{id}/download`),
+  lien depuis le détail archive. Aussi : flux **caméra MJPEG** réel (repli snapshots), section
+  ventilateurs, accessibilité (cloche).
+- **2026-06-03 (16)** — Phase 2 : contrôles **lumière de chambre** (`chamber-light?on=`) et
+  **vitesse** (`print-speed?mode=`) — endpoints + UI (toggle « Appareil », sélecteur de vitesse).
+  Dépôt passé **public** (CI gratuite) ; README/PROGRESS mis à jour.
+- **2026-06-03 (15)** — Phase 0 (auth) : **UI de connexion** — `LoginModel` (flux credentials →
+  2FA), `LoginView`, méthode `userPassword` dans le formulaire serveur (login avant enregistrement,
+  JWT stocké au Keychain). `ServerConnectionFactory.makeClient(for:secrets:)` (secrets explicites).
+- **2026-06-03 (14)** — Phase 0 (auth) : couche **login user/pass + 2FA** — modèles
+  (`LoginRequest/Response`, `TwoFAVerify*`, `User`) + endpoints `login`/`verifyTwoFactor`/
+  `currentUser` + tests.
+- **2026-06-03 (13)** — Phase 2 : **flux d'activité** serveur (`/notifications/logs`) — modèle
+  `ActivityEntry`, endpoint `activityLog()`, écran liste (succès/échec, titre, message, date).
+- **2026-06-03 (12)** — Phase 2 : **file d'attente** (lecture) — modèle `QueueItem`, endpoint
+  `queue()`, écran liste ordonnée (position, imprimante, statut) ; lien depuis le détail serveur.
+- **2026-06-03 (11)** — Phase 1 : **caméra** — `RESTClient.data(forPath:)` + `cameraSnapshot`,
+  `CameraView` (snapshots rafraîchis ~1 s) + lien dans le détail imprimante.
+- **2026-06-03 (10)** — Phase 1 : **archive d'impressions** — modèle `Archive` (sous-ensemble
+  robuste d'`ArchiveResponse`, dates en `String`), endpoints `archives()`/`archive(id:)`, écrans
+  liste + détail (statut, durée, filament, coût/énergie, chronologie), helper `ErrorMessage`
+  partagé, i18n FR/EN/ES/DE. Tests : décodage `Archive` + endpoint.
+- **2026-06-03 (9)** — Phase 2 (début) : contrôles d'impression (pause/reprise/arrêt, clear HMS)
+  — endpoints REST + boutons dans le détail (confirmation d'arrêt). Correctifs CI : `@ViewBuilder`
+  redondants (SwiftFormat) et verrou scopé `NSLock.withLock` dans un helper de test (Swift 6).
+- **2026-06-03 (8)** — Phase 1 (cœur) : événements WebSocket (`WebSocketEvent` + décodage) et
+  **fusion des deltas** (`PrinterStatus.merged(with:)`) ; endpoints REST typés (`printers()`,
+  `printerStatus(id:)`) ; **client WebSocket** (`WebSocketClient`, transport injectable, ping,
+  reconnexion côté appelant) ; en-têtes auth/Cloudflare factorisés (`RequestAuthorization.headerFields`,
+  appliqués aussi au WS). App : `PrinterListModel` (REST + temps réel fusionné), écrans **liste
+  imprimantes** (statut live, badge connexion) et **détail** (état, progression, températures,
+  erreurs HMS, AMS) ; i18n FR/EN/ES/DE. Tests : WS/merge/endpoints (+~10).
+- **2026-06-03 (7)** — Phase 0 : composition root `AppEnvironment` + view-model `ServerListModel`
+  + UI multi-serveurs (liste/ajout/édition/détail, `ServerURLParser`, secrets Keychain, test de
+  connexion `/auth/status`, avertissement HTTP, i18n FR/EN/ES/DE). Tests : parser (9) + view-model
+  (5). Branche `claude/cloud-dev-environment-aAJAg`.
 - **2026-06-03 (6)** — Phase 0 : ServerConnectionFactory + sonde `/auth/status` (AuthStatus) ; tests mock fusionnés en 1 suite sérialisée (PR #6, 27 tests).
 - **2026-06-03 (5)** — Phase 0 : secrets/persistance (Keychain SecretStore, ServerStore, mapping auth) — PR #5, 25 tests.
 - **2026-06-03 (4)** — Phase 0 : couche REST (RESTClient + RequestFactory auth/Cloudflare) + tests (PR #4, 18 tests).

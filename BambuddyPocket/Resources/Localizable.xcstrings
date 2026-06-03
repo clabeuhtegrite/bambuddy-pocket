@@ -1,6 +1,1104 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Prints" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucke" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresiones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impressions" } }
+      }
+    },
+    "Statistics" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Statistiken" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estadísticas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Statistiques" } }
+      }
+    },
+    "Statistics unavailable" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Statistiken nicht verfügbar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estadísticas no disponibles" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Statistiques indisponibles" } }
+      }
+    },
+    "Successful" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erfolgreich" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Exitosas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Réussies" } }
+      }
+    },
+    "Usage" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbrauch" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Uso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Utilisation" } }
+      }
+    },
+    "Add to queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zur Warteschlange" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añadir a la cola" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouter à la file" } }
+      }
+    },
+    "Added to queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zur Warteschlange hinzugefügt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añadido a la cola" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouté à la file" } }
+      }
+    },
+    "Couldn’t load projects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Projekte konnten nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudieron cargar los proyectos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger les projets" } }
+      }
+    },
+    "Couldn’t load the library" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bibliothek konnte nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo cargar la biblioteca" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger la bibliothèque" } }
+      }
+    },
+    "Library" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bibliothek" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Biblioteca" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bibliothèque" } }
+      }
+    },
+    "No files" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Dateien" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin archivos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun fichier" } }
+      }
+    },
+    "No projects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Projekte" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin proyectos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun projet" } }
+      }
+    },
+    "No projects yet." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Projekte." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aún no hay proyectos." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun projet pour l’instant." } }
+      }
+    },
+    "Projects" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Projekte" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Proyectos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Projets" } }
+      }
+    },
+    "The library is empty." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Bibliothek ist leer." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La biblioteca está vacía." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La bibliothèque est vide." } }
+      }
+    },
+    "Brand" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Marke" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Marca" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Marque" } }
+      }
+    },
+    "Category" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kategorie" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Categoría" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Catégorie" } }
+      }
+    },
+    "Cost per kg" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kosten pro kg" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Costo por kg" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Coût par kg" } }
+      }
+    },
+    "Couldn’t load filaments" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filamente konnten nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudieron cargar los filamentos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger les filaments" } }
+      }
+    },
+    "Filaments" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filamente" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Filamentos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Filaments" } }
+      }
+    },
+    "Material" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Material" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Material" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Matériau" } }
+      }
+    },
+    "No filament in inventory." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kein Filament im Bestand." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No hay filamento en el inventario." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun filament dans l’inventaire." } }
+      }
+    },
+    "No spools" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Spulen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin bobinas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune bobine" } }
+      }
+    },
+    "Note" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Notiz" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nota" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Note" } }
+      }
+    },
+    "Total" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gesamt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Total" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Total" } }
+      }
+    },
+    "Weight" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gewicht" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Peso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Poids" } }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Über" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Acerca de" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "À propos" } }
+      }
+    },
+    "Free software under the GNU AGPL v3.0 (App Store exception)." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Freie Software unter GNU AGPL v3.0 (App-Store-Ausnahme)." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Software libre bajo GNU AGPL v3.0 (excepción App Store)." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Logiciel libre sous GNU AGPL v3.0 (exception App Store)." } }
+      }
+    },
+    "License" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Lizenz" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Licencia" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Licence" } }
+      }
+    },
+    "Source code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Quellcode" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código fuente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code source" } }
+      }
+    },
+    "Third-party components" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drittanbieter-Komponenten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Componentes de terceros" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Composants tiers" } }
+      }
+    },
+    "Unaffiliated third-party client. Trademarks belong to their respective owners." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht verbundener Drittanbieter-Client. Marken gehören ihren jeweiligen Eigentümern." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cliente de terceros no afiliado. Las marcas pertenecen a sus respectivos dueños." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Client tiers non affilié. Les marques appartiennent à leurs détenteurs respectifs." } }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Version" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Versión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Version" } }
+      }
+    },
+    "fflate" : {
+      "shouldTranslate" : false
+    },
+    "three.js" : {
+      "shouldTranslate" : false
+    },
+    "3D model" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "3D-Modell" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Modelo 3D" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modèle 3D" } }
+      }
+    },
+    "3D preview unavailable" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "3D-Vorschau nicht verfügbar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vista 3D no disponible" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aperçu 3D indisponible" } }
+      }
+    },
+    "View 3D model" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "3D-Modell ansehen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ver modelo 3D" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Voir le modèle 3D" } }
+      }
+    },
+    "Auxiliary" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Hilfslüfter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Auxiliar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Auxiliaire" } }
+      }
+    },
+    "Chamber fan" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kammerlüfter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventilador de cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ventilateur caisson" } }
+      }
+    },
+    "Fans" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Lüfter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ventiladores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ventilateurs" } }
+      }
+    },
+    "Part cooling" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bauteilkühlung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Refrigeración de pieza" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Refroidissement pièce" } }
+      }
+    },
+    "Access code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zugangscode" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código de acceso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code d’accès" } }
+      }
+    },
+    "Bambu LAN" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bambu LAN" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Bambu LAN" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bambu LAN" } }
+      }
+    },
+    "Location" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Standort" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ubicación" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Emplacement" } }
+      }
+    },
+    "Name" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Name" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nombre" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nom" } }
+      }
+    },
+    "Printer" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresora" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Imprimante" } }
+      }
+    },
+    "Start" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Starten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Iniciar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Démarrer" } }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fertig" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Hecho" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Terminé" } }
+      }
+    },
+    "No notifications" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Benachrichtigungen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin notificaciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune notification" } }
+      }
+    },
+    "Notifications" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benachrichtigungen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Notificaciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } }
+      }
+    },
+    "Plate not empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druckbett nicht leer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Bandeja no vacía" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plateau non vide" } }
+      }
+    },
+    "Print finished" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druck abgeschlossen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresión finalizada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression terminée" } }
+      }
+    },
+    "Print started" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druck gestartet" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresión iniciada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression démarrée" } }
+      }
+    },
+    "Spool missing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Spule fehlt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Bobina faltante" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bobine manquante" } }
+      }
+    },
+    "Start drying" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trocknen starten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Iniciar secado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Démarrer le séchage" } }
+      }
+    },
+    "Stop drying" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Trocknen stoppen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Detener secado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Arrêter le séchage" } }
+      }
+    },
+    "Unload filament" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filament entladen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Descargar filamento" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Décharger le filament" } }
+      }
+    },
+    "Chamber light" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kammerlicht" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Luz de cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Lumière de chambre" } }
+      }
+    },
+    "Device" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gerät" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Dispositivo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Appareil" } }
+      }
+    },
+    "Ludicrous" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Extrem" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Extremo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Extrême" } }
+      }
+    },
+    "Silent" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Leise" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Silencioso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Silencieux" } }
+      }
+    },
+    "Speed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Geschwindigkeit" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Velocidad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vitesse" } }
+      }
+    },
+    "Sport" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Sport" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Deporte" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Sport" } }
+      }
+    },
+    "Standard" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Standard" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estándar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Standard" } }
+      }
+    },
+    "Code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Code" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code" } }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Weiter" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Continuar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Continuer" } }
+      }
+    },
+    "Credentials" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anmeldedaten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Credenciales" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiants" } }
+      }
+    },
+    "Log in" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anmelden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Iniciar sesión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Se connecter" } }
+      }
+    },
+    "Log in again" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erneut anmelden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Volver a iniciar sesión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Se reconnecter" } }
+      }
+    },
+    "Login failed." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Anmeldung fehlgeschlagen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Error de inicio de sesión." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec de la connexion." } }
+      }
+    },
+    "Password" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Passwort" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contraseña" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Mot de passe" } }
+      }
+    },
+    "Signed in" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Angemeldet" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sesión iniciada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté" } }
+      }
+    },
+    "Signed in as %@" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Angemeldet als %@" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sesión iniciada como %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté en tant que %@" } }
+      }
+    },
+    "Two-factor code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zwei-Faktor-Code" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código de dos factores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code à deux facteurs" } }
+      }
+    },
+    "Username" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benutzername" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usuario" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant" } }
+      }
+    },
+    "Verify" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bestätigen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Verificar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vérifier" } }
+      }
+    },
+    "Activity" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktivität" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Actividad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activité" } }
+      }
+    },
+    "Couldn’t load activity" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktivität konnte nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo cargar la actividad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger l’activité" } }
+      }
+    },
+    "No activity" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Aktivität" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin actividad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune activité" } }
+      }
+    },
+    "No activity yet." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Aktivität." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aún no hay actividad." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune activité pour l’instant." } }
+      }
+    },
+    "Couldn’t load the queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warteschlange konnte nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo cargar la cola" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger la file" } }
+      }
+    },
+    "No prints are queued." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Drucke in der Warteschlange." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No hay impresiones en cola." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune impression en file." } }
+      }
+    },
+    "Print queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warteschlange" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cola de impresión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "File d’attente" } }
+      }
+    },
+    "Queue is empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warteschlange ist leer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La cola está vacía" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "File vide" } }
+      }
+    },
+    "Camera" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kamera" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Caméra" } }
+      }
+    },
+    "Camera unavailable" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kamera nicht verfügbar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cámara no disponible" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Caméra indisponible" } }
+      }
+    },
+    "%lld g" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld g" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%lld g" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld g" } }
+      }
+    },
+    "Action failed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktion fehlgeschlagen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Acción fallida" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec de l’action" } }
+      }
+    },
+    "Clear errors" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fehler löschen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Borrar errores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Effacer les erreurs" } }
+      }
+    },
+    "Controls" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Steuerung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Controles" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Contrôles" } }
+      }
+    },
+    "Pause" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pause" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Pausar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Pause" } }
+      }
+    },
+    "Resume" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fortsetzen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Reanudar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Reprendre" } }
+      }
+    },
+    "Stop" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Stoppen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Detener" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Arrêter" } }
+      }
+    },
+    "Stop print?" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druck stoppen?" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "¿Detener la impresión?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Arrêter l’impression ?" } }
+      }
+    },
+    "This will cancel the current print." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dadurch wird der aktuelle Druck abgebrochen." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esto cancelará la impresión actual." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cela annulera l’impression en cours." } }
+      }
+    },
+    "%lld h %lld min" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld Std. %lld Min." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%lld h %lld min" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld h %lld min" } }
+      }
+    },
+    "%lld min" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%lld Min." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "%lld min" } }
+      }
+    },
+    "AMS %lld" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "AMS %lld" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "AMS %lld" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "AMS %lld" } }
+      }
+    },
+    "Bed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bett" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cama" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Plateau" } }
+      }
+    },
+    "Chamber" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kammer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cámara" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Caisson" } }
+      }
+    },
+    "Connecting…" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbinden…" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conectando…" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connexion…" } }
+      }
+    },
+    "Couldn’t load printers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker konnten nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudieron cargar las impresoras" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger les imprimantes" } }
+      }
+    },
+    "Current print" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktueller Druck" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresión actual" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression en cours" } }
+      }
+    },
+    "Empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Leer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Vacío" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Vide" } }
+      }
+    },
+    "Errors" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fehler" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Errores" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Erreurs" } }
+      }
+    },
+    "Failed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fehlgeschlagen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Fallido" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec" } }
+      }
+    },
+    "Fatal" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kritisch" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crítico" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Critique" } }
+      }
+    },
+    "Finished" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fertig" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Terminado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Terminé" } }
+      }
+    },
+    "Firmware" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Firmware" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Firmware" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Micrologiciel" } }
+      }
+    },
+    "Idle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Inaktiv" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Inactiva" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Inactif" } }
+      }
+    },
+    "Info" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Info" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Info" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Info" } }
+      }
+    },
+    "Information" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Informationen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Información" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Informations" } }
+      }
+    },
+    "IP address" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "IP-Adresse" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Dirección IP" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Adresse IP" } }
+      }
+    },
+    "Job" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Auftrag" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Trabajo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tâche" } }
+      }
+    },
+    "Layer" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schicht" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Capa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Couche" } }
+      }
+    },
+    "Live" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Live" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "En vivo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "En direct" } }
+      }
+    },
+    "Model" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Modell" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Modelo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modèle" } }
+      }
+    },
+    "No printers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Drucker" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin impresoras" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune imprimante" } }
+      }
+    },
+    "No printers are configured on this server." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Auf diesem Server sind keine Drucker konfiguriert." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No hay impresoras configuradas en este servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune imprimante n’est configurée sur ce serveur." } }
+      }
+    },
+    "Nozzle" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Düse" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Boquilla" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Buse" } }
+      }
+    },
+    "Offline" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Offline" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Desconectada" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Hors ligne" } }
+      }
+    },
+    "Paused" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pausiert" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "En pausa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "En pause" } }
+      }
+    },
+    "Preparing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Vorbereiten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Preparando" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Préparation" } }
+      }
+    },
+    "Printers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drucker" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Impresoras" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Imprimantes" } }
+      }
+    },
+    "Printing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druckt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Imprimiendo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impression" } }
+      }
+    },
+    "Reconnecting…" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Neu verbinden…" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Reconectando…" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Reconnexion…" } }
+      }
+    },
+    "Remaining" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbleibend" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Restante" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Restant" } }
+      }
+    },
+    "Serial number" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Seriennummer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Número de serie" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Numéro de série" } }
+      }
+    },
+    "Serious" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ernst" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Grave" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Sérieux" } }
+      }
+    },
+    "Slicing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Slicing" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Laminando" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Découpe" } }
+      }
+    },
+    "Stage" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Phase" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Etapa" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Étape" } }
+      }
+    },
+    "Status" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Status" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Estado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Statut" } }
+      }
+    },
+    "Temperatures" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Temperaturen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Temperaturas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Températures" } }
+      }
+    },
+    "Unknown" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Unbekannt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Desconocido" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Inconnu" } }
+      }
+    },
+    "Warning" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warnung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Advertencia" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Avertissement" } }
+      }
+    },
+    "Actual time" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Tatsächliche Zeit" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tiempo real" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Temps réel" } }
+      }
+    },
+    "Color" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Farbe" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Color" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Couleur" } }
+      }
+    },
+    "Completed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abgeschlossen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Completado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Terminé le" } }
+      }
+    },
+    "Cost" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kosten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Costo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Coût" } }
+      }
+    },
+    "Cost & energy" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kosten & Energie" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Costo y energía" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Coût et énergie" } }
+      }
+    },
+    "Couldn’t load archives" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Archiv konnte nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo cargar el archivo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger l’archive" } }
+      }
+    },
+    "Created" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erstellt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Creado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Créé le" } }
+      }
+    },
+    "Designer" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Designer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Diseñador" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Concepteur" } }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Details" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Detalles" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Détails" } }
+      }
+    },
+    "Energy" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Energie" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Energía" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Énergie" } }
+      }
+    },
+    "Filament" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Filament" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Filamento" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Filament" } }
+      }
+    },
+    "Layers" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schichten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Capas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Couches" } }
+      }
+    },
+    "No archives" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kein Archiv" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin archivo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune archive" } }
+      }
+    },
+    "No print history yet." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch kein Druckverlauf." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aún no hay historial de impresión." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun historique d’impression pour l’instant." } }
+      }
+    },
+    "Print history" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druckverlauf" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Historial de impresión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Historique d’impression" } }
+      }
+    },
+    "Print time" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Druckzeit" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tiempo de impresión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Temps d’impression" } }
+      }
+    },
+    "Runs" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Durchläufe" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ejecuciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Lancements" } }
+      }
+    },
+    "Started" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gestartet" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Iniciado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Démarré le" } }
+      }
+    },
+    "Summary" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zusammenfassung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Resumen" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Résumé" } }
+      }
+    },
+    "Timeline" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zeitverlauf" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cronología" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Chronologie" } }
+      }
+    },
+    "Type" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Typ" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tipo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Type" } }
+      }
+    },
+    "Used" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbraucht" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Utilisé" } }
+      }
+    },
     "Add a Bambuddy server to get started." : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Füge einen Bambuddy-Server hinzu, um zu beginnen." } },
@@ -15,11 +1113,53 @@
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ajouter un serveur" } }
       }
     },
+    "API key" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "API-Schlüssel" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Clave de API" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Clé d’API" } }
+      }
+    },
+    "Authentication" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Authentifizierung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Autenticación" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Authentification" } }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abbrechen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cancelar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Annuler" } }
+      }
+    },
+    "Client ID" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Client-ID" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "ID de cliente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant client" } }
+      }
+    },
+    "Client Secret" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Client-Geheimnis" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Secreto de cliente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Secret client" } }
+      }
+    },
     "Close" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Schließen" } },
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Fermer" } }
+      }
+    },
+    "Cloudflare Access" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access" } }
       }
     },
     "Coming soon" : {
@@ -29,11 +1169,161 @@
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Bientôt disponible" } }
       }
     },
+    "Connected. Authentication is disabled on this server." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbunden. Die Authentifizierung ist auf diesem Server deaktiviert." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conectado. La autenticación está desactivada en este servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté. L’authentification est désactivée sur ce serveur." } }
+      }
+    },
+    "Connected. Authentication is enabled on this server." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbunden. Die Authentifizierung ist auf diesem Server aktiviert." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conectado. La autenticación está activada en este servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connecté. L’authentification est activée sur ce serveur." } }
+      }
+    },
+    "Connection" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conexión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connexion" } }
+      }
+    },
+    "Connection failed: %@" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindung fehlgeschlagen: %@" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Error de conexión: %@" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Échec de la connexion : %@" } }
+      }
+    },
+    "Connection is not encrypted (HTTP)." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Verbindung ist nicht verschlüsselt (HTTP)." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La conexión no está cifrada (HTTP)." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La connexion n’est pas chiffrée (HTTP)." } }
+      }
+    },
+    "Connection test" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindungstest" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Prueba de conexión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Test de connexion" } }
+      }
+    },
+    "Could not save server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server konnte nicht gespeichert werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo guardar el servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible d’enregistrer le serveur" } }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Löschen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Eliminar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer" } }
+      }
+    },
+    "Delete server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server löschen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Eliminar servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer le serveur" } }
+      }
+    },
+    "Delete this server?" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diesen Server löschen?" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "¿Eliminar este servidor?" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Supprimer ce serveur ?" } }
+      }
+    },
+    "Edit" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bearbeiten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Editar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modifier" } }
+      }
+    },
+    "Edit server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server bearbeiten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Editar servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modifier le serveur" } }
+      }
+    },
+    "Enabled" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Aktiviert" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Activado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Activé" } }
+      }
+    },
+    "Enter a server URL." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gib eine Server-URL ein." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Introduce la URL de un servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Saisis l’URL d’un serveur." } }
+      }
+    },
+    "Insecure connection (HTTP)" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Unsichere Verbindung (HTTP)" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Conexión no segura (HTTP)" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Connexion non sécurisée (HTTP)" } }
+      }
+    },
+    "Its stored credentials will be removed from this device." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die gespeicherten Zugangsdaten werden von diesem Gerät entfernt." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sus credenciales guardadas se eliminarán de este dispositivo." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ses identifiants enregistrés seront supprimés de cet appareil." } }
+      }
+    },
+    "Label" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bezeichnung" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Etiqueta" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Libellé" } }
+      }
+    },
+    "Method" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Methode" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Método" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Méthode" } }
+      }
+    },
+    "New server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Neuer Server" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Nuevo servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nouveau serveur" } }
+      }
+    },
     "No servers" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Server" } },
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Sin servidores" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucun serveur" } }
+      }
+    },
+    "None" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ninguna" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune" } }
+      }
+    },
+    "OK" : {
+      "shouldTranslate" : false
+    },
+    "Server" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Serveur" } }
       }
     },
     "Server management arrives in the next milestone." : {
@@ -43,11 +1333,98 @@
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "La gestion des serveurs arrive au prochain jalon." } }
       }
     },
+    "Server URL" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Server-URL" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "URL del servidor" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "URL du serveur" } }
+      }
+    },
     "Servers" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Server" } },
         "es" : { "stringUnit" : { "state" : "translated", "value" : "Servidores" } },
         "fr" : { "stringUnit" : { "state" : "translated", "value" : "Serveurs" } }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Speichern" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Enregistrer" } }
+      }
+    },
+    "Test connection" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbindung testen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Probar conexión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Tester la connexion" } }
+      }
+    },
+    "The server response could not be read." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Serverantwort konnte nicht gelesen werden." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo leer la respuesta del servidor." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "La réponse du serveur n’a pas pu être lue." } }
+      }
+    },
+    "The server returned an unexpected status (%lld)." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Der Server hat einen unerwarteten Status zurückgegeben (%lld)." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "El servidor devolvió un estado inesperado (%lld)." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Le serveur a renvoyé un statut inattendu (%lld)." } }
+      }
+    },
+    "The server URL is not valid." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Server-URL ist ungültig." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La URL del servidor no es válida." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "L’URL du serveur n’est pas valide." } }
+      }
+    },
+    "This server uses plain HTTP. Traffic is not encrypted; use only on a trusted network." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dieser Server verwendet unverschlüsseltes HTTP. Der Datenverkehr ist nicht verschlüsselt; nur in einem vertrauenswürdigen Netzwerk verwenden." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Este servidor usa HTTP sin cifrar. El tráfico no está cifrado; úsalo solo en una red de confianza." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Ce serveur utilise du HTTP en clair. Le trafic n’est pas chiffré ; à n’utiliser que sur un réseau de confiance." } }
+      }
+    },
+    "This URL is not valid." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diese URL ist ungültig." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esta URL no es válida." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Cette URL n’est pas valide." } }
+      }
+    },
+    "Unauthorized — check your credentials." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht autorisiert – überprüfe deine Zugangsdaten." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No autorizado: comprueba tus credenciales." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Non autorisé — vérifie tes identifiants." } }
+      }
+    },
+    "Unsupported scheme “%@”. Use http or https." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Schema „%@“ nicht unterstützt. Verwende http oder https." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esquema «%@» no admitido. Usa http o https." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Schéma « %@ » non pris en charge. Utilise http ou https." } }
+      }
+    },
+    "URL" : {
+      "shouldTranslate" : false
+    },
+    "Use Cloudflare Access" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Cloudflare Access verwenden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usar Cloudflare Access" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Utiliser Cloudflare Access" } }
+      }
+    },
+    "Username & password" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Benutzername und Passwort" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Usuario y contraseña" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant et mot de passe" } }
       }
     }
   },

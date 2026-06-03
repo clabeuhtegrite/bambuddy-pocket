@@ -17,32 +17,32 @@ Légende : ⬜ à faire · 🟦 en cours · ✅ fait
 ## Phase 0 — Socle 🟦
 Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ Projet Xcode (XcodeGen) + structure de modules (App + paquet SPM Domain/Networking/DesignSystem).
-- 🟦 Couche réseau : client REST (`async/await`) + client WebSocket (TLS, reconnexion, ping/pong).
-- ⬜ Injection des en-têtes **Cloudflare Access** + Bearer/X-API-Key sur REST **et** WS **et** caméra.
-- 🟦 Modèles de domaine d'après le contrat (✅ PrinterStatus/AMS/HMS/Printer ; ⬜ Archive, QueueItem…).
-- ⬜ Multi-serveurs : ajout/édition par URL, test de connexion, stockage **Keychain** des secrets.
-- ⬜ Auth : détection `auth_status`, login user/pass + 2FA, clé d'API, sans-auth.
+- ✅ Couche réseau : client REST (`async/await`) + client WebSocket (ping, reconnexion appelant).
+- 🟦 Injection des en-têtes **Cloudflare Access** + Bearer/X-API-Key sur REST **et** WS (✅) **et** caméra (⬜).
+- 🟦 Modèles de domaine d'après le contrat (✅ PrinterStatus/AMS/HMS/Printer + événements WS + fusion ; ⬜ Archive, QueueItem…).
+- ✅ Multi-serveurs : ajout/édition par URL, test de connexion, stockage **Keychain** des secrets.
+- 🟦 Auth : détection `auth_status` (✅ sonde), clé d'API (✅), sans-auth (✅) ; ⬜ login user/pass + 2FA.
 - 🟦 Design system (✅ tokens ; ⬜ composants, typographie Dynamic Type), mode sombre.
 - ✅ i18n FR/EN/ES/DE (String Catalog) ; ⬜ accessibilité (VoiceOver) au fil de l'eau.
 - ✅ Privacy manifest + `NSLocalNetworkUsageDescription` + ATS (exception HTTP local).
 - ✅ CI : build + tests + lint (SwiftLint/SwiftFormat) + shellcheck sur push/PR.
 
-## Phase 1 — MVP cœur (lecture, testable sur la démo) ⬜
-- ⬜ **Liste multi-imprimantes** + statut **temps réel** (WebSocket, fusion des deltas).
-- ⬜ **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
-  restant), état, AMS/bobines, ventilateurs, lumière chambre, **erreurs HMS** (code+sévérité+texte).
-- ⬜ **Caméra** : flux MJPEG + snapshot (token si auth).
-- ⬜ **Archive d'impressions** : liste (`ArchiveSlim`), détail (`ArchiveResponse`), vignettes,
-  photos, métadonnées, coût/énergie, timelapse.
+## Phase 1 — MVP cœur (lecture, testable sur la démo) 🟦
+- ✅ **Liste multi-imprimantes** + statut **temps réel** (WebSocket, fusion des deltas).
+- ✅ **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
+  restant), état, AMS/bobines, **erreurs HMS** (code+sévérité). ⬜ ventilateurs détaillés.
+- 🟦 **Caméra** : ✅ snapshot rafraîchi ; ⬜ vrai flux MJPEG multipart + token si auth.
+- 🟦 **Archive d'impressions** : ✅ liste + détail (statut, durée, filament, coût/énergie,
+  chronologie) + recherche ; ⬜ vignettes, photos, timelapse.
 - ⬜ État serveur (`/system/info`, santé) + sélecteur de serveur.
 
-## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) ⬜
-- ⬜ **Contrôles d'impression** : pause/reprise/stop, skip-objects, vitesse, lumière, clear-plate,
-  AMS load/unload, séchage, clear HMS.
-- ⬜ **File d'attente & planification** : liste, ajout, **réordonnancement (drag/drop)**,
+## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) 🟦
+- 🟦 **Contrôles d'impression** : ✅ pause/reprise/stop, vitesse, lumière chambre, clear HMS,
+  AMS unload, séchage ; ⬜ skip-objects, clear-plate, AMS load (mapping tray).
+- 🟦 **File d'attente** : ✅ liste + **réordonnancement (drag/drop)** ; ⬜ ajout,
   start/stop/cancel, lots (batches), planification (`scheduled_time`), distribution auto.
-- ⬜ **Notifications EN-APP** dérivées du WebSocket (fin d'impression, début, HMS sévère,
-  bobine manquante, plateau non vide) + flux d'activité (`notifications/logs`).
+- 🟦 **Notifications EN-APP** : ✅ flux d'activité (`notifications/logs`) en lecture ; ⬜ dérivation
+  temps réel depuis le WebSocket (fin/début d'impression, HMS sévère, bobine manquante…).
 - ⬜ Gestion d'imprimante côté serveur (ajout/édition `PrinterCreate`).
 
 ## Phase 3 — Avancé ⬜

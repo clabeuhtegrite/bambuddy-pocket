@@ -16,9 +16,39 @@ public struct ServerConnectionFactory: Sendable {
     /// Construit un client REST authentifié pour ce serveur.
     public func makeClient(for configuration: ServerConfiguration) throws -> RESTClient {
         let secrets = try secretStore.secrets(for: configuration.id)
+        return makeClient(for: configuration, secrets: secrets)
+    }
+
+    /// Construit un client REST avec des secrets **explicites** (sans passer par le store) —
+    /// utile pour se connecter avant l'enregistrement du serveur (login user/pass).
+    public func makeClient(for configuration: ServerConfiguration, secrets: ServerSecrets) -> RESTClient {
         let authorization = RequestAuthorization(configuration: configuration, secrets: secrets)
         let factory = RequestFactory(apiBaseURL: configuration.apiBaseURL, authorization: authorization)
         return RESTClient(factory: factory, session: session)
+    }
+
+    /// Construit le client WebSocket temps réel pour ce serveur (mêmes en-têtes auth/Cloudflare).
+    public func makeWebSocketClient(for configuration: ServerConfiguration) throws -> WebSocketClient {
+        guard let url = configuration.webSocketURL else { throw APIError.invalidURL }
+        let secrets = try secretStore.secrets(for: configuration.id)
+        let authorization = RequestAuthorization(configuration: configuration, secrets: secrets)
+        return WebSocketClient(
+            url: url,
+            headers: authorization.headerFields,
+            connector: URLSessionWebSocketConnector(session: session)
+        )
+    }
+
+    /// Construit le client de flux caméra MJPEG pour une imprimante (mêmes en-têtes auth).
+    public func makeCameraStream(for configuration: ServerConfiguration, printerID: Int) throws -> CameraStreamClient {
+        let secrets = try secretStore.secrets(for: configuration.id)
+        let authorization = RequestAuthorization(configuration: configuration, secrets: secrets)
+        let url = configuration.apiBaseURL
+            .appending(path: "printers")
+            .appending(path: "\(printerID)")
+            .appending(path: "camera")
+            .appending(path: "stream")
+        return CameraStreamClient(url: url, headers: authorization.headerFields, session: session)
     }
 
     /// Teste la connexion en interrogeant `/auth/status` (léger, ne requiert pas d'auth).

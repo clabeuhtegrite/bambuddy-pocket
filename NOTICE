@@ -15,3 +15,18 @@ auto-hébergé Bambuddy (https://github.com/maziggy/bambuddy), distribué sous
 GNU AGPL v3. Bambuddy Pocket dialogue avec Bambuddy uniquement via son API réseau
 publique (REST + WebSocket) et n'incorpore aucun code source de Bambuddy.
 « Bambuddy » et « Bambu Lab » sont des marques de leurs détenteurs respectifs.
+
+----------------------------------------------------------------------
+Composants tiers embarqués (viewer 3D)
+----------------------------------------------------------------------
+L'écran de prévisualisation 3D embarque les bibliothèques JavaScript suivantes
+(BambuddyPocket/Resources/Viewer/), chargées localement (hors-ligne, sans CDN) :
+
+- three.js (r0.137.0) — © three.js authors — licence MIT
+  https://github.com/mrdoob/three.js (build + OrbitControls, STLLoader, 3MFLoader)
+- fflate — © Arjun Barrett — licence MIT
+  https://github.com/101arrowz/fflate
+
+Ces composants sont sous licence MIT (compatible AGPL-3.0). Leur copyright et leur
+licence MIT d'origine sont conservés dans les en-têtes des fichiers concernés.
+

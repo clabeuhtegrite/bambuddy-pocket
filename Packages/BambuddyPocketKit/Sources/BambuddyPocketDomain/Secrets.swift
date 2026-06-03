@@ -71,3 +71,25 @@ public final class InMemorySecretStore: SecretStore, @unchecked Sendable {
         storage[serverID] = nil
     }
 }
+
+/// Implémentation en mémoire de `ServerStore` (tests & previews) : aucune persistance disque.
+public final class InMemoryServerStore: ServerStore, @unchecked Sendable {
+    private let lock = NSLock()
+    private var servers: [ServerConfiguration]
+
+    public init(_ servers: [ServerConfiguration] = []) {
+        self.servers = servers
+    }
+
+    public func load() throws -> [ServerConfiguration] {
+        lock.lock()
+        defer { lock.unlock() }
+        return servers
+    }
+
+    public func save(_ servers: [ServerConfiguration]) throws {
+        lock.lock()
+        defer { lock.unlock() }
+        self.servers = servers
+    }
+}
