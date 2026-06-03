@@ -11,8 +11,8 @@ domaine en revue (PR #3). Repo : https://github.com/clabeuhtegrite/bambuddy-pock
 minimale, i18n, CI iOS) et les modèles de domaine (PrinterStatus/AMS/HMS/Printer + décodage testé)
 sont faits. ✅ `RESTClient`/`RequestFactory` (PR #4). ✅ `SecretStore` (Keychain + InMemory),
 `ServerStore` (UserDefaults), mapping `ServerSecrets`→`RequestAuthorization` (PR #5). Prochaine brique :
-1. **Composition root / DI** (`AppEnvironment`) + `ServerConnectionFactory`
-   (`ServerConfiguration` + `SecretStore` → `RESTClient` configuré).
+1. **Composition root / DI** : `AppEnvironment` exposant `ServerStore` + `SecretStore` +
+   `ServerConnectionFactory` (✅ fait, avec sonde `/auth/status`) — à câbler dans la cible app.
 2. **UI multi-serveurs** : liste, ajout/édition par URL, saisie secrets (Keychain), test de
    connexion (`GET /system/info` ou `/auth/status`), avertissement HTTP en clair.
 3. `WebSocketClient` (URLSessionWebSocketTask, reconnexion, ping/pong) + fusion des deltas `PrinterStatus`.
@@ -64,6 +64,7 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (6)** — Phase 0 : ServerConnectionFactory + sonde `/auth/status` (AuthStatus) ; tests mock fusionnés en 1 suite sérialisée (PR #6, 27 tests).
 - **2026-06-03 (5)** — Phase 0 : secrets/persistance (Keychain SecretStore, ServerStore, mapping auth) — PR #5, 25 tests.
 - **2026-06-03 (4)** — Phase 0 : couche REST (RESTClient + RequestFactory auth/Cloudflare) + tests (PR #4, 18 tests).
 - **2026-06-03 (3)** — Phase 0 : modèles de domaine PrinterStatus/AMS/HMS/Printer + décodage (PR #3, 13 tests).
