@@ -67,6 +67,11 @@ final class ServerListModel {
         ArchiveListModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de la file d'attente pour ce serveur.
+    func makeQueueListModel(for configuration: ServerConfiguration) -> QueueListModel {
+        QueueListModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     func delete(_ configuration: ServerConfiguration) throws {
         servers.removeAll { $0.id == configuration.id }
         try serverStore.save(servers)

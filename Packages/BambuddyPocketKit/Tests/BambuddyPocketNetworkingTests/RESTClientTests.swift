@@ -200,4 +200,16 @@ struct MockNetworkingTests {
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/2/camera/snapshot")
     }
+
+    @Test("queue() cible /queue/ et décode la liste")
+    func listsQueue() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":5,"position":1,"status":"pending","archive_name":"Gear"}]"#)
+        let client = try makeClient()
+        let items = try await client.queue()
+        #expect(items.map(\.id) == [5])
+        #expect(items.first?.displayName == "Gear")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/")
+    }
 }

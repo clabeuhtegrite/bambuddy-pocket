@@ -1,6 +1,34 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Couldn’t load the queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warteschlange konnte nicht geladen werden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No se pudo cargar la cola" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Impossible de charger la file" } }
+      }
+    },
+    "No prints are queued." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Drucke in der Warteschlange." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "No hay impresiones en cola." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Aucune impression en file." } }
+      }
+    },
+    "Print queue" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warteschlange" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cola de impresión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "File d’attente" } }
+      }
+    },
+    "Queue is empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Warteschlange ist leer" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "La cola está vacía" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "File vide" } }
+      }
+    },
     "Camera" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Kamera" } },

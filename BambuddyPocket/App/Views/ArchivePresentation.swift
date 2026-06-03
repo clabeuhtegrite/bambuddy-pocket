@@ -4,15 +4,17 @@ import SwiftUI
 
 /// Formatage et couleurs pour l'affichage des archives d'impression.
 enum ArchivePresentation {
-    /// Couleur sémantique d'un statut d'archive (valeur brute serveur).
+    /// Couleur sémantique d'un statut d'archive ou de file (valeur brute serveur).
     static func statusColor(_ status: String) -> Color {
         switch status.lowercased() {
-        case "success", "completed", "finished", "done":
+        case "success", "completed", "finished", "done", "printing":
             .green
         case "failed", "error":
             .red
         case "cancelled", "canceled", "stopped":
             .orange
+        case "pending":
+            .blue
         default:
             .secondary
         }

@@ -27,6 +27,11 @@ struct ServerDetailView: View {
                     Label("Printers", systemImage: "printer")
                 }
                 NavigationLink {
+                    QueueListView(server: current, serverList: model)
+                } label: {
+                    Label("Print queue", systemImage: "list.number")
+                }
+                NavigationLink {
                     ArchiveListView(server: current, serverList: model)
                 } label: {
                     Label("Print history", systemImage: "clock.arrow.circlepath")

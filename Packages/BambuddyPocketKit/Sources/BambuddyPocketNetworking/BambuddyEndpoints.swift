@@ -25,6 +25,11 @@ public extension APIClient {
         try await get("/archives/\(id)")
     }
 
+    /// File d'attente d'impression (`GET /queue/`).
+    func queue() async throws -> [QueueItem] {
+        try await get("/queue/")
+    }
+
     /// Requête `POST` sans réponse utile (actions de contrôle).
     func post(_ path: String, body: Data? = nil) async throws {
         let _: EmptyResponse = try await send(path, method: .post, body: body)

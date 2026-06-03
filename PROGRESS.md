@@ -69,6 +69,10 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (12)** — Phase 2 : **file d'attente** (lecture) — modèle `QueueItem`, endpoint
+  `queue()`, écran liste ordonnée (position, imprimante, statut) ; lien depuis le détail serveur.
+- **2026-06-03 (11)** — Phase 1 : **caméra** — `RESTClient.data(forPath:)` + `cameraSnapshot`,
+  `CameraView` (snapshots rafraîchis ~1 s) + lien dans le détail imprimante.
 - **2026-06-03 (10)** — Phase 1 : **archive d'impressions** — modèle `Archive` (sous-ensemble
   robuste d'`ArchiveResponse`, dates en `String`), endpoints `archives()`/`archive(id:)`, écrans
   liste + détail (statut, durée, filament, coût/énergie, chronologie), helper `ErrorMessage`
