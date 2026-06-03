@@ -40,7 +40,7 @@ else
   echo "Chargé via launchctl load."
 fi
 
-echo "OK. Le superviseur s'exécutera au chargement puis toutes les heures."
+echo "OK. Le superviseur s'exécutera au chargement puis toutes les 15 minutes."
 echo "Logs : $LOG_DIR/"
 echo "Déclencher maintenant : launchctl kickstart -k gui/$UID_NUM/$LABEL"
 echo "Désinstaller : launchctl bootout gui/$UID_NUM \"$DEST\" && rm \"$DEST\""

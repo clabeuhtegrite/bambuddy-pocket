@@ -8,7 +8,7 @@ mode **headless**, en lui demandant de reprendre le travail à partir de [`../..
 - [`bambuddy-pocket-supervisor.sh`](bambuddy-pocket-supervisor.sh) — le worker : lance `claude -p …` en
   headless, détecte les erreurs de quota et **réessaie avec back-off exponentiel**, journalise.
 - [`com.bambuddypocket.supervisor.plist.template`](com.bambuddypocket.supervisor.plist.template) — agent
-  **launchd** (toutes les heures), avec placeholders.
+  **launchd** (toutes les 15 minutes), avec placeholders.
 - [`install-supervisor.sh`](install-supervisor.sh) — rend le template avec les chemins absolus
   de la machine et charge l'agent.
 - `logs/` — journaux d'exécution (ignoré par git).
@@ -37,7 +37,7 @@ décharger l'agent quand tu travailles toi-même en interactif (voir « Désinst
 cd "$(git rev-parse --show-toplevel)/scripts/supervisor"
 ./install-supervisor.sh
 ```
-- S'exécute au chargement, puis **toutes les heures**.
+- S'exécute au chargement, puis **toutes les 15 minutes**.
 - Déclencher immédiatement :
   `launchctl kickstart -k gui/$(id -u)/com.bambuddypocket.supervisor`
 - Suivre les logs : `tail -f logs/run-*.log`
@@ -50,8 +50,8 @@ rm "$HOME/Library/LaunchAgents/com.bambuddypocket.supervisor.plist"
 
 ## Variante cron (si tu préfères)
 ```cron
-# crontab -e — toutes les heures à la minute 7
-7 * * * * /bin/bash "/CHEMIN/ABSOLU/scripts/supervisor/bambuddy-pocket-supervisor.sh" >> "/CHEMIN/ABSOLU/scripts/supervisor/logs/cron.log" 2>&1
+# crontab -e — toutes les 15 minutes
+*/15 * * * * /bin/bash "/CHEMIN/ABSOLU/scripts/supervisor/bambuddy-pocket-supervisor.sh" >> "/CHEMIN/ABSOLU/scripts/supervisor/logs/cron.log" 2>&1
 ```
 > Pense à fournir un `PATH` complet dans l'environnement cron (cron a un PATH minimal),
 > ou exporte `CLAUDE_BIN` et `DEVELOPER_DIR` en tête de la ligne/du crontab.
@@ -64,7 +64,7 @@ rm "$HOME/Library/LaunchAgents/com.bambuddypocket.supervisor.plist"
 | `MAX_RETRIES` | `5` | Tentatives sur quota dans une exécution. |
 | `BASE_BACKOFF` | `300` | Back-off initial (s), doublé à chaque essai. |
 | `RUN_TIMEOUT` | `5400` | Durée max d'une exécution (s) ; `0` = illimité (nécessite `timeout`/`gtimeout`). |
-| `HEARTBEAT_TTL_MIN` | `45` | En-deçà de cet âge du heartbeat, le cycle est ignoré (session interactive active). |
+| `HEARTBEAT_TTL_MIN` | `20` | En-deçà de cet âge du heartbeat, le cycle est ignoré (session interactive active). |
 
 ## Test manuel (sans launchd)
 ```bash
