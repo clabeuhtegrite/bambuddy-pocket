@@ -115,9 +115,37 @@ public extension APIClient {
         try await post("/queue/\(id)/cancel")
     }
 
+    /// Arrête un élément en cours d'impression (`POST /queue/{id}/stop`).
+    func stopQueueItem(id: Int) async throws {
+        try await post("/queue/\(id)/stop")
+    }
+
     /// Supprime un élément de la file (`DELETE /queue/{id}`).
     func deleteQueueItem(id: Int) async throws {
         try await delete("/queue/\(id)")
+    }
+
+    /// Édite un élément en attente (`PATCH /queue/{id}`) et renvoie l'élément mis à jour.
+    func updateQueueItem(id: Int, _ update: QueueItemUpdate) async throws -> QueueItem {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/queue/\(id)", method: .patch, body: body)
+    }
+
+    /// Met à jour plusieurs éléments en attente d'un coup (`PATCH /queue/bulk`).
+    @discardableResult
+    func bulkUpdateQueue(_ update: QueueBulkUpdate) async throws -> QueueBulkUpdateResponse {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/queue/bulk", method: .patch, body: body)
+    }
+
+    /// Liste les lots d'impression (`GET /queue/batches`).
+    func queueBatches() async throws -> [PrintBatch] {
+        try await get("/queue/batches")
+    }
+
+    /// Annule un lot et tous ses éléments en attente (`DELETE /queue/batches/{id}`).
+    func cancelQueueBatch(id: Int) async throws {
+        try await delete("/queue/batches/\(id)")
     }
 
     // MARK: Contrôles d'impression (cf. docs/bambuddy-api.md §7)

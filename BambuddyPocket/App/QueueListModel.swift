@@ -9,6 +9,8 @@ import Observation
 @Observable
 final class QueueListModel {
     private(set) var items: [QueueItem] = []
+    private(set) var batches: [PrintBatch] = []
+    private(set) var printers: [Printer] = []
     private(set) var hasLoaded = false
     var loadError: String?
 
@@ -23,7 +25,12 @@ final class QueueListModel {
     func load() async {
         do {
             let client = try connectionFactory.makeClient(for: server)
-            items = try await client.queue().sorted { $0.position < $1.position }
+            async let items = client.queue()
+            async let batches = client.queueBatches()
+            async let printers = client.printers()
+            self.items = try await items.sorted { $0.position < $1.position }
+            self.batches = try await batches
+            self.printers = try await printers
             loadError = nil
         } catch {
             loadError = ErrorMessage.text(for: error)
@@ -58,8 +65,22 @@ final class QueueListModel {
         await act { try await $0.cancelQueueItem(id: item.id) }
     }
 
+    func stop(_ item: QueueItem) async {
+        await act { try await $0.stopQueueItem(id: item.id) }
+    }
+
     func delete(_ item: QueueItem) async {
         await act { try await $0.deleteQueueItem(id: item.id) }
+    }
+
+    /// Applique une édition à un élément en attente puis recharge la file.
+    func update(_ item: QueueItem, with edit: QueueItemUpdate) async {
+        await act { _ = try await $0.updateQueueItem(id: item.id, edit) }
+    }
+
+    /// Annule un lot (tous ses éléments en attente) puis recharge.
+    func cancelBatch(_ batch: PrintBatch) async {
+        await act { try await $0.cancelQueueBatch(id: batch.id) }
     }
 
     private func act(_ action: (RESTClient) async throws -> Void) async {
