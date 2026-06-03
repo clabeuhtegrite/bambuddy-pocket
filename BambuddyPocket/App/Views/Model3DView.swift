@@ -29,7 +29,9 @@ struct Model3DView: UIViewRepresentable {
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.scrollView.isScrollEnabled = false
         webView.isOpaque = false
-        if let htmlURL = Bundle.main.url(forResource: "viewer", withExtension: "html") {
+        let htmlURL = Bundle.main.url(forResource: "viewer", withExtension: "html")
+            ?? Bundle.main.url(forResource: "viewer", withExtension: "html", subdirectory: "Viewer")
+        if let htmlURL {
             webView.loadFileURL(htmlURL, allowingReadAccessTo: htmlURL.deletingLastPathComponent())
         }
         return webView
