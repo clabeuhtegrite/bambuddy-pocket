@@ -1,6 +1,61 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "About" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Über" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Acerca de" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "À propos" } }
+      }
+    },
+    "Free software under the GNU AGPL v3.0 (App Store exception)." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Freie Software unter GNU AGPL v3.0 (App-Store-Ausnahme)." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Software libre bajo GNU AGPL v3.0 (excepción App Store)." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Logiciel libre sous GNU AGPL v3.0 (exception App Store)." } }
+      }
+    },
+    "License" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Lizenz" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Licencia" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Licence" } }
+      }
+    },
+    "Source code" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Quellcode" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Código fuente" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Code source" } }
+      }
+    },
+    "Third-party components" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Drittanbieter-Komponenten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Componentes de terceros" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Composants tiers" } }
+      }
+    },
+    "Unaffiliated third-party client. Trademarks belong to their respective owners." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nicht verbundener Drittanbieter-Client. Marken gehören ihren jeweiligen Eigentümern." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cliente de terceros no afiliado. Las marcas pertenecen a sus respectivos dueños." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Client tiers non affilié. Les marques appartiennent à leurs détenteurs respectifs." } }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Version" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Versión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Version" } }
+      }
+    },
+    "fflate" : {
+      "shouldTranslate" : false
+    },
+    "three.js" : {
+      "shouldTranslate" : false
+    },
     "3D model" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "3D-Modell" } },

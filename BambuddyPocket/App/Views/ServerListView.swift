@@ -7,6 +7,7 @@ import SwiftUI
 struct ServerListView: View {
     @Bindable var model: ServerListModel
     @State private var presentedForm: ServerFormMode?
+    @State private var showingAbout = false
 
     var body: some View {
         NavigationStack {
@@ -19,6 +20,14 @@ struct ServerListView: View {
             }
             .navigationTitle("Servers")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showingAbout = true
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
+                    .accessibilityLabel("About")
+                }
                 ToolbarItem(placement: .primaryAction) {
                     Button {
                         presentedForm = .add
@@ -29,6 +38,9 @@ struct ServerListView: View {
             }
             .sheet(item: $presentedForm) { mode in
                 ServerEditView(model: model, mode: mode)
+            }
+            .sheet(isPresented: $showingAbout) {
+                AboutView()
             }
             .onAppear { model.reload() }
         }
