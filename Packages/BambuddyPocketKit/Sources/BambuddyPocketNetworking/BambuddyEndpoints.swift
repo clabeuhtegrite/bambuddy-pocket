@@ -35,6 +35,26 @@ public extension APIClient {
         try await get("/notifications/logs")
     }
 
+    // MARK: Authentification (cf. docs/bambuddy-api.md §3)
+
+    /// Connexion par identifiants (`POST /auth/login`).
+    func login(username: String, password: String) async throws -> LoginResponse {
+        let body = try JSONEncoder.bambuddy().encode(LoginRequest(username: username, password: password))
+        return try await send("/auth/login", method: .post, body: body)
+    }
+
+    /// Vérification du second facteur (`POST /auth/2fa/verify`).
+    func verifyTwoFactor(preAuthToken: String, code: String, method: String?) async throws -> TwoFAVerifyResponse {
+        let request = TwoFAVerifyRequest(preAuthToken: preAuthToken, code: code, method: method)
+        let body = try JSONEncoder.bambuddy().encode(request)
+        return try await send("/auth/2fa/verify", method: .post, body: body)
+    }
+
+    /// Utilisateur courant — valide le token (`GET /auth/me`).
+    func currentUser() async throws -> User {
+        try await get("/auth/me")
+    }
+
     /// Requête `POST` sans réponse utile (actions de contrôle).
     func post(_ path: String, body: Data? = nil) async throws {
         let _: EmptyResponse = try await send(path, method: .post, body: body)

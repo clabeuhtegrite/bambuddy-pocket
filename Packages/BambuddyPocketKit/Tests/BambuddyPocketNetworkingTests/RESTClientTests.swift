@@ -228,4 +228,17 @@ struct MockNetworkingTests {
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/notifications/logs")
     }
+
+    @Test("login() poste les identifiants sur /auth/login")
+    func performsLogin() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"access_token":"jwt-xyz","token_type":"bearer","requires_2fa":false}"#)
+        let client = try makeClient()
+        let response = try await client.login(username: "ad", password: "pw")
+        #expect(response.accessToken == "jwt-xyz")
+        #expect(response.needsTwoFactor == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/login")
+    }
 }

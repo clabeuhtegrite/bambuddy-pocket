@@ -69,6 +69,9 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-03 (14)** — Phase 0 (auth) : couche **login user/pass + 2FA** — modèles
+  (`LoginRequest/Response`, `TwoFAVerify*`, `User`) + endpoints `login`/`verifyTwoFactor`/
+  `currentUser` + tests. UI de connexion : à câbler.
 - **2026-06-03 (13)** — Phase 2 : **flux d'activité** serveur (`/notifications/logs`) — modèle
   `ActivityEntry`, endpoint `activityLog()`, écran liste (succès/échec, titre, message, date).
 - **2026-06-03 (12)** — Phase 2 : **file d'attente** (lecture) — modèle `QueueItem`, endpoint
