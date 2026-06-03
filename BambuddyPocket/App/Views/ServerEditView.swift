@@ -161,11 +161,10 @@ struct ServerEditView: View {
     private func save() {
         do {
             let url = try ServerURLParser.normalize(urlText)
-            let id: UUID
-            if case let .edit(server) = mode {
-                id = server.id
+            let id = if case let .edit(server) = mode {
+                server.id
             } else {
-                id = UUID()
+                UUID()
             }
             let configuration = ServerConfiguration(
                 id: id,

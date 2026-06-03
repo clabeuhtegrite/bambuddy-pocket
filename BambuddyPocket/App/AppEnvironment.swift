@@ -12,16 +12,6 @@ struct AppEnvironment {
     let secretStore: SecretStore
     let connectionFactory: ServerConnectionFactory
 
-    init(
-        serverStore: ServerStore,
-        secretStore: SecretStore,
-        connectionFactory: ServerConnectionFactory
-    ) {
-        self.serverStore = serverStore
-        self.secretStore = secretStore
-        self.connectionFactory = connectionFactory
-    }
-
     /// Environnement de production : secrets au Keychain, liste en `UserDefaults`.
     static func live() -> AppEnvironment {
         let secretStore = KeychainSecretStore()
