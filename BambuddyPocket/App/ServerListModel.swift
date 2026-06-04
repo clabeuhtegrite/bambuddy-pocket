@@ -144,6 +144,11 @@ final class ServerListModel {
         MaintenanceModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model des mises à jour firmware pour ce serveur.
+    func makeFirmwareModel(for configuration: ServerConfiguration) -> FirmwareModel {
+        FirmwareModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)
