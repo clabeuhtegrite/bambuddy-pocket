@@ -261,6 +261,28 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/2/camera/snapshot")
     }
 
+    @Test("cameraSnapshot ajoute le jeton de flux en ?token= quand il est fourni")
+    func appendsStreamTokenToSnapshot() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "jpeg-bytes")
+        let client = try makeClient()
+        _ = try await client.cameraSnapshot(printerID: 2, token: "tok 7")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString
+            == "https://host.example.com/api/v1/printers/2/camera/snapshot?token=tok%207")
+    }
+
+    @Test("archiveThumbnail ajoute le jeton de flux en ?token= quand il est fourni")
+    func appendsStreamTokenToArchiveThumbnail() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "png-bytes")
+        let client = try makeClient()
+        _ = try await client.archiveThumbnail(id: 9, token: "abc")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString
+            == "https://host.example.com/api/v1/archives/9/thumbnail?token=abc")
+    }
+
     @Test("cameraStatus cible /camera/status et décode")
     func fetchesCameraStatus() async throws {
         MockURLProtocol.reset()

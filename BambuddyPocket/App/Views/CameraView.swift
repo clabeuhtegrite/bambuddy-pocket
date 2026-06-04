@@ -83,7 +83,10 @@ struct CameraView: View {
     }
 
     private func run() async {
-        if let stream = model.cameraStream(for: printer) {
+        // Jeton de flux : requis sur un serveur protégé (le flux/snapshot est chargé sans en-tête
+        // d'autorisation côté serveur) ; inoffensif si l'auth est désactivée.
+        let token = await model.cameraStreamToken()
+        if let stream = model.cameraStream(for: printer, token: token) {
             do {
                 for try await frame in stream.frames() {
                     try Task.checkCancellation()
@@ -98,12 +101,12 @@ struct CameraView: View {
                 // Flux indisponible → repli sur les snapshots ci-dessous.
             }
         }
-        await snapshotLoop()
+        await snapshotLoop(token: token)
     }
 
-    private func snapshotLoop() async {
+    private func snapshotLoop(token: String?) async {
         while !Task.isCancelled {
-            if let data = await model.cameraSnapshot(for: printer), let decoded = UIImage(data: data) {
+            if let data = await model.cameraSnapshot(for: printer, token: token), let decoded = UIImage(data: data) {
                 image = decoded
                 failed = false
             } else if image == nil {

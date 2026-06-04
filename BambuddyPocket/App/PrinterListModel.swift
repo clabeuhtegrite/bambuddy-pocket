@@ -169,9 +169,22 @@ final class PrinterListModel {
         await runControl { try await $0.stopDrying(id: printer.id, amsID: amsID) }
     }
 
-    /// Client de flux caméra MJPEG pour cette imprimante (`nil` si l'URL/secret échoue).
-    func cameraStream(for printer: Printer) -> CameraStreamClient? {
-        try? connectionFactory.makeCameraStream(for: server, printerID: printer.id)
+    /// Demande un jeton de flux caméra réutilisable (`POST /printers/camera/stream-token`).
+    /// Requis pour le flux/snapshot quand l'auth est activée ; inoffensif sinon. `nil` en cas
+    /// d'échec (on retombe alors sur un accès sans jeton).
+    func cameraStreamToken() async -> String? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.cameraStreamToken().token
+        } catch {
+            return nil
+        }
+    }
+
+    /// Client de flux caméra MJPEG pour cette imprimante (`nil` si l'URL/secret échoue). Le jeton,
+    /// quand il est fourni, autorise l'accès au flux sur un serveur protégé par auth.
+    func cameraStream(for printer: Printer, token: String? = nil) -> CameraStreamClient? {
+        try? connectionFactory.makeCameraStream(for: server, printerID: printer.id, token: token)
     }
 
     /// Détecte si le plateau est vide par vision (`nil` en cas d'échec). Met `controlError` à jour.
@@ -197,11 +210,12 @@ final class PrinterListModel {
         }
     }
 
-    /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…).
-    func cameraSnapshot(for printer: Printer) async -> Data? {
+    /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…). Le jeton,
+    /// quand il est fourni, autorise l'accès au snapshot sur un serveur protégé par auth.
+    func cameraSnapshot(for printer: Printer, token: String? = nil) async -> Data? {
         do {
             let client = try connectionFactory.makeClient(for: server)
-            return try await client.cameraSnapshot(printerID: printer.id)
+            return try await client.cameraSnapshot(printerID: printer.id, token: token)
         } catch {
             return nil
         }

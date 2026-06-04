@@ -36,8 +36,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   restant), état, AMS/bobines, **erreurs HMS** (code+sévérité), ✅ **ventilateurs détaillés**
   (refroidissement de pièce, auxiliaire, chambre, heatbreak — champs réels du status),
   ✅ **profils K (avance de pression)** en consultation seule (`/kprofiles/`).
-- 🟦 **Caméra** : ✅ snapshot rafraîchi + flux MJPEG, ✅ **détection de plateau vide** (check-plate),
-  ✅ **état du flux** (camera/status) + **jeton de flux** (stream-token) ; ⬜ flux authentifié via token.
+- ✅ **Caméra** : snapshot rafraîchi + flux MJPEG, **détection de plateau vide** (check-plate),
+  **état du flux** (camera/status), **jeton de flux** (stream-token) + **flux/snapshot/vignette
+  authentifiés via `?token=`** (requis quand l'auth est activée ; en-têtes auth/Cloudflare conservés).
 - 🟦 **Archive d'impressions** : ✅ liste + détail (statut, durée, filament, coût/énergie,
   chronologie) + **recherche serveur** (`/archives/search`), ✅ **favori** (PATCH/toggle),
   ✅ **édition** (tags, notes, nom, lien), ✅ **suppression**, ✅ **vignette** d'impression +

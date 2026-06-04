@@ -128,10 +128,13 @@ final class ArchiveListModel {
     }
 
     /// Récupère les octets de la vignette d'une archive ; `nil` si absente ou en cas d'échec.
+    /// La vignette exige un **jeton de flux** (`?token=`) quand l'auth est activée (chargée sans
+    /// en-tête d'autorisation côté serveur) ; le jeton est inoffensif si l'auth est désactivée.
     func thumbnail(_ archive: Archive) async -> Data? {
         do {
             let client = try connectionFactory.makeClient(for: server)
-            return try await client.archiveThumbnail(id: archive.id)
+            let token = try? await client.cameraStreamToken().token
+            return try await client.archiveThumbnail(id: archive.id, token: token)
         } catch {
             return nil
         }
