@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -30,18 +31,7 @@ enum PrinterPresentation {
 
     /// Couleur sémantique associée à l'état (badge, pastille).
     static func stateColor(_ state: PrinterState?) -> Color {
-        switch state {
-        case .running, .prepare:
-            .green
-        case .pause:
-            .orange
-        case .failed:
-            .red
-        case .finish:
-            .blue
-        default:
-            .secondary
-        }
+        DSStatusIntent.forPrinterState(state).color
     }
 
     /// Température en °C arrondie (« 210° »), ou « — » si inconnue.
@@ -91,16 +81,7 @@ enum PrinterPresentation {
 
     /// Couleur associée à la sévérité d'une erreur HMS.
     static func severityColor(_ severity: HMSSeverity) -> Color {
-        switch severity {
-        case .fatal, .serious:
-            .red
-        case .common:
-            .orange
-        case .info:
-            .blue
-        case .unknown:
-            .secondary
-        }
+        DSStatusIntent.forHMSSeverity(severity).color
     }
 
     /// Convertit une couleur de bobine au format hex `RRGGBB` ou `RRGGBBAA` en `Color`.
