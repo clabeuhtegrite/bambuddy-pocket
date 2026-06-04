@@ -189,6 +189,11 @@ final class ServerListModel {
         SupportModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de gestion des imprimantes virtuelles pour ce serveur.
+    func makeVirtualPrintersModel(for configuration: ServerConfiguration) -> VirtualPrintersModel {
+        VirtualPrintersModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)

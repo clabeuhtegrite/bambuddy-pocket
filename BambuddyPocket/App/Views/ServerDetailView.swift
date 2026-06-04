@@ -99,6 +99,7 @@ struct ServerDetailView: View {
             link("Backups", "externaldrive") { BackupsView(server: current, serverList: model) }
             link("Remote backup", "arrow.up.forward.app") { GitHubBackupView(server: current, serverList: model) }
             link("Discovery", "antenna.radiowaves.left.and.right") { DiscoveryView(server: current, serverList: model) }
+            link("Virtual printers", "printer.dotmatrix") { VirtualPrintersView(server: current, serverList: model) }
             link("Support", "stethoscope") { SupportView(server: current, serverList: model) }
             link("API keys", "key") { APIKeysView(server: current, serverList: model) }
             link("External links", "link") { ExternalLinksView(server: current, serverList: model) }

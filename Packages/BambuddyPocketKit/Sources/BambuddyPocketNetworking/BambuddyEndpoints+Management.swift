@@ -174,6 +174,37 @@ public extension APIClient {
         try await delete("/print-log/")
     }
 
+    // MARK: Imprimantes virtuelles (cf. docs/bambuddy-api.md §virtual-printers)
+
+    /// Liste les imprimantes virtuelles + table des modèles (`GET /virtual-printers`).
+    func virtualPrinters() async throws -> VirtualPrinterList {
+        try await get("/virtual-printers")
+    }
+
+    /// Détail d'une imprimante virtuelle (`GET /virtual-printers/{id}`).
+    func virtualPrinter(id: Int) async throws -> VirtualPrinter {
+        try await get("/virtual-printers/\(id)")
+    }
+
+    /// Crée une imprimante virtuelle (`POST /virtual-printers`).
+    @discardableResult
+    func createVirtualPrinter(_ create: VirtualPrinterCreate) async throws -> VirtualPrinter {
+        let body = try JSONEncoder.bambuddy().encode(create)
+        return try await send("/virtual-printers", method: .post, body: body)
+    }
+
+    /// Met à jour une imprimante virtuelle (`PUT /virtual-printers/{id}`).
+    @discardableResult
+    func updateVirtualPrinter(id: Int, _ update: VirtualPrinterUpdate) async throws -> VirtualPrinter {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/virtual-printers/\(id)", method: .put, body: body)
+    }
+
+    /// Supprime une imprimante virtuelle (`DELETE /virtual-printers/{id}`).
+    func deleteVirtualPrinter(id: Int) async throws {
+        try await delete("/virtual-printers/\(id)")
+    }
+
     // MARK: Support / diagnostic (cf. docs/bambuddy-api.md §support)
 
     /// État du journal de débogage (`GET /support/debug-logging`).

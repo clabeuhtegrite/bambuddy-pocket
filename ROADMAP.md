@@ -77,6 +77,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   connecté exige un serveur Spoolman réel → non testé.
 - ✅ **Support / diagnostic** : bascule du journal de débogage + journal applicatif (filtre niveau,
   recherche, effacement) (`/support/`). Contrats vérifiés au réel (lecture seule, instance intacte).
+- ✅ **Imprimantes virtuelles** : CRUD complet d'émulateurs Bambu (`/virtual-printers`). Round-trip
+  POST/GET/PUT/DELETE vérifié au réel puis instance restaurée à la VP d'origine.
 - ⬜ Non vérifiables sur l'instance de dev (notés) : MakerWorld (404), metrics (Prometheus off),
   slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman (à activer).
 

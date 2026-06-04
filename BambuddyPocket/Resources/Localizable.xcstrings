@@ -425,6 +425,34 @@
         }
       }
     },
+    "Access code set": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Access code set"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code d’accès défini"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Código de acceso establecido"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugangscode festgelegt"
+          }
+        }
+      }
+    },
     "Access token": {
       "localizations": {
         "en": {
@@ -657,6 +685,34 @@
         }
       }
     },
+    "Add a virtual printer to emulate a Bambu device for development and testing.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a virtual printer to emulate a Bambu device for development and testing."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez une imprimante virtuelle pour émuler un appareil Bambu à des fins de développement et de test."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade una impresora virtual para emular un dispositivo Bambu para desarrollo y pruebas."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge einen virtuellen Drucker hinzu, um ein Bambu-Gerät für Entwicklung und Tests zu emulieren."
+          }
+        }
+      }
+    },
     "Add link": {
       "localizations": {
         "de": {
@@ -719,6 +775,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ajouter à la file"
+          }
+        }
+      }
+    },
+    "Add virtual printer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add virtual printer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une imprimante virtuelle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir impresora virtual"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Virtuellen Drucker hinzufügen"
           }
         }
       }
@@ -797,6 +881,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unsicheres HTTP erlauben"
+          }
+        }
+      }
+    },
+    "An 8-character access code. Leave blank to keep the existing one.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An 8-character access code. Leave blank to keep the existing one."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un code d’accès de 8 caractères. Laissez vide pour conserver l’existant."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un código de acceso de 8 caracteres. Déjelo en blanco para mantener el actual."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein 8-stelliger Zugangscode. Leer lassen, um den bestehenden zu behalten."
           }
         }
       }
@@ -979,6 +1091,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Application d’authentification"
+          }
+        }
+      }
+    },
+    "Auto-dispatch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-dispatch"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distribution auto"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Despacho automático"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-Versand"
           }
         }
       }
@@ -1283,6 +1423,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nivellement du plateau"
+          }
+        }
+      }
+    },
+    "Behavior": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behavior"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comportement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comportamiento"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verhalten"
           }
         }
       }
@@ -3131,6 +3299,34 @@
         }
       }
     },
+    "Couldn’t load virtual printers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load virtual printers"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les imprimantes virtuelles"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron cargar las impresoras virtuales"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Virtuelle Drucker konnten nicht geladen werden"
+          }
+        }
+      }
+    },
     "Create": {
       "localizations": {
         "de": {
@@ -3357,6 +3553,34 @@
         }
       }
     },
+    "Default": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Default"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Par défaut"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Predeterminado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard"
+          }
+        }
+      }
+    },
     "Default printer": {
       "localizations": {
         "de": {
@@ -3441,6 +3665,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Supprimer ce serveur ?"
+          }
+        }
+      }
+    },
+    "Delete this virtual printer?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete this virtual printer?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer cette imprimante virtuelle ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar esta impresora virtual?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diesen virtuellen Drucker löschen?"
           }
         }
       }
@@ -4009,6 +4261,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modifier la bobine"
+          }
+        }
+      }
+    },
+    "Edit virtual printer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit virtual printer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier l’imprimante virtuelle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar impresora virtual"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Virtuellen Drucker bearbeiten"
           }
         }
       }
@@ -4685,6 +4965,34 @@
         }
       }
     },
+    "Force color match": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Force color match"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forcer la correspondance de couleur"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forzar coincidencia de color"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Farbabgleich erzwingen"
+          }
+        }
+      }
+    },
     "Free software under the GNU AGPL v3.0 (App Store exception).": {
       "localizations": {
         "de": {
@@ -4923,6 +5231,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Inactif"
+          }
+        }
+      }
+    },
+    "Immediate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immediate"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Immédiat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inmediato"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sofort"
           }
         }
       }
@@ -5926,6 +6262,34 @@
         }
       }
     },
+    "Mode": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modus"
+          }
+        }
+      }
+    },
     "Model": {
       "localizations": {
         "de": {
@@ -6098,6 +6462,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nouveau serveur"
+          }
+        }
+      }
+    },
+    "New virtual printer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New virtual printer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle imprimante virtuelle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva impresora virtual"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer virtueller Drucker"
           }
         }
       }
@@ -6864,6 +7256,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keine ungelesenen Benachrichtigungen"
+          }
+        }
+      }
+    },
+    "No virtual printers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No virtual printers"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune imprimante virtuelle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin impresoras virtuales"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine virtuellen Drucker"
           }
         }
       }
@@ -7860,6 +8280,34 @@
         }
       }
     },
+    "Proxy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proxy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proxy"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proxy"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proxy"
+          }
+        }
+      }
+    },
     "Python": {
       "localizations": {
         "de": {
@@ -8382,6 +8830,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rétention"
+          }
+        }
+      }
+    },
+    "Review": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Révision"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revisión"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Überprüfung"
           }
         }
       }
@@ -11211,6 +11687,62 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voir le modèle 3D"
+          }
+        }
+      }
+    },
+    "Virtual printer name": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Virtual printer name"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nom de l’imprimante virtuelle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre de la impresora virtual"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name des virtuellen Druckers"
+          }
+        }
+      }
+    },
+    "Virtual printers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Virtual printers"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imprimantes virtuelles"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impresoras virtuales"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Virtuelle Drucker"
           }
         }
       }
