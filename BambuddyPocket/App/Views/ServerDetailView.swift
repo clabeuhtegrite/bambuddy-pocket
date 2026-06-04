@@ -44,6 +44,11 @@ struct ServerDetailView: View {
                     Label("Print history", systemImage: "clock.arrow.circlepath")
                 }
                 NavigationLink {
+                    PrintLogView(server: current, serverList: model)
+                } label: {
+                    Label("Print log", systemImage: "doc.text.below.ecg")
+                }
+                NavigationLink {
                     ActivityListView(server: current, serverList: model)
                 } label: {
                     Label("Activity", systemImage: "bell")

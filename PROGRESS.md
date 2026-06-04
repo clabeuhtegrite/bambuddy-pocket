@@ -7,6 +7,17 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Tier 3 résiduel — journal d'impression livré (`main` vert).** Écran **Journal d'impression**
+(`/print-log/`) : liste paginée (recherche serveur par nom, « charger plus », vidage destructif),
+modèles `PrintLogEntry`/`PrintLogPage` (dates ISO **sans fuseau** conservées en `String`, parser
+de présentation tolérant). **Contrat vérifié au réel** : entrée semée dans la base du Docker
+(`docker compose exec`), charge réelle décodée puis **journal vidé / instance restaurée propre**.
+Tests : **189 SPM** (+5) + 11 unitaires app + 3 UI, build sans warning, lint/format strict OK.
+Suite recommandée (Tier 3 vérifiable) : **GitHub-backup** (status/config/run en lecture, écran
+config avec champ token au Keychain — **sans token réel**), **spoolman** (état non configuré +
+écran de réglage ; activation Docker à tenter), puis labels/kprofiles/metrics/updates/support
+selon faisabilité.
+
 **Vague finitions App Store livrée (PR #38→#42, `main` vert).** Renommage **BamPocket** (#38),
 **icône + launch screen** (#39), **privacy manifest + clés runtime** (#40), **XCUITest chemins
 critiques en CI** (#41), **prépa sideload + `docs/SIDELOAD.md`** (#42). Tests : **184 SPM + 11

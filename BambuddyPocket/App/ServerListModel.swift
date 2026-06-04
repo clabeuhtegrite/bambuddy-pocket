@@ -169,6 +169,11 @@ final class ServerListModel {
         DiscoveryModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model du journal d'impression pour ce serveur.
+    func makePrintLogModel(for configuration: ServerConfiguration) -> PrintLogModel {
+        PrintLogModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)
