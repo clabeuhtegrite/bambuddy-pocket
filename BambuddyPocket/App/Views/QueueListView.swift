@@ -45,6 +45,8 @@ struct QueueListView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
         .overlay { placeholder }
         .navigationTitle("Print queue")
         .toolbarTitleDisplayMode(.inline)
@@ -74,13 +76,13 @@ struct QueueListView: View {
             } label: {
                 Label("Start", systemImage: "play.fill")
             }
-            .tint(.green)
+            .tint(DSColor.accent)
             Button {
                 editing = item
             } label: {
                 Label("Edit", systemImage: "pencil")
             }
-            .tint(.blue)
+            .tint(DSColor.accentDark)
         }
     }
 
@@ -97,14 +99,14 @@ struct QueueListView: View {
             } label: {
                 Label("Stop", systemImage: "stop.fill")
             }
-            .tint(.red)
+            .tint(DSColor.statusError)
         } else {
             Button {
                 Task { await model.cancel(item) }
             } label: {
                 Label("Cancel", systemImage: "xmark")
             }
-            .tint(.orange)
+            .tint(DSColor.statusWarning)
         }
     }
 
@@ -138,32 +140,35 @@ private struct QueueRow: View {
         HStack(spacing: DSSpacing.md) {
             Text("\(item.position)")
                 .font(.headline.monospacedDigit())
-                .foregroundStyle(.secondary)
+                .foregroundStyle(DSColor.textMuted)
                 .frame(minWidth: 24, alignment: .trailing)
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text(item.displayName)
-                    .font(.headline)
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(1)
                 if let printer = item.printerName {
                     Text(printer)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(DSFont.caption)
+                        .foregroundStyle(DSColor.textSecondary)
                 }
                 if let scheduled = QueuePresentation.scheduledLabel(item.scheduledTime) {
                     Label(scheduled, systemImage: "calendar.badge.clock")
                         .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(DSColor.textSecondary)
                 }
             }
             Spacer()
             VStack(alignment: .trailing, spacing: DSSpacing.xs) {
-                Text(item.status.capitalized)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(ArchivePresentation.statusColor(item.status))
+                DSStatusBadge(
+                    item.status.capitalized,
+                    intent: DSStatusIntent.forRawStatus(item.status),
+                    showsDot: false
+                )
                 if item.manualStart == true {
                     Image(systemName: "hand.tap")
                         .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(DSColor.textSecondary)
                         .accessibilityLabel("Manual start")
                 }
             }
@@ -180,17 +185,21 @@ private struct BatchRow: View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
             HStack {
                 Text(batch.name)
-                    .font(.headline)
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(1)
                 Spacer()
-                Text(batch.status.capitalized)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(ArchivePresentation.statusColor(batch.status))
+                DSStatusBadge(
+                    batch.status.capitalized,
+                    intent: DSStatusIntent.forRawStatus(batch.status),
+                    showsDot: false
+                )
             }
             ProgressView(value: Double(batch.resolvedCount), total: Double(max(batch.quantity, 1)))
+                .tint(DSColor.accent)
             Text("\(batch.resolvedCount)/\(batch.quantity) done · \(batch.pendingCount) pending")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(DSFont.caption)
+                .foregroundStyle(DSColor.textSecondary)
         }
         .padding(.vertical, DSSpacing.xs)
     }

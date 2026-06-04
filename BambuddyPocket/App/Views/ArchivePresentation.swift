@@ -1,23 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import Foundation
 import SwiftUI
 
 /// Formatage et couleurs pour l'affichage des archives d'impression.
 enum ArchivePresentation {
     /// Couleur sémantique d'un statut d'archive ou de file (valeur brute serveur).
+    /// Délègue au mapping unique de la DA (`DSStatusIntent`).
     static func statusColor(_ status: String) -> Color {
-        switch status.lowercased() {
-        case "success", "completed", "finished", "done", "printing":
-            .green
-        case "failed", "error":
-            .red
-        case "cancelled", "canceled", "stopped":
-            .orange
-        case "pending":
-            .blue
-        default:
-            .secondary
-        }
+        DSStatusIntent.forRawStatus(status).color
     }
 
     /// Durée formatée (« 1 h 20 min » / « 12 min ») à partir de secondes.

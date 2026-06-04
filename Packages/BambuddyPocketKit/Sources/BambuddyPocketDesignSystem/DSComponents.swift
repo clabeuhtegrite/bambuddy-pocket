@@ -170,3 +170,11 @@ public struct DSSeparator: View {
             .frame(height: DSBorder.thin)
     }
 }
+
+public extension View {
+    /// Remplace le fond système d'une `List`/`Form` par le fond adaptatif de la DA.
+    func dsListBackground() -> some View {
+        scrollContentBackground(.hidden)
+            .background(DSColor.background)
+    }
+}

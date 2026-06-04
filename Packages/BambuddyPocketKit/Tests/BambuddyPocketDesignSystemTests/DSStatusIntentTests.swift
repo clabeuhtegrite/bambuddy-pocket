@@ -49,6 +49,19 @@ struct DSStatusIntentTests {
         #expect(DSStatusIntent.forSuccess(false) == .error)
     }
 
+    @Test("Statut brut serveur → intention (insensible à la casse)")
+    func rawStatusMapping() {
+        #expect(DSStatusIntent.forRawStatus("SUCCESS") == .success)
+        #expect(DSStatusIntent.forRawStatus("completed") == .success)
+        #expect(DSStatusIntent.forRawStatus("printing") == .accent)
+        #expect(DSStatusIntent.forRawStatus("active") == .accent)
+        #expect(DSStatusIntent.forRawStatus("Failed") == .error)
+        #expect(DSStatusIntent.forRawStatus("cancelled") == .warning)
+        #expect(DSStatusIntent.forRawStatus("canceled") == .warning)
+        #expect(DSStatusIntent.forRawStatus("pending") == .neutral)
+        #expect(DSStatusIntent.forRawStatus("wat") == .neutral)
+    }
+
     @Test("Chaque intention expose une couleur (toutes distinctes par sémantique)")
     func everyIntentHasColor() {
         for intent in DSStatusIntent.allCases {

@@ -57,4 +57,23 @@ public extension DSStatusIntent {
     static func forSuccess(_ success: Bool) -> DSStatusIntent {
         success ? .success : .error
     }
+
+    /// Mappe un statut brut renvoyé par le serveur (archives, file, lots) vers une intention.
+    /// Insensible à la casse ; valeur inconnue → neutre.
+    static func forRawStatus(_ status: String) -> DSStatusIntent {
+        switch status.lowercased() {
+        case "success", "completed", "finished", "done":
+            .success
+        case "printing", "active", "running":
+            .accent
+        case "failed", "error":
+            .error
+        case "cancelled", "canceled", "stopped":
+            .warning
+        case "pending", "queued", "scheduled":
+            .neutral
+        default:
+            .neutral
+        }
+    }
 }

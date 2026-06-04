@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import Foundation
 import SwiftUI
@@ -18,6 +19,7 @@ struct ArchiveStatsView: View {
                 ContentUnavailableView("Statistics unavailable", systemImage: "chart.bar")
             } else {
                 ProgressView()
+                    .tint(DSColor.accent)
             }
         }
         .navigationTitle("Statistics")
@@ -47,5 +49,7 @@ struct ArchiveStatsView: View {
                 }
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
     }
 }

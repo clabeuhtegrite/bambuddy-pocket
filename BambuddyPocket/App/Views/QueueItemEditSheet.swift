@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -79,6 +80,7 @@ struct QueueItemEditSheet: View {
                     Toggle("Use AMS", isOn: $useAms)
                 }
             }
+            .dsListBackground()
             .navigationTitle("Edit queue item")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
