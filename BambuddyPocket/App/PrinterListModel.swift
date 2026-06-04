@@ -4,41 +4,44 @@ import BambuddyPocketNetworking
 import Foundation
 import Observation
 
-/// État de la connexion temps réel (WebSocket) d'un serveur.
-enum RealtimeState: Equatable {
-    case connecting
-    case connected
-    case reconnecting
-}
-
-/// View-model d'un serveur : liste des imprimantes (REST) + état temps réel (WebSocket) fusionné.
+/// View-model d'un serveur : liste des imprimantes (REST) + état temps réel partagé via le centre
+/// de notifications persistant du serveur.
 /// `@MainActor` : toutes les mutations d'état se font sur le thread principal.
 @MainActor
 @Observable
 final class PrinterListModel {
     private(set) var printers: [Printer] = []
-    private(set) var statuses: [Int: PrinterStatus] = [:]
-    private(set) var realtimeState: RealtimeState = .connecting
     private(set) var hasLoaded = false
-    private(set) var notifications: [AppNotification] = []
     var loadError: String?
     var controlError: String?
 
     private let server: ServerConfiguration
     private let connectionFactory: ServerConnectionFactory
+    /// Session WebSocket persistante partagée (statuts fusionnés, notifications).
+    let notificationCenter: ServerNotificationCenter
 
-    init(server: ServerConfiguration, connectionFactory: ServerConnectionFactory) {
+    init(
+        server: ServerConfiguration,
+        connectionFactory: ServerConnectionFactory,
+        notificationCenter: ServerNotificationCenter
+    ) {
         self.server = server
         self.connectionFactory = connectionFactory
+        self.notificationCenter = notificationCenter
     }
 
     var serverLabel: String {
         server.label
     }
 
-    /// État temps réel fusionné pour une imprimante (REST initial + deltas WebSocket).
+    /// État de la connexion temps réel (relayé depuis le centre de notifications partagé).
+    var realtimeState: RealtimeState {
+        notificationCenter.realtimeState
+    }
+
+    /// État temps réel fusionné pour une imprimante (REST initial + deltas WebSocket partagés).
     func status(for printer: Printer) -> PrinterStatus? {
-        statuses[printer.id]
+        notificationCenter.status(for: printer.id)
     }
 
     /// Charge la liste des imprimantes via REST (appelable en pull-to-refresh).
@@ -49,6 +52,7 @@ final class PrinterListModel {
             printers = fetched.sorted {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
+            notificationCenter.updatePrinterNames(from: printers)
             loadError = nil
         } catch {
             loadError = Self.message(for: error)
@@ -56,11 +60,10 @@ final class PrinterListModel {
         hasLoaded = true
     }
 
-    /// Point d'entrée du cycle de vie de l'écran : charge la liste puis entretient le flux temps
-    /// réel jusqu'à annulation de la tâche (à brancher sur `.task`).
+    /// Point d'entrée du cycle de vie de l'écran : charge la liste (le flux temps réel est porté
+    /// par le centre de notifications persistant, indépendant de cet écran).
     func run() async {
         await load()
-        await realtimeLoop()
     }
 
     // MARK: Contrôles d'impression
@@ -200,62 +203,6 @@ final class PrinterListModel {
         } catch {
             controlError = Self.message(for: error)
         }
-    }
-
-    private func realtimeLoop() async {
-        var backoff = Duration.seconds(1)
-        while !Task.isCancelled {
-            do {
-                let socket = try connectionFactory.makeWebSocketClient(for: server)
-                realtimeState = .connected
-                for try await event in socket.events() {
-                    if Task.isCancelled {
-                        break
-                    }
-                    apply(event)
-                    backoff = .seconds(1)
-                }
-            } catch {
-                // Connexion tombée : on tente une reconnexion ci-dessous.
-            }
-            if Task.isCancelled {
-                break
-            }
-            realtimeState = .reconnecting
-            try? await Task.sleep(for: backoff)
-            backoff = min(backoff * 2, .seconds(30))
-        }
-    }
-
-    private func apply(_ event: WebSocketEvent) {
-        recordNotification(for: event)
-        switch event {
-        case let .printerStatus(id, delta):
-            merge(delta, into: id)
-        case let .printStart(id, status), let .printComplete(id, status):
-            if let status {
-                merge(status, into: id)
-            }
-        case .missingSpoolAssignment, .plateNotEmpty, .pong, .other:
-            break
-        }
-    }
-
-    private func recordNotification(for event: WebSocketEvent) {
-        guard let notable = event.notableEvent else { return }
-        let name = printers.first { $0.id == notable.printerID }?.name
-        notifications.insert(
-            AppNotification(kind: notable.kind, printerName: name, date: Date()),
-            at: 0
-        )
-        if notifications.count > 50 {
-            notifications.removeLast(notifications.count - 50)
-        }
-    }
-
-    private func merge(_ delta: PrinterStatus, into id: Int) {
-        let current = statuses[id] ?? PrinterStatus()
-        statuses[id] = current.merged(with: delta)
     }
 
     private static func message(for error: Error) -> String {

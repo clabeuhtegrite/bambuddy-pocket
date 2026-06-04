@@ -39,6 +39,23 @@ struct WebSocketEventTests {
         #expect(event == .missingSpoolAssignment(printerID: 1, printerName: "X1C"))
     }
 
+    @Test("Décode plate_not_empty avec son message")
+    func decodesPlateNotEmpty() throws {
+        let event = try decode(#"""
+        {"type":"plate_not_empty","printer_id":2,"printer_name":"X1C","message":"Objects detected!"}
+        """#)
+        #expect(event == .plateNotEmpty(printerID: 2, printerName: "X1C", message: "Objects detected!"))
+        #expect(event.printerID == 2)
+    }
+
+    @Test("Décode archive_created en extrayant un libellé")
+    func decodesArchiveCreated() throws {
+        let event = try decode(#"""
+        {"type":"archive_created","data":{"name":"Benchy","file_name":"benchy.3mf"}}
+        """#)
+        #expect(event == .archiveCreated(name: "Benchy"))
+    }
+
     @Test("Décode pong")
     func decodesPong() throws {
         #expect(try decode(#"{"type":"pong"}"#) == .pong)

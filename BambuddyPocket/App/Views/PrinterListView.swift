@@ -34,19 +34,16 @@ struct PrinterListView: View {
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
+                NotificationsToolbarButton(center: model.notificationCenter) {
                     showingNotifications = true
-                } label: {
-                    Image(systemName: model.notifications.isEmpty ? "bell" : "bell.badge")
                 }
-                .accessibilityLabel("Notifications")
             }
             ToolbarItem(placement: .topBarTrailing) {
                 RealtimeBadge(state: model.realtimeState)
             }
         }
         .sheet(isPresented: $showingNotifications) {
-            NotificationsView(notifications: model.notifications)
+            NotificationsView(center: model.notificationCenter)
         }
         .sheet(isPresented: $showingAddPrinter) {
             AddPrinterView(model: model)

@@ -46,8 +46,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   ✅ **édition d'item** (PATCH : planification `scheduled_time`, réassignation, options), ✅ **lots
   (batches)** (liste + annulation), ✅ **mise à jour en lot** (`PATCH /queue/bulk`) ; ⬜ distribution
   auto (`background-dispatch`).
-- 🟦 **Notifications EN-APP** : ✅ flux d'activité (`notifications/logs`) en lecture ; ⬜ dérivation
-  temps réel depuis le WebSocket (fin/début d'impression, HMS sévère, bobine manquante…).
+- ✅ **Notifications EN-APP** : ✅ flux d'activité (`notifications/logs`) en lecture ; ✅ **dérivation
+  temps réel depuis le WebSocket** au niveau serveur (`ServerNotificationCenter`, session WS
+  persistante) — fin/début d'impression, **HMS grave** (transition), bobine manquante, plateau non
+  vide, archive créée ; feed lu/non-lu + badge + bannières.
 - 🟦 Gestion d'imprimante côté serveur : ✅ ajout (`PrinterCreate`), ✅ suppression ; ⬜ édition (PATCH).
 
 ## Phase 3 — Avancé ⬜

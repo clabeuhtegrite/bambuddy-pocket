@@ -7,26 +7,24 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Tier 1 largement approfondi** (`main`, dépôt public, CI verte, 128 tests SPM + 6 tests app). Au
-fil des vagues récentes (PR #10 → #15, toutes mergées) : **file d'attente** (édition PATCH,
-planification, lots/batches, bulk, stop) ; **archives** (favori, édition tags/notes/lien,
-suppression, recherche serveur) ; **inventaire bobines** (détail, édition, historique de
-consommation, reset, suppression) ; **bibliothèque** (détail, enqueue, édition nom/notes,
-suppression) ; **projets** (détail, création, édition, suppression) ; **caméra** (détection de
-plateau, status, stream-token). Tout vérifié au réel sur le Docker.
+**Tier 1 approfondi + notifications transverses livrées** (`main`, dépôt public, CI verte,
+137 tests SPM + 11 tests app). Vague notifications (PR mergée) : **session WebSocket persistante
+au niveau serveur** (`ServerNotificationCenter`, vivante tant que le serveur est sélectionné,
+indépendante de l'écran), **feed horodaté lu/non-lu + badge**, **bannières non intrusives**, et
+**dérivation** des événements notables (`print_start`/`print_complete`, `missing_spool_assignment`,
+`plate_not_empty`, **HMS grave** par transition d'état, `archive_created`). Contrats WS vérifiés au
+réel sur le Docker / la source amont. Vagues précédentes (PR #10 → #15) : file d'attente, archives,
+inventaire, bibliothèque, projets, caméra.
 
 Prochaines briques recommandées (par valeur) :
-1. **Notifications en-app dérivées du WebSocket** : session WS au niveau serveur (pas seulement
-   l'écran imprimantes) ; bannières/feed sur `print_complete`/`print_start`/
-   `missing_spool_assignment`/`plate_not_empty`/HMS sévère. (Transverse, fort impact.)
-2. **Queue** : `background-dispatch` (cancel job), distribution auto par modèle (`target_model`).
-3. **Bibliothèque** : arbre de **dossiers** (`/library/folders/`), déplacement, upload, corbeille.
-4. **Projets** : items (add-archives/add-queue), BOM, timeline, templates.
-5. **Tier 2** : settings (langue/devise/imprimante par défaut), **system** (`/system/info`, santé,
+1. **Queue** : `background-dispatch` (cancel job), distribution auto par modèle (`target_model`).
+2. **Bibliothèque** : arbre de **dossiers** (`/library/folders/`), déplacement, upload, corbeille.
+3. **Projets** : items (add-archives/add-queue), BOM, timeline, templates.
+4. **Tier 2** : settings (langue/devise/imprimante par défaut), **system** (`/system/info`, santé,
    storage), users (profil), **api-keys** (CRUD), notification-templates.
-6. **Tier 3** (vérifier le contrat au réel) : **smart-plugs** (alim on/off), spoolman, cloud Bambu,
+5. **Tier 3** (vérifier le contrat au réel) : **smart-plugs** (alim on/off), spoolman, cloud Bambu,
    makerworld, obico, maintenance, firmware.
-7. **Finitions App Store** : icône/launch screen, captures, **XCUITest** sur chemins critiques.
+6. **Finitions App Store** : icône/launch screen, captures, **XCUITest** sur chemins critiques.
 Cadence : **autonomie complète** ; build en local (Mac+Xcode) AVANT de pousser ; CI = juge final.
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
 `xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
@@ -74,6 +72,21 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (26)** — Transverse : **notifications en-app dérivées du WebSocket** au **niveau
+  serveur**. Nouveau service `ServerNotificationCenter` (`@MainActor @Observable`) qui possède une
+  **session WS persistante** (mise en cache par `ServerListModel`, vivante tant que le serveur est
+  sélectionné, indépendante de l'écran), fusionne les deltas de statut et dérive des notifications.
+  `PrinterListModel` ne porte plus son propre flux WS : il consomme les statuts/temps réel partagés.
+  **Dérivation** (Domain, testée) : `print_start`/`print_complete` (avec nom du travail),
+  `missing_spool_assignment`, `plate_not_empty` (avec message), `archive_created` (libellé extrait),
+  et **HMS grave** par **transition d'état** (`PrinterStatus.severeHMSEvent(comparedTo:)`, pas un
+  type WS distinct — l'erreur arrive via `printer_status.hms_errors` ; notifiée une seule fois).
+  `WebSocketEvent` étendu : décodage `archive_created` + `message`/`printer_name` sur
+  `plate_not_empty`. **UI** : centre de notifications (feed horodaté, **lu/non-lu + badge**,
+  effacement), **bannières non intrusives** auto-repliables, accessibles **au niveau serveur**
+  (`ServerDetailView`) **et** sur l'écran imprimantes. Contrats WS vérifiés au réel (Docker + source
+  amont `backend/app/core/websocket.py` / `main.py`). i18n FR/EN/ES/DE (6 clés, dont un pluriel).
+  137 tests SPM verts (+9), 11 tests app (+5), build iOS sans warning, lint/format OK.
 - **2026-06-04 (25)** — Tier 1 (caméra en profondeur) : **détection de plateau vide** par vision
   (`GET /printers/{id}/camera/check-plate`), **état du flux** (`GET …/camera/status`), **jeton de
   flux** (`POST /printers/camera/stream-token`). Modèles `PlateCheck`/`CameraStatus`/

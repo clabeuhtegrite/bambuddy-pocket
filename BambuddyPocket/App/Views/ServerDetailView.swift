@@ -12,10 +12,16 @@ struct ServerDetailView: View {
     @State private var testState: ConnectionTestState = .idle
     @State private var isEditing = false
     @State private var confirmingDelete = false
+    @State private var showingNotifications = false
 
     /// Configuration à jour (relue après une édition), repli sur la valeur initiale.
     private var current: ServerConfiguration {
         model.servers.first { $0.id == server.id } ?? server
+    }
+
+    /// Centre de notifications persistant du serveur (session WebSocket vivante).
+    private var notificationCenter: ServerNotificationCenter {
+        model.notificationCenter(for: current)
     }
 
     var body: some View {
@@ -64,9 +70,22 @@ struct ServerDetailView: View {
         .navigationTitle(current.label)
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NotificationsToolbarButton(center: notificationCenter) {
+                    showingNotifications = true
+                }
+            }
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") { isEditing = true }
             }
+        }
+        .overlay(alignment: .top) {
+            NotificationBanner(center: notificationCenter) {
+                showingNotifications = true
+            }
+        }
+        .sheet(isPresented: $showingNotifications) {
+            NotificationsView(center: notificationCenter)
         }
         .sheet(isPresented: $isEditing) {
             ServerEditView(model: model, mode: .edit(current))
