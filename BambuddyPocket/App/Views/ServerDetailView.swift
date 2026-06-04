@@ -106,6 +106,11 @@ struct ServerDetailView: View {
                     Label("Backups", systemImage: "externaldrive")
                 }
                 NavigationLink {
+                    GitHubBackupView(server: current, serverList: model)
+                } label: {
+                    Label("Remote backup", systemImage: "arrow.up.forward.app")
+                }
+                NavigationLink {
                     DiscoveryView(server: current, serverList: model)
                 } label: {
                     Label("Discovery", systemImage: "antenna.radiowaves.left.and.right")

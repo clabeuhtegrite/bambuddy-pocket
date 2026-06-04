@@ -7,6 +7,19 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Tier 3 résiduel — sauvegarde distante Git livrée (`main` vert).** Écran **Sauvegarde distante**
+(`/github-backup/`) : état, configuration (lecture + **création POST / édition PATCH**), journal
+des exécutions, **déclenchement manuel**. Sécurité : le **jeton d'accès** est en **écriture seule**
+(jamais renvoyé par le serveur — `has_token` seulement — ni stocké sur l'appareil ; transmis au
+serveur à l'enregistrement, préservé en édition si le champ est laissé vide via `exclude_unset`).
+Données sauvegardables modélisées (K-profils, profils Bambu Cloud, réglages, bobines, historique),
+4 fournisseurs (GitHub/GitLab/Gitea/Forgejo), planification (horaire/quotidien/hebdo). **Contrat
+vérifié au réel** : config + log semés dans la base du Docker (`docker compose exec`), charges
+réelles décodées, puis **config/log supprimés et instance restaurée propre** (auth toujours off).
+Note : la sauvegarde réelle ne peut être exercée sans **vrai jeton** (le serveur exige un dépôt
+**privé** vérifié via un appel GitHub) — **non testé volontairement**. Tests : **200 SPM** (+11),
+11 unitaires app + 3 UI, build sans warning, lint/format strict OK.
+
 **Tier 3 résiduel — journal d'impression livré (`main` vert).** Écran **Journal d'impression**
 (`/print-log/`) : liste paginée (recherche serveur par nom, « charger plus », vidage destructif),
 modèles `PrintLogEntry`/`PrintLogPage` (dates ISO **sans fuseau** conservées en `String`, parser

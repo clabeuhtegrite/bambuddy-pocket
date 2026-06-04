@@ -174,6 +174,51 @@ public extension APIClient {
         try await delete("/print-log/")
     }
 
+    // MARK: Sauvegarde distante Git (cf. docs/bambuddy-api.md §github-backup)
+
+    /// État de la sauvegarde distante Git (`GET /github-backup/status`).
+    func gitHubBackupStatus() async throws -> GitHubBackupStatus {
+        try await get("/github-backup/status")
+    }
+
+    /// Configuration de la sauvegarde distante Git (`GET /github-backup/config`). `nil` si aucune
+    /// configuration n'existe (le serveur renvoie alors le littéral JSON `null`).
+    func gitHubBackupConfig() async throws -> GitHubBackupConfig? {
+        try await get("/github-backup/config")
+    }
+
+    /// Crée ou met à jour la configuration de sauvegarde Git (`POST /github-backup/config`).
+    /// Le serveur valide que le dépôt est **privé** avant d'accepter.
+    @discardableResult
+    func saveGitHubBackupConfig(_ config: GitHubBackupConfigCreate) async throws -> GitHubBackupConfig {
+        let body = try JSONEncoder.bambuddy().encode(config)
+        return try await send("/github-backup/config", method: .post, body: body)
+    }
+
+    /// Met à jour partiellement la configuration de sauvegarde Git (`PATCH /github-backup/config`).
+    /// Seuls les champs renseignés sont transmis (le jeton existant est préservé si `accessToken` nil).
+    @discardableResult
+    func updateGitHubBackupConfig(_ update: GitHubBackupConfigUpdate) async throws -> GitHubBackupConfig {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/github-backup/config", method: .patch, body: body)
+    }
+
+    /// Supprime la configuration de sauvegarde Git (`DELETE /github-backup/config`).
+    func deleteGitHubBackupConfig() async throws {
+        try await delete("/github-backup/config")
+    }
+
+    /// Journal des sauvegardes Git (`GET /github-backup/logs`), le plus récent en premier.
+    func gitHubBackupLogs() async throws -> [GitHubBackupLog] {
+        try await get("/github-backup/logs")
+    }
+
+    /// Déclenche une sauvegarde manuelle immédiate (`POST /github-backup/run`).
+    @discardableResult
+    func runGitHubBackup() async throws -> GitHubBackupTriggerResult {
+        try await send("/github-backup/run", method: .post, body: nil)
+    }
+
     // MARK: Système (cf. docs/bambuddy-api.md §system)
 
     /// État du serveur (`GET /system/info`) : app, machine, mémoire, CPU, stockage, base.

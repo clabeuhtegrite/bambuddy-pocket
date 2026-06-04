@@ -69,6 +69,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ **Découverte réseau** : SSDP start/stop + liste (`/discovery/`).
 - ✅ **Journal d'impression** : liste paginée + recherche serveur + vidage (`/print-log/`).
   Contrat vérifié au réel (entrée semée puis instance restaurée propre).
+- ✅ **Sauvegarde distante Git** : état + config (POST/PATCH, jeton écriture seule) + journal +
+  run manuel (`/github-backup/`). Contrats lecture vérifiés au réel (config/log semés puis
+  supprimés) ; la sauvegarde effective exige un vrai jeton + dépôt privé → non testée.
 - ⬜ Non vérifiables sur l'instance de dev (notés) : MakerWorld (404), metrics (Prometheus off),
   slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman (à activer).
 
