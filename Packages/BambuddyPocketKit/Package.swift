@@ -26,7 +26,8 @@ let package = Package(
         ),
         .testTarget(
             name: "BambuddyPocketDomainTests",
-            dependencies: ["BambuddyPocketDomain"]
+            dependencies: ["BambuddyPocketDomain"],
+            resources: [.process("Fixtures")]
         ),
         .testTarget(
             name: "BambuddyPocketNetworkingTests",

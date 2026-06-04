@@ -40,7 +40,6 @@ struct DSStatusIntentTests {
         #expect(DSStatusIntent.forHMSSeverity(.serious) == .error)
         #expect(DSStatusIntent.forHMSSeverity(.common) == .warning)
         #expect(DSStatusIntent.forHMSSeverity(.info) == .accent)
-        #expect(DSStatusIntent.forHMSSeverity(.unknown) == .neutral)
     }
 
     @Test("Drapeau succès → succès/erreur")

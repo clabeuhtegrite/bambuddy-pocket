@@ -74,8 +74,6 @@ enum PrinterPresentation {
             String(localized: "Warning")
         case .info:
             String(localized: "Info")
-        case .unknown:
-            String(localized: "Unknown")
         }
     }
 

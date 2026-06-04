@@ -83,7 +83,7 @@ public extension PrinterStatus {
             .filter { error in
                 switch error.severityLevel {
                 case .fatal, .serious: true
-                case .common, .info, .unknown: false
+                case .common, .info: false
                 }
             }
             .map(\.code)
