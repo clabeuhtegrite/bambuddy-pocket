@@ -167,6 +167,20 @@ public extension APIClient {
         try await post("/queue/", body: body)
     }
 
+    // MARK: Réglages (cf. docs/bambuddy-api.md §settings)
+
+    /// Réglages serveur (`GET /settings/`).
+    func settings() async throws -> AppSettings {
+        try await get("/settings/")
+    }
+
+    /// Met à jour partiellement les réglages (`PATCH /settings/`) et renvoie l'état complet.
+    @discardableResult
+    func updateSettings(_ update: AppSettingsUpdate) async throws -> AppSettings {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/settings/", method: .patch, body: body)
+    }
+
     // MARK: Authentification (cf. docs/bambuddy-api.md §3)
 
     /// Connexion par identifiants (`POST /auth/login`).

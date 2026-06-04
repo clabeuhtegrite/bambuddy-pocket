@@ -114,6 +114,11 @@ final class ServerListModel {
         ProjectListModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model des réglages serveur pour ce serveur.
+    func makeSettingsModel(for configuration: ServerConfiguration) -> SettingsModel {
+        SettingsModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Construit un `LoginModel` pour se connecter à un serveur **non encore enregistré**
     /// (identifié par son URL et ses éventuels secrets Cloudflare).
     func makeLoginModel(baseURL: URL, secrets: ServerSecrets, usesCloudflare: Bool) -> LoginModel {
