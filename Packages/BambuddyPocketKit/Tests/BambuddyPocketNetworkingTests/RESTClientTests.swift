@@ -519,6 +519,32 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/2")
     }
 
+    @Test("uploadLibraryFile POST multipart sur /library/files/?folder_id= et décode le résultat")
+    func uploadsLibraryFile() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":9,"filename":"part.3mf","file_type":"3mf","file_size":12,"duplicate_of":3}"#
+        )
+        let client = try makeClient()
+        let result = try await client.uploadLibraryFile(
+            filename: "part.3mf",
+            data: Data("hello-3mf-data".utf8),
+            folderID: 4
+        )
+        #expect(result.id == 9)
+        #expect(result.isDuplicate)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/?folder_id=4")
+        let contentType = try #require(request.value(forHTTPHeaderField: "Content-Type"))
+        #expect(contentType.hasPrefix("multipart/form-data; boundary="))
+        let body = try #require(MockURLProtocol.lastBody)
+        let bodyText = try #require(String(data: body, encoding: .utf8))
+        #expect(bodyText.contains(#"name="file"; filename="part.3mf""#))
+        #expect(bodyText.contains("hello-3mf-data"))
+    }
+
     @Test("projects cible /projects/ et décode (description → details)")
     func listsProjects() async throws {
         MockURLProtocol.reset()

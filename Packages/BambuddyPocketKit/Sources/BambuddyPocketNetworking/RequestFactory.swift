@@ -59,8 +59,15 @@ public struct RequestFactory: Sendable {
         self.authorization = authorization
     }
 
-    /// Construit une requête vers `path` (relatif au préfixe `/api/v1`, ex. `/printers/`).
-    public func makeRequest(path: String, method: HTTPMethod = .get, body: Data? = nil) -> URLRequest {
+    /// Construit une requête vers `path` (relatif au préfixe `/api/v1`, ex. `/printers/`). Le type
+    /// de contenu par défaut est `application/json` ; passer `contentType` pour un autre corps
+    /// (ex. `multipart/form-data` pour un téléversement de fichier).
+    public func makeRequest(
+        path: String,
+        method: HTTPMethod = .get,
+        body: Data? = nil,
+        contentType: String = "application/json"
+    ) -> URLRequest {
         let normalized = path.hasPrefix("/") ? path : "/" + path
         let url = URL(string: apiBaseURL.absoluteString + normalized) ?? apiBaseURL
         var request = URLRequest(url: url)
@@ -69,7 +76,7 @@ public struct RequestFactory: Sendable {
 
         if let body {
             request.httpBody = body
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         }
         for (field, value) in authorization.headerFields {
             request.setValue(value, forHTTPHeaderField: field)
