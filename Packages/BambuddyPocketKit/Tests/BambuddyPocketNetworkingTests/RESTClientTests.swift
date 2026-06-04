@@ -1671,4 +1671,39 @@ struct MockNetworkingTests {
         #expect(last.httpMethod == "DELETE")
         #expect(last.url?.absoluteString == "https://host.example.com/api/v1/library/trash/4")
     }
+
+    @Test("projectBOM, addProjectBOMItem et deleteProjectBOMItem ciblent les bons chemins")
+    func managesProjectBOM() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":1,"project_id":1,"name":"M3 screws","quantity_needed":8}]"#)
+        let client = try makeClient()
+        let items = try await client.projectBOM(id: 1)
+        #expect(items.first?.name == "M3 screws")
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/projects/1/bom")
+        respond(status: 200, json: #"{"id":2,"project_id":1,"name":"Insert","quantity_needed":4}"#)
+        let created = try await client.addProjectBOMItem(projectID: 1, BOMItemCreate(name: "Insert", quantityNeeded: 4))
+        #expect(created.id == 2)
+        #expect(try #require(MockURLProtocol.lastRequest).httpMethod == "POST")
+        respond(status: 200, json: "{}")
+        try await client.deleteProjectBOMItem(projectID: 1, itemID: 2)
+        let last = try #require(MockURLProtocol.lastRequest)
+        #expect(last.httpMethod == "DELETE")
+        #expect(last.url?.absoluteString == "https://host.example.com/api/v1/projects/1/bom/2")
+    }
+
+    @Test("projectTimeline cible /projects/{id}/timeline et décode")
+    func fetchesProjectTimeline() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"event_type":"project_created","timestamp":"2026-06-04T05:31:27","#
+                + #""title":"Created","description":"x"}]"#
+        )
+        let client = try makeClient()
+        let events = try await client.projectTimeline(id: 3)
+        #expect(events.first?.eventType == "project_created")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/3/timeline")
+    }
 }

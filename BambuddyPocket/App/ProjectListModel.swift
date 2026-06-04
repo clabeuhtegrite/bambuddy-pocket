@@ -76,4 +76,54 @@ final class ProjectListModel {
             loadError = ErrorMessage.text(for: error)
         }
     }
+
+    // MARK: Nomenclature (BOM) & chronologie
+
+    /// Nomenclature d'un projet, ou `nil` en cas d'échec.
+    func bom(for project: Project) async -> [BOMItem]? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.projectBOM(id: project.id)
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return nil
+        }
+    }
+
+    /// Chronologie d'un projet, ou `nil` en cas d'échec.
+    func timeline(for project: Project) async -> [TimelineEvent]? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.projectTimeline(id: project.id)
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return nil
+        }
+    }
+
+    /// Ajoute un élément de nomenclature. Renvoie `true` au succès.
+    func addBOMItem(to project: Project, _ item: BOMItemCreate) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.addProjectBOMItem(projectID: project.id, item)
+            loadError = nil
+            return true
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return false
+        }
+    }
+
+    /// Supprime un élément de nomenclature. Renvoie `true` au succès.
+    func deleteBOMItem(from project: Project, itemID: Int) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.deleteProjectBOMItem(projectID: project.id, itemID: itemID)
+            loadError = nil
+            return true
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return false
+        }
+    }
 }

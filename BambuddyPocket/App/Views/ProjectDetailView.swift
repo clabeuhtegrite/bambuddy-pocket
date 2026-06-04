@@ -47,6 +47,18 @@ struct ProjectDetailView: View {
             }
             descriptionSection
             notesSection
+            Section {
+                NavigationLink {
+                    ProjectBOMView(project: project, model: model)
+                } label: {
+                    Label("Bill of materials", systemImage: "list.bullet.rectangle")
+                }
+                NavigationLink {
+                    ProjectTimelineView(project: project, model: model)
+                } label: {
+                    Label("Timeline", systemImage: "clock")
+                }
+            }
         }
         .dsListBackground()
         .navigationTitle(current.name)
