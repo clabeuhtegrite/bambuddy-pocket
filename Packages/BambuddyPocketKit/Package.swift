@@ -31,6 +31,10 @@ let package = Package(
         .testTarget(
             name: "BambuddyPocketNetworkingTests",
             dependencies: ["BambuddyPocketNetworking"]
+        ),
+        .testTarget(
+            name: "BambuddyPocketDesignSystemTests",
+            dependencies: ["BambuddyPocketDesignSystem", "BambuddyPocketDomain"]
         )
     ]
 )

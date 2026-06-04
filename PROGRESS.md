@@ -7,6 +7,10 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Refonte UI — DA Bambuddy en cours.** PR A (fondation design system) livrée : palette
+adaptative clair/sombre + accent vert, typographie Inter, composants réutilisables (cf. journal).
+Suite : appliquer le design system écran par écran (lots B…F), puis régénérer les captures FR.
+
 **Tier 1 approfondi + notifications transverses livrées** (`main`, dépôt public, CI verte,
 137 tests SPM + 11 tests app). Vague notifications (PR mergée) : **session WebSocket persistante
 au niveau serveur** (`ServerNotificationCenter`, vivante tant que le serveur est sélectionné,
@@ -72,6 +76,21 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (27)** — **Refonte UI — PR A : fondation design system (DA Bambuddy).** Le module
+  SPM `BambuddyPocketDesignSystem` (jusqu'ici quasi vide) porte désormais la direction artistique
+  officielle, extraite du frontend web amont (`tailwind.config.js`/`index.css`). **Décision thème :
+  app adaptative clair/sombre qui suit le système** (coché au ROADMAP « mode sombre »). **Palette**
+  (`DSColor`) : accent vert constant `#00AE42` (+ clair/sombre), statuts sémantiques fixes
+  (ok `#22C55E`, error `#EF4444`, warning `#F59E0B`), surfaces et textes **adaptatifs** via
+  fournisseur dynamique `UIColor` (clair fond `#F5F5F5`/carte `#FFFFFF` ; sombre fond `#1A1A1A`/
+  carte `#2D2D2D`). **Typographie** (`DSFont`) : **Inter** (TTF variable embarqué, déclaré via
+  `UIAppFonts`, attribué **OFL** dans `NOTICE`), échelle titres/corps/légendes, poids 400/500/600/700,
+  compatible Dynamic Type (`relativeTo:`). **Tokens** étendus (`DSSpacing`/`DSRadius`/`DSBorder`).
+  **Composants** : `DSCard`/`dsCardSurface()`, `DSStatusBadge` (mapping état→couleur via
+  `DSStatusIntent`, pur et testé), boutons `dsPrimary`/`dsSecondary`/`dsDestructive`,
+  `DSScreenBackground`, `DSSeparator`. Accent vert global (`.tint(DSColor.accent)` + AccentColor
+  asset passé au vert). Aucun écran modifié (diffusion en PR B…N). **145 tests SPM** (+8 : mapping
+  statut→couleur), build iOS OK, lint/format strict OK.
 - **2026-06-04 (26)** — Transverse : **notifications en-app dérivées du WebSocket** au **niveau
   serveur**. Nouveau service `ServerNotificationCenter` (`@MainActor @Observable`) qui possède une
   **session WS persistante** (mise en cache par `ServerListModel`, vivante tant que le serveur est

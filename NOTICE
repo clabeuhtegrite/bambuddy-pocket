@@ -30,3 +30,18 @@ L'écran de prévisualisation 3D embarque les bibliothèques JavaScript suivante
 Ces composants sont sous licence MIT (compatible AGPL-3.0). Leur copyright et leur
 licence MIT d'origine sont conservés dans les en-têtes des fichiers concernés.
 
+----------------------------------------------------------------------
+Police embarquée (direction artistique)
+----------------------------------------------------------------------
+L'interface utilise la police **Inter** (TTF variable embarquée dans le bundle de
+l'app, `BambuddyPocket/Resources/Fonts/Inter-Variable.ttf`), reprise du frontend web
+amont de Bambuddy pour la cohérence de la direction artistique.
+
+- Inter — © The Inter Project Authors (https://github.com/rsms/inter)
+  Sous licence SIL Open Font License 1.1 (OFL-1.1).
+  Texte : https://openfontlicense.org
+
+L'OFL-1.1 est compatible avec une distribution embarquée. Le nom « Inter » est une
+marque réservée (Reserved Font Name) au sens de l'OFL : la police n'est pas modifiée
+et est distribuée sous son nom d'origine.
+
