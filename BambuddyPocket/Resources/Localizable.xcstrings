@@ -13356,6 +13356,138 @@
           }
         }
       }
+    },
+    "Read the AGPL v3.0": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AGPL v3.0 lesen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer la AGPL v3.0"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lire l’AGPL v3.0"
+          }
+        }
+      }
+    },
+    "Built with Bambuddy": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Bambuddy entwickelt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hecho con Bambuddy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conçu avec Bambuddy"
+          }
+        }
+      }
+    },
+    "Bambuddy on GitHub": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bambuddy auf GitHub"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bambuddy en GitHub"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bambuddy sur GitHub"
+          }
+        }
+      }
+    },
+    "Open source components": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open-Source-Komponenten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Componentes de código abierto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Composants open source"
+          }
+        }
+      }
+    },
+    "Trademarks belong to their respective owners.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marken gehören ihren jeweiligen Inhabern."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las marcas pertenecen a sus respectivos propietarios."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les marques appartiennent à leurs détenteurs respectifs."
+          }
+        }
+      }
+    },
+    "Unaffiliated third-party client for the self-hosted Bambuddy server. BamPocket talks to it only over its public network API and bundles none of its source code.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unabhängiger, nicht zugehöriger Drittanbieter-Client für den selbst gehosteten Bambuddy-Server. BamPocket kommuniziert mit ihm nur über dessen öffentliche Netzwerk-API und enthält keinen seiner Quellcodes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliente de terceros independiente y no afiliado para el servidor autoalojado Bambuddy. BamPocket se comunica con él solo a través de su API de red pública y no incluye su código fuente."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client tiers indépendant et non affilié pour le serveur auto-hébergé Bambuddy. BamPocket dialogue avec lui uniquement via son API réseau publique et n’embarque aucun de son code source."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

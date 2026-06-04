@@ -7,6 +7,14 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Transverse — écran crédits open source complété (`main` vert).** L'écran **À propos** détaille
+désormais les **mentions OSS** (alignées sur `NOTICE`) : **licence AGPL v3.0** + lien, **attribution
+Bambuddy** (client tiers non affilié, dialogue via API réseau, aucun code embarqué) + lien GitHub,
+section **« Composants open source »** (three.js + examples OrbitControls/STLLoader/3MFLoader, fflate,
+Inter) avec **licence et lien** par composant, mention des marques. Lignes accessibles (liens
+combinés pour VoiceOver). Tests : 11 app + 3 UI + 253 SPM (inchangé, UI-only), build iOS sans
+warning, lint/format strict OK. i18n EN/FR/ES/DE.
+
 **Phase 3 — viewer G-code livré (`main` vert).** Le viewer 3D embarqué (WebView Three.js
 hors-ligne, décision déjà actée) gère désormais aussi le **G-code** : un **parseur G-code minimal**
 côté page (`viewer.html`) trace le **parcours d'outil** (déplacements d'extrusion G0/G1 à E
