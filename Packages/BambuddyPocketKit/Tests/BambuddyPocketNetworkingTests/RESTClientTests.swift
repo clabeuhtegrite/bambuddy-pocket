@@ -886,4 +886,55 @@ struct MockNetworkingTests {
         #expect(json["default_printer_id"] as? Int == 3)
         #expect(json.keys.contains("language") == false)
     }
+
+    @Test("systemInfo cible /system/info et décode les sous-objets")
+    func fetchesSystemInfo() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"app":{"version":"0.2.4.4"},"#
+                + #""system":{"platform":"Linux","architecture":"aarch64","uptime_formatted":"1d 7h"},"#
+                + #""memory":{"total_formatted":"7.7 GB","percent_used":10.5},"#
+                + #""cpu":{"count":8,"percent":0.0},"#
+                + #""storage":{"disk_total_formatted":"223.6 GB","disk_percent_used":3.4},"#
+                + #""database":{"engine":"SQLite","archives":1,"projects":2,"total_filament_kg":0.01}}"#
+        )
+        let client = try makeClient()
+        let info = try await client.systemInfo()
+        #expect(info.app?.version == "0.2.4.4")
+        #expect(info.system?.architecture == "aarch64")
+        #expect(info.memory?.percentUsed == 10.5)
+        #expect(info.cpu?.count == 8)
+        #expect(info.storage?.diskPercentUsed == 3.4)
+        #expect(info.database?.projects == 2)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/system/info")
+    }
+
+    @Test("systemHealth cible /system/health et résume les problèmes")
+    func fetchesSystemHealth() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"scanned_entries":4000,"log_available":true,"#
+                + #""summary":{"total":2,"bug":1,"environment":1,"layer8":0}}"#
+        )
+        let client = try makeClient()
+        let health = try await client.systemHealth()
+        #expect(health.logAvailable == true)
+        #expect(health.scannedEntries == 4000)
+        #expect(health.hasFindings)
+        #expect(health.summary?.bug == 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/system/health")
+    }
+
+    @Test("systemHealth sans problème -> hasFindings == false")
+    func systemHealthWithoutFindings() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"log_available":true,"summary":{"total":0}}"#)
+        let client = try makeClient()
+        let health = try await client.systemHealth()
+        #expect(health.hasFindings == false)
+    }
 }

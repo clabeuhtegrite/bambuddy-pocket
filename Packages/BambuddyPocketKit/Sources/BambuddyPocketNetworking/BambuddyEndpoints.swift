@@ -181,6 +181,18 @@ public extension APIClient {
         return try await send("/settings/", method: .patch, body: body)
     }
 
+    // MARK: Système (cf. docs/bambuddy-api.md §system)
+
+    /// État du serveur (`GET /system/info`) : app, machine, mémoire, CPU, stockage, base.
+    func systemInfo() async throws -> SystemInfo {
+        try await get("/system/info")
+    }
+
+    /// Diagnostic de santé du serveur (`GET /system/health`) : analyse des journaux.
+    func systemHealth() async throws -> SystemHealth {
+        try await get("/system/health")
+    }
+
     // MARK: Authentification (cf. docs/bambuddy-api.md §3)
 
     /// Connexion par identifiants (`POST /auth/login`).

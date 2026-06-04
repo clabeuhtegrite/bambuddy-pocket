@@ -119,6 +119,11 @@ final class ServerListModel {
         SettingsModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de l'état serveur (système/santé) pour ce serveur.
+    func makeSystemStatusModel(for configuration: ServerConfiguration) -> SystemStatusModel {
+        SystemStatusModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Construit un `LoginModel` pour se connecter à un serveur **non encore enregistré**
     /// (identifié par son URL et ses éventuels secrets Cloudflare).
     func makeLoginModel(baseURL: URL, secrets: ServerSecrets, usesCloudflare: Bool) -> LoginModel {
