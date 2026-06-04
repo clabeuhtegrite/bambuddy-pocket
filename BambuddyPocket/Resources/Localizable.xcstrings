@@ -2651,6 +2651,9 @@
         }
       }
     },
+    "Inter": {
+      "localizations": {}
+    },
     "Its stored credentials will be removed from this device.": {
       "localizations": {
         "de": {
@@ -3662,6 +3665,9 @@
           }
         }
       }
+    },
+    "OFL-1.1": {
+      "localizations": {}
     },
     "OK": {
       "shouldTranslate": false

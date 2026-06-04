@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -71,6 +72,8 @@ struct ServerEditView: View {
                 authSection
                 cloudflareSection
             }
+            .scrollContentBackground(.hidden)
+            .background(DSColor.background)
             .navigationTitle(navigationTitleKey)
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
@@ -118,7 +121,7 @@ struct ServerEditView: View {
                 Text("This server uses plain HTTP. Traffic is not encrypted; use only on a trusted network.")
             } icon: {
                 Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(DSColor.statusWarning)
             }
             .font(.footnote)
         }
@@ -152,7 +155,7 @@ struct ServerEditView: View {
                 }
             } icon: {
                 Image(systemName: "checkmark.seal.fill")
-                    .foregroundStyle(.green)
+                    .foregroundStyle(DSColor.statusOK)
             }
         }
         Button(loginButtonTitle) { startLogin() }

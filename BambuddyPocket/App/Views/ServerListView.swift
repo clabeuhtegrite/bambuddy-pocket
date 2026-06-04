@@ -52,11 +52,14 @@ struct ServerListView: View {
                 NavigationLink(value: server) {
                     ServerRow(server: server)
                 }
+                .listRowBackground(DSColor.card)
             }
             .onDelete { offsets in
                 try? model.delete(at: offsets)
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
         .navigationDestination(for: ServerConfiguration.self) { server in
             ServerDetailView(model: model, server: server)
         }
@@ -81,18 +84,21 @@ private struct ServerRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
-            Text(server.label).font(.headline)
+            Text(server.label)
+                .font(DSFont.headline)
+                .foregroundStyle(DSColor.textPrimary)
             HStack(spacing: DSSpacing.xs) {
                 if server.isInsecureTransport {
                     Image(systemName: "lock.open")
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(DSColor.statusWarning)
                         .accessibilityLabel(Text("Insecure connection (HTTP)"))
                 }
                 Text(server.baseURL.absoluteString)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.callout)
+                    .foregroundStyle(DSColor.textSecondary)
             }
         }
+        .padding(.vertical, DSSpacing.xxs)
     }
 }
 
