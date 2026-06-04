@@ -38,8 +38,10 @@ struct InventoryListView: View {
                         Label("Delete", systemImage: "trash")
                     }
                 }
+                .listRowBackground(DSColor.card)
             }
         }
+        .dsListBackground()
         .searchable(text: $query)
         .overlay { placeholder }
         .navigationTitle("Filaments")
@@ -56,6 +58,7 @@ struct InventoryListView: View {
     private var placeholder: some View {
         if !model.hasLoaded, model.spools.isEmpty {
             ProgressView()
+                .tint(DSColor.accent)
         } else if model.spools.isEmpty {
             if let error = model.loadError {
                 ContentUnavailableView {
@@ -85,22 +88,24 @@ private struct SpoolRow: View {
                 .overlay(Circle().strokeBorder(.quaternary))
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text(spool.displayName)
-                    .font(.headline)
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(1)
                 if let color = spool.colorName {
                     Text(color)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(DSFont.caption)
+                        .foregroundStyle(DSColor.textSecondary)
                 }
                 if let fraction = spool.remainingFraction {
                     ProgressView(value: fraction)
+                        .tint(DSColor.accent)
                 }
             }
             Spacer()
             if let remaining = spool.remainingGrams {
                 Text("\(Int(remaining)) g")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
             }
         }
         .padding(.vertical, DSSpacing.xs)
@@ -157,6 +162,7 @@ struct SpoolDetailView: View {
             storageSection
             usageSection
         }
+        .dsListBackground()
         .navigationTitle(current.displayName)
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
@@ -209,16 +215,17 @@ struct SpoolDetailView: View {
                         HStack {
                             Text(entry.printName ?? "#\(entry.id)")
                                 .font(.subheadline)
+                                .foregroundStyle(DSColor.textPrimary)
                                 .lineLimit(1)
                             Spacer()
                             Text("\(Int(entry.weightUsed)) g")
                                 .font(.caption.monospacedDigit())
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(DSColor.textSecondary)
                         }
                         if let date = ArchivePresentation.date(entry.createdAt) {
                             Text(date)
                                 .font(.caption2)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(DSColor.textSecondary)
                         }
                     }
                     .padding(.vertical, DSSpacing.xs)

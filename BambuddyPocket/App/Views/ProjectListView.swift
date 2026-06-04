@@ -36,8 +36,10 @@ struct ProjectListView: View {
                         Label("Delete", systemImage: "trash")
                     }
                 }
+                .listRowBackground(DSColor.card)
             }
         }
+        .dsListBackground()
         .searchable(text: $query)
         .overlay { placeholder }
         .navigationTitle("Projects")
@@ -66,6 +68,7 @@ struct ProjectListView: View {
     private var placeholder: some View {
         if !model.hasLoaded, model.projects.isEmpty {
             ProgressView()
+                .tint(DSColor.accent)
         } else if model.projects.isEmpty {
             if let error = model.loadError {
                 ContentUnavailableView {
@@ -91,23 +94,27 @@ private struct ProjectRow: View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
             HStack(spacing: DSSpacing.sm) {
                 Circle()
-                    .fill(PrinterPresentation.color(hexRGBA: project.color) ?? .accentColor)
+                    .fill(PrinterPresentation.color(hexRGBA: project.color) ?? DSColor.accent)
                     .frame(width: 10, height: 10)
                 Text(project.name)
-                    .font(.headline)
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(1)
                 Spacer()
-                Text(project.status.capitalized)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(ArchivePresentation.statusColor(project.status))
+                DSStatusBadge(
+                    project.status.capitalized,
+                    intent: DSStatusIntent.forRawStatus(project.status),
+                    showsDot: false
+                )
             }
             if let fraction = project.progressFraction {
                 ProgressView(value: fraction)
+                    .tint(DSColor.accent)
             }
             if let details = project.details, !details.isEmpty {
                 Text(details)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
                     .lineLimit(2)
             }
         }

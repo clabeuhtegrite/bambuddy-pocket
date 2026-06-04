@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -79,6 +80,7 @@ struct ProjectFormSheet: View {
                         .keyboardType(.URL)
                 }
             }
+            .dsListBackground()
             .navigationTitle(isEditing ? "Edit project" : "New project")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {

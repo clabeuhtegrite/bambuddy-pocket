@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -56,6 +57,7 @@ struct SpoolEditSheet: View {
                         .lineLimit(2 ... 5)
                 }
             }
+            .dsListBackground()
             .navigationTitle("Edit spool")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
