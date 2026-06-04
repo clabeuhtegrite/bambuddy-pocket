@@ -64,6 +64,17 @@ public struct PrinterCapabilities: Sendable, Hashable {
         dualNozzle ? 2 : 1
     }
 
+    /// Le modèle n'accepte **que** l'AMS Lite (gamme A1) ? Sert à résoudre le type d'une unité AMS
+    /// que le statut ne tagge pas distinctement (cf. `AMSUnit.resolvedKind`).
+    public var amsOnlyLite: Bool {
+        amsKinds == [.amsLite]
+    }
+
+    /// Le modèle prend-il en charge l'AMS-HT chauffante ?
+    public var supportsHeatedAMS: Bool {
+        amsKinds.contains(.ht)
+    }
+
     public init(
         dualNozzle: Bool,
         hasEthernet: Bool,
