@@ -1003,4 +1003,43 @@ struct MockNetworkingTests {
         #expect(request.httpMethod == "DELETE")
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/api-keys/5")
     }
+
+    @Test("currentUser cible /auth/me et décode le profil enrichi")
+    func fetchesCurrentUser() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":1,"username":"admin","role":"admin","is_admin":true,"auth_source":"local","#
+                + #""groups":[{"id":1,"name":"Administrators"}]}"#
+        )
+        let client = try makeClient()
+        let user = try await client.currentUser()
+        #expect(user.username == "admin")
+        #expect(user.authSource == "local")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/me")
+    }
+
+    @Test("twoFactorStatus cible /auth/2fa/status et décode")
+    func fetchesTwoFactorStatus() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"totp_enabled":true,"email_otp_enabled":false,"backup_codes_remaining":8}"#)
+        let client = try makeClient()
+        let status = try await client.twoFactorStatus()
+        #expect(status.isEnabled)
+        #expect(status.backupCodesRemaining == 8)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/2fa/status")
+    }
+
+    @Test("logout poste sur /auth/logout")
+    func postsLogout() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.logout()
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/logout")
+    }
 }

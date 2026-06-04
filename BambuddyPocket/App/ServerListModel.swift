@@ -129,6 +129,21 @@ final class ServerListModel {
         APIKeysModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model du profil/compte pour ce serveur.
+    func makeAccountModel(for configuration: ServerConfiguration) -> AccountModel {
+        AccountModel(server: configuration, connectionFactory: connectionFactory, serverList: self)
+    }
+
+    /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
+    func clearBearerToken(for configuration: ServerConfiguration) {
+        var secrets = secrets(for: configuration)
+        guard secrets.bearerToken != nil else {
+            return
+        }
+        secrets.bearerToken = nil
+        try? secretStore.setSecrets(secrets, for: configuration.id)
+    }
+
     /// Construit un `LoginModel` pour se connecter à un serveur **non encore enregistré**
     /// (identifié par son URL et ses éventuels secrets Cloudflare).
     func makeLoginModel(baseURL: URL, secrets: ServerSecrets, usesCloudflare: Bool) -> LoginModel {

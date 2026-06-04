@@ -341,6 +341,28 @@
         }
       }
     },
+    "Account": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuenta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compte"
+          }
+        }
+      }
+    },
     "Action failed": {
       "localizations": {
         "de": {
@@ -649,6 +671,28 @@
         }
       }
     },
+    "Authenticator app": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authenticator-App"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplicación de autenticación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Application d’authentification"
+          }
+        }
+      }
+    },
     "Auxiliary": {
       "localizations": {
         "de": {
@@ -667,6 +711,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Auxiliaire"
+          }
+        }
+      }
+    },
+    "Backup codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup-Codes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Códigos de respaldo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes de secours"
           }
         }
       }
@@ -1837,6 +1903,28 @@
         }
       }
     },
+    "Couldn’t load account": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Konto konnte nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar la cuenta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger le compte"
+          }
+        }
+      }
+    },
     "Couldn’t load activity": {
       "localizations": {
         "de": {
@@ -2387,6 +2475,28 @@
         }
       }
     },
+    "Disabled": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deaktiviert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactivée"
+          }
+        }
+      }
+    },
     "Disconnect": {
       "localizations": {
         "de": {
@@ -2603,6 +2713,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modifier la bobine"
+          }
+        }
+      }
+    },
+    "Email": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Mail"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correo electrónico"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-mail"
+          }
+        }
+      }
+    },
+    "Email codes": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-Mail-Codes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Códigos por correo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Codes par e-mail"
           }
         }
       }
@@ -3131,6 +3285,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Général"
+          }
+        }
+      }
+    },
+    "Groups": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gruppen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grupos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groupes"
           }
         }
       }
@@ -3688,6 +3864,50 @@
         }
       }
     },
+    "Log out": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerrar sesión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se déconnecter"
+          }
+        }
+      }
+    },
+    "Log out?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abmelden?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cerrar sesión?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se déconnecter ?"
+          }
+        }
+      }
+    },
     "Login failed.": {
       "localizations": {
         "de": {
@@ -3992,6 +4212,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucune clé d’API"
+          }
+        }
+      }
+    },
+    "No account": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Konto"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin cuenta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun compte"
           }
         }
       }
@@ -4548,6 +4790,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hors ligne"
+          }
+        }
+      }
+    },
+    "On": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activé"
           }
         }
       }
@@ -5146,6 +5410,28 @@
         }
       }
     },
+    "Profile": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perfil"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Profil"
+          }
+        }
+      }
+    },
     "Progress": {
       "localizations": {
         "de": {
@@ -5538,6 +5824,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Révoquée"
+          }
+        }
+      }
+    },
+    "Role": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rolle"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rol"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rôle"
           }
         }
       }
@@ -6796,6 +7104,28 @@
         }
       }
     },
+    "This server does not require authentication.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Server erfordert keine Authentifizierung."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este servidor no requiere autenticación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce serveur ne requiert pas d’authentification."
+          }
+        }
+      }
+    },
     "This server uses plain HTTP. Traffic is not encrypted; use only on a trusted network.": {
       "localizations": {
         "de": {
@@ -6968,6 +7298,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Allumez la lumière de chambre pour une détection fiable."
+          }
+        }
+      }
+    },
+    "Two-factor authentication": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zwei-Faktor-Authentifizierung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autenticación de dos factores"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Authentification à deux facteurs"
           }
         }
       }
@@ -7477,6 +7829,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Poids et coût"
+          }
+        }
+      }
+    },
+    "Your session token will be revoked and removed from this device.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr Sitzungstoken wird widerrufen und von diesem Gerät entfernt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu token de sesión será revocado y eliminado de este dispositivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre jeton de session sera révoqué et supprimé de cet appareil."
           }
         }
       }

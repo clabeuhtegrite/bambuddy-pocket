@@ -80,6 +80,13 @@ struct ServerDetailView: View {
                 } label: {
                     Label("API keys", systemImage: "key")
                 }
+                if current.authMethod == .userPassword {
+                    NavigationLink {
+                        AccountView(server: current, serverList: model)
+                    } label: {
+                        Label("Account", systemImage: "person.crop.circle")
+                    }
+                }
             }
             connectionSection
             testSection
