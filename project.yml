@@ -42,8 +42,11 @@ targets:
         # Police Inter (TTF variable, OFL — cf. NOTICE). Direction artistique BamPocket.
         UIAppFonts:
           - Inter-Variable.ttf
+        # Launch screen : logo centré (pastille verte « B ») sur fond sombre de marque.
         UILaunchScreen:
-          UIColorName: AccentColor
+          UIImageName: LaunchLogo
+          UIImageRespectsSafeAreaInsets: true
+          UIColorName: LaunchBackground
         ITSAppUsesNonExemptEncryption: false
         # Accès aux serveurs/imprimantes sur le réseau local (cf. ADR-0003).
         NSLocalNetworkUsageDescription: >-

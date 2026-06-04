@@ -94,6 +94,13 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (32)** — **Icône d'app + launch screen (DA BamPocket).** Icône soignée : « B »
+  géométrique sombre découpé dans une pastille verte (dégradé `#00C64D`→`#00AE42`) sur fond sombre
+  dégradé, générée par **script reproductible** `scripts/icon/generate_app_icon.swift` (Core
+  Graphics) — master 1024 opaque + 13 tailles iPhone/iPad, `Contents.json` complet. **Launch
+  screen** via `UILaunchScreen` : logo centré (`LaunchLogo.imageset`, généré par
+  `scripts/icon/generate_launch_logo.swift`) sur fond sombre `LaunchBackground` (`#1A1A1A`).
+  Build iOS sans warning (actool OK), lint/format strict OK, 184 SPM + 11 app tests verts.
 - **2026-06-04 (31)** — **Renommage produit → « BamPocket » (nom final, ADR-0004 révisé).**
   `CFBundleDisplayName` = `BamPocket` ; scheme/target/produit `BamPocket` (+ scheme captures
   `BamPocketScreenshots`) ; bundle id `com.bampocket.app` (`.tests`/`.uitests`) ;
