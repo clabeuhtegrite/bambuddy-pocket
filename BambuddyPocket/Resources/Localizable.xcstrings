@@ -2079,6 +2079,28 @@
         }
       }
     },
+    "Couldn’t load smart plugs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart-Steckdosen konnten nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron cargar los enchufes inteligentes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les prises connectées"
+          }
+        }
+      }
+    },
     "Couldn’t load the library": {
       "localizations": {
         "de": {
@@ -4590,6 +4612,50 @@
         }
       }
     },
+    "No smart plug is configured on this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Server ist keine Smart-Steckdose konfiguriert."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay ningún enchufe inteligente configurado en este servidor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune prise connectée n’est configurée sur ce serveur."
+          }
+        }
+      }
+    },
+    "No smart plugs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Smart-Steckdosen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin enchufes inteligentes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune prise connectée"
+          }
+        }
+      }
+    },
     "No spools": {
       "localizations": {
         "de": {
@@ -4771,6 +4837,28 @@
     },
     "OK": {
       "shouldTranslate": false
+    },
+    "Off": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apagado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Éteint"
+          }
+        }
+      }
     },
     "Offline": {
       "localizations": {
@@ -6378,6 +6466,50 @@
         }
       }
     },
+    "Smart plug": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart-Steckdose"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enchufe inteligente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prise connectée"
+          }
+        }
+      }
+    },
+    "Smart plugs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart-Steckdosen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enchufes inteligentes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prises connectées"
+          }
+        }
+      }
+    },
     "Source code": {
       "localizations": {
         "de": {
@@ -7455,6 +7587,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Décharger le filament"
+          }
+        }
+      }
+    },
+    "Unreachable": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht erreichbar"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inaccesible"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Injoignable"
           }
         }
       }
