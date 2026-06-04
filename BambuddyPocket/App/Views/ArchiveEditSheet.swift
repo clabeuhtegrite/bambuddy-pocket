@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -52,6 +53,7 @@ struct ArchiveEditSheet: View {
                     Toggle("Favorite", isOn: $isFavorite)
                 }
             }
+            .dsListBackground()
             .navigationTitle("Edit archive")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {

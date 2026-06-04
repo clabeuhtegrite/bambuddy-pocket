@@ -48,6 +48,8 @@ struct ArchiveDetailView: View {
             timelineSection
             detailsSection
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
         .navigationTitle(archive.displayName)
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
@@ -88,7 +90,13 @@ struct ArchiveDetailView: View {
 
     private var summarySection: some View {
         Section("Summary") {
-            LabeledContent("Status", value: archive.status.capitalized)
+            LabeledContent("Status") {
+                DSStatusBadge(
+                    archive.status.capitalized,
+                    intent: DSStatusIntent.forRawStatus(archive.status),
+                    showsDot: false
+                )
+            }
             if let value = ArchivePresentation.duration(seconds: archive.printTimeSeconds) {
                 LabeledContent("Print time", value: value)
             }

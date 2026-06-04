@@ -28,13 +28,13 @@ struct ArchiveListView: View {
                     } label: {
                         Label("Favorite", systemImage: archive.isFavorite == true ? "star.slash" : "star")
                     }
-                    .tint(.yellow)
+                    .tint(DSColor.statusWarning)
                     Button {
                         editing = archive
                     } label: {
                         Label("Edit", systemImage: "pencil")
                     }
-                    .tint(.blue)
+                    .tint(DSColor.accentDark)
                 }
                 .swipeActions(edge: .trailing) {
                     Button(role: .destructive) {
@@ -43,8 +43,11 @@ struct ArchiveListView: View {
                         Label("Delete", systemImage: "trash")
                     }
                 }
+                .listRowBackground(DSColor.card)
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
         .searchable(text: $query)
         .onSubmit(of: .search) {
             Task { await model.search(query) }
@@ -111,21 +114,24 @@ private struct ArchiveRow: View {
                 if archive.isFavorite == true {
                     Image(systemName: "star.fill")
                         .font(.caption)
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(DSColor.statusWarning)
                         .accessibilityLabel("Favorite")
                 }
                 Text(archive.displayName)
-                    .font(.headline)
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(1)
                 Spacer()
-                Text(archive.status.capitalized)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(ArchivePresentation.statusColor(archive.status))
+                DSStatusBadge(
+                    archive.status.capitalized,
+                    intent: DSStatusIntent.forRawStatus(archive.status),
+                    showsDot: false
+                )
             }
             if !archive.tagList.isEmpty {
                 Text(archive.tagList.joined(separator: " · "))
                     .font(.caption2)
-                    .foregroundStyle(.tint)
+                    .foregroundStyle(DSColor.accent)
                     .lineLimit(1)
             }
             HStack(spacing: DSSpacing.md) {
@@ -136,8 +142,8 @@ private struct ArchiveRow: View {
                     Label(filament, systemImage: "scalemass")
                 }
             }
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            .font(DSFont.caption)
+            .foregroundStyle(DSColor.textSecondary)
         }
         .padding(.vertical, DSSpacing.xs)
     }
