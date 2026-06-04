@@ -75,6 +75,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ **Spoolman** : état + réglages (activation/URL/sync) + connecter/déconnecter (`/spoolman/`).
   Activé au réel sur le Docker (état activé/non-connecté + 503 confirmés) puis désactivé ; le mode
   connecté exige un serveur Spoolman réel → non testé.
+- ✅ **Support / diagnostic** : bascule du journal de débogage + journal applicatif (filtre niveau,
+  recherche, effacement) (`/support/`). Contrats vérifiés au réel (lecture seule, instance intacte).
 - ⬜ Non vérifiables sur l'instance de dev (notés) : MakerWorld (404), metrics (Prometheus off),
   slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman (à activer).
 

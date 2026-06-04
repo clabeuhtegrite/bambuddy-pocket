@@ -184,6 +184,11 @@ final class ServerListModel {
         SpoolmanModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model du support / diagnostic pour ce serveur.
+    func makeSupportModel(for configuration: ServerConfiguration) -> SupportModel {
+        SupportModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)
