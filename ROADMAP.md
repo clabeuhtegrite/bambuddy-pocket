@@ -97,7 +97,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   (`use_slicer_api`, `slice-jobs`) — non testable sur la démo.
 - 🟦 Bibliothèque de modèles (✅ liste + recherche, détail, ajout à la file, édition nom/notes,
   suppression, ✅ **arbre de dossiers** + navigation, ✅ **déplacement** de fichiers, ✅ **corbeille**
-  (restauration/suppression définitive) ; ⬜ upload) / projets (✅ liste + recherche, détail, création,
+  (restauration/suppression définitive), ✅ **upload** (multipart, sélecteur de fichier, doublon
+  détecté)) / projets (✅ liste + recherche, détail, création,
   édition, suppression, ✅ **nomenclature (BOM)** (consultation + ajout/suppression d'éléments),
   ✅ **chronologie** (`/timeline`) ; ⬜ add-archives/add-queue), **inventaire
   filaments** (✅ liste,

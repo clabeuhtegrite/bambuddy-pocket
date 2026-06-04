@@ -59,6 +59,20 @@ final class LibraryListModel {
         }
     }
 
+    /// Téléverse un fichier dans la bibliothèque (dans le dossier courant) puis recharge la liste.
+    /// Renvoie le résultat (dont l'éventuel doublon) au succès, `nil` en cas d'échec.
+    func upload(filename: String, data: Data, toFolder folderID: Int?) async -> LibraryUploadResult? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            let result = try await client.uploadLibraryFile(filename: filename, data: data, folderID: folderID)
+            await load()
+            return result
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return nil
+        }
+    }
+
     /// Ajoute un fichier à la file d'attente d'impression. Renvoie `true` au succès.
     func enqueue(_ file: LibraryFile) async -> Bool {
         do {

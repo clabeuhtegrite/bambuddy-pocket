@@ -7,6 +7,18 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Phase 3 — téléversement bibliothèque livré (`main` vert).** Écran Bibliothèque : bouton
+**« Téléverser »** (`.fileImporter` 3MF/STL/G-code) → `POST /library/files/` en
+**multipart/form-data** (champ `file`, `?folder_id=` à la racine), avec alerte de résultat (succès /
+**doublon détecté** / échec). `RequestFactory.makeRequest(contentType:)` accepte désormais un type
+de contenu personnalisé ; `RESTClient.uploadLibraryFile` construit le corps multipart (helper
+`multipartFileBody`). Modèle `LibraryUploadResult` (`FileUploadResponse` : id/filename/file_type/
+file_size/thumbnail_path/duplicate_of, `isDuplicate`). **Contrat vérifié au réel** : fichier
+`.3mf` réellement téléversé sur le Docker (réponse décodée : id 3, file_size 12, duplicate_of null),
+puis **supprimé + purgé de la corbeille** → instance restaurée (bibliothèque/corbeille à leur état
+d'origine). Tests : **253 SPM** (+1, routage multipart + en-tête + corps), 11 app + 3 UI, build iOS
+sans warning, lint/format strict OK. i18n EN/FR/ES/DE.
+
 **Phase 2 — contrôles avancés (print-options, bed-jog, airduct-mode) livrés (`main` vert).**
 Détail imprimante (imprimante connectée) : **options d'impression / détecteurs IA** (section
 « Print options » — lecture depuis `/status.print_options` + bascule via `POST …/print-options?

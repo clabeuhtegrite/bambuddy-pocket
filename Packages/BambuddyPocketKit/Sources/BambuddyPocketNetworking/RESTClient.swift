@@ -101,6 +101,61 @@ public actor RESTClient: APIClient {
         let encoded = token.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? token
         return "\(path)?token=\(encoded)"
     }
+
+    /// Téléverse un fichier dans la bibliothèque (`POST /library/files/`, `multipart/form-data`).
+    /// `folderID` (optionnel) cible un dossier ; sinon le fichier est déposé à la racine.
+    public func uploadLibraryFile(
+        filename: String,
+        data: Data,
+        folderID: Int? = nil
+    ) async throws -> LibraryUploadResult {
+        let boundary = "Boundary-\(UUID().uuidString)"
+        let body = Self.multipartFileBody(filename: filename, data: data, boundary: boundary)
+        var path = "/library/files/"
+        if let folderID {
+            path += "?folder_id=\(folderID)"
+        }
+        let request = factory.makeRequest(
+            path: path,
+            method: .post,
+            body: body,
+            contentType: "multipart/form-data; boundary=\(boundary)"
+        )
+        let responseData: Data
+        let response: URLResponse
+        do {
+            (responseData, response) = try await session.data(for: request)
+        } catch {
+            throw APIError.transport(error.localizedDescription)
+        }
+        guard let http = response as? HTTPURLResponse else {
+            throw APIError.transport("Réponse non HTTP")
+        }
+        switch http.statusCode {
+        case 200 ..< 300:
+            do {
+                return try JSONDecoder.bambuddy().decode(LibraryUploadResult.self, from: responseData)
+            } catch {
+                throw APIError.decoding(String(describing: error))
+            }
+        case 401, 403:
+            throw APIError.unauthorized
+        default:
+            throw APIError.http(status: http.statusCode, body: String(data: responseData, encoding: .utf8))
+        }
+    }
+
+    /// Encode un corps `multipart/form-data` contenant un unique champ `file`.
+    static func multipartFileBody(filename: String, data: Data, boundary: String) -> Data {
+        var body = Data()
+        let disposition = "Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n"
+        body.append(Data("--\(boundary)\r\n".utf8))
+        body.append(Data(disposition.utf8))
+        body.append(Data("Content-Type: application/octet-stream\r\n\r\n".utf8))
+        body.append(data)
+        body.append(Data("\r\n--\(boundary)--\r\n".utf8))
+        return body
+    }
 }
 
 /// Réponse vide (pour les endpoints qui ne renvoient pas de corps utile).
