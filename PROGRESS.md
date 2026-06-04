@@ -7,6 +7,14 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Transverse — accessibilité + couverture UI étendues (`main` vert).** Passe VoiceOver sur les
+écrans récents : le **flux caméra en direct** (`Image(uiImage:)`) porte désormais un libellé
+(« Flux caméra en direct ») ; la vignette d'archive avait déjà « Aperçu de l'impression », les
+contrôles bed-jog/print-options/distribution exposent déjà des `Label`/libellés. **XCUITest étendu** :
+`testAboutScreenIsReachable` vérifie la section « Composants open source » + un composant (three.js).
+Tests : **253 SPM + 11 app + 3 UI** verts (assertion About vérifiée en simulateur), build iOS sans
+warning, lint/format strict OK. i18n EN/FR/ES/DE.
+
 **Transverse — écran crédits open source complété (`main` vert).** L'écran **À propos** détaille
 désormais les **mentions OSS** (alignées sur `NOTICE`) : **licence AGPL v3.0** + lien, **attribution
 Bambuddy** (client tiers non affilié, dialogue via API réseau, aucun code embarqué) + lien GitHub,

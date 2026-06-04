@@ -23,6 +23,7 @@ struct CameraView: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
+                    .accessibilityLabel("Live camera feed")
             } else if failed {
                 ContentUnavailableView("Camera unavailable", systemImage: "video.slash")
             } else {
