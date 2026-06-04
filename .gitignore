@@ -63,6 +63,7 @@ fastlane/test_output
 # Captures d'écran de présentation (générées par le scheme BambuddyPocketScreenshots,
 # régénérables à la demande — non versionnées pour garder le dépôt léger).
 docs/screenshots/*.png
+docs/screenshots/**/*.png
 
 # --- Divers ---
 *.log

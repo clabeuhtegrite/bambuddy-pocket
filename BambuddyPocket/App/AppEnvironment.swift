@@ -23,12 +23,16 @@ struct AppEnvironment {
     }
 
     /// Environnement en mémoire (previews & tests) : ni Keychain, ni persistance disque.
-    static func inMemory(servers: [ServerConfiguration] = []) -> AppEnvironment {
+    /// `session` permet d'injecter une `URLSession` mockée (tests réseau).
+    static func inMemory(
+        servers: [ServerConfiguration] = [],
+        session: URLSession = .shared
+    ) -> AppEnvironment {
         let secretStore = InMemorySecretStore()
         return AppEnvironment(
             serverStore: InMemoryServerStore(servers),
             secretStore: secretStore,
-            connectionFactory: ServerConnectionFactory(secretStore: secretStore)
+            connectionFactory: ServerConnectionFactory(secretStore: secretStore, session: session)
         )
     }
 }
