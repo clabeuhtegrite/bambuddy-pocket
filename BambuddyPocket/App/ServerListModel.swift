@@ -24,6 +24,8 @@ final class ServerListModel {
     private let serverStore: ServerStore
     private let secretStore: SecretStore
     private let connectionFactory: ServerConnectionFactory
+    /// Centres de notifications persistants, mis en cache par serveur (session WebSocket vivante).
+    private var notificationCenters: [ServerConfiguration.ID: ServerNotificationCenter] = [:]
 
     init(environment: AppEnvironment) {
         serverStore = environment.serverStore
@@ -57,9 +59,29 @@ final class ServerListModel {
         (try? secretStore.secrets(for: configuration.id)) ?? ServerSecrets()
     }
 
-    /// Construit le view-model des imprimantes (REST + temps réel) pour ce serveur.
+    /// Centre de notifications **persistant** du serveur (session WebSocket vivante tant que le
+    /// serveur est sélectionné). Mis en cache : un seul flux et un seul feed par serveur, partagés
+    /// entre tous les écrans. Démarre le flux à la première demande.
+    func notificationCenter(for configuration: ServerConfiguration) -> ServerNotificationCenter {
+        if let existing = notificationCenters[configuration.id] {
+            return existing
+        }
+        let center = ServerNotificationCenter(
+            server: configuration,
+            connectionFactory: connectionFactory
+        )
+        center.start()
+        notificationCenters[configuration.id] = center
+        return center
+    }
+
+    /// Construit le view-model des imprimantes (REST + temps réel partagé) pour ce serveur.
     func makePrinterListModel(for configuration: ServerConfiguration) -> PrinterListModel {
-        PrinterListModel(server: configuration, connectionFactory: connectionFactory)
+        PrinterListModel(
+            server: configuration,
+            connectionFactory: connectionFactory,
+            notificationCenter: notificationCenter(for: configuration)
+        )
     }
 
     /// Construit le view-model de l'archive d'impressions pour ce serveur.
@@ -109,6 +131,7 @@ final class ServerListModel {
         servers.removeAll { $0.id == configuration.id }
         try serverStore.save(servers)
         try secretStore.deleteSecrets(for: configuration.id)
+        stopNotificationCenter(for: configuration.id)
     }
 
     func delete(at offsets: IndexSet) throws {
@@ -117,7 +140,12 @@ final class ServerListModel {
         try serverStore.save(servers)
         for server in removed {
             try secretStore.deleteSecrets(for: server.id)
+            stopNotificationCenter(for: server.id)
         }
+    }
+
+    private func stopNotificationCenter(for id: ServerConfiguration.ID) {
+        notificationCenters.removeValue(forKey: id)?.stop()
     }
 
     /// Teste la connexion via `GET /auth/status` (léger, ne requiert pas d'auth).

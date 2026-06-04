@@ -3,30 +3,60 @@ import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
-/// Feed des notifications en-app dérivées du WebSocket pour un serveur.
+/// Bouton de barre d'outils ouvrant le centre de notifications, avec pastille de non-lus.
+struct NotificationsToolbarButton: View {
+    let center: ServerNotificationCenter
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            let unread = center.unreadCount
+            Image(systemName: unread > 0 ? "bell.badge" : "bell")
+                .symbolRenderingMode(unread > 0 ? .multicolor : .monochrome)
+        }
+        .accessibilityLabel("Notifications")
+        .accessibilityValue(
+            center.unreadCount > 0
+                ? Text("\(center.unreadCount) unread")
+                : Text("No unread notifications")
+        )
+    }
+}
+
+/// Centre de notifications en-app dérivées du WebSocket pour un serveur : feed horodaté, état
+/// lu/non-lu, et effacement. Marque tout comme lu à l'ouverture.
 struct NotificationsView: View {
-    let notifications: [AppNotification]
+    let center: ServerNotificationCenter
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(notifications) { note in
+                ForEach(center.notifications) { note in
                     NotificationRow(note: note)
                 }
             }
             .overlay {
-                if notifications.isEmpty {
-                    ContentUnavailableView("No notifications", systemImage: "bell.slash")
+                if center.notifications.isEmpty {
+                    ContentUnavailableView(
+                        "No notifications",
+                        systemImage: "bell.slash",
+                        description: Text("Print events will appear here as they happen.")
+                    )
                 }
             }
             .navigationTitle("Notifications")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Clear", role: .destructive) { center.clear() }
+                        .disabled(center.notifications.isEmpty)
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") { dismiss() }
                 }
             }
+            .task { center.markAllAsRead() }
         }
     }
 }
@@ -36,47 +66,131 @@ private struct NotificationRow: View {
 
     var body: some View {
         HStack(spacing: DSSpacing.md) {
-            Image(systemName: icon)
-                .foregroundStyle(color)
+            Image(systemName: NotificationStyle.icon(note.kind))
+                .foregroundStyle(NotificationStyle.color(note.kind))
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                Text(title)
-                if let printer = note.printerName {
-                    Text(printer)
+                Text(NotificationStyle.title(note.kind))
+                    .font(.body.weight(note.isRead ? .regular : .semibold))
+                if let subtitle {
+                    Text(subtitle)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .lineLimit(2)
                 }
             }
             Spacer()
+            if !note.isRead {
+                Circle()
+                    .fill(Color.accentColor)
+                    .frame(width: 8, height: 8)
+                    .accessibilityHidden(true)
+            }
             Text(note.date, style: .relative)
                 .font(.caption)
                 .foregroundStyle(.tertiary)
         }
         .padding(.vertical, DSSpacing.xs)
+        .accessibilityElement(children: .combine)
     }
 
-    private var title: LocalizedStringKey {
-        switch note.kind {
+    /// Sous-titre : nom de l'imprimante et/ou détail (travail, archive, code HMS).
+    private var subtitle: String? {
+        let parts = [note.printerName, note.detail].compactMap(\.self).filter { !$0.isEmpty }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+}
+
+/// Bannière non intrusive affichée en haut de l'écran à l'arrivée d'une notification, qui se
+/// replie automatiquement après quelques secondes. Tapotable pour ouvrir le centre.
+struct NotificationBanner: View {
+    let center: ServerNotificationCenter
+    let onTap: () -> Void
+
+    var body: some View {
+        Group {
+            if let note = center.latestBanner {
+                bannerContent(note)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(duration: 0.35), value: center.latestBanner)
+    }
+
+    private func bannerContent(_ note: AppNotification) -> some View {
+        HStack(spacing: DSSpacing.md) {
+            Image(systemName: NotificationStyle.icon(note.kind))
+                .foregroundStyle(NotificationStyle.color(note.kind))
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(NotificationStyle.title(note.kind))
+                    .font(.subheadline.weight(.semibold))
+                if let subtitle = bannerSubtitle(note) {
+                    Text(subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(DSSpacing.md)
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .shadow(radius: 8, y: 4)
+        .padding(.horizontal, DSSpacing.md)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            center.dismissBanner()
+            onTap()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .task(id: note.id) {
+            try? await Task.sleep(for: .seconds(4))
+            if center.latestBanner?.id == note.id {
+                center.dismissBanner()
+            }
+        }
+    }
+
+    private func bannerSubtitle(_ note: AppNotification) -> String? {
+        let parts = [note.printerName, note.detail].compactMap(\.self).filter { !$0.isEmpty }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+}
+
+/// Habillage partagé d'une catégorie de notification (titre, icône, couleur) — réutilisé par le
+/// feed et la bannière.
+enum NotificationStyle {
+    static func title(_ kind: NotableEventKind) -> LocalizedStringKey {
+        switch kind {
         case .printStarted: "Print started"
         case .printCompleted: "Print finished"
         case .missingSpool: "Spool missing"
         case .plateNotEmpty: "Plate not empty"
+        case .hmsError: "Printer error"
+        case .archiveCreated: "Print archived"
         }
     }
 
-    private var icon: String {
-        switch note.kind {
+    static func icon(_ kind: NotableEventKind) -> String {
+        switch kind {
         case .printStarted: "printer.fill"
         case .printCompleted: "checkmark.circle.fill"
         case .missingSpool: "exclamationmark.triangle.fill"
         case .plateNotEmpty: "tray.full.fill"
+        case .hmsError: "exclamationmark.octagon.fill"
+        case .archiveCreated: "clock.arrow.circlepath"
         }
     }
 
-    private var color: Color {
-        switch note.kind {
+    static func color(_ kind: NotableEventKind) -> Color {
+        switch kind {
         case .printStarted: .blue
         case .printCompleted: .green
         case .missingSpool, .plateNotEmpty: .orange
+        case .hmsError: .red
+        case .archiveCreated: .secondary
         }
     }
 }
