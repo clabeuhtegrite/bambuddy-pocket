@@ -49,6 +49,7 @@ struct LibraryFileDetailView: View {
             metadataSection
             notesSection
         }
+        .dsListBackground()
         .navigationTitle(current.displayName)
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
@@ -121,6 +122,7 @@ struct LibraryFileEditSheet: View {
                         .lineLimit(3 ... 6)
                 }
             }
+            .dsListBackground()
             .navigationTitle("Edit file")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {

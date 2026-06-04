@@ -35,7 +35,7 @@ struct LibraryListView: View {
                         } label: {
                             Label("Add to queue", systemImage: "text.append")
                         }
-                        .tint(.green)
+                        .tint(DSColor.accent)
                     }
                 }
                 .swipeActions(edge: .trailing) {
@@ -45,8 +45,10 @@ struct LibraryListView: View {
                         Label("Delete", systemImage: "trash")
                     }
                 }
+                .listRowBackground(DSColor.card)
             }
         }
+        .dsListBackground()
         .searchable(text: $query)
         .overlay { placeholder }
         .navigationTitle("Library")
@@ -63,6 +65,7 @@ struct LibraryListView: View {
     private var placeholder: some View {
         if !model.hasLoaded, model.files.isEmpty {
             ProgressView()
+                .tint(DSColor.accent)
         } else if model.files.isEmpty {
             if let error = model.loadError {
                 ContentUnavailableView {
@@ -87,7 +90,8 @@ private struct LibraryRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
             Text(file.displayName)
-                .font(.headline)
+                .font(DSFont.headline)
+                .foregroundStyle(DSColor.textPrimary)
                 .lineLimit(1)
             HStack(spacing: DSSpacing.md) {
                 if let type = file.fileType {
@@ -100,8 +104,8 @@ private struct LibraryRow: View {
                     Label("\(count)", systemImage: "printer")
                 }
             }
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            .font(DSFont.caption)
+            .foregroundStyle(DSColor.textSecondary)
         }
         .padding(.vertical, DSSpacing.xs)
     }

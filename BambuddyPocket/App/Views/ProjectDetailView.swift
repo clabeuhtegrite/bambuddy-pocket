@@ -22,10 +22,17 @@ struct ProjectDetailView: View {
     var body: some View {
         List {
             Section("Overview") {
-                LabeledContent("Status", value: current.status.capitalized)
+                LabeledContent("Status") {
+                    DSStatusBadge(
+                        current.status.capitalized,
+                        intent: DSStatusIntent.forRawStatus(current.status),
+                        showsDot: false
+                    )
+                }
                 if let fraction = current.progressFraction {
                     LabeledContent("Progress") {
                         ProgressView(value: fraction)
+                            .tint(DSColor.accent)
                     }
                 }
                 if let target = current.targetCount {
@@ -41,6 +48,7 @@ struct ProjectDetailView: View {
             descriptionSection
             notesSection
         }
+        .dsListBackground()
         .navigationTitle(current.name)
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
