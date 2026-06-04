@@ -269,6 +269,19 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (37)** — **Vérification des contrats d'API sur matériel RÉEL (X2D physique, LECTURE
+  SEULE).** Enregistrement LAN dans le Docker de dev, **connexion MQTT immédiate** (diagnostic :
+  ports MQTT/FTPS/RTSPS `pass`, `mqtt_auth: pass`), capture des vraies réponses. **Conformes** à
+  nos modèles `Codable` : `PrinterStatus` complet (ventilateurs `cooling/big_fan1/big_fan2/heatbreak`,
+  3 AMS dont **AMS-HT id 128**, températures, `print_options`, `airduct_mode`, `stg_cur_name`),
+  flux **WebSocket** `printer_status`, **kprofiles** (`{profiles:[], nozzle_diameter}` — l'instance
+  virtuelle renvoyait « Printer not connected »), **caméra** (`camera/status`, `stream-token` sans
+  corps → `{token}`, snapshot JPEG 1920×1080). **Un écart corrigé** : la X2D renvoie des gravités
+  HMS hors plage 1…3 (ex. `severity:6`) ; notre `HMSSeverity` les classait « Unknown » alors que la
+  référence amont (`getSeverityInfo`) mappe `4`/défaut → **Info**. `HMSSeverity` aligné (suppression
+  du cas `.unknown`, défaut → `.info`) + **tests de régression sur charge réelle capturée**
+  (`x2d_real_status.json`, anonymisée). X2D **retirée** du Docker à la fin (seul `VP-Test` id=1
+  subsiste, `auth_enabled:false`). 255 tests SPM (+3).
 - **2026-06-04 (36)** — **Passe d'accessibilité (VoiceOver) sur les écrans Tier 2/3.** Les icônes
   de **statut purement décoratives**, redondantes avec le texte adjacent, sont masquées à VoiceOver
   (`.accessibilityHidden(true)`) pour qu'il n'annonce que l'information utile : État serveur
