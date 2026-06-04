@@ -19,7 +19,12 @@ struct ArchiveDetailView: View {
     }
 
     private var isRenderable: Bool {
-        fileExtension == "stl" || fileExtension == "3mf"
+        ["stl", "3mf", "gcode"].contains(fileExtension)
+    }
+
+    /// Libellé du lien de prévisualisation, adapté au format (parcours G-code vs maillage 3D).
+    private var previewLabel: LocalizedStringKey {
+        fileExtension == "gcode" ? "View G-code toolpath" : "View 3D model"
     }
 
     var body: some View {
@@ -30,7 +35,7 @@ struct ArchiveDetailView: View {
                     NavigationLink {
                         Model3DScreen(archive: archive, model: model)
                     } label: {
-                        Label("View 3D model", systemImage: "cube")
+                        Label(previewLabel, systemImage: "cube")
                     }
                 }
             }
