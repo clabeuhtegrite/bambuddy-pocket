@@ -1302,4 +1302,35 @@ struct MockNetworkingTests {
         let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
         #expect(json["notes"] as? String == "done")
     }
+
+    @Test("printLog cible /print-log/ avec pagination et recherche, décode la page")
+    func fetchesPrintLog() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"items":[{"id":1,"print_name":"Benchy","status":"completed","#
+                + #""created_at":"2026-06-04T11:37:08"}],"total":1}"#
+        )
+        let client = try makeClient()
+        let page = try await client.printLog(search: "Ben chy", limit: 25, offset: 0)
+        #expect(page.total == 1)
+        #expect(page.items.first?.printName == "Benchy")
+        let request = try #require(MockURLProtocol.lastRequest)
+        let url = try #require(request.url?.absoluteString)
+        #expect(url.hasPrefix("https://host.example.com/api/v1/print-log/?"))
+        #expect(url.contains("limit=25"))
+        #expect(url.contains("offset=0"))
+        #expect(url.contains("search=Ben%20chy"))
+    }
+
+    @Test("clearPrintLog DELETE /print-log/")
+    func clearsPrintLog() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"message":"Print log cleared"}"#)
+        let client = try makeClient()
+        try await client.clearPrintLog()
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/print-log/")
+    }
 }

@@ -156,6 +156,24 @@ public extension APIClient {
         try await send("/discovery/stop", method: .post, body: nil)
     }
 
+    // MARK: Journal d'impression (cf. docs/bambuddy-api.md §print-log)
+
+    /// Journal d'impression paginé (`GET /print-log/`). `search` filtre par nom de travail
+    /// (`ilike`), `limit`/`offset` paginent (au plus 500 par page côté serveur).
+    func printLog(search: String? = nil, limit: Int = 50, offset: Int = 0) async throws -> PrintLogPage {
+        var query = "limit=\(limit)&offset=\(offset)"
+        let trimmed = search?.isEmpty == false ? search : nil
+        if let encoded = trimmed?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            query += "&search=\(encoded)"
+        }
+        return try await get("/print-log/?\(query)")
+    }
+
+    /// Vide le journal d'impression (`DELETE /print-log/`). N'affecte ni les archives ni la file.
+    func clearPrintLog() async throws {
+        try await delete("/print-log/")
+    }
+
     // MARK: Système (cf. docs/bambuddy-api.md §system)
 
     /// État du serveur (`GET /system/info`) : app, machine, mémoire, CPU, stockage, base.

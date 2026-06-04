@@ -67,8 +67,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ **Liens externes** : CRUD (`/external-links/`).
 - ✅ **Sauvegardes locales** : état + liste + déclenchement (`/local-backup/`).
 - ✅ **Découverte réseau** : SSDP start/stop + liste (`/discovery/`).
-- ⬜ Non vérifiables sur l'instance de dev (notés) : print-log (vide), MakerWorld (404), metrics
-  (Prometheus off), slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman.
+- ✅ **Journal d'impression** : liste paginée + recherche serveur + vidage (`/print-log/`).
+  Contrat vérifié au réel (entrée semée puis instance restaurée propre).
+- ⬜ Non vérifiables sur l'instance de dev (notés) : MakerWorld (404), metrics (Prometheus off),
+  slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman (à activer).
 
 ## Phase 3 — Avancé ⬜
 - ⬜ **Viewer 3D** des 3MF/STL/gcode (décision d'approche : SceneKit/RealityKit + parseur natif,
