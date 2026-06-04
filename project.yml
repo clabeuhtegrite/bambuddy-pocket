@@ -84,6 +84,18 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: app.bambuddy.pocket.tests
         GENERATE_INFOPLIST_FILE: "YES"
 
+  BambuddyPocketUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: BambuddyPocketUITests
+    dependencies:
+      - target: BambuddyPocket
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.bambuddy.pocket.uitests
+        GENERATE_INFOPLIST_FILE: "YES"
+
 schemes:
   BambuddyPocket:
     build:
@@ -98,3 +110,14 @@ schemes:
       config: Debug
     profile:
       config: Release
+
+  BambuddyPocketScreenshots:
+    build:
+      targets:
+        BambuddyPocket: all
+        BambuddyPocketUITests: [test]
+    test:
+      targets:
+        - BambuddyPocketUITests
+    run:
+      config: Debug
