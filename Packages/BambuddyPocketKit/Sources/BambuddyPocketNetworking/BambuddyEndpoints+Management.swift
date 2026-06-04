@@ -174,6 +174,35 @@ public extension APIClient {
         try await delete("/print-log/")
     }
 
+    // MARK: Spoolman (cf. docs/bambuddy-api.md §spoolman)
+
+    /// État de l'intégration Spoolman (`GET /spoolman/status`).
+    func spoolmanStatus() async throws -> SpoolmanStatus {
+        try await get("/spoolman/status")
+    }
+
+    /// Réglages Spoolman (`GET /settings/spoolman`). Booléens renvoyés en chaînes.
+    func spoolmanSettings() async throws -> SpoolmanSettings {
+        try await get("/settings/spoolman")
+    }
+
+    /// Met à jour les réglages Spoolman (`PUT /settings/spoolman`) et renvoie l'état complet.
+    @discardableResult
+    func updateSpoolmanSettings(_ update: SpoolmanSettingsUpdate) async throws -> SpoolmanSettings {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/settings/spoolman", method: .put, body: body)
+    }
+
+    /// Tente de se connecter au serveur Spoolman configuré (`POST /spoolman/connect`).
+    func connectSpoolman() async throws {
+        try await post("/spoolman/connect")
+    }
+
+    /// Se déconnecte du serveur Spoolman (`POST /spoolman/disconnect`).
+    func disconnectSpoolman() async throws {
+        try await post("/spoolman/disconnect")
+    }
+
     // MARK: Sauvegarde distante Git (cf. docs/bambuddy-api.md §github-backup)
 
     /// État de la sauvegarde distante Git (`GET /github-backup/status`).

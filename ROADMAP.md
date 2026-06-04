@@ -72,6 +72,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ **Sauvegarde distante Git** : état + config (POST/PATCH, jeton écriture seule) + journal +
   run manuel (`/github-backup/`). Contrats lecture vérifiés au réel (config/log semés puis
   supprimés) ; la sauvegarde effective exige un vrai jeton + dépôt privé → non testée.
+- ✅ **Spoolman** : état + réglages (activation/URL/sync) + connecter/déconnecter (`/spoolman/`).
+  Activé au réel sur le Docker (état activé/non-connecté + 503 confirmés) puis désactivé ; le mode
+  connecté exige un serveur Spoolman réel → non testé.
 - ⬜ Non vérifiables sur l'instance de dev (notés) : MakerWorld (404), metrics (Prometheus off),
   slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman (à activer).
 

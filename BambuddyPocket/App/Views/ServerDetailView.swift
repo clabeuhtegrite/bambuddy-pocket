@@ -64,6 +64,11 @@ struct ServerDetailView: View {
                     Label("Filament catalog", systemImage: "books.vertical")
                 }
                 NavigationLink {
+                    SpoolmanView(server: current, serverList: model)
+                } label: {
+                    Label("Spoolman", systemImage: "spool")
+                }
+                NavigationLink {
                     LibraryListView(server: current, serverList: model)
                 } label: {
                     Label("Library", systemImage: "folder")

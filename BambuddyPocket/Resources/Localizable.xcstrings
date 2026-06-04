@@ -899,6 +899,34 @@
         }
       }
     },
+    "Automatic": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatique"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automático"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatisch"
+          }
+        }
+      }
+    },
     "Auxiliary": {
       "localizations": {
         "de": {
@@ -2031,6 +2059,34 @@
         }
       }
     },
+    "Connected": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecté"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbunden"
+          }
+        }
+      }
+    },
     "Connected. Authentication is disabled on this server.": {
       "localizations": {
         "de": {
@@ -2445,6 +2501,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impossible de charger les clés d’API"
+          }
+        }
+      }
+    },
+    "Couldn’t load Spoolman": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load Spoolman"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger Spoolman"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar Spoolman"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman konnte nicht geladen werden"
           }
         }
       }
@@ -3275,6 +3359,34 @@
         }
       }
     },
+    "Disable weight sync": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disable weight sync"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver la synchro du poids"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar sincronización de peso"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gewichts-Sync deaktivieren"
+          }
+        }
+      }
+    },
     "Disabled": {
       "localizations": {
         "de": {
@@ -3787,6 +3899,34 @@
         }
       }
     },
+    "Enable Spoolman": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable Spoolman"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer Spoolman"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activar Spoolman"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman aktivieren"
+          }
+        }
+      }
+    },
     "Enabled": {
       "localizations": {
         "de": {
@@ -3805,6 +3945,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Activé"
+          }
+        }
+      }
+    },
+    "Enabled, not connected": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enabled, not connected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activé, non connecté"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activado, sin conexión"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiviert, nicht verbunden"
           }
         }
       }
@@ -4625,6 +4793,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Connexion non sécurisée (HTTP)"
+          }
+        }
+      }
+    },
+    "Integration": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Integration"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intégration"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Integración"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Integration"
           }
         }
       }
@@ -7688,6 +7884,34 @@
         }
       }
     },
+    "Report partial usage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report partial usage"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signaler l’usage partiel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Informar uso parcial"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teilverbrauch melden"
+          }
+        }
+      }
+    },
     "Repository": {
       "localizations": {
         "en": {
@@ -8758,6 +8982,90 @@
         }
       }
     },
+    "Spoolman": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman"
+          }
+        }
+      }
+    },
+    "Spoolman is not enabled. Tap Configure to set the server URL and turn on external spool tracking.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman is not enabled. Tap Configure to set the server URL and turn on external spool tracking."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman n’est pas activé. Touchez Configurer pour définir l’URL du serveur et activer le suivi externe des bobines."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman no está activado. Toca Configurar para establecer la URL del servidor y activar el seguimiento externo de bobinas."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman ist nicht aktiviert. Tippe auf Konfigurieren, um die Server-URL festzulegen und die externe Spulenverfolgung einzuschalten."
+          }
+        }
+      }
+    },
+    "Spoolman settings": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman settings"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages Spoolman"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes de Spoolman"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spoolman-Einstellungen"
+          }
+        }
+      }
+    },
     "Sport": {
       "localizations": {
         "de": {
@@ -9228,6 +9536,62 @@
           "stringUnit": {
             "state": "translated",
             "value": "Résumé"
+          }
+        }
+      }
+    },
+    "Sync mode": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync mode"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mode de synchro"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modo de sincronización"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sync-Modus"
+          }
+        }
+      }
+    },
+    "Synchronization": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronization"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisation"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronización"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchronisierung"
           }
         }
       }
@@ -10199,6 +10563,34 @@
         }
       }
     },
+    "Use a Spoolman server to manage filament inventory instead of the built-in tracker.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a Spoolman server to manage filament inventory instead of the built-in tracker."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utilisez un serveur Spoolman pour gérer l’inventaire de filament au lieu du suivi intégré."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa un servidor Spoolman para gestionar el inventario de filamento en lugar del seguimiento integrado."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verwende einen Spoolman-Server zur Verwaltung des Filament-Inventars anstelle des integrierten Trackers."
+          }
+        }
+      }
+    },
     "Used": {
       "localizations": {
         "de": {
@@ -10437,6 +10829,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Poids et coût"
+          }
+        }
+      }
+    },
+    "Weight sync": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weight sync"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Synchro du poids"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sincronización de peso"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gewichts-Sync"
           }
         }
       }
