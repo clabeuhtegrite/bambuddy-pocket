@@ -92,7 +92,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - 🟦 Bibliothèque de modèles (✅ liste + recherche, détail, ajout à la file, édition nom/notes,
   suppression, ✅ **arbre de dossiers** + navigation, ✅ **déplacement** de fichiers, ✅ **corbeille**
   (restauration/suppression définitive) ; ⬜ upload) / projets (✅ liste + recherche, détail, création,
-  édition, suppression ; ⬜ items/BOM/timeline), **inventaire
+  édition, suppression, ✅ **nomenclature (BOM)** (consultation + ajout/suppression d'éléments),
+  ✅ **chronologie** (`/timeline`) ; ⬜ add-archives/add-queue), **inventaire
   filaments** (✅ liste,
   détail, édition, historique de consommation, reset compteur, suppression) ; ⬜ Spoolman/SpoolBuddy,
   intégrations (cloud, smart-plugs, Obico, MakerWorld) selon priorité.

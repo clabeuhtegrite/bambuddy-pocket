@@ -182,6 +182,28 @@ public extension APIClient {
         try await delete("/projects/\(id)")
     }
 
+    /// Nomenclature (BOM) d'un projet (`GET /projects/{id}/bom`).
+    func projectBOM(id: Int) async throws -> [BOMItem] {
+        try await get("/projects/\(id)/bom")
+    }
+
+    /// Ajoute un élément à la nomenclature (`POST /projects/{id}/bom`).
+    @discardableResult
+    func addProjectBOMItem(projectID: Int, _ item: BOMItemCreate) async throws -> BOMItem {
+        let body = try JSONEncoder.bambuddy().encode(item)
+        return try await send("/projects/\(projectID)/bom", method: .post, body: body)
+    }
+
+    /// Supprime un élément de la nomenclature (`DELETE /projects/{id}/bom/{item_id}`).
+    func deleteProjectBOMItem(projectID: Int, itemID: Int) async throws {
+        try await delete("/projects/\(projectID)/bom/\(itemID)")
+    }
+
+    /// Chronologie d'un projet (`GET /projects/{id}/timeline`).
+    func projectTimeline(id: Int) async throws -> [TimelineEvent] {
+        try await get("/projects/\(id)/timeline")
+    }
+
     /// Réordonne la file d'attente (`POST /queue/reorder`).
     func reorderQueue(_ items: [QueueReorderItem]) async throws {
         let body = try JSONEncoder.bambuddy().encode(QueueReorder(items: items))
