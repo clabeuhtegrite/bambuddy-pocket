@@ -127,6 +127,35 @@ public extension APIClient {
         try await delete("/api-keys/\(id)")
     }
 
+    // MARK: Découverte réseau (cf. docs/bambuddy-api.md §discovery)
+
+    /// État de la découverte réseau (`GET /discovery/status`).
+    func discoveryStatus() async throws -> DiscoveryStatus {
+        try await get("/discovery/status")
+    }
+
+    /// Informations sur l'environnement de découverte (`GET /discovery/info`).
+    func discoveryInfo() async throws -> DiscoveryInfo {
+        try await get("/discovery/info")
+    }
+
+    /// Imprimantes découvertes sur le réseau (`GET /discovery/printers`).
+    func discoveredPrinters() async throws -> [DiscoveredPrinter] {
+        try await get("/discovery/printers")
+    }
+
+    /// Démarre la découverte SSDP (`POST /discovery/start`).
+    @discardableResult
+    func startDiscovery() async throws -> DiscoveryStatus {
+        try await send("/discovery/start", method: .post, body: nil)
+    }
+
+    /// Arrête la découverte SSDP (`POST /discovery/stop`).
+    @discardableResult
+    func stopDiscovery() async throws -> DiscoveryStatus {
+        try await send("/discovery/stop", method: .post, body: nil)
+    }
+
     // MARK: Système (cf. docs/bambuddy-api.md §system)
 
     /// État du serveur (`GET /system/info`) : app, machine, mémoire, CPU, stockage, base.

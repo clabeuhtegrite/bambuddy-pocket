@@ -164,6 +164,11 @@ final class ServerListModel {
         BackupsModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de la découverte réseau pour ce serveur.
+    func makeDiscoveryModel(for configuration: ServerConfiguration) -> DiscoveryModel {
+        DiscoveryModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)
