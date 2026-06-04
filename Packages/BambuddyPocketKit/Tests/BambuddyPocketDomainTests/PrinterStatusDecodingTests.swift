@@ -165,6 +165,71 @@ struct PrinterStatusDecodingTests {
         #expect(offline.displayableStage == nil)
     }
 
+    // MARK: Régression matériel réel (X2D)
+
+    /// Charge la charge JSON **réellement capturée** sur une X2D physique (anonymisée : numéros de
+    /// série / UID / UUID / nom de tâche neutralisés ; structure et valeurs métier préservées).
+    private func realX2DStatus() throws -> PrinterStatus {
+        let url = try #require(
+            Bundle.module.url(forResource: "x2d_real_status", withExtension: "json"),
+            "Fixture x2d_real_status.json introuvable"
+        )
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder.bambuddy().decode(PrinterStatus.self, from: data)
+    }
+
+    @Test("Décode le statut réel d'une X2D (3 AMS dont AMS-HT, double extrudeur, FAILED)")
+    func decodesRealX2DStatus() throws {
+        let status = try realX2DStatus()
+        #expect(status.state == .failed)
+        #expect(status.connected == true)
+        // Double extrudeur : l'extrudeur actif et la chambre sont rapportés.
+        #expect(status.activeExtruder == 1)
+        #expect(status.temperatures?.nozzle == 27.0)
+        #expect(status.temperatures?.bed == 26.0)
+        #expect(status.temperatures?.chamber == 26.0)
+        // Trois unités AMS, dont une AMS-HT (id 128).
+        #expect(status.ams?.count == 3)
+        let amsHT = try #require(status.ams?.first { $0.id == 128 })
+        #expect(amsHT.isAmsHt == true)
+        #expect(amsHT.humidity == 42)
+        #expect(amsHT.moduleType == "n3s")
+        // Ventilateurs présents (tous à 0 ici, mais décodés).
+        #expect(status.coolingFanSpeed == 0)
+        #expect(status.heatbreakFanSpeed == 0)
+        // Options d'impression réelles.
+        #expect(status.printOptions?.spaghettiDetector == true)
+        #expect(status.printOptions?.haltPrintSensitivity == "medium")
+        #expect(status.airductMode == 0)
+        #expect(status.supportsDrying == true)
+    }
+
+    @Test("Une gravité HMS réelle hors plage 1…3 (6) retombe sur .info (pas .unknown)")
+    func realHMSSeverityFallsBackToInfo() throws {
+        let status = try realX2DStatus()
+        // La X2D réelle a renvoyé deux erreurs HMS : severity 6 et severity 2.
+        #expect(status.hmsErrors?.count == 2)
+        let severities = (status.hmsErrors ?? []).compactMap(\.severity).sorted()
+        #expect(severities == [2, 6])
+        let sev6 = try #require(status.hmsErrors?.first { $0.severity == 6 })
+        #expect(sev6.severityLevel == .info)
+        let sev2 = try #require(status.hmsErrors?.first { $0.severity == 2 })
+        #expect(sev2.severityLevel == .serious)
+        // La plus grave reste triée par `severity` brut (2 < 6).
+        #expect(status.mostSevereError?.severity == 2)
+    }
+
+    @Test("HMSSeverity : 0 et toute valeur ≥ 4 → .info (forward-compat)")
+    func hmsSeverityForwardCompat() {
+        #expect(HMSSeverity(code: 1) == .fatal)
+        #expect(HMSSeverity(code: 2) == .serious)
+        #expect(HMSSeverity(code: 3) == .common)
+        #expect(HMSSeverity(code: 4) == .info)
+        #expect(HMSSeverity(code: 0) == .info)
+        #expect(HMSSeverity(code: 6) == .info)
+        #expect(HMSSeverity(code: 15) == .info)
+    }
+
     @Test("Décode les options d'impression (xcam) et le mode du conduit d'air")
     func decodesPrintOptionsAndAirduct() throws {
         let status = try decode(
