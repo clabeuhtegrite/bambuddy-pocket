@@ -116,8 +116,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   derrière `UITEST_LIVE=1` (skip en CI). ⬜ étendre l'unitaire encore. Build sans warning.
 - 🟦 **Icône d'app** (✅ DA BamPocket : « B » sombre dans une pastille verte sur fond `#1A1A1A`,
   générée par script reproductible Core Graphics, toutes tailles + master 1024) et **launch
-  screen** (✅ logo centré + fond sombre via `UILaunchScreen`) ; ⬜ captures, classification d'âge,
-  mentions open source.
+  screen** (✅ logo centré + fond sombre via `UILaunchScreen`), ✅ **mentions open source**
+  (écran À propos complet : licence AGPL + lien, attribution Bambuddy + lien, composants embarqués
+  three.js/examples/fflate/Inter avec licences et liens) ; ⬜ captures, classification d'âge.
 - 🟦 **Privacy manifest** (`PrivacyInfo.xcprivacy`) : aucun tracking, aucune collecte ; **API à
   raison requise** déclarée (UserDefaults `CA92.1`). Clés Info.plist runtime :
   `NSLocalNetworkUsageDescription` (connexions directes aux serveurs/imprimantes locaux). Pas de
