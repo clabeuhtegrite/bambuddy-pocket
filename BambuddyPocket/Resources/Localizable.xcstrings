@@ -1991,6 +1991,28 @@
         }
       }
     },
+    "Couldn’t load maintenance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wartung konnte nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar el mantenimiento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger la maintenance"
+          }
+        }
+      }
+    },
     "Couldn’t load printers": {
       "localizations": {
         "de": {
@@ -2585,6 +2607,50 @@
         }
       }
     },
+    "Due": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällig"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pendiente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À faire"
+          }
+        }
+      }
+    },
+    "Due in %lld h": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fällig in %lld h"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En %lld h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À faire dans %lld h"
+          }
+        }
+      }
+    },
     "Edit": {
       "localizations": {
         "de": {
@@ -2999,6 +3065,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Estimation"
+          }
+        }
+      }
+    },
+    "Every %lld h": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %lld h"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cada %lld h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les %lld h"
           }
         }
       }
@@ -4018,6 +4106,28 @@
         }
       }
     },
+    "Mark performed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als erledigt markieren"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marcar como realizado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer comme effectué"
+          }
+        }
+      }
+    },
     "Material": {
       "localizations": {
         "de": {
@@ -4392,6 +4502,50 @@
         }
       }
     },
+    "No maintenance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Wartung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin mantenimiento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune maintenance"
+          }
+        }
+      }
+    },
+    "No maintenance items are tracked for this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diesen Server werden keine Wartungselemente verfolgt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se hace seguimiento de ningún elemento de mantenimiento en este servidor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun élément de maintenance n’est suivi sur ce serveur."
+          }
+        }
+      }
+    },
     "No notifications": {
       "localizations": {
         "de": {
@@ -4586,6 +4740,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucun projet pour l’instant."
+          }
+        }
+      }
+    },
+    "No schedule": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Zeitplan"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin programación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune planification"
           }
         }
       }
@@ -4922,6 +5098,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvrir le lien"
+          }
+        }
+      }
+    },
+    "Overdue by %lld h": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld h überfällig"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrasado %lld h"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En retard de %lld h"
           }
         }
       }
@@ -6506,6 +6704,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Prises connectées"
+          }
+        }
+      }
+    },
+    "Soon": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bald"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pronto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bientôt"
           }
         }
       }

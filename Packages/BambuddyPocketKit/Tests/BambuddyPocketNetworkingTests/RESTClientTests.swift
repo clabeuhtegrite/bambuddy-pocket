@@ -1091,4 +1091,43 @@ struct MockNetworkingTests {
         let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
         #expect(json["action"] as? String == "on")
     }
+
+    @Test("maintenanceOverview cible /maintenance/overview et décode les items")
+    func fetchesMaintenanceOverview() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"printer_id":1,"printer_name":"VP-Test","printer_model":"X1C","total_print_hours":12.0,"#
+                + #""maintenance_items":[{"id":1,"maintenance_type_name":"Clean Nozzle","interval_hours":100.0,"#
+                + #""hours_until_due":-5.0,"is_due":true,"is_warning":false}]}]"#
+        )
+        let client = try makeClient()
+        let overview = try await client.maintenanceOverview()
+        #expect(overview.first?.printerName == "VP-Test")
+        #expect(overview.first?.maintenanceItems?.first?.maintenanceTypeName == "Clean Nozzle")
+        #expect(overview.first?.dueItems.count == 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/maintenance/overview")
+    }
+
+    @Test("performMaintenance POST /maintenance/items/{id}/perform et renvoie l'item")
+    func performsMaintenance() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":1,"maintenance_type_name":"Clean Nozzle","is_due":false,"#
+                + #""last_performed_at":"2026-06-04T08:26:52Z"}"#
+        )
+        let client = try makeClient()
+        let item = try await client.performMaintenance(itemID: 1, notes: "done")
+        #expect(item.isDueNow == false)
+        #expect(item.lastPerformedAt == "2026-06-04T08:26:52Z")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString
+            == "https://host.example.com/api/v1/maintenance/items/1/perform")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["notes"] as? String == "done")
+    }
 }
