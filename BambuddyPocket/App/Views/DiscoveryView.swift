@@ -37,6 +37,7 @@ struct DiscoveryView: View {
                 Image(systemName: model
                     .isRunning ? "antenna.radiowaves.left.and.right" : "antenna.radiowaves.left.and.right.slash")
                     .foregroundStyle(model.isRunning ? DSColor.statusOK : DSColor.textSecondary)
+                    .accessibilityHidden(true)
                 Text(model.isRunning ? "Discovery running" : "Discovery stopped")
                     .font(DSFont.body)
                     .foregroundStyle(DSColor.textPrimary)

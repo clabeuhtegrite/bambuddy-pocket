@@ -97,6 +97,14 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (36)** — **Passe d'accessibilité (VoiceOver) sur les écrans Tier 2/3.** Les icônes
+  de **statut purement décoratives**, redondantes avec le texte adjacent, sont masquées à VoiceOver
+  (`.accessibilityHidden(true)`) pour qu'il n'annonce que l'information utile : État serveur
+  (santé), Compte (2FA), Sauvegardes (planification), Découverte (état). Ligne de **lien externe**
+  combinée en un seul élément (`.accessibilityElement(children: .combine)`) avec ses icônes
+  masquées. Les éléments interactifs (boutons On/Off, créer/supprimer, start/stop) utilisent déjà
+  `Label(texte, systemImage:)` → libellés VoiceOver corrects. Build sans warning, lint/format OK,
+  184 SPM + 11 + 3 UI verts.
 - **2026-06-04 (35)** — **Prépa sideload iPhone (free provisioning, sans compte payant) +
   `docs/SIDELOAD.md`.** Audit signature/entitlements : **aucun fichier `.entitlements`, aucune
   capability** (pas de Push/Associated Domains/App Groups/groupe d'accès trousseau) — l'app

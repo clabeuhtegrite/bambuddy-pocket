@@ -83,6 +83,7 @@ struct AccountView: View {
             HStack(spacing: DSSpacing.sm) {
                 Image(systemName: twoFactor.isEnabled ? "lock.shield.fill" : "lock.open")
                     .foregroundStyle(twoFactor.isEnabled ? DSColor.statusOK : DSColor.statusWarning)
+                    .accessibilityHidden(true)
                 Text(twoFactor.isEnabled ? "Enabled" : "Disabled")
                     .font(DSFont.body)
                     .foregroundStyle(DSColor.textPrimary)

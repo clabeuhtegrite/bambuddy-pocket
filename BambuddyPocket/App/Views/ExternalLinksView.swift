@@ -91,6 +91,7 @@ private struct ExternalLinkRow: View {
         HStack(spacing: DSSpacing.md) {
             Image(systemName: "link")
                 .foregroundStyle(DSColor.accent)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text(link.name)
                     .font(DSFont.headline)
@@ -104,8 +105,10 @@ private struct ExternalLinkRow: View {
             Spacer()
             Image(systemName: "arrow.up.right.square")
                 .foregroundStyle(DSColor.textSecondary)
+                .accessibilityHidden(true)
         }
         .padding(.vertical, DSSpacing.xs)
+        .accessibilityElement(children: .combine)
     }
 }
 

@@ -37,6 +37,7 @@ struct BackupsView: View {
             HStack(spacing: DSSpacing.sm) {
                 Image(systemName: status.isScheduleEnabled ? "checkmark.circle.fill" : "pause.circle")
                     .foregroundStyle(status.isScheduleEnabled ? DSColor.statusOK : DSColor.textSecondary)
+                    .accessibilityHidden(true)
                 Text(status.isScheduleEnabled ? "Scheduled backups enabled" : "Scheduled backups disabled")
                     .font(DSFont.body)
                     .foregroundStyle(DSColor.textPrimary)

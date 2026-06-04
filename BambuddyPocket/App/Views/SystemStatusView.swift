@@ -48,6 +48,7 @@ struct SystemStatusView: View {
             HStack(spacing: DSSpacing.sm) {
                 Image(systemName: health.hasFindings ? "exclamationmark.triangle.fill" : "checkmark.circle.fill")
                     .foregroundStyle(health.hasFindings ? DSColor.statusWarning : DSColor.statusOK)
+                    .accessibilityHidden(true)
                 Text(health.hasFindings ? "Issues detected in server logs." : "No issues detected.")
                     .font(DSFont.body)
                     .foregroundStyle(DSColor.textPrimary)
