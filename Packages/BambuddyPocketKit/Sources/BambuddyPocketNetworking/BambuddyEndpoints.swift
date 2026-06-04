@@ -128,6 +128,33 @@ public extension APIClient {
         try await delete("/library/files/\(id)")
     }
 
+    /// Arbre des dossiers de la bibliothèque (`GET /library/folders/`).
+    func libraryFolders() async throws -> [FolderTreeItem] {
+        try await get("/library/folders/")
+    }
+
+    /// Déplace des fichiers vers un dossier — `folderID` nil = racine (`POST /library/files/move`).
+    @discardableResult
+    func moveLibraryFiles(_ request: FileMoveRequest) async throws -> FileMoveResult {
+        let body = try JSONEncoder.bambuddy().encode(request)
+        return try await send("/library/files/move", method: .post, body: body)
+    }
+
+    /// Contenu de la corbeille de la bibliothèque (`GET /library/trash`).
+    func libraryTrash() async throws -> TrashListResponse {
+        try await get("/library/trash")
+    }
+
+    /// Restaure un fichier depuis la corbeille (`POST /library/trash/{id}/restore`).
+    func restoreTrashedFile(id: Int) async throws {
+        try await post("/library/trash/\(id)/restore")
+    }
+
+    /// Supprime définitivement un fichier de la corbeille (`DELETE /library/trash/{id}`).
+    func deleteTrashedFile(id: Int) async throws {
+        try await delete("/library/trash/\(id)")
+    }
+
     /// Projets d'impression (`GET /projects/`).
     func projects() async throws -> [Project] {
         try await get("/projects/")

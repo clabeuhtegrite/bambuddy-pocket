@@ -1625,4 +1625,50 @@ struct MockNetworkingTests {
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/7/kprofiles/notes")
     }
+
+    @Test("libraryFolders cible /library/folders/ et décode l'arbre")
+    func fetchesLibraryFolders() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"[{"id":1,"name":"Parent","parent_id":null,"children":[]}]"#)
+        let client = try makeClient()
+        let folders = try await client.libraryFolders()
+        #expect(folders.first?.name == "Parent")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/folders/")
+    }
+
+    @Test("moveLibraryFiles poste file_ids + folder_id sur /library/files/move")
+    func movesLibraryFiles() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"status":"success","moved":1,"skipped":0}"#)
+        let client = try makeClient()
+        let result = try await client.moveLibraryFiles(FileMoveRequest(fileIDs: [2], folderID: 1))
+        #expect(result.moved == 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/move")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect((json["file_ids"] as? [Int]) == [2])
+        #expect(json["folder_id"] as? Int == 1)
+    }
+
+    @Test("libraryTrash, restore et delete ciblent les bons chemins")
+    func managesTrash() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"items":[],"total":0,"retention_days":30}"#)
+        let client = try makeClient()
+        let trash = try await client.libraryTrash()
+        #expect(trash.retentionDays == 30)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/library/trash")
+        respond(status: 200, json: "{}")
+        try await client.restoreTrashedFile(id: 4)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/library/trash/4/restore")
+        try await client.deleteTrashedFile(id: 4)
+        let last = try #require(MockURLProtocol.lastRequest)
+        #expect(last.httpMethod == "DELETE")
+        #expect(last.url?.absoluteString == "https://host.example.com/api/v1/library/trash/4")
+    }
 }
