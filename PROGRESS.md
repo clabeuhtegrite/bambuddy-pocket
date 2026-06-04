@@ -7,6 +7,19 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Tier 3 résiduel — intégration Spoolman livrée (`main` vert).** Écran **Spoolman**
+(`/spoolman/`, `/settings/spoolman`) : état (activé/connecté), réglages (activation, URL, mode de
+synchro auto/manuel, synchro du poids, usage partiel), **connecter/déconnecter**. Modèles
+`SpoolmanStatus`/`SpoolmanSettings` (booléens **renvoyés en chaînes** par le serveur → accesseurs
+typés)/`SpoolmanSettingsUpdate`. **Contrat vérifié au réel** : intégration **activée** sur le Docker
+via `PUT /settings/spoolman` (URL bidon) → état `enabled:true, connected:false` confirmé, `connect`
+renvoie 503 (aucun serveur Spoolman joignable), puis **désactivée / instance restaurée propre**
+(auth off). Le mode connecté (sync de bobines) **non vérifiable** sans serveur Spoolman réel.
+Tests : **207 SPM** (+7), 11 unitaires app + 3 UI, build sans warning, lint/format strict OK.
+Suite recommandée (Tier 3 vérifiable) : **labels** (`/labels/`), **kprofiles**, **support/
+bug-report**, **virtual-printers** (CRUD dev) ; non vérifiables notés (MakerWorld 404, metrics off,
+slicer-presets off, cloud Bambu auth).
+
 **Tier 3 résiduel — sauvegarde distante Git livrée (`main` vert).** Écran **Sauvegarde distante**
 (`/github-backup/`) : état, configuration (lecture + **création POST / édition PATCH**), journal
 des exécutions, **déclenchement manuel**. Sécurité : le **jeton d'accès** est en **écriture seule**

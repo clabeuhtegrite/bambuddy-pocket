@@ -1334,6 +1334,56 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/print-log/")
     }
 
+    @Test("spoolmanStatus cible /spoolman/status et décode")
+    func fetchesSpoolmanStatus() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"enabled":true,"connected":false,"url":"http://host:7912"}"#)
+        let client = try makeClient()
+        let status = try await client.spoolmanStatus()
+        #expect(status.enabled == true)
+        #expect(status.connected == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/spoolman/status")
+    }
+
+    @Test("updateSpoolmanSettings PUT /settings/spoolman avec booléens en chaînes")
+    func updatesSpoolmanSettings() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"spoolman_enabled":"true","spoolman_url":"http://host:7912","#
+                + #""spoolman_sync_mode":"auto","spoolman_disable_weight_sync":"false","#
+                + #""spoolman_report_partial_usage":"true"}"#
+        )
+        let client = try makeClient()
+        let settings = try await client.updateSpoolmanSettings(
+            SpoolmanSettingsUpdate(spoolmanEnabled: true, spoolmanUrl: "http://host:7912")
+        )
+        #expect(settings.isEnabled == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PUT")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/settings/spoolman")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["spoolman_enabled"] as? String == "true")
+    }
+
+    @Test("connectSpoolman et disconnectSpoolman ciblent les bons chemins en POST")
+    func connectsAndDisconnectsSpoolman() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"success":true,"message":"Connected"}"#)
+        let client = try makeClient()
+        try await client.connectSpoolman()
+        var request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/spoolman/connect")
+
+        respond(status: 200, json: #"{"success":true,"message":"Disconnected"}"#)
+        try await client.disconnectSpoolman()
+        request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/spoolman/disconnect")
+    }
+
     @Test("gitHubBackupStatus cible /github-backup/status et décode")
     func fetchesGitHubBackupStatus() async throws {
         MockURLProtocol.reset()
