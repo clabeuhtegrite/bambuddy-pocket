@@ -1110,6 +1110,25 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/maintenance/overview")
     }
 
+    @Test("firmwareUpdates cible /firmware/updates et décode la disponibilité")
+    func fetchesFirmwareUpdates() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"updates":[{"printer_id":1,"printer_name":"VP-Test","model":"X1C","#
+                + #""current_version":"01.07.00.00","latest_version":"01.11.02.00","update_available":true},"#
+                + #"{"printer_id":2,"printer_name":"P1S","current_version":"1.0","latest_version":"1.0","#
+                + #""update_available":false}]}"#
+        )
+        let client = try makeClient()
+        let updates = try await client.firmwareUpdates()
+        #expect(updates.updates?.count == 2)
+        #expect(updates.availableCount == 1)
+        #expect(updates.updates?.first?.isUpdateAvailable == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/firmware/updates")
+    }
+
     @Test("performMaintenance POST /maintenance/items/{id}/perform et renvoie l'item")
     func performsMaintenance() async throws {
         MockURLProtocol.reset()

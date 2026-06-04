@@ -73,6 +73,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Maintenance", systemImage: "wrench.and.screwdriver")
                 }
+                NavigationLink {
+                    FirmwareView(server: current, serverList: model)
+                } label: {
+                    Label("Firmware", systemImage: "cpu")
+                }
             }
             Section {
                 NavigationLink {

@@ -181,6 +181,13 @@ public extension APIClient {
         return try await send("/settings/", method: .patch, body: body)
     }
 
+    // MARK: Firmware (cf. docs/bambuddy-api.md §firmware)
+
+    /// Disponibilité des mises à jour firmware par imprimante (`GET /firmware/updates`).
+    func firmwareUpdates() async throws -> FirmwareUpdates {
+        try await get("/firmware/updates")
+    }
+
     // MARK: Maintenance (cf. docs/bambuddy-api.md §maintenance)
 
     /// Vue d'ensemble de la maintenance par imprimante (`GET /maintenance/overview`).
