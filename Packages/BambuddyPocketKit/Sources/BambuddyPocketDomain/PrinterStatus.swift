@@ -178,6 +178,19 @@ public struct PrinterStatus: Codable, Sendable, Hashable {
         !(hmsErrors ?? []).isEmpty
     }
 
+    /// Étape courante (`stg_cur_name`) à n'afficher **que** lorsqu'une impression est active.
+    ///
+    /// Le firmware laisse une valeur résiduelle dans `stg_cur_name` (p. ex. « Printing ») même
+    /// après la fin d'une impression. L'afficher quand l'imprimante est inactive/déconnectée
+    /// donnerait une indication trompeuse (« Inactif » + « Printing »). On ne renvoie donc l'étape
+    /// que pour un état d'impression actif (en cours / préparation / pause) et non vide.
+    public var displayableStage: String? {
+        guard isPrinting, let stage = stgCurName, !stage.isEmpty else {
+            return nil
+        }
+        return stage
+    }
+
     /// Erreur HMS la plus grave (pour mise en avant).
     public var mostSevereError: HMSError? {
         hmsErrors?.min { lhs, rhs in (lhs.severity ?? 99) < (rhs.severity ?? 99) }

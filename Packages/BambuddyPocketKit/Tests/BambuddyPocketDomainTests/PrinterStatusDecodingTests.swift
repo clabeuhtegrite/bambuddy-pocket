@@ -110,4 +110,58 @@ struct PrinterStatusDecodingTests {
         #expect(printer.serialNumber == "01ABCDEF")
         #expect(printer.isActive == true)
     }
+
+    // MARK: Étape affichable (displayableStage)
+
+    @Test("L'étape résiduelle est masquée quand l'imprimante est inactive (IDLE + stg_cur_name)")
+    func hidesResidualStageWhenIdle() throws {
+        let status = try decode(
+            PrinterStatus.self,
+            #"{ "connected": true, "state": "IDLE", "stg_cur_name": "Printing" }"#
+        )
+        #expect(status.stgCurName == "Printing")
+        #expect(status.displayableStage == nil)
+    }
+
+    @Test("L'étape est affichée pendant une impression active")
+    func showsStageWhilePrinting() throws {
+        let running = try decode(
+            PrinterStatus.self,
+            #"{ "state": "RUNNING", "stg_cur_name": "Heating bed" }"#
+        )
+        #expect(running.displayableStage == "Heating bed")
+
+        let paused = try decode(
+            PrinterStatus.self,
+            #"{ "state": "PAUSE", "stg_cur_name": "Paused by user" }"#
+        )
+        #expect(paused.displayableStage == "Paused by user")
+    }
+
+    @Test("Une étape vide ou absente ne s'affiche pas même en impression")
+    func hidesEmptyStage() throws {
+        let empty = try decode(
+            PrinterStatus.self,
+            #"{ "state": "RUNNING", "stg_cur_name": "" }"#
+        )
+        #expect(empty.displayableStage == nil)
+
+        let missing = try decode(PrinterStatus.self, #"{ "state": "RUNNING" }"#)
+        #expect(missing.displayableStage == nil)
+    }
+
+    @Test("Aucune étape pour les états terminés ou inconnus")
+    func hidesStageForFinishedOrUnknown() throws {
+        let finished = try decode(
+            PrinterStatus.self,
+            #"{ "state": "FINISH", "stg_cur_name": "Printing" }"#
+        )
+        #expect(finished.displayableStage == nil)
+
+        let offline = try decode(
+            PrinterStatus.self,
+            #"{ "connected": false, "stg_cur_name": "Printing" }"#
+        )
+        #expect(offline.displayableStage == nil)
+    }
 }
