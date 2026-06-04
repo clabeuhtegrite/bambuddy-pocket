@@ -181,6 +181,13 @@ public extension APIClient {
         return try await send("/settings/", method: .patch, body: body)
     }
 
+    // MARK: Catalogue de filaments (cf. docs/bambuddy-api.md §filament-catalog)
+
+    /// Catalogue de filaments de référence (`GET /filament-catalog/`).
+    func filamentCatalog() async throws -> [FilamentCatalogEntry] {
+        try await get("/filament-catalog/")
+    }
+
     // MARK: Firmware (cf. docs/bambuddy-api.md §firmware)
 
     /// Disponibilité des mises à jour firmware par imprimante (`GET /firmware/updates`).

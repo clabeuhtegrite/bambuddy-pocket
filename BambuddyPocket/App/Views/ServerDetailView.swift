@@ -54,6 +54,11 @@ struct ServerDetailView: View {
                     Label("Filaments", systemImage: "circle.dashed")
                 }
                 NavigationLink {
+                    FilamentCatalogView(server: current, serverList: model)
+                } label: {
+                    Label("Filament catalog", systemImage: "books.vertical")
+                }
+                NavigationLink {
                     LibraryListView(server: current, serverList: model)
                 } label: {
                     Label("Library", systemImage: "folder")

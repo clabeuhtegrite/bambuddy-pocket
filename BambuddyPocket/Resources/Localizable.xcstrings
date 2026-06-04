@@ -1969,6 +1969,28 @@
         }
       }
     },
+    "Couldn’t load catalog": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Katalog konnte nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar el catálogo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger le catalogue"
+          }
+        }
+      }
+    },
     "Couldn’t load filaments": {
       "localizations": {
         "de": {
@@ -2475,6 +2497,28 @@
         }
       }
     },
+    "Density": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dichte"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Densidad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Densité"
+          }
+        }
+      }
+    },
     "Description": {
       "localizations": {
         "de": {
@@ -2915,6 +2959,28 @@
         }
       }
     },
+    "Empty catalog": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leerer Katalog"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catálogo vacío"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catalogue vide"
+          }
+        }
+      }
+    },
     "Enable": {
       "localizations": {
         "de": {
@@ -3263,6 +3329,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Filament"
+          }
+        }
+      }
+    },
+    "Filament catalog": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filamentkatalog"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catálogo de filamentos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Catalogue de filaments"
           }
         }
       }
@@ -4850,6 +4938,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucun projet pour l’instant."
+          }
+        }
+      }
+    },
+    "No reference filaments are defined on this server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auf diesem Server sind keine Referenzfilamente definiert."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay filamentos de referencia definidos en este servidor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun filament de référence n’est défini sur ce serveur."
           }
         }
       }
