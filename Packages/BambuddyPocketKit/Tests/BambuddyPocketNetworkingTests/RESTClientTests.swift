@@ -1110,6 +1110,55 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/maintenance/overview")
     }
 
+    @Test("backupStatus cible /local-backup/status et décode")
+    func fetchesBackupStatus() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"is_running":false,"enabled":true,"schedule":"daily","time":"03:00","#
+                + #""retention":5,"last_backup_at":"2026-06-04T09:09:01Z","last_status":"success"}"#
+        )
+        let client = try makeClient()
+        let status = try await client.backupStatus()
+        #expect(status.isScheduleEnabled)
+        #expect(status.schedule == "daily")
+        #expect(status.retention == 5)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/local-backup/status")
+    }
+
+    @Test("backups cible /local-backup/backups et formate la taille")
+    func listsBackups() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"filename":"bambuddy-backup-20260604.zip","size":39551,"#
+                + #""created_at":"2026-06-04T09:09:01Z"}]"#
+        )
+        let client = try makeClient()
+        let backups = try await client.backups()
+        #expect(backups.first?.filename == "bambuddy-backup-20260604.zip")
+        #expect(backups.first?.formattedSize != nil)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/local-backup/backups")
+    }
+
+    @Test("runBackup poste sur /local-backup/run et décode le résultat")
+    func runsBackup() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"success":true,"message":"Backup created","filename":"bambuddy-backup-20260604.zip"}"#
+        )
+        let client = try makeClient()
+        let result = try await client.runBackup()
+        #expect(result.success == true)
+        #expect(result.filename == "bambuddy-backup-20260604.zip")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/local-backup/run")
+    }
+
     @Test("externalLinks cible /external-links/ et décode")
     func listsExternalLinks() async throws {
         MockURLProtocol.reset()
