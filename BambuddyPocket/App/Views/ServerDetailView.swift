@@ -96,6 +96,11 @@ struct ServerDetailView: View {
                     Label("Server status", systemImage: "server.rack")
                 }
                 NavigationLink {
+                    BackupsView(server: current, serverList: model)
+                } label: {
+                    Label("Backups", systemImage: "externaldrive")
+                }
+                NavigationLink {
                     APIKeysView(server: current, serverList: model)
                 } label: {
                     Label("API keys", systemImage: "key")

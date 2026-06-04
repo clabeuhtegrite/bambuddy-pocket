@@ -781,6 +781,50 @@
         }
       }
     },
+    "Back up now": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt sichern"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hacer copia ahora"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sauvegarder maintenant"
+          }
+        }
+      }
+    },
+    "Backing up…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherung läuft…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Creando copia…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sauvegarde en cours…"
+          }
+        }
+      }
+    },
     "Backup codes": {
       "localizations": {
         "de": {
@@ -799,6 +843,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Codes de secours"
+          }
+        }
+      }
+    },
+    "Backups": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherungen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copias de seguridad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sauvegardes"
           }
         }
       }
@@ -2031,6 +2097,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impossible de charger l’archive"
+          }
+        }
+      }
+    },
+    "Couldn’t load backups": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sicherungen konnten nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron cargar las copias"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les sauvegardes"
           }
         }
       }
@@ -3619,6 +3707,28 @@
         }
       }
     },
+    "Frequency": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Häufigkeit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frecuencia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fréquence"
+          }
+        }
+      }
+    },
     "General": {
       "localizations": {
         "de": {
@@ -3992,6 +4102,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Langue"
+          }
+        }
+      }
+    },
+    "Last backup": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Sicherung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Última copia"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière sauvegarde"
           }
         }
       }
@@ -6466,6 +6598,28 @@
         }
       }
     },
+    "Retention": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufbewahrung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retención"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rétention"
+          }
+        }
+      }
+    },
     "Revoke": {
       "localizations": {
         "de": {
@@ -6576,6 +6730,28 @@
         }
       }
     },
+    "Schedule": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeitplan"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planification"
+          }
+        }
+      }
+    },
     "Schedule start": {
       "localizations": {
         "de": {
@@ -6594,6 +6770,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Planifier le démarrage"
+          }
+        }
+      }
+    },
+    "Scheduled backups disabled": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Sicherungen deaktiviert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copias programadas desactivadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sauvegardes planifiées désactivées"
+          }
+        }
+      }
+    },
+    "Scheduled backups enabled": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geplante Sicherungen aktiviert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copias programadas activadas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sauvegardes planifiées activées"
           }
         }
       }
@@ -7914,6 +8134,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cela annulera l’impression en cours."
+          }
+        }
+      }
+    },
+    "Time": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uhrzeit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hora"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heure"
           }
         }
       }
