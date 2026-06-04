@@ -7,6 +7,18 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Audit de cohérence global (`main` vert).** Passage de cohérence par axe : **Nommage** — clean
+(aucun « Spoolside »/« Bambuddy Pocket » visible ; reliquats uniquement dans l'historique du journal
+et l'ADR de nommage ; le chemin de dossier « Bambuddy Pocket » dans SIDELOAD est volontaire ;
+`CFBundleDisplayName=BamPocket` ; modules SPM internes `BambuddyPocket*` conservés à dessein).
+**i18n** — clean après nettoyage : **clés orphelines retirées** (`Third-party components`, `three.js`,
+`fflate`, `Inter`, `OFL-1.1` — restes de l'ancien écran À propos, désormais rendus en littéral) ; les
+584 clés restantes couvrent toutes EN+FR/ES/DE, **aucun état non traduit**. **Docs vs code** —
+cohérent (README haut-niveau exact pointant vers PROGRESS/ROADMAP ; liens relatifs valides ;
+ROADMAP/PROGRESS tenus à jour par brique). **Conventions / code mort** — aucun TODO/FIXME, lint+format
+strict OK partout. **Tests** — chaque endpoint récent a son test (timelapse, vignette, jeton caméra,
+dispatch, PATCH imprimante, print-options, airduct, bed-jog, upload). Build iOS sans warning.
+
 **Transverse — accessibilité + couverture UI étendues (`main` vert).** Passe VoiceOver sur les
 écrans récents : le **flux caméra en direct** (`Image(uiImage:)`) porte désormais un libellé
 (« Flux caméra en direct ») ; la vignette d'archive avait déjà « Aperçu de l'impression », les

@@ -5385,9 +5385,6 @@
         }
       }
     },
-    "Inter": {
-      "localizations": {}
-    },
     "Issues detected in server logs.": {
       "localizations": {
         "de": {
@@ -7447,9 +7444,6 @@
           }
         }
       }
-    },
-    "OFL-1.1": {
-      "localizations": {}
     },
     "OK": {
       "shouldTranslate": false
@@ -10712,28 +10706,6 @@
         }
       }
     },
-    "Third-party components": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drittanbieter-Komponenten"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Componentes de terceros"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Composants tiers"
-          }
-        }
-      }
-    },
     "This URL is not valid.": {
       "localizations": {
         "de": {
@@ -11913,9 +11885,6 @@
         }
       }
     },
-    "fflate": {
-      "shouldTranslate": false
-    },
     "print-log.status.cancelled": {
       "localizations": {
         "en": {
@@ -12055,9 +12024,6 @@
           }
         }
       }
-    },
-    "three.js": {
-      "shouldTranslate": false
     },
     "Pressure advance": {
       "localizations": {
