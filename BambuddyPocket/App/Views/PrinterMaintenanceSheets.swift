@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -37,6 +38,8 @@ struct CalibrationSheet: View {
                     Text("Selected routines run on the printer and may take several minutes.")
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(DSColor.background)
             .navigationTitle("Calibration")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
@@ -90,6 +93,7 @@ struct SkipObjectsSheet: View {
     private var content: some View {
         if isLoading {
             ProgressView()
+                .tint(DSColor.accent)
         } else if objects.isEmpty {
             ContentUnavailableView(
                 "No objects",
@@ -109,11 +113,15 @@ struct SkipObjectsSheet: View {
                             Text("Skipped").font(.caption).foregroundStyle(.secondary)
                         } else if selection.contains(object.id) {
                             Image(systemName: "checkmark")
+                                .foregroundStyle(DSColor.accent)
                         }
                     }
                 }
                 .disabled(object.skipped)
+                .listRowBackground(DSColor.card)
             }
+            .scrollContentBackground(.hidden)
+            .background(DSColor.background)
         }
     }
 

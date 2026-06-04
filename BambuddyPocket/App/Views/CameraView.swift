@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import BambuddyPocketNetworking
 import SwiftUI
@@ -16,7 +17,8 @@ struct CameraView: View {
     @State private var isChecking = false
 
     var body: some View {
-        Group {
+        ZStack {
+            DSColor.background.ignoresSafeArea()
             if let image {
                 Image(uiImage: image)
                     .resizable()
@@ -25,6 +27,7 @@ struct CameraView: View {
                 ContentUnavailableView("Camera unavailable", systemImage: "video.slash")
             } else {
                 ProgressView()
+                    .tint(DSColor.accent)
             }
         }
         .navigationTitle("Camera")

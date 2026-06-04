@@ -21,8 +21,11 @@ struct PrinterListView: View {
                 } label: {
                     PrinterRow(printer: printer, status: model.status(for: printer))
                 }
+                .listRowBackground(DSColor.card)
             }
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
         .overlay { placeholder }
         .navigationTitle(model.serverLabel)
         .toolbar {
@@ -84,17 +87,17 @@ private struct RealtimeBadge: View {
                 .fill(color)
                 .frame(width: 8, height: 8)
             Text(label)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(DSFont.caption)
+                .foregroundStyle(DSColor.textSecondary)
         }
         .accessibilityElement(children: .combine)
     }
 
     private var color: Color {
         switch state {
-        case .connected: .green
-        case .connecting: .yellow
-        case .reconnecting: .orange
+        case .connected: DSColor.statusOK
+        case .connecting: DSColor.statusWarning
+        case .reconnecting: DSColor.statusWarning
         }
     }
 
@@ -115,7 +118,9 @@ private struct PrinterRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.sm) {
             HStack {
-                Text(printer.name).font(.headline)
+                Text(printer.name)
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
                 Spacer()
                 StateBadge(state: status?.state, connected: status?.connected)
             }
@@ -123,8 +128,8 @@ private struct PrinterRow: View {
                 activePrint(status)
             } else if let model = printer.model {
                 Text(model)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.callout)
+                    .foregroundStyle(DSColor.textSecondary)
             }
         }
         .padding(.vertical, DSSpacing.xs)
@@ -134,25 +139,27 @@ private struct PrinterRow: View {
     private func activePrint(_ status: PrinterStatus) -> some View {
         if let fraction = status.progressFraction {
             ProgressView(value: fraction)
+                .tint(DSColor.accent)
         }
         HStack(spacing: DSSpacing.sm) {
             if let name = status.subtaskName ?? status.currentPrint {
                 Text(name)
-                    .font(.caption)
+                    .font(DSFont.caption)
                     .lineLimit(1)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(DSColor.textSecondary)
             }
             Spacer()
             if let remaining = PrinterPresentation.remainingTime(minutes: status.remainingTime) {
                 Label(remaining, systemImage: "clock")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
             }
         }
     }
 }
 
 /// Badge capsule coloré de l'état (ou « Offline » si l'imprimante est déconnectée).
+/// S'appuie sur le composant `DSStatusBadge` de la DA et son mapping sémantique.
 struct StateBadge: View {
     let state: PrinterState?
     let connected: Bool?
@@ -160,12 +167,7 @@ struct StateBadge: View {
     var body: some View {
         let offline = connected == false
         let text = offline ? String(localized: "Offline") : PrinterPresentation.stateText(state)
-        let tint: Color = offline ? .secondary : PrinterPresentation.stateColor(state)
-        Text(text)
-            .font(.caption.weight(.semibold))
-            .padding(.horizontal, DSSpacing.sm)
-            .padding(.vertical, DSSpacing.xs)
-            .background(tint.opacity(0.15), in: Capsule())
-            .foregroundStyle(tint)
+        let intent: DSStatusIntent = offline ? .error : DSStatusIntent.forPrinterState(state)
+        DSStatusBadge(text, intent: intent, showsDot: false)
     }
 }

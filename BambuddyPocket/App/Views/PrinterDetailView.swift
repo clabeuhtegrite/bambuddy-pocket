@@ -36,6 +36,8 @@ struct PrinterDetailView: View {
             informationSection
             managementSection
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
         .navigationTitle(printer.name)
         .toolbarTitleDisplayMode(.inline)
         .sheet(isPresented: $showingCalibration) {
@@ -175,9 +177,10 @@ struct PrinterDetailView: View {
             if let fraction = status.progressFraction {
                 VStack(alignment: .leading, spacing: DSSpacing.xs) {
                     ProgressView(value: fraction)
+                        .tint(DSColor.accent)
                     Text("\(Int((status.progress ?? 0).rounded()))%")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(DSFont.caption)
+                        .foregroundStyle(DSColor.textSecondary)
                 }
             }
             if let layer = status.layerNum, let total = status.totalLayers, total > 0 {
@@ -198,8 +201,8 @@ struct PrinterDetailView: View {
                     VStack(alignment: .leading, spacing: DSSpacing.xs) {
                         Text(error.code).font(.subheadline.monospaced())
                         Text(PrinterPresentation.severityText(error.severityLevel))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(DSFont.caption)
+                            .foregroundStyle(DSColor.textSecondary)
                     }
                 }
             }
