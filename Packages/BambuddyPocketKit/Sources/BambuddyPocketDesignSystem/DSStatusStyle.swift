@@ -49,7 +49,6 @@ public extension DSStatusIntent {
         case .fatal, .serious: .error
         case .common: .warning
         case .info: .accent
-        case .unknown: .neutral
         }
     }
 

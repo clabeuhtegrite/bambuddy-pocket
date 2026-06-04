@@ -28,20 +28,25 @@ public struct Temperatures: Codable, Sendable, Hashable {
 }
 
 /// Niveau de gravité d'une erreur HMS (interprétation de `severity`).
+///
+/// Le firmware encode la gravité dans le quartet `(attr >> 8) & 0xF` (0…15) que le serveur
+/// relaie tel quel. Seules les valeurs `1` (fatal), `2` (serious) et `3` (common/warning) sont
+/// significatives ; **toute autre valeur** (0, ou ≥ 4 comme le `6` observé sur une X2D réelle)
+/// est traitée comme **`info`** — c'est le comportement de référence de Bambuddy en amont
+/// (`getSeverityInfo` : `case 4`/`default` → Info). On évite ainsi d'afficher « Unknown » pour
+/// des gravités parfaitement valides mais hors de la plage 1…3.
 public enum HMSSeverity: Sendable, Hashable {
     case fatal
     case serious
     case common
     case info
-    case unknown
 
     public init(code: Int) {
         switch code {
         case 1: self = .fatal
         case 2: self = .serious
         case 3: self = .common
-        case 4: self = .info
-        default: self = .unknown
+        default: self = .info
         }
     }
 }
