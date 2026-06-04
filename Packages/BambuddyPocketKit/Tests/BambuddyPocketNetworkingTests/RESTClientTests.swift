@@ -1110,6 +1110,23 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/maintenance/overview")
     }
 
+    @Test("filamentCatalog cible /filament-catalog/ et décode")
+    func fetchesFilamentCatalog() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":9,"name":"Bambu ABS","type":"ABS","brand":"Bambu Lab","cost_per_kg":30.0,"#
+                + #""currency":"USD","print_temp_min":260,"print_temp_max":280,"bed_temp_min":90,"bed_temp_max":100}]"#
+        )
+        let client = try makeClient()
+        let catalog = try await client.filamentCatalog()
+        #expect(catalog.first?.name == "Bambu ABS")
+        #expect(catalog.first?.brand == "Bambu Lab")
+        #expect(catalog.first?.nozzleTempRange == "260–280 °C")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/filament-catalog/")
+    }
+
     @Test("firmwareUpdates cible /firmware/updates et décode la disponibilité")
     func fetchesFirmwareUpdates() async throws {
         MockURLProtocol.reset()

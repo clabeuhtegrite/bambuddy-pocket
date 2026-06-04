@@ -149,6 +149,11 @@ final class ServerListModel {
         FirmwareModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model du catalogue de filaments pour ce serveur.
+    func makeFilamentCatalogModel(for configuration: ServerConfiguration) -> FilamentCatalogModel {
+        FilamentCatalogModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)
