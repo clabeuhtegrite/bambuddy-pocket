@@ -169,12 +169,20 @@ struct PrinterDetailView: View {
         }
     }
 
+    /// Caméra disponible ? Capacité modèle **et** statut ne signalant pas explicitement l'absence
+    /// (`ipcam == false`). On reste permissif si le statut n'expose pas `ipcam` (nil).
+    private var showsCamera: Bool {
+        capabilities.hasCamera && status?.ipcam != false
+    }
+
     private var cameraLink: some View {
         Section {
-            NavigationLink {
-                CameraView(printer: printer, model: model)
-            } label: {
-                Label("Camera", systemImage: "video")
+            if showsCamera {
+                NavigationLink {
+                    CameraView(printer: printer, model: model)
+                } label: {
+                    Label("Camera", systemImage: "video")
+                }
             }
             NavigationLink {
                 KProfilesView(printer: printer, model: model)
@@ -263,14 +271,15 @@ struct PrinterDetailView: View {
     }
 
     private var informationSection: some View {
-        PrinterInfoSection(printer: printer, status: status)
+        PrinterInfoSection(printer: printer, status: status, capabilities: capabilities)
     }
 }
 
-/// Section « Informations » : modèle, firmware, numéro de série, adresse IP.
+/// Section « Informations » : modèle, firmware, réseau (adaptatif), numéro de série, adresse IP.
 private struct PrinterInfoSection: View {
     let printer: Printer
     let status: PrinterStatus?
+    let capabilities: PrinterCapabilities
 
     var body: some View {
         Section("Information") {
@@ -280,12 +289,26 @@ private struct PrinterInfoSection: View {
             if let value = status?.firmwareVersion {
                 LabeledContent("Firmware", value: value)
             }
+            networkRow
             if let value = printer.serialNumber {
                 LabeledContent("Serial number", value: value)
             }
             if let value = printer.ipAddress {
                 LabeledContent("IP address", value: value)
             }
+        }
+    }
+
+    /// Connectivité réseau adaptative :
+    /// - Ethernet affiché uniquement si le modèle a un port **et** que le statut le rapporte câblé.
+    /// - Sinon, Wi-Fi avec la force du signal si le statut l'expose.
+    /// - Rien si aucune donnée réseau n'est disponible (offline / firmware ancien).
+    @ViewBuilder
+    private var networkRow: some View {
+        if capabilities.hasEthernet, status?.wiredNetwork == true {
+            LabeledContent("Network", value: String(localized: "Ethernet"))
+        } else if let signal = status?.wifiSignal {
+            LabeledContent("Wi-Fi", value: PrinterPresentation.wifiSignal(signal))
         }
     }
 }

@@ -63,6 +63,23 @@ enum PrinterPresentation {
         return String(localized: "\(mins) min")
     }
 
+    /// Force du signal Wi-Fi (dBm) avec une qualité lisible (« -47 dBm · Bon »).
+    ///
+    /// Seuils usuels : ≥ -50 excellent, ≥ -60 bon, ≥ -70 moyen, sinon faible.
+    static func wifiSignal(_ dBm: Int) -> String {
+        let quality = switch dBm {
+        case (-50)...:
+            String(localized: "Excellent")
+        case (-60)...:
+            String(localized: "Good")
+        case (-70)...:
+            String(localized: "Fair")
+        default:
+            String(localized: "Weak")
+        }
+        return "\(dBm) dBm · \(quality)"
+    }
+
     /// Libellé localisé de la sévérité d'une erreur HMS.
     static func severityText(_ severity: HMSSeverity) -> String {
         switch severity {
