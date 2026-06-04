@@ -166,6 +166,11 @@ struct PrinterDetailView: View {
             } label: {
                 Label("Camera", systemImage: "video")
             }
+            NavigationLink {
+                KProfilesView(printer: printer, model: model)
+            } label: {
+                Label("Pressure advance", systemImage: "scope")
+            }
         }
     }
 
@@ -292,6 +297,9 @@ private struct PrinterReadoutSections: View {
                 }
                 if let speed = status.bigFan2Speed {
                     LabeledContent("Chamber fan", value: "\(speed)%")
+                }
+                if let speed = status.heatbreakFanSpeed {
+                    LabeledContent("Heatbreak", value: "\(speed)%")
                 }
             }
         }
