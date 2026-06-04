@@ -88,6 +88,8 @@ xcodebuild -project BamPocket.xcodeproj -scheme BamPocket \
 - [`docs/api/openapi.json`](docs/api/openapi.json) — spec OpenAPI brute (source machine).
 - [`docs/api/rest-endpoints.md`](docs/api/rest-endpoints.md) — catalogue exhaustif des 621 endpoints.
 - [`docs/adr/`](docs/adr/) — décisions d'architecture (ADR).
+- [`docs/SIDELOAD.md`](docs/SIDELOAD.md) — installer l'app sur votre iPhone (free provisioning,
+  sans compte développeur payant).
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) — guide de contribution.
 
 ## Licence

@@ -98,5 +98,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   `NSLocalNetworkUsageDescription` (connexions directes aux serveurs/imprimantes locaux). Pas de
   Bonjour/mDNS côté app (SSDP fait par le serveur) ni d'appareil photo (flux réseau). ⬜
   conformité HIG + App Review (étape de soumission).
+- ✅ **Sideload iPhone (free provisioning, sans compte payant)** : entitlements minimaux (aucune
+  capability bloquante ; trousseau via service applicatif, pas de groupe d'accès ; signature
+  automatique compatible équipe personnelle), bundle id unique `com.bampocket.app`, guide
+  pas-à-pas [`docs/SIDELOAD.md`](docs/SIDELOAD.md) (caveat des 7 jours, `xcodegen generate`
+  préalable, autorisation réseau local sur device).
 - ⬜ Étapes nécessitant le compte Apple Developer (à la charge de l'utilisateur) : enrôlement,
   signature distribution, TestFlight, soumission, réponses à la revue.
