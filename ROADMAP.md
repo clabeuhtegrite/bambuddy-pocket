@@ -86,7 +86,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   (palette adaptative clair/sombre, accent vert, Inter, composants), **mode sombre** suivant
   le système, badges de statut sémantiques, barres de progression vertes (PR A→F).
 - ⬜ Tests (unitaires + UI) sur chemins critiques ; build sans warning.
-- ⬜ Icône, launch screen, captures, classification d'âge, mentions open source.
+- 🟦 **Icône d'app** (✅ DA BamPocket : « B » sombre dans une pastille verte sur fond `#1A1A1A`,
+  générée par script reproductible Core Graphics, toutes tailles + master 1024) et **launch
+  screen** (✅ logo centré + fond sombre via `UILaunchScreen`) ; ⬜ captures, classification d'âge,
+  mentions open source.
 - ⬜ Privacy manifest + déclarations de collecte ; conformité HIG + App Review.
 - ⬜ Étapes nécessitant le compte Apple Developer (à la charge de l'utilisateur) : enrôlement,
   signature distribution, TestFlight, soumission, réponses à la revue.
