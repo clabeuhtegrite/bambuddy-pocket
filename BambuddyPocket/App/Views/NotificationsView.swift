@@ -34,8 +34,10 @@ struct NotificationsView: View {
             List {
                 ForEach(center.notifications) { note in
                     NotificationRow(note: note)
+                        .listRowBackground(DSColor.card)
                 }
             }
+            .dsListBackground()
             .overlay {
                 if center.notifications.isEmpty {
                     ContentUnavailableView(
@@ -71,24 +73,25 @@ private struct NotificationRow: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text(NotificationStyle.title(note.kind))
-                    .font(.body.weight(note.isRead ? .regular : .semibold))
+                    .font(DSFont.inter(16, weight: note.isRead ? .regular : .semibold))
+                    .foregroundStyle(DSColor.textPrimary)
                 if let subtitle {
                     Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(DSFont.caption)
+                        .foregroundStyle(DSColor.textSecondary)
                         .lineLimit(2)
                 }
             }
             Spacer()
             if !note.isRead {
                 Circle()
-                    .fill(Color.accentColor)
+                    .fill(DSColor.accent)
                     .frame(width: 8, height: 8)
                     .accessibilityHidden(true)
             }
             Text(note.date, style: .relative)
-                .font(.caption)
-                .foregroundStyle(.tertiary)
+                .font(DSFont.caption)
+                .foregroundStyle(DSColor.textTertiary)
         }
         .padding(.vertical, DSSpacing.xs)
         .accessibilityElement(children: .combine)
@@ -124,19 +127,19 @@ struct NotificationBanner: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(NotificationStyle.title(note.kind))
-                    .font(.subheadline.weight(.semibold))
+                    .font(DSFont.inter(14, weight: .semibold))
+                    .foregroundStyle(DSColor.textPrimary)
                 if let subtitle = bannerSubtitle(note) {
                     Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(DSFont.caption)
+                        .foregroundStyle(DSColor.textSecondary)
                         .lineLimit(1)
                 }
             }
             Spacer(minLength: 0)
         }
         .padding(DSSpacing.md)
-        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
-        .shadow(radius: 8, y: 4)
+        .dsCardSurface()
         .padding(.horizontal, DSSpacing.md)
         .contentShape(Rectangle())
         .onTapGesture {
@@ -186,11 +189,11 @@ enum NotificationStyle {
 
     static func color(_ kind: NotableEventKind) -> Color {
         switch kind {
-        case .printStarted: .blue
-        case .printCompleted: .green
-        case .missingSpool, .plateNotEmpty: .orange
-        case .hmsError: .red
-        case .archiveCreated: .secondary
+        case .printStarted: DSColor.accent
+        case .printCompleted: DSColor.statusOK
+        case .missingSpool, .plateNotEmpty: DSColor.statusWarning
+        case .hmsError: DSColor.statusError
+        case .archiveCreated: DSColor.textMuted
         }
     }
 }

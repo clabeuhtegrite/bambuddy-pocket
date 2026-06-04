@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import Foundation
 import SwiftUI
@@ -57,6 +58,7 @@ struct Model3DScreen: View {
                 ContentUnavailableView("3D preview unavailable", systemImage: "cube.transparent")
             } else {
                 ProgressView()
+                    .tint(DSColor.accent)
             }
         }
         .navigationTitle("3D model")

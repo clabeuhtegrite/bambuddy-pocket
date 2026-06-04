@@ -67,6 +67,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   intégrations (cloud, smart-plugs, Obico, MakerWorld) selon priorité.
 
 ## Transverse / sortie App Store ⬜
+- ✅ **Refonte UI — direction artistique Bambuddy** sur tous les écrans : design system
+  (palette adaptative clair/sombre, accent vert, Inter, composants), **mode sombre** suivant
+  le système, badges de statut sémantiques, barres de progression vertes (PR A→F).
 - ⬜ Tests (unitaires + UI) sur chemins critiques ; build sans warning.
 - ⬜ Icône, launch screen, captures, classification d'âge, mentions open source.
 - ⬜ Privacy manifest + déclarations de collecte ; conformité HIG + App Review.

@@ -27,8 +27,10 @@ struct ActivityListView: View {
         List {
             ForEach(filtered) { entry in
                 ActivityRow(entry: entry)
+                    .listRowBackground(DSColor.card)
             }
         }
+        .dsListBackground()
         .searchable(text: $query)
         .overlay { placeholder }
         .navigationTitle("Activity")
@@ -45,6 +47,7 @@ struct ActivityListView: View {
     private var placeholder: some View {
         if !model.hasLoaded, model.entries.isEmpty {
             ProgressView()
+                .tint(DSColor.accent)
         } else if model.entries.isEmpty {
             if let error = model.loadError {
                 ContentUnavailableView {
@@ -70,13 +73,14 @@ private struct ActivityRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: DSSpacing.md) {
             Image(systemName: entry.success ? "checkmark.circle.fill" : "exclamationmark.circle.fill")
-                .foregroundStyle(entry.success ? .green : .red)
+                .foregroundStyle(DSStatusIntent.forSuccess(entry.success).color)
             VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 Text(entry.title)
-                    .font(.headline)
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
                 Text(entry.message)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.callout)
+                    .foregroundStyle(DSColor.textSecondary)
                     .lineLimit(3)
                 HStack(spacing: DSSpacing.sm) {
                     if let printer = entry.printerName {
@@ -86,8 +90,8 @@ private struct ActivityRow: View {
                         Text(date)
                     }
                 }
-                .font(.caption)
-                .foregroundStyle(.tertiary)
+                .font(DSFont.caption)
+                .foregroundStyle(DSColor.textTertiary)
             }
         }
         .padding(.vertical, DSSpacing.xs)

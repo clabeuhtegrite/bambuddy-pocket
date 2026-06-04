@@ -335,7 +335,7 @@ private struct AMSUnitSection: View {
                         Button("Load") {
                             Task { await model.loadFilament(printer, trayID: trayIndex(tray)) }
                         }
-                        .tint(.blue)
+                        .tint(DSColor.accent)
                     }
             }
             if (unit.dryStatus ?? 0) > 0 {

@@ -7,9 +7,11 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Refonte UI — DA Bambuddy en cours.** PR A (fondation design system) livrée : palette
-adaptative clair/sombre + accent vert, typographie Inter, composants réutilisables (cf. journal).
-Suite : appliquer le design system écran par écran (lots B…F), puis régénérer les captures FR.
+**Refonte UI — DA Bambuddy diffusée sur tous les écrans.** Lots A→F livrés (design system +
+serveurs/connexion/À propos + imprimantes/caméra + file/archives + inventaire/bibliothèque/
+projets + notifications/activité). App adaptative clair/sombre, accent vert, Inter, badges
+sémantiques, barres de progression vertes. Reste : **régénérer les captures FR** via la cible
+`BambuddyPocketScreenshots` (thème sombre + 1-2 clairs).
 
 **Tier 1 approfondi + notifications transverses livrées** (`main`, dépôt public, CI verte,
 137 tests SPM + 11 tests app). Vague notifications (PR mergée) : **session WebSocket persistante
@@ -76,6 +78,18 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (28)** — **Refonte UI — diffusion de la DA sur tous les écrans (PR B→F).** Le
+  design system (PR A) est appliqué écran par écran, par lots verts mergés au fil de l'eau :
+  **B** serveurs/connexion/ajout imprimante/À propos ; **C** imprimantes (liste/détail/caméra/
+  feuilles de maintenance) ; **D** file d'attente/archives (+ détail/stats/édition) ; **E**
+  inventaire/bibliothèque/projets (+ détails/feuilles) ; **F** notifications (centre + bannière)/
+  activité/viewer 3D. Partout : fonds adaptatifs (`dsListBackground()`), typographie **Inter**
+  (`DSFont`), **badges de statut sémantiques** (`DSStatusBadge` + `DSStatusIntent`), barres de
+  progression en **accent vert**, couleurs d'icônes/actions mappées sur la DA. Les helpers de
+  présentation partagés (`PrinterPresentation.stateColor`/`severityColor`,
+  `ArchivePresentation.statusColor`) délèguent à `DSStatusIntent` (source unique testée). Ajouts
+  DA : `DSStatusIntent.forRawStatus` (testé) + modificateur `dsListBackground()`. **146 tests
+  SPM**, tests app verts, build iOS sans warning, lint/format strict OK à chaque lot.
 - **2026-06-04 (27)** — **Refonte UI — PR A : fondation design system (DA Bambuddy).** Le module
   SPM `BambuddyPocketDesignSystem` (jusqu'ici quasi vide) porte désormais la direction artistique
   officielle, extraite du frontend web amont (`tailwind.config.js`/`index.css`). **Décision thème :
