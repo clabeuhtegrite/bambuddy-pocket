@@ -41,11 +41,24 @@ public actor RESTClient: APIClient {
             } catch {
                 throw APIError.decoding(String(describing: error))
             }
-        case 401, 403:
+        case 401:
             throw APIError.unauthorized
+        case 403:
+            throw APIError.forbidden(reason: Self.detail(from: data))
         default:
             throw APIError.http(status: http.statusCode, body: String(data: data, encoding: .utf8))
         }
+    }
+
+    /// Extrait le champ `detail` d'un corps d'erreur FastAPI (`{"detail":"…"}`), ou `nil` s'il est
+    /// absent ou vide. Sert à journaliser le motif précis d'un `403`/erreur serveur.
+    static func detail(from data: Data) -> String? {
+        guard
+            let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            let detail = object["detail"] as? String,
+            !detail.isEmpty
+        else { return nil }
+        return detail
     }
 
     /// Récupère le corps **brut** (non-JSON) d'une ressource : snapshot caméra, vignette, etc.
@@ -64,8 +77,10 @@ public actor RESTClient: APIClient {
         switch http.statusCode {
         case 200 ..< 300:
             return data
-        case 401, 403:
+        case 401:
             throw APIError.unauthorized
+        case 403:
+            throw APIError.forbidden(reason: Self.detail(from: data))
         default:
             throw APIError.http(status: http.statusCode, body: nil)
         }
@@ -138,8 +153,10 @@ public actor RESTClient: APIClient {
             } catch {
                 throw APIError.decoding(String(describing: error))
             }
-        case 401, 403:
+        case 401:
             throw APIError.unauthorized
+        case 403:
+            throw APIError.forbidden(reason: Self.detail(from: responseData))
         default:
             throw APIError.http(status: http.statusCode, body: String(data: responseData, encoding: .utf8))
         }

@@ -42,11 +42,16 @@ struct APIKeysView: View {
         .navigationTitle("API keys")
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isCreating = true
-                } label: {
-                    Label("Create API key", systemImage: "plus")
+            // Pas de bouton de création quand l'accès est refusé (clé d'API sur cet écran
+            // d'administration) ou qu'aucune clé n'a pu être chargée : la création échouerait
+            // de la même façon.
+            if !showsLoadFailure {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isCreating = true
+                    } label: {
+                        Label("Create API key", systemImage: "plus")
+                    }
                 }
             }
         }
@@ -64,10 +69,22 @@ struct APIKeysView: View {
         }
     }
 
+    /// Le chargement a échoué (403 admin requis ou autre erreur) et aucune clé n'est disponible :
+    /// on n'affiche que l'état d'erreur, sans bouton de création.
+    private var showsLoadFailure: Bool {
+        model.keys.isEmpty && (model.isForbidden || model.loadError != nil)
+    }
+
     @ViewBuilder
     private var placeholder: some View {
         if !model.hasLoaded, model.keys.isEmpty {
             ProgressView().tint(DSColor.accent)
+        } else if model.isForbidden {
+            ContentUnavailableView {
+                Label("Admin login required", systemImage: "lock")
+            } description: {
+                Text("Admin login required — reconfigure this server with a username & password.")
+            }
         } else if model.keys.isEmpty {
             if let error = model.loadError {
                 ContentUnavailableView {

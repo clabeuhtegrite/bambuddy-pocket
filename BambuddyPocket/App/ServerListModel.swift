@@ -251,19 +251,8 @@ final class ServerListModel {
     }
 
     private static func message(for error: APIError) -> String {
-        switch error {
-        case .invalidURL:
-            String(localized: "The server URL is not valid.")
-        case .unauthorized:
-            String(localized: "Unauthorized — check your credentials.")
-        case let .transport(message):
-            message
-        case let .http(status, _):
-            String(localized: "The server returned an unexpected status (\(status)).")
-        case .decoding:
-            String(localized: "The server response could not be read.")
-        case let .server(message):
-            message
-        }
+        // Source unique de la traduction des erreurs réseau (cf. `ErrorMessage`), pour garder un
+        // mapping cohérent (401 ≠ 403 ≠ 404) à un seul endroit.
+        ErrorMessage.text(for: error)
     }
 }

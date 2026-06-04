@@ -15,10 +15,34 @@ public enum HTTPMethod: String, Sendable, Hashable {
 public enum APIError: Error, Sendable, Equatable {
     case invalidURL
     case transport(String)
+    /// `401` : authentification absente/invalide → l'utilisateur doit vérifier ses identifiants.
     case unauthorized
+    /// `403` : authentifié mais **non autorisé**. Le cas courant côté Bambuddy est une **clé d'API**
+    /// qui tente une fonction réservée à une **session par identifiants** (gestion des clés d'API,
+    /// sauvegardes locales et distantes). Ce comportement est **volontaire** côté serveur — ce n'est
+    /// **pas** un problème d'identifiants. `reason` reprend le `detail` du serveur quand il existe.
+    case forbidden(reason: String?)
     case http(status: Int, body: String?)
     case decoding(String)
     case server(message: String)
+}
+
+public extension APIError {
+    /// `true` pour un `403` : fonction réservée à une connexion par identifiants (admin). L'UI doit
+    /// afficher un message d'orientation clair plutôt qu'une erreur d'identifiants, et **masquer**
+    /// les actions associées (créer une clé, sauvegarder, configurer…).
+    var isForbidden: Bool {
+        if case .forbidden = self { return true }
+        return false
+    }
+
+    /// `true` quand le serveur a répondu `404` : la **fonctionnalité n'existe pas / n'est pas
+    /// activée** sur ce serveur. Ce n'est **pas** une erreur d'authentification — l'UI doit afficher
+    /// un état « non disponible » plutôt qu'une erreur, et masquer les actions associées.
+    var isNotFound: Bool {
+        if case let .http(status, _) = self, status == 404 { return true }
+        return false
+    }
 }
 
 /// Contrat d'un client REST Bambuddy. L'implémentation concrète (URLSession, injection des

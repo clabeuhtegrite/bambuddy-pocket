@@ -15,4 +15,27 @@ struct APIErrorTests {
         #expect(HTTPMethod.get.rawValue == "GET")
         #expect(HTTPMethod.delete.rawValue == "DELETE")
     }
+
+    @Test("isNotFound ne vaut true que pour un HTTP 404 (fonction non disponible)")
+    func isNotFoundOnlyFor404() {
+        #expect(APIError.http(status: 404, body: nil).isNotFound)
+        #expect(!APIError.http(status: 500, body: nil).isNotFound)
+        #expect(!APIError.unauthorized.isNotFound)
+        #expect(!APIError.forbidden(reason: "nope").isNotFound)
+    }
+
+    @Test("isForbidden ne vaut true que pour un 403 (fonction admin réservée)")
+    func isForbiddenOnlyFor403() {
+        #expect(APIError.forbidden(reason: nil).isForbidden)
+        #expect(APIError.forbidden(reason: "admin only").isForbidden)
+        #expect(!APIError.unauthorized.isForbidden)
+        #expect(!APIError.http(status: 403, body: nil).isForbidden)
+    }
+
+    @Test("forbidden distingue le motif serveur dans l'égalité")
+    func forbiddenEquatableByReason() {
+        #expect(APIError.forbidden(reason: "a") == APIError.forbidden(reason: "a"))
+        #expect(APIError.forbidden(reason: "a") != APIError.forbidden(reason: "b"))
+        #expect(APIError.forbidden(reason: nil) != APIError.unauthorized)
+    }
 }

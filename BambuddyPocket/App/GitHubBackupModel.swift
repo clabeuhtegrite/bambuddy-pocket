@@ -18,6 +18,13 @@ final class GitHubBackupModel {
     private(set) var logs: [GitHubBackupLog] = []
     private(set) var hasLoaded = false
     private(set) var isRunning = false
+    /// Le serveur a refusé l'accès (HTTP 403) : fonction d'administration réservée à une connexion
+    /// par identifiants. Avec une clé d'API, c'est le comportement **attendu** côté Bambuddy. L'UI
+    /// affiche un message d'orientation et masque les actions (« Configurer », « Sauvegarder »).
+    private(set) var isForbidden = false
+    /// La sauvegarde distante n'est pas disponible sur ce serveur (HTTP 404) : l'UI affiche un état
+    /// « non disponible » et masque les actions.
+    private(set) var isUnavailable = false
     var loadError: String?
     var actionMessage: String?
 
@@ -41,7 +48,19 @@ final class GitHubBackupModel {
             config = try await client.gitHubBackupConfig()
             logs = await (try? client.gitHubBackupLogs()) ?? []
             loadError = nil
+            isForbidden = false
+            isUnavailable = false
+        } catch let apiError as APIError where apiError.isForbidden {
+            isForbidden = true
+            isUnavailable = false
+            loadError = ErrorMessage.text(for: apiError)
+        } catch let apiError as APIError where apiError.isNotFound {
+            isUnavailable = true
+            isForbidden = false
+            loadError = nil
         } catch {
+            isForbidden = false
+            isUnavailable = false
             loadError = ErrorMessage.text(for: error)
         }
         hasLoaded = true

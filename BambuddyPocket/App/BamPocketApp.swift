@@ -27,9 +27,9 @@ struct BamPocketApp: App {
 /// (parcours critiques déterministes). `-uitest-seed` enregistre un serveur de démonstration
 /// configuré depuis des variables d'environnement (URL, méthode d'auth, Cloudflare Access) afin
 /// que les écrans de captures affichent des données réelles. Les secrets éventuels (clé d'API,
-/// service token Cloudflare) sont lus dans l'environnement et écrits dans le Keychain — jamais
-/// codés en dur. Aucun effet en production (ces arguments ne sont jamais passés par un build
-/// normal).
+/// JWT de session pour `.userPassword`, service token Cloudflare) sont lus dans l'environnement et
+/// écrits dans le Keychain — jamais codés en dur. Aucun effet en production (ces arguments ne sont
+/// jamais passés par un build normal).
 private enum UITestSeed {
     /// Schéma de couleurs forcé pour les captures XCUITest (`-uitest-appearance dark|light`).
     /// `nil` en build normal → l'app suit le réglage système.
@@ -81,6 +81,10 @@ private enum UITestSeed {
         // le Keychain via le même `SecretStore` que l'app utilise en production.
         let secrets = ServerSecrets(
             apiKey: authMethod == .apiKey ? environment["UITEST_API_KEY"] : nil,
+            // JWT de session (méthode `.userPassword`) fourni au runtime via l'environnement —
+            // jamais codé en dur. Le harnais l'obtient par un login `POST /auth/login` avant de
+            // lancer le simulateur, puis le transmet en `SIMCTL_CHILD_UITEST_BEARER_TOKEN`.
+            bearerToken: authMethod == .userPassword ? environment["UITEST_BEARER_TOKEN"] : nil,
             cloudflareClientID: usesCloudflare ? environment["UITEST_CF_ID"] : nil,
             cloudflareClientSecret: usesCloudflare ? environment["UITEST_CF_SECRET"] : nil
         )

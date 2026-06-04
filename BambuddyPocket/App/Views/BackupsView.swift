@@ -12,13 +12,22 @@ struct BackupsView: View {
         _model = State(initialValue: serverList.makeBackupsModel(for: server))
     }
 
+    /// Le chargement a échoué (403 admin requis, 404 indisponible ou autre erreur) et aucune donnée
+    /// n'est disponible : on n'affiche **que** l'état d'erreur, sans bouton d'action au-dessus.
+    private var showsLoadFailure: Bool {
+        model.status == nil && model.backups
+            .isEmpty && (model.isForbidden || model.isUnavailable || model.loadError != nil)
+    }
+
     var body: some View {
         List {
-            if let status = model.status {
-                statusSection(status)
+            if !showsLoadFailure {
+                if let status = model.status {
+                    statusSection(status)
+                }
+                actionSection
+                backupsSection
             }
-            actionSection
-            backupsSection
         }
         .dsListBackground()
         .overlay { placeholder }
@@ -94,7 +103,19 @@ struct BackupsView: View {
     private var placeholder: some View {
         if !model.hasLoaded, model.status == nil {
             ProgressView().tint(DSColor.accent)
-        } else if model.status == nil, let error = model.loadError {
+        } else if model.isForbidden {
+            ContentUnavailableView {
+                Label("Admin login required", systemImage: "lock")
+            } description: {
+                Text("Admin login required — reconfigure this server with a username & password.")
+            }
+        } else if model.isUnavailable {
+            ContentUnavailableView {
+                Label("Not available", systemImage: "questionmark.circle")
+            } description: {
+                Text("Not available on this server.")
+            }
+        } else if showsLoadFailure, let error = model.loadError {
             ContentUnavailableView {
                 Label("Couldn’t load backups", systemImage: "exclamationmark.triangle")
             } description: {

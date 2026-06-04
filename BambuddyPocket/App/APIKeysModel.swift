@@ -10,6 +10,10 @@ import Observation
 final class APIKeysModel {
     private(set) var keys: [APIKey] = []
     private(set) var hasLoaded = false
+    /// Le serveur a refusé l'accès (HTTP 403) : la gestion des clés d'API est réservée à une
+    /// connexion par identifiants. Avec une clé d'API, c'est le comportement **attendu** côté
+    /// Bambuddy. L'UI affiche un message d'orientation et masque le bouton « Créer une clé d'API ».
+    private(set) var isForbidden = false
     var loadError: String?
     /// Secret complet de la clé qui vient d'être créée (à n'afficher qu'une fois).
     var createdSecret: APIKey?
@@ -27,7 +31,12 @@ final class APIKeysModel {
             let client = try connectionFactory.makeClient(for: server)
             keys = try await client.apiKeys()
             loadError = nil
+            isForbidden = false
+        } catch let apiError as APIError where apiError.isForbidden {
+            isForbidden = true
+            loadError = ErrorMessage.text(for: apiError)
         } catch {
+            isForbidden = false
             loadError = ErrorMessage.text(for: error)
         }
         hasLoaded = true

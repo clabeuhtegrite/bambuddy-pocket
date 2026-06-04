@@ -81,12 +81,24 @@ struct MockNetworkingTests {
         #expect(echo == Echo(message: "bonjour"))
     }
 
-    @Test("401/403 → APIError.unauthorized")
+    @Test("401 → APIError.unauthorized")
     func unauthorized() async throws {
         MockURLProtocol.reset()
         respond(status: 401, json: #"{"detail":"nope"}"#)
         let client = try makeClient()
         await #expect(throws: APIError.unauthorized) {
+            let _: Echo = try await client.send("/x", method: .get, body: nil)
+        }
+    }
+
+    @Test("403 → APIError.forbidden avec le motif du serveur (et non unauthorized)")
+    func forbidden() async throws {
+        MockURLProtocol.reset()
+        respond(status: 403, json: #"{"detail":"API keys cannot be used for administrative operations"}"#)
+        let client = try makeClient()
+        await #expect(throws: APIError.forbidden(
+            reason: "API keys cannot be used for administrative operations"
+        )) {
             let _: Echo = try await client.send("/x", method: .get, body: nil)
         }
     }
