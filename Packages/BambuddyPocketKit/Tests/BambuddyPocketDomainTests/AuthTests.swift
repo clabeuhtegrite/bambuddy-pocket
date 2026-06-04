@@ -40,4 +40,36 @@ struct AuthTests {
         #expect(json.contains("\"username\""))
         #expect(json.contains("\"password\""))
     }
+
+    @Test("User — /auth/me décode rôle, groupes et source d'auth")
+    func decodesRichUser() throws {
+        let json = #"""
+        {"id":1,"username":"admin","email":null,"role":"admin","is_active":true,"is_admin":true,
+         "auth_source":"local","groups":[{"id":1,"name":"Administrators"}],
+         "created_at":"2026-06-04T08:03:31"}
+        """#
+        let data = try #require(json.data(using: .utf8))
+        let user = try JSONDecoder.bambuddy().decode(User.self, from: data)
+        #expect(user.username == "admin")
+        #expect(user.role == "admin")
+        #expect(user.isActive == true)
+        #expect(user.authSource == "local")
+        #expect(user.groups?.first?.name == "Administrators")
+    }
+
+    @Test("TwoFactorStatus — isEnabled reflète les méthodes actives")
+    func decodesTwoFactorStatus() throws {
+        let off = try JSONDecoder.bambuddy().decode(
+            TwoFactorStatus.self,
+            from: Data(#"{"totp_enabled":false,"email_otp_enabled":false,"backup_codes_remaining":0}"#.utf8)
+        )
+        #expect(off.isEnabled == false)
+
+        let on = try JSONDecoder.bambuddy().decode(
+            TwoFactorStatus.self,
+            from: Data(#"{"totp_enabled":true,"email_otp_enabled":false,"backup_codes_remaining":8}"#.utf8)
+        )
+        #expect(on.isEnabled)
+        #expect(on.backupCodesRemaining == 8)
+    }
 }

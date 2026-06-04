@@ -12,20 +12,71 @@ public struct LoginRequest: Codable, Sendable, Hashable {
     }
 }
 
-/// Utilisateur authentifié (sous-ensemble de `UserResponse`).
+/// Groupe d'appartenance d'un utilisateur (sous-ensemble).
+public struct UserGroup: Codable, Sendable, Hashable, Identifiable {
+    public var id: Int
+    public var name: String
+
+    public init(id: Int, name: String) {
+        self.id = id
+        self.name = name
+    }
+}
+
+/// Utilisateur authentifié (`GET /auth/me`, sous-ensemble de `UserResponse`).
 public struct User: Codable, Sendable, Hashable, Identifiable {
     public var id: Int
     public var username: String
     public var email: String?
     public var role: String?
     public var isAdmin: Bool?
+    public var isActive: Bool?
+    public var authSource: String?
+    public var groups: [UserGroup]?
+    public var createdAt: String?
 
-    public init(id: Int, username: String, email: String? = nil, role: String? = nil, isAdmin: Bool? = nil) {
+    public init(
+        id: Int,
+        username: String,
+        email: String? = nil,
+        role: String? = nil,
+        isAdmin: Bool? = nil,
+        isActive: Bool? = nil,
+        authSource: String? = nil,
+        groups: [UserGroup]? = nil,
+        createdAt: String? = nil
+    ) {
         self.id = id
         self.username = username
         self.email = email
         self.role = role
         self.isAdmin = isAdmin
+        self.isActive = isActive
+        self.authSource = authSource
+        self.groups = groups
+        self.createdAt = createdAt
+    }
+}
+
+/// État de l'authentification à deux facteurs (`GET /auth/2fa/status`).
+public struct TwoFactorStatus: Codable, Sendable, Hashable {
+    public var totpEnabled: Bool?
+    public var emailOtpEnabled: Bool?
+    public var backupCodesRemaining: Int?
+
+    public init(
+        totpEnabled: Bool? = nil,
+        emailOtpEnabled: Bool? = nil,
+        backupCodesRemaining: Int? = nil
+    ) {
+        self.totpEnabled = totpEnabled
+        self.emailOtpEnabled = emailOtpEnabled
+        self.backupCodesRemaining = backupCodesRemaining
+    }
+
+    /// Au moins une méthode 2FA est-elle active ?
+    public var isEnabled: Bool {
+        (totpEnabled ?? false) || (emailOtpEnabled ?? false)
     }
 }
 

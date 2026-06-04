@@ -238,6 +238,16 @@ public extension APIClient {
         try await get("/auth/me")
     }
 
+    /// État de l'authentification à deux facteurs de l'utilisateur (`GET /auth/2fa/status`).
+    func twoFactorStatus() async throws -> TwoFactorStatus {
+        try await get("/auth/2fa/status")
+    }
+
+    /// Déconnexion : révoque le jeton courant côté serveur (`POST /auth/logout`).
+    func logout() async throws {
+        try await post("/auth/logout")
+    }
+
     /// Requête `POST` sans réponse utile (actions de contrôle).
     func post(_ path: String, body: Data? = nil) async throws {
         let _: EmptyResponse = try await send(path, method: .post, body: body)
