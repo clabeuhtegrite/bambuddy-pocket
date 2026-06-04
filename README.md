@@ -1,11 +1,12 @@
-# Bambuddy Pocket
+# BamPocket
 
-> **Nom de code provisoire : « Bambuddy Pocket ».** Client iOS natif (open source) pour
+> **BamPocket** — client iOS natif (open source) pour
 > [Bambuddy](https://github.com/maziggy/bambuddy), l'outil auto-hébergé de gestion d'imprimantes
 > 3D Bambu Lab. Projet **tiers, non affilié** à Bambuddy ni à Bambu Lab.
-> ⚠️ Ce nom contient « Bambuddy » : une **vérification de marque** (et idéalement l'accord de
-> l'auteur amont) est requise **avant toute publication**. « Bambuddy » et « Bambu Lab » sont des
-> marques de leurs détenteurs. Contexte : [`docs/adr/0004-nommage.md`](docs/adr/0004-nommage.md).
+> « Bambuddy » et « Bambu Lab » sont des marques de leurs détenteurs ; la relecture/clearance
+> pré-publication reste du ressort de l'utilisateur. Contexte :
+> [`docs/adr/0004-nommage.md`](docs/adr/0004-nommage.md). Le dépôt GitHub conserve le slug
+> historique `bambuddy-pocket`.
 
 [![CI](https://github.com/clabeuhtegrite/bambuddy-pocket/actions/workflows/ci.yml/badge.svg)](https://github.com/clabeuhtegrite/bambuddy-pocket/actions/workflows/ci.yml)
 
@@ -70,14 +71,15 @@ Le projet Xcode est **généré** depuis [`project.yml`](project.yml) via
 [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — le `.xcodeproj`
 n'est pas versionné (source de vérité = `project.yml`).
 ```bash
-xcodegen generate              # crée BambuddyPocket.xcodeproj
-open BambuddyPocket.xcodeproj  # ouvrir dans Xcode, ou builder en CLI ↓
-xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket \
+xcodegen generate         # crée BamPocket.xcodeproj
+open BamPocket.xcodeproj  # ouvrir dans Xcode, ou builder en CLI ↓
+xcodebuild -project BamPocket.xcodeproj -scheme BamPocket \
   -destination 'platform=iOS Simulator,name=iPhone 17' build test
 (cd Packages/BambuddyPocketKit && swift test)   # tests du paquet SPM
 ```
-> Le code est organisé en : cible app `BambuddyPocket` (SwiftUI) + paquet SPM local
-> `BambuddyPocketKit` (modules `…Domain`, `…Networking`, `…DesignSystem`). Cf.
+> Le code est organisé en : cible app `BamPocket` (SwiftUI) + paquet SPM local
+> `BambuddyPocketKit` (modules `…Domain`, `…Networking`, `…DesignSystem` — noms internes
+> conservés). Cf.
 > [`docs/adr/0002-architecture.md`](docs/adr/0002-architecture.md).
 
 ## Documentation

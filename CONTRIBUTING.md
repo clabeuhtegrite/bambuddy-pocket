@@ -1,4 +1,4 @@
-# Contribuer à Bambuddy Pocket
+# Contribuer à BamPocket
 
 Merci de contribuer ! Ce projet vise une qualité **production / App Store**.
 
@@ -13,7 +13,7 @@ Merci de contribuer ! Ce projet vise une qualité **production / App Store**.
 
 ## Flux de travail
 1. **Brancher** depuis `main` : `git switch -c feat/ma-fonctionnalite`.
-2. `xcodegen generate` (re)crée `BambuddyPocket.xcodeproj` depuis `project.yml`.
+2. `xcodegen generate` (re)crée `BamPocket.xcodeproj` depuis `project.yml`.
 3. Développer en **petits commits atomiques**.
 4. `swiftformat .` puis `swiftlint --strict` — **zéro warning**.
 5. Lancer les tests : `xcodebuild test` (app) **et** `swift test` dans `Packages/BambuddyPocketKit`.

@@ -1,4 +1,4 @@
-# Passation — terminer Bambuddy Pocket
+# Passation — terminer BamPocket
 
 > Document de relais. Donne ce prompt (ou pointe ce fichier) à l'agent qui terminera le projet.
 > État au moment de la passation : phases 0→3 + une bonne partie de la longue traîne intégrées,
@@ -30,7 +30,7 @@ L'agent précédent ne pouvait PAS exécuter l'app. TOI SI. Donc :
    trouvé : `requires_2fa` se décode en `requires2Fa` (majuscule après un chiffre). Couvre chaque
    décodage par un test.
 3. `brew install xcodegen swiftlint swiftformat` ; `xcodegen generate` ;
-   `xcodebuild -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test` ;
+   `xcodebuild -scheme BamPocket -destination 'platform=iOS Simulator,name=iPhone 17' test` ;
    `(cd Packages/BambuddyPocketKit && swift test)`. Lance l'app et clique partout.
 
 ## 2. Architecture (à respecter)

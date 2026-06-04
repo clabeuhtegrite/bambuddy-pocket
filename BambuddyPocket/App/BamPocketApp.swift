@@ -5,7 +5,7 @@ import BambuddyPocketNetworking
 import SwiftUI
 
 @main
-struct BambuddyPocketApp: App {
+struct BamPocketApp: App {
     @State private var model: ServerListModel
 
     init() {

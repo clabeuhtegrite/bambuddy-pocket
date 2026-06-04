@@ -10,7 +10,7 @@ réseau/domaine/UI, tests sur chemins critiques, dépendances tierces minimales.
 ## Décision
 
 ### Modularisation (paquets SPM locaux + cible app)
-Un projet Xcode `Bambuddy Pocket.xcodeproj` (cible app SwiftUI) qui dépend d'un paquet SPM local
+Un projet Xcode `BamPocket.xcodeproj` (cible app `BamPocket`, SwiftUI) qui dépend d'un paquet SPM local
 `Packages/BambuddyPocketKit` découpé en cibles à dépendances orientées :
 
 ```

@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Bambuddy Pocket ne fait aucun tracking et ne collecte aucune donnée utilisateur.
+    <!-- BamPocket ne fait aucun tracking et ne collecte aucune donnée utilisateur.
          Le trafic ne va que vers les serveurs auto-hébergés configurés par l'utilisateur. -->
     <key>NSPrivacyTracking</key>
     <false/>
