@@ -61,8 +61,8 @@ jobs:
         run: |
           set -euo pipefail
           xcodebuild \
-            -project BambuddyPocket.xcodeproj \
-            -scheme BambuddyPocket \
+            -project BamPocket.xcodeproj \
+            -scheme BamPocket \
             -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.name }}" \
             CODE_SIGNING_ALLOWED=NO \
             clean test

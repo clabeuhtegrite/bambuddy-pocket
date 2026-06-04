@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Bambuddy Pocket</string>
+	<string>BamPocket</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,7 +28,7 @@
 		<true/>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Bambuddy Pocket se connecte à vos serveurs Bambuddy et imprimantes sur votre réseau local pour afficher leur état et les piloter.</string>
+	<string>BamPocket se connecte à vos serveurs Bambuddy et imprimantes sur votre réseau local pour afficher leur état et les piloter.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Variable.ttf</string>

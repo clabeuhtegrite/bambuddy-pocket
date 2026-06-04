@@ -6,7 +6,7 @@
 
 ## Contexte
 
-Bambuddy (le serveur que Bambuddy Pocket pilote) est sous **GNU AGPL v3** (fichier `LICENSE`,
+Bambuddy (le serveur que BamPocket pilote) est sous **GNU AGPL v3** (fichier `LICENSE`,
 texte officiel de l'Affero GPL 3.0). La mission demande : « **ALIGNER** sur celle de Bambuddy —
 adopte la même (ou une compatible). Signale-moi toute implication copyleft. »
 
@@ -15,12 +15,12 @@ Deux objectifs **en tension** à concilier :
 1. **Aligner sur Bambuddy / esprit copyleft** (préférence exprimée).
 2. **Publier sur l'App Store** (objectif produit explicite).
 
-### Fait juridique 1 — Bambuddy Pocket est un client indépendant
+### Fait juridique 1 — BamPocket est un client indépendant
 
-Bambuddy Pocket est une application **séparée** qui dialogue avec Bambuddy via une **API réseau**
+BamPocket est une application **séparée** qui dialogue avec Bambuddy via une **API réseau**
 (REST + WebSocket). Elle **n'incorpore, ne lie et ne dérive aucun code** de Bambuddy.
 Selon l'interprétation de la FSF, communiquer avec un programme via un protocole réseau « à
-distance » ne crée **pas** d'œuvre dérivée. **Conséquence : Bambuddy Pocket n'est PAS juridiquement
+distance » ne crée **pas** d'œuvre dérivée. **Conséquence : BamPocket n'est PAS juridiquement
 contraint par l'AGPL de Bambuddy.** « Aligner » est donc une **préférence**, pas une obligation.
 
 > ⚠️ Cela ne vaut que tant qu'on **ne copie pas** de code amont (p. ex. porter du Python,
@@ -35,7 +35,7 @@ limitation du nombre d'appareils, etc.) jugées **incompatibles** avec la GPL/AG
 VLC retiré de l'App Store en 2011 sur plainte GPL, revenu ensuite via une décision du **détenteur
 des droits**. → **Distribuer un binaire GPL/AGPL sur l'App Store nécessite que le titulaire des
 droits accorde une exception explicite.** Comme tu seras **seul titulaire** des droits sur le code
-original de Bambuddy Pocket, tu **peux** accorder cette exception.
+original de BamPocket, tu **peux** accorder cette exception.
 
 ## Options
 
@@ -43,7 +43,7 @@ original de Bambuddy Pocket, tu **peux** accorder cette exception.
 |---|---|---|---|---|
 | 1 | **AGPL-3.0 + exception App Store** | ★★★ (identique) | ✅ via exception | Mirroir exact. Mais la **clause réseau** (§13) de l'AGPL n'a guère de sens pour un **client** local. |
 | 2 | **GPL-3.0 + exception App Store** | ★★☆ (copyleft fort, sans clause réseau) | ✅ via exception | Copyleft « classique », plus adapté à un client que l'AGPL. |
-| 3 | **MPL-2.0** | ★★☆ (copyleft **par fichier**) | ✅ sans exception | Garde ouverts les fichiers Bambuddy Pocket ; pas de portée « virale » → pas de conflit App Store. |
+| 3 | **MPL-2.0** | ★★☆ (copyleft **par fichier**) | ✅ sans exception | Garde ouverts les fichiers BamPocket ; pas de portée « virale » → pas de conflit App Store. |
 | 4 | **Apache-2.0** | ★☆☆ (permissive, **compatible**) | ✅ sans friction | Grant de brevet, adoption maximale ; OSI open source ; pleinement compatible avec l'usage d'un serveur AGPL. |
 
 Notes :

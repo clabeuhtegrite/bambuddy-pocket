@@ -4,7 +4,7 @@ import SwiftUI
     import UIKit
 #endif
 
-/// Palette sémantique adaptative de Bambuddy Pocket.
+/// Palette sémantique adaptative de BamPocket.
 ///
 /// Reprend la direction artistique du frontend web amont (`tailwind.config.js` /
 /// `src/index.css`) : accent vert constant clair/sombre, statuts sémantiques fixes,

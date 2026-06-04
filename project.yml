@@ -1,6 +1,6 @@
-name: BambuddyPocket
+name: BamPocket
 options:
-  bundleIdPrefix: app.bambuddy
+  bundleIdPrefix: com.bampocket
   deploymentTarget:
     iOS: "18.0"
   developmentLanguage: en
@@ -21,7 +21,7 @@ packages:
     path: Packages/BambuddyPocketKit
 
 targets:
-  BambuddyPocket:
+  BamPocket:
     type: application
     platform: iOS
     sources:
@@ -36,10 +36,10 @@ targets:
     info:
       path: BambuddyPocket/Info.plist
       properties:
-        CFBundleDisplayName: Bambuddy Pocket
+        CFBundleDisplayName: BamPocket
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
-        # Police Inter (TTF variable, OFL — cf. NOTICE). Direction artistique Bambuddy.
+        # Police Inter (TTF variable, OFL — cf. NOTICE). Direction artistique BamPocket.
         UIAppFonts:
           - Inter-Variable.ttf
         UILaunchScreen:
@@ -47,7 +47,7 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         # Accès aux serveurs/imprimantes sur le réseau local (cf. ADR-0003).
         NSLocalNetworkUsageDescription: >-
-          Bambuddy Pocket se connecte à vos serveurs Bambuddy et imprimantes sur votre réseau
+          BamPocket se connecte à vos serveurs Bambuddy et imprimantes sur votre réseau
           local pour afficher leur état et les piloter.
         # ATS : HTTPS par défaut, exception limitée pour le HTTP sur adresses locales/privées.
         NSAppTransportSecurity:
@@ -63,64 +63,62 @@ targets:
           - UIInterfaceOrientationLandscapeRight
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.bambuddy.pocket
-        # PRODUCT_NAME reste "BambuddyPocket" (sans espace) ; le nom affiché est
-        # CFBundleDisplayName="Bambuddy Pocket" (cf. info.properties). Forcer PRODUCT_NAME
-        # avec un espace casserait TEST_HOST de la cible de tests.
+        PRODUCT_BUNDLE_IDENTIFIER: com.bampocket.app
+        # PRODUCT_NAME = nom de la cible (BamPocket). Le nom affiché est CFBundleDisplayName.
         TARGETED_DEVICE_FAMILY: "1,2"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         SWIFT_EMIT_LOC_STRINGS: "YES"
         CODE_SIGN_STYLE: Automatic
 
-  BambuddyPocketTests:
+  BamPocketTests:
     type: bundle.unit-test
     platform: iOS
     sources:
       - path: BambuddyPocketTests
     dependencies:
-      - target: BambuddyPocket
+      - target: BamPocket
       - package: BambuddyPocketKit
         product: BambuddyPocketDomain
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.bambuddy.pocket.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.bampocket.app.tests
         GENERATE_INFOPLIST_FILE: "YES"
 
-  BambuddyPocketUITests:
+  BamPocketUITests:
     type: bundle.ui-testing
     platform: iOS
     sources:
       - path: BambuddyPocketUITests
     dependencies:
-      - target: BambuddyPocket
+      - target: BamPocket
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: app.bambuddy.pocket.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: com.bampocket.app.uitests
         GENERATE_INFOPLIST_FILE: "YES"
 
 schemes:
-  BambuddyPocket:
+  BamPocket:
     build:
       targets:
-        BambuddyPocket: all
-        BambuddyPocketTests: [test]
+        BamPocket: all
+        BamPocketTests: [test]
     test:
       gatherCoverageData: true
       targets:
-        - BambuddyPocketTests
+        - BamPocketTests
     run:
       config: Debug
     profile:
       config: Release
 
-  BambuddyPocketScreenshots:
+  BamPocketScreenshots:
     build:
       targets:
-        BambuddyPocket: all
-        BambuddyPocketUITests: [test]
+        BamPocket: all
+        BamPocketUITests: [test]
     test:
       targets:
-        - BambuddyPocketUITests
+        - BamPocketUITests
     run:
       config: Debug

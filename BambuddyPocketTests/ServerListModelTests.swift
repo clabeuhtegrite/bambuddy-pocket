@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import Foundation
 import Testing
-@testable import BambuddyPocket
 @testable import BambuddyPocketDomain
+@testable import BamPocket
 
 @MainActor
 @Suite("ServerListModel")

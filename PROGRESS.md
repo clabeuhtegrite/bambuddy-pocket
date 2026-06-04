@@ -1,4 +1,4 @@
-# PROGRESS — état vivant du projet Bambuddy Pocket
+# PROGRESS — état vivant du projet BamPocket
 
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
@@ -7,6 +7,12 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Renommage produit → « BamPocket » (nom final) en cours / finitions App Store.** Nom d'affichage,
+scheme/target/produit `BamPocket`, bundle id `com.bampocket.app`, branding visible + docs mis à
+jour ; **modules SPM internes conservés** (`BambuddyPocketKit`…, non visibles). Suite : icône d'app
+soignée + launch screen, privacy manifest / clés Info.plist runtime (réseau local + Bonjour +
+caméra), XCUITest sur chemins critiques, prépa sideload free-provisioning (`docs/SIDELOAD.md`).
+
 **Tier 2 complet + vague Tier 3 livrés (PR #26→#37, `main` vert, 184 tests SPM + 11 tests app).**
 Correctif bug « Étape » (#26 : `PrinterStatus.displayableStage`, étape affichée seulement si
 impression active). **Tier 2** : Réglages (#27 langue/devise/imprimante par défaut/coûts),
@@ -43,7 +49,7 @@ Prochaines briques recommandées (par valeur) :
 6. **Finitions App Store** : icône/launch screen, captures, **XCUITest** sur chemins critiques.
 Cadence : **autonomie complète** ; build en local (Mac+Xcode) AVANT de pousser ; CI = juge final.
 Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; `xcodegen generate` ;
-`xcodebuild -project BambuddyPocket.xcodeproj -scheme BambuddyPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
+`xcodebuild -project BamPocket.xcodeproj -scheme BamPocket -destination 'platform=iOS Simulator,name=iPhone 17' test`.
 
 ## ✅ Fait
 - **Recon environnement** : git (`clabeuhtegrite`), gh (`repo`+`workflow`), Docker 29, Xcode 26.5
@@ -88,6 +94,18 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (31)** — **Renommage produit → « BamPocket » (nom final, ADR-0004 révisé).**
+  `CFBundleDisplayName` = `BamPocket` ; scheme/target/produit `BamPocket` (+ scheme captures
+  `BamPocketScreenshots`) ; bundle id `com.bampocket.app` (`.tests`/`.uitests`) ;
+  `bundleIdPrefix` `com.bampocket`. Cibles de test renommées (`@testable import BamPocket`).
+  CI mise à jour (`BamPocket.xcodeproj`/`-scheme BamPocket`). Branding visible + docs (README,
+  CONTRIBUTING, NOTICE, LICENSE-exception, ADR-0001/0002/0004, HANDOFF, PROGRESS, ROADMAP,
+  `.swiftlint.yml`, `Info.plist`, `PrivacyInfo`, `DSColor` doc, `BamPocketApp`). **Modules SPM
+  internes conservés** (`BambuddyPocketKit`/`…Domain`/`…Networking`/`…DesignSystem`) : non
+  visibles, un renommage toucherait tous les `import` pour aucun gain produit. Service Keychain
+  (`app.bambuddy.pocket.secrets`, chaîne fixe) conservé → secrets stockés non invalidés ; bundle id
+  indépendant du Keychain → accès intact. Dépôt GitHub `bambuddy-pocket` **non renommé** (URL).
+  184 tests SPM + 11 tests app verts, build iOS sans warning, lint/format strict OK.
 - **2026-06-04 (30)** — **Tier 2 complet + vague Tier 3 (PR #26→#37).** Correctif « Étape »
   (#26). **Tier 2** : Réglages (#27), État serveur (#28), Clés d'API CRUD (#29), Compte/profil +
   2FA + logout (#30). **Tier 3** (contrats vérifiés au curl sur le Docker, chaque décodage testé) :

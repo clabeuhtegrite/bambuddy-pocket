@@ -3,7 +3,7 @@ import XCTest
 
 /// Capture les écrans principaux de l'app (tournant contre l'instance Docker locale) en PNG sur
 /// disque, pour la revue de présentation. L'app est amorcée avec un serveur de démo via l'argument
-/// de lancement `-uitest-seed` (cf. `BambuddyPocketApp`), de sorte que les écrans affichent des
+/// de lancement `-uitest-seed` (cf. `BamPocketApp`), de sorte que les écrans affichent des
 /// données réelles. Les captures sont produites en **français** et, par défaut, en **thème sombre**
 /// (le plus représentatif de la DA Bambuddy) ; deux écrans clés sont aussi capturés en thème clair
 /// pour illustrer l'adaptation. Les fichiers sont écrits dans `docs/screenshots/`.

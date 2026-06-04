@@ -2,8 +2,8 @@
 import BambuddyPocketNetworking
 import Foundation
 import Testing
-@testable import BambuddyPocket
 @testable import BambuddyPocketDomain
+@testable import BamPocket
 
 @MainActor
 @Suite("ServerNotificationCenter")
