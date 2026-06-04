@@ -7,11 +7,14 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Renommage produit → « BamPocket » (nom final) en cours / finitions App Store.** Nom d'affichage,
-scheme/target/produit `BamPocket`, bundle id `com.bampocket.app`, branding visible + docs mis à
-jour ; **modules SPM internes conservés** (`BambuddyPocketKit`…, non visibles). Suite : icône d'app
-soignée + launch screen, privacy manifest / clés Info.plist runtime (réseau local + Bonjour +
-caméra), XCUITest sur chemins critiques, prépa sideload free-provisioning (`docs/SIDELOAD.md`).
+**Vague finitions App Store livrée (PR #38→#42, `main` vert).** Renommage **BamPocket** (#38),
+**icône + launch screen** (#39), **privacy manifest + clés runtime** (#40), **XCUITest chemins
+critiques en CI** (#41), **prépa sideload + `docs/SIDELOAD.md`** (#42). Tests : **184 SPM + 11
+unitaires app + 3 UI** (CI), build sans warning, lint/format strict OK. Modules SPM internes
+conservés. **Reste pour « app totalement terminée »** : captures App Store finalisées (le harnais
+`BamPocketScreenshots` les produit en live), classification d'âge, fiche App Store, et les étapes
+**compte Apple Developer** (enrôlement, signature distribution, TestFlight, soumission) — à la
+charge de l'utilisateur. Étendre encore l'unitaire/UI et l'accessibilité au fil de l'eau.
 
 **Tier 2 complet + vague Tier 3 livrés (PR #26→#37, `main` vert, 184 tests SPM + 11 tests app).**
 Correctif bug « Étape » (#26 : `PrinterStatus.displayableStage`, étape affichée seulement si
@@ -94,6 +97,17 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (35)** — **Prépa sideload iPhone (free provisioning, sans compte payant) +
+  `docs/SIDELOAD.md`.** Audit signature/entitlements : **aucun fichier `.entitlements`, aucune
+  capability** (pas de Push/Associated Domains/App Groups/groupe d'accès trousseau) — l'app
+  n'utilise que des API standard (réseau local, `UserDefaults`, trousseau via **service applicatif
+  fixe** indépendant du bundle id). `CODE_SIGN_STYLE: Automatic` + bundle id unique
+  `com.bampocket.app` → **compatible équipe personnelle**. Guide pas-à-pas écrit : ajout de l'Apple
+  ID, sélection de la Personal Team, réglage du bundle id, branchement iPhone, `Trust` du profil,
+  Run, autorisation **réseau local** au premier contact, **caveat 7 jours**, rappel
+  `xcodegen generate`. Vérifié : `xcodebuild -destination 'generic/platform=iOS' build` échoue
+  bien faute d'identité de signature (attendu, documenté, non bloquant pour la CI simulateur).
+  Lien ajouté au README. Pas de Swift modifié → CI inchangée.
 - **2026-06-04 (34)** — **XCUITest sur chemins critiques (exécutés en CI, sans backend).**
   Nouvelle cible de tests `CriticalPathUITests` ajoutée au **scheme `BamPocket`** (donc à la CI) :
   3 parcours déterministes, indépendants de tout backend Bambuddy — (1) **état vide → ajout d'un
