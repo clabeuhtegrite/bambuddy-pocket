@@ -48,6 +48,8 @@ public extension PrinterStatus {
         result.sdcard = delta.sdcard ?? result.sdcard
         result.timelapse = delta.timelapse ?? result.timelapse
         result.ipcam = delta.ipcam ?? result.ipcam
+        result.printOptions = delta.printOptions ?? result.printOptions
+        result.airductMode = delta.airductMode ?? result.airductMode
         return result
     }
 }

@@ -46,9 +46,11 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ État serveur (`/system/info`, `/system/health`, ressources/stockage/base) — écran dédié.
 
 ## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) 🟦
-- 🟦 **Contrôles d'impression** : ✅ pause/reprise/stop, vitesse, lumière chambre, clear HMS,
+- ✅ **Contrôles d'impression** : pause/reprise/stop, vitesse, lumière chambre, clear HMS,
   AMS unload/load/reset, séchage, **skip-objects**, **clear-plate**, **home-axes**, **calibration**,
-  **connect/disconnect**, **suppression d'imprimante** ; ⬜ print-options, bed-jog, airduct-mode.
+  **connect/disconnect**, **suppression d'imprimante**, **print-options** (détecteurs IA : lecture
+  via `/status` + bascule via `POST …/print-options`), **bed-jog** (écart buse-plateau ±0,1 mm),
+  **airduct-mode** (refroidissement/chauffage).
 - ✅ **File d'attente** : liste + **réordonnancement (drag/drop)**, ajout, start/stop/cancel/delete,
   **édition d'item** (PATCH : planification `scheduled_time`, réassignation, options), **lots
   (batches)** (liste + annulation), **mise à jour en lot** (`PATCH /queue/bulk`), **distribution

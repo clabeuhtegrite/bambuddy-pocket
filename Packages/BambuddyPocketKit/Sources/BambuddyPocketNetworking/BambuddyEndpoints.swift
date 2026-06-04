@@ -369,6 +369,32 @@ public extension APIClient {
         try await post("/printers/\(id)/print-speed?mode=\(mode)")
     }
 
+    /// Active/désactive une option d'impression / détection IA
+    /// (`POST /printers/{id}/print-options?module_name=…&enabled=…&print_halt=…&sensitivity=…`).
+    func setPrintOption(
+        id: Int,
+        moduleName: String,
+        enabled: Bool,
+        printHalt: Bool = true,
+        sensitivity: String = "medium"
+    ) async throws {
+        let path = "/printers/\(id)/print-options?module_name=\(moduleName)"
+            + "&enabled=\(enabled)&print_halt=\(printHalt)&sensitivity=\(sensitivity)"
+        try await post(path)
+    }
+
+    /// Règle le mode du conduit d'air (`POST /printers/{id}/airduct-mode?mode=cooling|heating`).
+    func setAirductMode(id: Int, mode: String) async throws {
+        try await post("/printers/\(id)/airduct-mode?mode=\(mode)")
+    }
+
+    /// Ajuste l'écart buse-plateau d'une distance relative signée en mm
+    /// (`POST /printers/{id}/bed-jog?distance=<mm>&force=<bool>`). Négatif = réduit l'écart.
+    func bedJog(id: Int, distance: Double, force: Bool = false) async throws {
+        let path = "/printers/\(id)/bed-jog?distance=\(distance)&force=\(force)"
+        try await post(path)
+    }
+
     /// Décharge le filament courant (`POST /printers/{id}/ams/unload`).
     func amsUnload(id: Int) async throws {
         try await post("/printers/\(id)/ams/unload")

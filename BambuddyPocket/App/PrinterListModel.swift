@@ -92,6 +92,21 @@ final class PrinterListModel {
         await runControl { try await $0.setPrintSpeed(id: printer.id, mode: mode) }
     }
 
+    /// Active/désactive une option d'impression / détection IA.
+    func setPrintOption(_ printer: Printer, moduleName: String, enabled: Bool) async {
+        await runControl { try await $0.setPrintOption(id: printer.id, moduleName: moduleName, enabled: enabled) }
+    }
+
+    /// Règle le mode du conduit d'air (`cooling`/`heating`).
+    func setAirductMode(_ printer: Printer, mode: String) async {
+        await runControl { try await $0.setAirductMode(id: printer.id, mode: mode) }
+    }
+
+    /// Ajuste l'écart buse-plateau d'une distance relative (mm).
+    func bedJog(_ printer: Printer, distance: Double, force: Bool = false) async {
+        await runControl { try await $0.bedJog(id: printer.id, distance: distance, force: force) }
+    }
+
     func unloadFilament(_ printer: Printer) async {
         await runControl { try await $0.amsUnload(id: printer.id) }
     }

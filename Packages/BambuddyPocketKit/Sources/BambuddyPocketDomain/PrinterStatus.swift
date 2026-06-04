@@ -107,6 +107,49 @@ public struct AMSUnit: Codable, Sendable, Hashable, Identifiable {
     }
 }
 
+/// Options d'impression / détection IA (xcam) rapportées dans le statut (`print_options`).
+/// Sous-ensemble robuste : tous les champs sont optionnels et tolérants aux évolutions de l'API.
+public struct PrintOptions: Codable, Sendable, Hashable {
+    public var spaghettiDetector: Bool?
+    public var firstLayerInspector: Bool?
+    public var printingMonitor: Bool?
+    public var buildplateMarkerDetector: Bool?
+    public var allowSkipParts: Bool?
+    public var nozzleClumpingDetector: Bool?
+    public var pileupDetector: Bool?
+    public var airprintDetector: Bool?
+    public var autoRecoveryStepLoss: Bool?
+    public var filamentTangleDetect: Bool?
+    /// Sensibilité de la détection de spaghetti (`low`/`medium`/`high`/`never_halt`).
+    public var haltPrintSensitivity: String?
+
+    public init(
+        spaghettiDetector: Bool? = nil,
+        firstLayerInspector: Bool? = nil,
+        printingMonitor: Bool? = nil,
+        buildplateMarkerDetector: Bool? = nil,
+        allowSkipParts: Bool? = nil,
+        nozzleClumpingDetector: Bool? = nil,
+        pileupDetector: Bool? = nil,
+        airprintDetector: Bool? = nil,
+        autoRecoveryStepLoss: Bool? = nil,
+        filamentTangleDetect: Bool? = nil,
+        haltPrintSensitivity: String? = nil
+    ) {
+        self.spaghettiDetector = spaghettiDetector
+        self.firstLayerInspector = firstLayerInspector
+        self.printingMonitor = printingMonitor
+        self.buildplateMarkerDetector = buildplateMarkerDetector
+        self.allowSkipParts = allowSkipParts
+        self.nozzleClumpingDetector = nozzleClumpingDetector
+        self.pileupDetector = pileupDetector
+        self.airprintDetector = airprintDetector
+        self.autoRecoveryStepLoss = autoRecoveryStepLoss
+        self.filamentTangleDetect = filamentTangleDetect
+        self.haltPrintSensitivity = haltPrintSensitivity
+    }
+}
+
 /// État temps réel d'une imprimante (cf. `docs/bambuddy-api.md` §5.1).
 ///
 /// Sur-ensemble REST (`GET /printers/{id}/status`) ; le WebSocket pousse un **sous-ensemble**
@@ -158,6 +201,9 @@ public struct PrinterStatus: Codable, Sendable, Hashable {
     public var sdcard: Bool?
     public var timelapse: Bool?
     public var ipcam: Bool?
+    public var printOptions: PrintOptions?
+    /// Mode du conduit d'air (modèles compatibles) : 0 = refroidissement, 1 = chauffage.
+    public var airductMode: Int?
 
     public init() {}
 
