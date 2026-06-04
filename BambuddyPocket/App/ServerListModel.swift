@@ -124,6 +124,11 @@ final class ServerListModel {
         SystemStatusModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model des clés d'API pour ce serveur.
+    func makeAPIKeysModel(for configuration: ServerConfiguration) -> APIKeysModel {
+        APIKeysModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Construit un `LoginModel` pour se connecter à un serveur **non encore enregistré**
     /// (identifié par son URL et ses éventuels secrets Cloudflare).
     func makeLoginModel(baseURL: URL, secrets: ServerSecrets, usesCloudflare: Bool) -> LoginModel {

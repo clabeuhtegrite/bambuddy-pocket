@@ -181,6 +181,31 @@ public extension APIClient {
         return try await send("/settings/", method: .patch, body: body)
     }
 
+    // MARK: Clés d'API (cf. docs/bambuddy-api.md §api-keys)
+
+    /// Liste les clés d'API (`GET /api-keys/`). Le secret complet n'est pas renvoyé.
+    func apiKeys() async throws -> [APIKey] {
+        try await get("/api-keys/")
+    }
+
+    /// Crée une clé d'API (`POST /api-keys/`). La réponse contient le **secret complet** une fois.
+    func createAPIKey(_ key: APIKeyCreate) async throws -> APIKey {
+        let body = try JSONEncoder.bambuddy().encode(key)
+        return try await send("/api-keys/", method: .post, body: body)
+    }
+
+    /// Met à jour une clé (`PATCH /api-keys/{id}`), p. ex. pour la révoquer (`enabled = false`).
+    @discardableResult
+    func updateAPIKey(id: Int, _ update: APIKeyUpdate) async throws -> APIKey {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/api-keys/\(id)", method: .patch, body: body)
+    }
+
+    /// Supprime une clé d'API (`DELETE /api-keys/{id}`).
+    func deleteAPIKey(id: Int) async throws {
+        try await delete("/api-keys/\(id)")
+    }
+
     // MARK: Système (cf. docs/bambuddy-api.md §system)
 
     /// État du serveur (`GET /system/info`) : app, machine, mémoire, CPU, stockage, base.

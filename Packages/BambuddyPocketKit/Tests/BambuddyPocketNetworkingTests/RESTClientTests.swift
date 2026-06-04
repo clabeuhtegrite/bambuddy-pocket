@@ -937,4 +937,70 @@ struct MockNetworkingTests {
         let health = try await client.systemHealth()
         #expect(health.hasFindings == false)
     }
+
+    @Test("apiKeys cible /api-keys/ et décode (sans secret complet)")
+    func listsAPIKeys() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":1,"name":"probe","key_prefix":"bb__m-Vr...","can_control_printer":false,"#
+                + #""can_queue":true,"enabled":true,"created_at":"2026-06-04T07:38:11"}]"#
+        )
+        let client = try makeClient()
+        let keys = try await client.apiKeys()
+        #expect(keys.first?.name == "probe")
+        #expect(keys.first?.keyPrefix == "bb__m-Vr...")
+        #expect(keys.first?.secret == nil)
+        #expect(keys.first?.isEnabled == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/api-keys/")
+    }
+
+    @Test("createAPIKey POST /api-keys/ et expose le secret complet une fois")
+    func createsAPIKey() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":2,"name":"mobile","key_prefix":"bb_kCXcD...","#
+                + #""key":"bb_kCXcD_fullsecretvalue","can_control_printer":true,"enabled":true}"#
+        )
+        let client = try makeClient()
+        let created = try await client.createAPIKey(APIKeyCreate(name: "mobile", canControlPrinter: true))
+        #expect(created.id == 2)
+        #expect(created.secret == "bb_kCXcD_fullsecretvalue")
+        #expect(created.canControlPrinter == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["name"] as? String == "mobile")
+        #expect(json["can_control_printer"] as? Bool == true)
+    }
+
+    @Test("updateAPIKey PATCH /api-keys/{id} pour révoquer (enabled=false) et omet les nil")
+    func revokesAPIKey() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":2,"name":"mobile","enabled":false}"#)
+        let client = try makeClient()
+        let updated = try await client.updateAPIKey(id: 2, APIKeyUpdate(enabled: false))
+        #expect(updated.isEnabled == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/api-keys/2")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["enabled"] as? Bool == false)
+        #expect(json.keys.contains("name") == false)
+    }
+
+    @Test("deleteAPIKey envoie DELETE /api-keys/{id}")
+    func deletesAPIKey() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.deleteAPIKey(id: 5)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/api-keys/5")
+    }
 }
