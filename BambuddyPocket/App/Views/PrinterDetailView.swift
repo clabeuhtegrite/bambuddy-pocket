@@ -208,7 +208,12 @@ struct PrinterDetailView: View {
     private var amsSection: some View {
         if let units = status?.ams, !units.isEmpty {
             ForEach(units) { unit in
-                AMSUnitSection(unit: unit, printer: printer, model: model)
+                AMSUnitSection(
+                    unit: unit,
+                    capabilities: capabilities,
+                    printer: printer,
+                    model: model
+                )
             }
         }
     }
@@ -280,63 +285,6 @@ private struct PrinterInfoSection: View {
             }
             if let value = printer.ipAddress {
                 LabeledContent("IP address", value: value)
-            }
-        }
-    }
-}
-
-/// Section d'une unité AMS : plateaux (avec chargement par balayage) et contrôle de séchage.
-private struct AMSUnitSection: View {
-    let unit: AMSUnit
-    let printer: Printer
-    let model: PrinterListModel
-
-    var body: some View {
-        Section {
-            ForEach(unit.tray ?? []) { tray in
-                TrayRow(tray: tray)
-                    .swipeActions(edge: .leading) {
-                        Button("Load") {
-                            Task { await model.loadFilament(printer, trayID: trayIndex(tray)) }
-                        }
-                        .tint(DSColor.accent)
-                    }
-            }
-            if (unit.dryStatus ?? 0) > 0 {
-                Button("Stop drying") {
-                    Task { await model.stopDrying(printer, amsID: unit.id) }
-                }
-            } else {
-                Button("Start drying") {
-                    Task { await model.startDrying(printer, amsID: unit.id) }
-                }
-            }
-        } header: {
-            Text("AMS \(unit.id + 1)")
-        }
-    }
-
-    /// Identifiant de plateau global (`ams_id * 4 + slot`) attendu par `POST /ams/load`.
-    private func trayIndex(_ tray: AMSTray) -> Int {
-        unit.id * 4 + tray.id
-    }
-}
-
-/// Ligne d'un slot AMS : pastille de couleur, type de filament et niveau restant.
-private struct TrayRow: View {
-    let tray: AMSTray
-
-    var body: some View {
-        HStack(spacing: DSSpacing.sm) {
-            Circle()
-                .fill(PrinterPresentation.color(hexRGBA: tray.trayColor) ?? .secondary)
-                .frame(width: 16, height: 16)
-                .overlay(Circle().strokeBorder(.quaternary))
-            Text(tray.trayType ?? String(localized: "Empty"))
-            Spacer()
-            if let remain = tray.remain {
-                Text("\(remain)%")
-                    .foregroundStyle(.secondary)
             }
         }
     }

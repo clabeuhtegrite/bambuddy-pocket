@@ -359,6 +359,28 @@
         }
       }
     },
+    "AMS Lite": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS Lite"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS Lite"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS Lite"
+          }
+        }
+      }
+    },
     "AMS slot": {
       "localizations": {
         "de": {
@@ -377,6 +399,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Emplacement AMS"
+          }
+        }
+      }
+    },
+    "AMS temperature": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS-Temperatur"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperatura AMS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Température AMS"
+          }
+        }
+      }
+    },
+    "AMS-HT %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS-HT %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS-HT %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS-HT %lld"
           }
         }
       }
@@ -5803,6 +5869,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nom d’hôte"
+          }
+        }
+      }
+    },
+    "Humidity": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luftfeuchtigkeit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Humedad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Humidité"
           }
         }
       }

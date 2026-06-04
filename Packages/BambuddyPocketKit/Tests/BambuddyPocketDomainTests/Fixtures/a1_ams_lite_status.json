@@ -1,0 +1,65 @@
+{
+  "name": "A1-Mini-Test",
+  "model": "A1 Mini",
+  "connected": true,
+  "state": "RUNNING",
+  "subtask_name": "Keychain",
+  "progress": 12.0,
+  "layer_num": 3,
+  "total_layers": 48,
+  "temperatures": {
+    "nozzle": 210.0,
+    "nozzle_target": 220.0,
+    "bed": 60.0,
+    "bed_target": 60.0
+  },
+  "ams": [
+    {
+      "id": 0,
+      "tray": [
+        {
+          "id": 0,
+          "tray_color": "FF6A13FF",
+          "tray_type": "PLA",
+          "tray_sub_brands": "PLA Matte",
+          "remain": 64,
+          "nozzle_temp_min": 190,
+          "nozzle_temp_max": 230,
+          "state": 0
+        },
+        {
+          "id": 1,
+          "tray_color": "00AE42FF",
+          "tray_type": "PLA",
+          "remain": 88,
+          "nozzle_temp_min": 190,
+          "nozzle_temp_max": 230,
+          "state": 0
+        },
+        {
+          "id": 2,
+          "tray_color": null,
+          "tray_type": null,
+          "remain": 0,
+          "state": 9
+        },
+        {
+          "id": 3,
+          "tray_color": null,
+          "tray_type": "",
+          "remain": 0,
+          "state": 9
+        }
+      ],
+      "module_type": "ams"
+    }
+  ],
+  "ams_exists": true,
+  "vt_tray": [],
+  "wifi_signal": -52,
+  "wired_network": false,
+  "chamber_light": true,
+  "cooling_fan_speed": 100,
+  "firmware_version": "01.04.00.00",
+  "supports_drying": false
+}

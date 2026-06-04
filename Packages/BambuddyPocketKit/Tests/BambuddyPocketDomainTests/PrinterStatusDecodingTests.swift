@@ -204,6 +204,44 @@ struct PrinterStatusDecodingTests {
         #expect(status.supportsDrying == true)
     }
 
+    @Test("Types d'AMS de la fixture X2D : deux standard (n3f) + une HT (n3s, id 128)")
+    func amsKindsFromRealX2D() throws {
+        let status = try realX2DStatus()
+        let units = try #require(status.ams)
+        let standard = units.filter { $0.kind == .standard }
+        let ht = units.filter { $0.kind == .ht }
+        #expect(standard.count == 2)
+        #expect(ht.count == 1)
+        let htUnit = try #require(ht.first)
+        #expect(htUnit.id == 128)
+        #expect(htUnit.isHeatedAMS)
+        // X2D supporte standard + HT, pas Lite seul → résolution inchangée.
+        let caps = PrinterCapabilities.forModel(PrinterModel(shortName: "X2D"))
+        #expect(htUnit.resolvedKind(modelOnlySupportsLite: caps.amsOnlyLite) == .ht)
+    }
+
+    @Test("Fixture A1 (AMS Lite) : unité standard côté statut, résolue Lite par le modèle")
+    func decodesA1AMSLite() throws {
+        let url = try #require(
+            Bundle.module.url(forResource: "a1_ams_lite_status", withExtension: "json")
+        )
+        let status = try JSONDecoder.bambuddy().decode(PrinterStatus.self, from: Data(contentsOf: url))
+        #expect(status.statusModel?.shortName == "A1 Mini")
+        let caps = PrinterCapabilities.forModel(status.statusModel)
+        #expect(caps.amsOnlyLite)
+        // Pas de chambre, pas d'ethernet, mono-buse.
+        #expect(!caps.dualNozzle)
+        #expect(!caps.hasEthernet)
+        #expect(status.temperatures?.chamber == nil)
+        let unit = try #require(status.ams?.first)
+        #expect(unit.kind == .standard) // module_type "ams"
+        #expect(unit.resolvedKind(modelOnlySupportsLite: caps.amsOnlyLite) == .amsLite)
+        #expect(unit.humidity == nil) // AMS Lite ouverte : pas d'humidité
+        // Slots : 2 chargés, 2 vides (type nil ou "").
+        #expect(unit.tray?.count == 4)
+        #expect(status.supportsDrying == false)
+    }
+
     @Test("Une gravité HMS réelle hors plage 1…3 (6) retombe sur .info (pas .unknown)")
     func realHMSSeverityFallsBackToInfo() throws {
         let status = try realX2DStatus()

@@ -157,6 +157,40 @@ struct PrinterCapabilitiesTests {
     func detectLiteAndStandard() {
         #expect(AMSKind.detect(isAmsHt: false, moduleType: "n3l") == .amsLite)
         #expect(AMSKind.detect(isAmsHt: false, moduleType: "n3f") == .standard)
+        #expect(AMSKind.detect(isAmsHt: false, moduleType: "ams") == .standard)
         #expect(AMSKind.detect(isAmsHt: nil, moduleType: nil) == .standard)
+    }
+
+    @Test("AMSKind.detect : id ≥ 128 → HT (règle amont ams_id >= 128)")
+    func detectHTByID() {
+        #expect(AMSKind.detect(isAmsHt: nil, moduleType: nil, amsID: 128) == .ht)
+        #expect(AMSKind.detect(isAmsHt: nil, moduleType: "ams", amsID: 130) == .ht)
+        #expect(AMSKind.detect(isAmsHt: nil, moduleType: nil, amsID: 0) == .standard)
+    }
+
+    @Test("resolvedKind : standard sur modèle A1 (Lite seul) → amsLite")
+    func resolvedKindLite() {
+        var unit = AMSUnit(id: 0)
+        unit.moduleType = "ams"
+        #expect(unit.kind == .standard)
+        #expect(unit.resolvedKind(modelOnlySupportsLite: true) == .amsLite)
+        #expect(unit.resolvedKind(modelOnlySupportsLite: false) == .standard)
+    }
+
+    @Test("resolvedKind : une HT reste HT même si le modèle est Lite (détection statut prime)")
+    func resolvedKindHTWins() {
+        var unit = AMSUnit(id: 128)
+        unit.isAmsHt = true
+        #expect(unit.resolvedKind(modelOnlySupportsLite: true) == .ht)
+    }
+
+    @Test("Capacités AMS : A1 → Lite seul ; H2D/X2D → standard + HT")
+    func amsCapabilityHelpers() {
+        let a1 = PrinterCapabilities.forModel(PrinterModel(shortName: "A1"))
+        #expect(a1.amsOnlyLite)
+        #expect(!a1.supportsHeatedAMS)
+        let x2d = PrinterCapabilities.forModel(PrinterModel(shortName: "X2D"))
+        #expect(!x2d.amsOnlyLite)
+        #expect(x2d.supportsHeatedAMS)
     }
 }
