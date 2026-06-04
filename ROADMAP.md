@@ -58,7 +58,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   temps réel depuis le WebSocket** au niveau serveur (`ServerNotificationCenter`, session WS
   persistante) — fin/début d'impression, **HMS grave** (transition), bobine manquante, plateau non
   vide, archive créée ; feed lu/non-lu + badge + bannières.
-- 🟦 Gestion d'imprimante côté serveur : ✅ ajout (`PrinterCreate`), ✅ suppression ; ⬜ édition (PATCH).
+- ✅ Gestion d'imprimante côté serveur : ajout (`PrinterCreate`), suppression, **édition (PATCH)**
+  (nom, IP, modèle, emplacement, actif, archivage auto ; code d'accès optionnel — préservé si vide).
 
 ## Phase 4 — Réglages, serveur, comptes & intégrations (Tier 2/3) 🟦
 - ✅ **Réglages** serveur : langue, devise, imprimante par défaut, coûts (`/settings/`).

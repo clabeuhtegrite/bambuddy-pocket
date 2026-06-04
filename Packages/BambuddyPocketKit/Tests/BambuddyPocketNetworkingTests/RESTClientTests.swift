@@ -605,6 +605,23 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/")
     }
 
+    @Test("updatePrinter envoie PATCH /printers/{id} avec les seuls champs renseignés")
+    func updatesPrinter() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":3,"name":"X1 Carbon"}"#)
+        let client = try makeClient()
+        let updated = try await client.updatePrinter(id: 3, PrinterUpdate(name: "X1 Carbon", isActive: false))
+        #expect(updated.id == 3)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["name"] as? String == "X1 Carbon")
+        #expect(json["is_active"] as? Bool == false)
+        #expect(json.keys.contains("access_code") == false)
+    }
+
     @Test("deleteQueueItem envoie DELETE /queue/{id}")
     func deletesQueueItem() async throws {
         MockURLProtocol.reset()

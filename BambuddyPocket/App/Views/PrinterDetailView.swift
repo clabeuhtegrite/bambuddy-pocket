@@ -13,6 +13,7 @@ struct PrinterDetailView: View {
     @State private var confirmingDelete = false
     @State private var showingCalibration = false
     @State private var showingSkipObjects = false
+    @State private var showingEdit = false
 
     private var status: PrinterStatus? {
         model.status(for: printer)
@@ -45,6 +46,9 @@ struct PrinterDetailView: View {
         }
         .sheet(isPresented: $showingSkipObjects) {
             SkipObjectsSheet(printer: printer, model: model)
+        }
+        .sheet(isPresented: $showingEdit) {
+            EditPrinterSheet(printer: printer, model: model)
         }
         .confirmationDialog("Stop print?", isPresented: $confirmingStop, titleVisibility: .visible) {
             Button("Stop", role: .destructive) {
@@ -246,6 +250,11 @@ struct PrinterDetailView: View {
 
     private var managementSection: some View {
         Section {
+            Button {
+                showingEdit = true
+            } label: {
+                Label("Edit printer", systemImage: "pencil")
+            }
             Button(role: .destructive) {
                 confirmingDelete = true
             } label: {

@@ -7,6 +7,16 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Phase 2 — édition d'imprimante (PATCH) livrée (`main` vert).** Écran détail imprimante : bouton
+**« Modifier l'imprimante »** ouvrant une feuille d'édition (`PATCH /printers/{id}`) — nom, IP,
+modèle, emplacement, actif, archivage auto ; **code d'accès optionnel** (laissé vide = secret LAN
+préservé). Modèle `PrinterUpdate` (Domain, tous champs optionnels, encodeur omet les `nil` →
+mise à jour partielle `exclude_unset`). **Contrat vérifié au réel sur la VP** (`VP-Test` id=1) :
+`PATCH {location:"Lab A"}` → seul `location` modifié (name/serial/auto_archive/is_active intacts),
+puis **VP restaurée** (`location:null`, instance propre, auth off). **Jamais exécuté sur
+l'imprimante physique.** Tests : **247 SPM** (+1, routage PATCH + omission `access_code`), 11 app +
+3 UI, build iOS sans warning, lint/format strict OK. i18n EN/FR/ES/DE.
+
 **Phase 2 — file : distribution automatique en arrière-plan livrée (`main` vert).** La
 **distribution auto** (`background_dispatch`) est désormais surveillée et annulable depuis l'écran
 File d'attente : une section « Distribution auto » liste les travaux **actifs** (avec progression de
