@@ -1333,4 +1333,108 @@ struct MockNetworkingTests {
         #expect(request.httpMethod == "DELETE")
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/print-log/")
     }
+
+    @Test("gitHubBackupStatus cible /github-backup/status et décode")
+    func fetchesGitHubBackupStatus() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"configured":true,"enabled":true,"is_running":false}"#)
+        let client = try makeClient()
+        let status = try await client.gitHubBackupStatus()
+        #expect(status.configured == true)
+        #expect(status.enabled == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/github-backup/status")
+    }
+
+    @Test("gitHubBackupConfig décode null en nil et le chemin est correct")
+    func fetchesNilGitHubBackupConfig() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "null")
+        let client = try makeClient()
+        let config = try await client.gitHubBackupConfig()
+        #expect(config == nil)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/github-backup/config")
+    }
+
+    @Test("saveGitHubBackupConfig POST /github-backup/config avec le jeton dans le corps")
+    func savesGitHubBackupConfig() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":1,"repository_url":"https://github.com/me/b","has_token":true,"branch":"main","#
+                + #""provider":"github","allow_insecure_http":false,"schedule_enabled":false,"#
+                + #""schedule_type":"daily","backup_kprofiles":true,"backup_cloud_profiles":true,"#
+                + #""backup_settings":false,"backup_spools":false,"backup_archives":false,"enabled":true}"#
+        )
+        let client = try makeClient()
+        let saved = try await client.saveGitHubBackupConfig(
+            GitHubBackupConfigCreate(repositoryUrl: "https://github.com/me/b", accessToken: "tok")
+        )
+        #expect(saved.id == 1)
+        #expect(saved.hasToken == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/github-backup/config")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["access_token"] as? String == "tok")
+    }
+
+    @Test("gitHubBackupLogs et runGitHubBackup ciblent les bons chemins")
+    func fetchesLogsAndRuns() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":1,"config_id":1,"status":"success","trigger":"manual","files_changed":3}]"#
+        )
+        let client = try makeClient()
+        let logs = try await client.gitHubBackupLogs()
+        #expect(logs.first?.filesChanged == 3)
+        var request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/github-backup/logs")
+
+        respond(status: 200, json: #"{"success":true,"message":"Backup complete","files_changed":3}"#)
+        let result = try await client.runGitHubBackup()
+        #expect(result.success == true)
+        request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/github-backup/run")
+    }
+
+    @Test("updateGitHubBackupConfig PATCH n'encode que les champs renseignés (jeton préservé)")
+    func patchesGitHubBackupConfig() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":1,"repository_url":"https://github.com/me/b","has_token":true,"branch":"dev","#
+                + #""provider":"github","allow_insecure_http":false,"schedule_enabled":true,"#
+                + #""schedule_type":"weekly","backup_kprofiles":true,"backup_cloud_profiles":true,"#
+                + #""backup_settings":false,"backup_spools":false,"backup_archives":false,"enabled":true}"#
+        )
+        let client = try makeClient()
+        let updated = try await client.updateGitHubBackupConfig(
+            GitHubBackupConfigUpdate(branch: "dev", scheduleEnabled: true, scheduleType: "weekly")
+        )
+        #expect(updated.branch == "dev")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        // Le jeton absent ne doit pas être encodé (exclude_unset → pas de clé access_token).
+        #expect(json["access_token"] == nil)
+        #expect(json["branch"] as? String == "dev")
+        #expect(json["schedule_type"] as? String == "weekly")
+    }
+
+    @Test("deleteGitHubBackupConfig DELETE /github-backup/config")
+    func deletesGitHubBackupConfig() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"message":"Configuration deleted"}"#)
+        let client = try makeClient()
+        try await client.deleteGitHubBackupConfig()
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/github-backup/config")
+    }
 }

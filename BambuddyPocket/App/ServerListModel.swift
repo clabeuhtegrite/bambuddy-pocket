@@ -174,6 +174,11 @@ final class ServerListModel {
         PrintLogModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de la sauvegarde distante Git pour ce serveur.
+    func makeGitHubBackupModel(for configuration: ServerConfiguration) -> GitHubBackupModel {
+        GitHubBackupModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)
