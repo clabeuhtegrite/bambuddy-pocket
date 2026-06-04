@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -67,6 +68,8 @@ struct ServerDetailView: View {
             testSection
             deleteSection
         }
+        .scrollContentBackground(.hidden)
+        .background(DSColor.background)
         .navigationTitle(current.label)
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
@@ -116,7 +119,7 @@ struct ServerDetailView: View {
                     Text("Connection is not encrypted (HTTP).")
                 } icon: {
                     Image(systemName: "lock.open")
-                        .foregroundStyle(.orange)
+                        .foregroundStyle(DSColor.statusWarning)
                 }
                 .font(.footnote)
             }
@@ -149,7 +152,7 @@ struct ServerDetailView: View {
                     Text(successKey)
                 } icon: {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.green)
+                        .foregroundStyle(DSColor.statusOK)
                 }
                 .font(.footnote)
             case let .failure(message):
@@ -157,7 +160,7 @@ struct ServerDetailView: View {
                     Text("Connection failed: \(message)")
                 } icon: {
                     Image(systemName: "xmark.octagon.fill")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(DSColor.statusError)
                 }
                 .font(.footnote)
             }

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
@@ -33,10 +34,12 @@ struct LoginView: View {
                     Section {
                         Text(error)
                             .font(.footnote)
-                            .foregroundStyle(.red)
+                            .foregroundStyle(DSColor.statusError)
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(DSColor.background)
             .navigationTitle("Log in")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {

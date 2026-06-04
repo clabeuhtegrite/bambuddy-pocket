@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import SwiftUI
 
 /// Écran « À propos » : version, licence, code source et crédits open source.
@@ -33,14 +34,17 @@ struct AboutView: View {
                 Section("Third-party components") {
                     LabeledContent("three.js", value: "MIT")
                     LabeledContent("fflate", value: "MIT")
+                    LabeledContent("Inter", value: "OFL-1.1")
                 }
 
                 Section {
                     Text("Unaffiliated third-party client. Trademarks belong to their respective owners.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(DSColor.textSecondary)
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(DSColor.background)
             .navigationTitle("About")
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
