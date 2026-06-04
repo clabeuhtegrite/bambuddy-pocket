@@ -13488,6 +13488,28 @@
           }
         }
       }
+    },
+    "Live camera feed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live-Kamerabild"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transmisión de cámara en vivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flux caméra en direct"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -125,6 +125,15 @@ final class CriticalPathUITests: XCTestCase {
             app.staticTexts["Version"].waitForExistence(timeout: 5),
             "L'écran À propos doit afficher la version."
         )
+        // Crédits open source : la section et au moins un composant (three.js) sont présents.
+        XCTAssertTrue(
+            app.staticTexts["Open source components"].waitForExistence(timeout: 5),
+            "L'écran À propos doit présenter les crédits open source."
+        )
+        XCTAssertTrue(
+            app.staticTexts["three.js"].waitForExistence(timeout: 5),
+            "Les crédits doivent lister three.js."
+        )
         tapIfExists(app.buttons["Done"])
         // De retour à la liste : le bouton d'ajout est de nouveau visible.
         XCTAssertTrue(
