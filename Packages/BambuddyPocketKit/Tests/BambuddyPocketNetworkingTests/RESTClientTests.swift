@@ -1110,6 +1110,42 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/maintenance/overview")
     }
 
+    @Test("externalLinks cible /external-links/ et décode")
+    func listsExternalLinks() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":1,"name":"Wiki","url":"https://wiki.example.com","icon":"link","sort_order":0}]"#
+        )
+        let client = try makeClient()
+        let links = try await client.externalLinks()
+        #expect(links.first?.name == "Wiki")
+        #expect(links.first?.resolvedURL?.host == "wiki.example.com")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/external-links/")
+    }
+
+    @Test("createExternalLink POST /external-links/ et deleteExternalLink DELETE")
+    func createsAndDeletesExternalLink() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"id":2,"name":"Docs","url":"https://docs.example.com"}"#)
+        let client = try makeClient()
+        let created = try await client.createExternalLink(
+            ExternalLinkCreate(name: "Docs", url: "https://docs.example.com")
+        )
+        #expect(created.id == 2)
+        let createRequest = try #require(MockURLProtocol.lastRequest)
+        #expect(createRequest.httpMethod == "POST")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["name"] as? String == "Docs")
+        #expect(json["url"] as? String == "https://docs.example.com")
+        try await client.deleteExternalLink(id: 2)
+        let deleteRequest = try #require(MockURLProtocol.lastRequest)
+        #expect(deleteRequest.httpMethod == "DELETE")
+        #expect(deleteRequest.url?.absoluteString == "https://host.example.com/api/v1/external-links/2")
+    }
+
     @Test("filamentCatalog cible /filament-catalog/ et décode")
     func fetchesFilamentCatalog() async throws {
         MockURLProtocol.reset()

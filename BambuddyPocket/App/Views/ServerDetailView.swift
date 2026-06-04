@@ -100,6 +100,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("API keys", systemImage: "key")
                 }
+                NavigationLink {
+                    ExternalLinksView(server: current, serverList: model)
+                } label: {
+                    Label("External links", systemImage: "link")
+                }
                 if current.authMethod == .userPassword {
                     NavigationLink {
                         AccountView(server: current, serverList: model)

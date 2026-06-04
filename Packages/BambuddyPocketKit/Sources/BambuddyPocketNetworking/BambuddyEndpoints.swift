@@ -181,6 +181,24 @@ public extension APIClient {
         return try await send("/settings/", method: .patch, body: body)
     }
 
+    // MARK: Liens externes (cf. docs/bambuddy-api.md §external-links)
+
+    /// Liens externes personnalisés du serveur (`GET /external-links/`).
+    func externalLinks() async throws -> [ExternalLink] {
+        try await get("/external-links/")
+    }
+
+    /// Crée un lien externe (`POST /external-links/`).
+    func createExternalLink(_ link: ExternalLinkCreate) async throws -> ExternalLink {
+        let body = try JSONEncoder.bambuddy().encode(link)
+        return try await send("/external-links/", method: .post, body: body)
+    }
+
+    /// Supprime un lien externe (`DELETE /external-links/{id}`).
+    func deleteExternalLink(id: Int) async throws {
+        try await delete("/external-links/\(id)")
+    }
+
     // MARK: Catalogue de filaments (cf. docs/bambuddy-api.md §filament-catalog)
 
     /// Catalogue de filaments de référence (`GET /filament-catalog/`).

@@ -451,6 +451,28 @@
         }
       }
     },
+    "Add": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinzufügen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter"
+          }
+        }
+      }
+    },
     "Add a Bambuddy server to get started.": {
       "localizations": {
         "de": {
@@ -469,6 +491,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ajoute un serveur Bambuddy pour commencer."
+          }
+        }
+      }
+    },
+    "Add a link to a wiki, store or documentation.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügen Sie einen Link zu einem Wiki, Shop oder einer Dokumentation hinzu."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade un enlace a una wiki, tienda o documentación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez un lien vers un wiki, une boutique ou une documentation."
+          }
+        }
+      }
+    },
+    "Add link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link hinzufügen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un lien"
           }
         }
       }
@@ -2035,6 +2101,28 @@
         }
       }
     },
+    "Couldn’t load links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Links konnten nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron cargar los enlaces"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les liens"
+          }
+        }
+      }
+    },
     "Couldn’t load maintenance": {
       "localizations": {
         "de": {
@@ -3219,6 +3307,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "URL externe"
+          }
+        }
+      }
+    },
+    "External links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Externe Links"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enlaces externos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liens externes"
           }
         }
       }
@@ -4436,6 +4546,28 @@
         }
       }
     },
+    "New link": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Link"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau lien"
+          }
+        }
+      }
+    },
     "New project": {
       "localizations": {
         "de": {
@@ -4696,6 +4828,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucun problème détecté."
+          }
+        }
+      }
+    },
+    "No links": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Links"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin enlaces"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun lien"
           }
         }
       }
