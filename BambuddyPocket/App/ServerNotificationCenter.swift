@@ -35,12 +35,15 @@ final class ServerNotificationCenter {
     private let server: ServerConfiguration
     private let connectionFactory: ServerConnectionFactory
     private var realtimeTask: Task<Void, Never>?
+    private var pollTask: Task<Void, Never>?
     /// Noms d'imprimante connus, pour enrichir les notifications.
     private var printerNames: [Int: String] = [:]
     /// Statuts précédents, pour ne notifier les erreurs HMS qu'à la transition.
     private var previousStatuses: [Int: PrinterStatus] = [:]
 
     private static let maxNotifications = 100
+    /// Cadence du repli REST quand le temps réel (WebSocket) est indisponible.
+    private static let restPollInterval = Duration.seconds(10)
 
     init(server: ServerConfiguration, connectionFactory: ServerConnectionFactory) {
         self.server = server
@@ -58,10 +61,18 @@ final class ServerNotificationCenter {
     }
 
     /// Démarre la session temps réel persistante (idempotent : un seul flux par centre).
+    ///
+    /// Un **repli REST** tourne en parallèle : il amorce immédiatement les statuts via
+    /// `GET /printers/{id}/status` et continue de les rafraîchir tant que le WebSocket n'est pas
+    /// `connected`. Cela garantit l'affichage des données vivantes (températures, AMS, impression)
+    /// même quand le temps réel est indisponible (ex. WebSocket bloqué par un proxy Cloudflare).
     func start() {
         guard realtimeTask == nil else { return }
         realtimeTask = Task { [weak self] in
             await self?.realtimeLoop()
+        }
+        pollTask = Task { [weak self] in
+            await self?.restPollLoop()
         }
     }
 
@@ -69,6 +80,8 @@ final class ServerNotificationCenter {
     func stop() {
         realtimeTask?.cancel()
         realtimeTask = nil
+        pollTask?.cancel()
+        pollTask = nil
     }
 
     /// Fournit les noms d'imprimante connus (depuis la liste REST) pour enrichir les notifications.
@@ -116,6 +129,31 @@ final class ServerNotificationCenter {
             realtimeState = .reconnecting
             try? await Task.sleep(for: backoff)
             backoff = min(backoff * 2, .seconds(30))
+        }
+    }
+
+    /// Repli REST : amorce les statuts puis les rafraîchit périodiquement **tant que** le temps réel
+    /// n'est pas établi. Dès que le WebSocket est `connected`, il pousse les deltas vivants et ce
+    /// repli se met en sommeil (il reprend si la connexion retombe).
+    private func restPollLoop() async {
+        while !Task.isCancelled {
+            if realtimeState != .connected {
+                await refreshFromREST()
+            }
+            try? await Task.sleep(for: Self.restPollInterval)
+        }
+    }
+
+    /// Récupère l'état complet de chaque imprimante via REST (`GET /printers/{id}/status`) et le
+    /// fusionne dans l'état partagé. Sans effet (silencieux) en cas d'échec réseau/auth.
+    func refreshFromREST() async {
+        guard let client = try? connectionFactory.makeClient(for: server) else { return }
+        guard let printers = try? await client.printers() else { return }
+        updatePrinterNames(from: printers)
+        for printer in printers {
+            if let status = try? await client.printerStatus(id: printer.id) {
+                merge(status, into: printer.id)
+            }
         }
     }
 
