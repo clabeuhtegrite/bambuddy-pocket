@@ -49,10 +49,11 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - 🟦 **Contrôles d'impression** : ✅ pause/reprise/stop, vitesse, lumière chambre, clear HMS,
   AMS unload/load/reset, séchage, **skip-objects**, **clear-plate**, **home-axes**, **calibration**,
   **connect/disconnect**, **suppression d'imprimante** ; ⬜ print-options, bed-jog, airduct-mode.
-- 🟦 **File d'attente** : ✅ liste + **réordonnancement (drag/drop)**, ✅ ajout, ✅ start/stop/cancel/delete,
-  ✅ **édition d'item** (PATCH : planification `scheduled_time`, réassignation, options), ✅ **lots
-  (batches)** (liste + annulation), ✅ **mise à jour en lot** (`PATCH /queue/bulk`) ; ⬜ distribution
-  auto (`background-dispatch`).
+- ✅ **File d'attente** : liste + **réordonnancement (drag/drop)**, ajout, start/stop/cancel/delete,
+  **édition d'item** (PATCH : planification `scheduled_time`, réassignation, options), **lots
+  (batches)** (liste + annulation), **mise à jour en lot** (`PATCH /queue/bulk`), **distribution
+  auto** (`background_dispatch` : état temps réel via WS — travaux actifs/en attente + progression
+  de téléversement — et **annulation** `DELETE /background-dispatch/{id}`).
 - ✅ **Notifications EN-APP** : ✅ flux d'activité (`notifications/logs`) en lecture ; ✅ **dérivation
   temps réel depuis le WebSocket** au niveau serveur (`ServerNotificationCenter`, session WS
   persistante) — fin/début d'impression, **HMS grave** (transition), bobine manquante, plateau non

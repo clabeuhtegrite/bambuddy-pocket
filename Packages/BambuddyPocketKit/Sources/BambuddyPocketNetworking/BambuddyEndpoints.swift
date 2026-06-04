@@ -306,6 +306,13 @@ public extension APIClient {
         try await delete("/queue/batches/\(id)")
     }
 
+    /// Annule un travail de distribution automatique en arrière-plan
+    /// (`DELETE /background-dispatch/{job_id}`). Les travaux en attente sont annulés
+    /// immédiatement ; un travail actif est marqué pour annulation coopérative.
+    func cancelDispatchJob(jobID: Int) async throws {
+        try await delete("/background-dispatch/\(jobID)")
+    }
+
     // MARK: Caméra
 
     /// État du flux caméra (`GET /printers/{id}/camera/status`).

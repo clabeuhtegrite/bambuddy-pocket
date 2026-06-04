@@ -7,6 +7,17 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Phase 2 — file : distribution automatique en arrière-plan livrée (`main` vert).** La
+**distribution auto** (`background_dispatch`) est désormais surveillée et annulable depuis l'écran
+File d'attente : une section « Distribution auto » liste les travaux **actifs** (avec progression de
+téléversement) et **en attente**, avec un swipe d'annulation. État alimenté en temps réel par le
+**WebSocket** (`type: background_dispatch`) via le `ServerNotificationCenter` persistant (`dispatch
+State`) ; annulation par `DELETE /background-dispatch/{job_id}`. Modèles
+`BackgroundDispatchState`/`BackgroundDispatchJob` (Domain) + case `WebSocketEvent.backgroundDispatch`.
+**Contrat vérifié à la doc amont** (`services/background_dispatch.py` `_build_state_payload`,
+`routes/background_dispatch.py` cancel, `routes/websocket.py` snapshot). Tests : **246 SPM** (+2),
+11 app + 3 UI, build iOS sans warning, lint/format strict OK. i18n EN/FR/ES/DE.
+
 **Phase 1 — caméra : flux authentifié via jeton livré (`main` vert).** Le flux MJPEG, le snapshot
 et la vignette d'archive s'authentifient désormais via **`?token=`** quand l'auth est activée :
 `makeCameraStream(token:)` ajoute le jeton à l'URL du flux, `cameraSnapshot(token:)` /

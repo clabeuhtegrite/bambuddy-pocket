@@ -65,6 +65,26 @@ struct WebSocketEventTests {
     func decodesUnknown() throws {
         #expect(try decode(#"{"type":"inventory_changed"}"#) == .other(type: "inventory_changed"))
     }
+
+    @Test("Décode background_dispatch avec travaux actifs et en attente")
+    func decodesBackgroundDispatch() throws {
+        let event = try decode(#"""
+        {"type":"background_dispatch","data":{"total":3,"dispatched":1,"processing":1,
+         "completed":1,"failed":0,
+         "active_jobs":[{"job_id":10,"kind":"reprint_archive","source_name":"Gear",
+           "printer_id":2,"printer_name":"X1","upload_progress_pct":42.5}],
+         "dispatched_jobs":[{"job_id":11,"source_name":"Bracket","printer_id":2}]}}
+        """#)
+        guard case let .backgroundDispatch(state) = event else {
+            Issue.record("type inattendu : \(event)")
+            return
+        }
+        #expect(state.isActive)
+        #expect(state.processing == 1)
+        #expect(state.activeJobs.first?.jobID == 10)
+        #expect(state.activeJobs.first?.uploadProgressPct == 42.5)
+        #expect(state.dispatchedJobs.first?.sourceName == "Bracket")
+    }
 }
 
 @Suite("PrinterStatus.merged")

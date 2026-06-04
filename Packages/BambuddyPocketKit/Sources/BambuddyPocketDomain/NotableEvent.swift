@@ -48,7 +48,7 @@ public extension WebSocketEvent {
             }
         case let .archiveCreated(name):
             NotableEvent(kind: .archiveCreated, printerID: nil, detail: name)
-        case .printerStatus, .pong, .other:
+        case .printerStatus, .backgroundDispatch, .pong, .other:
             nil
         }
     }

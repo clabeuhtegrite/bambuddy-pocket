@@ -19,6 +19,8 @@ public enum WebSocketEvent: Sendable, Hashable {
     case plateNotEmpty(printerID: Int?, printerName: String?, message: String?)
     /// Nouvelle archive d'impression créée (`name` = libellé affichable si présent).
     case archiveCreated(name: String?)
+    /// État de la distribution automatique en arrière-plan (`background_dispatch`).
+    case backgroundDispatch(state: BackgroundDispatchState)
     /// Réponse keepalive.
     case pong
     /// Tout autre type non pris en charge explicitement (conserve le libellé brut).
@@ -32,7 +34,7 @@ public enum WebSocketEvent: Sendable, Hashable {
         case let .printComplete(printerID, _): printerID
         case let .missingSpoolAssignment(printerID, _): printerID
         case let .plateNotEmpty(printerID, _, _): printerID
-        case .archiveCreated, .pong, .other: nil
+        case .archiveCreated, .backgroundDispatch, .pong, .other: nil
         }
     }
 }
@@ -71,6 +73,9 @@ extension WebSocketEvent: Decodable {
         case "archive_created":
             let archive = try container.decodeIfPresent(ArchiveSummary.self, forKey: .data)
             self = .archiveCreated(name: archive?.displayName)
+        case "background_dispatch":
+            let state = try container.decode(BackgroundDispatchState.self, forKey: .data)
+            self = .backgroundDispatch(state: state)
         case "pong":
             self = .pong
         default:

@@ -29,6 +29,8 @@ final class ServerNotificationCenter {
     private(set) var notifications: [AppNotification] = []
     /// Dernière notification reçue non encore acquittée par une bannière (consommée par l'UI).
     private(set) var latestBanner: AppNotification?
+    /// État courant de la distribution automatique en arrière-plan (`nil` si inactive).
+    private(set) var dispatchState: BackgroundDispatchState?
 
     private let server: ServerConfiguration
     private let connectionFactory: ServerConnectionFactory
@@ -131,8 +133,22 @@ final class ServerNotificationCenter {
             if let status { merge(status, into: id) }
         case .missingSpoolAssignment, .plateNotEmpty, .archiveCreated:
             record(event.notableEvent)
+        case let .backgroundDispatch(state):
+            dispatchState = state.isActive ? state : nil
         case .pong, .other:
             break
+        }
+    }
+
+    /// Annule un travail de distribution automatique en arrière-plan. L'état se met à jour via le
+    /// WebSocket (diffusion du nouvel état) ; renvoie `false` en cas d'échec.
+    func cancelDispatchJob(_ jobID: Int) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.cancelDispatchJob(jobID: jobID)
+            return true
+        } catch {
+            return false
         }
     }
 
