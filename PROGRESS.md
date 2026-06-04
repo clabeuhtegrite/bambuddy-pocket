@@ -7,11 +7,12 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Refonte UI — DA Bambuddy diffusée sur tous les écrans.** Lots A→F livrés (design system +
-serveurs/connexion/À propos + imprimantes/caméra + file/archives + inventaire/bibliothèque/
-projets + notifications/activité). App adaptative clair/sombre, accent vert, Inter, badges
-sémantiques, barres de progression vertes. Reste : **régénérer les captures FR** via la cible
-`BambuddyPocketScreenshots` (thème sombre + 1-2 clairs).
+**Refonte UI — DA Bambuddy diffusée sur tous les écrans + captures FR régénérées.** Lots A→F
+livrés (design system + serveurs/connexion/À propos + imprimantes/caméra + file/archives +
+inventaire/bibliothèque/projets + notifications/activité). App adaptative clair/sombre, accent
+vert, Inter, badges sémantiques, barres de progression vertes. **Captures françaises** régénérées
+en thème sombre (+ 2 écrans clés en clair) dans `docs/screenshots/` (gitignoré — artefacts de
+revue locaux). Refonte terminée ; suite = poursuite du backlog Tier 2/3 (cf. plus bas).
 
 **Tier 1 approfondi + notifications transverses livrées** (`main`, dépôt public, CI verte,
 137 tests SPM + 11 tests app). Vague notifications (PR mergée) : **session WebSocket persistante
@@ -78,6 +79,17 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (29)** — **Captures françaises (DA) + robustesse Keychain.** Cible XCUITest
+  `BambuddyPocketScreenshots` rendue **multilingue/multi-thème** : lancement en **locale fr**
+  (`-AppleLanguages (fr)` `-AppleLocale fr_FR`), **thème forcé** via `-uitest-appearance dark|light`
+  (override `.preferredColorScheme` côté app, sans effet en build normal), sélecteurs basculés
+  sur les libellés FR. 15 écrans capturés en **thème sombre** + 2 écrans clés (imprimantes liste/
+  détail) en **thème clair** dans `docs/screenshots/` (gitignoré). **Correctif de robustesse** :
+  `KeychainSecretStore.secrets(for:)` tolère désormais `errSecMissingEntitlement` (build non signé
+  sans groupe d'accès Keychain) en renvoyant des secrets vides — sans quoi tous les écrans réseau
+  masquaient leur contenu derrière une erreur Keychain opaque ; pour un serveur sans auth c'est le
+  comportement correct, pour un serveur authentifié l'échec se reporte au réseau (message clair).
+  Build iOS sans warning, lint/format strict OK.
 - **2026-06-04 (28)** — **Refonte UI — diffusion de la DA sur tous les écrans (PR B→F).** Le
   design system (PR A) est appliqué écran par écran, par lots verts mergés au fil de l'eau :
   **B** serveurs/connexion/ajout imprimante/À propos ; **C** imprimantes (liste/détail/caméra/
