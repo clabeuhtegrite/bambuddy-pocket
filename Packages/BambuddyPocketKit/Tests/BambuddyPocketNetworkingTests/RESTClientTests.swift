@@ -1597,4 +1597,32 @@ struct MockNetworkingTests {
         #expect(request.httpMethod == "DELETE")
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/github-backup/config")
     }
+
+    @Test("kProfiles cible /printers/{id}/kprofiles/ et décode (lecture seule)")
+    func fetchesKProfiles() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"profiles":[{"slot_id":1,"nozzle_id":"H","nozzle_diameter":"0.4","#
+                + #""filament_id":"GFA00","name":"PLA","k_value":"0.020000"}],"nozzle_diameter":"0.4"}"#
+        )
+        let client = try makeClient()
+        let response = try await client.kProfiles(printerID: 3)
+        #expect(response.nozzleDiameter == "0.4")
+        #expect(response.profiles.first?.name == "PLA")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "GET")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/3/kprofiles/")
+    }
+
+    @Test("kProfileNotes cible /printers/{id}/kprofiles/notes")
+    func fetchesKProfileNotes() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"notes":{"GFSA00":"maison"}}"#)
+        let client = try makeClient()
+        let notes = try await client.kProfileNotes(printerID: 7)
+        #expect(notes.notes["GFSA00"] == "maison")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/7/kprofiles/notes")
+    }
 }

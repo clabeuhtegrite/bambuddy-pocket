@@ -185,6 +185,18 @@ final class PrinterListModel {
         }
     }
 
+    /// Profils d'avance de pression (K) lus sur l'imprimante (lecture seule). `nil` en cas d'échec
+    /// (imprimante hors ligne ou ne répondant pas à la requête de calibration).
+    func kProfiles(for printer: Printer) async -> KProfilesResponse? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.kProfiles(printerID: printer.id)
+        } catch {
+            controlError = Self.message(for: error)
+            return nil
+        }
+    }
+
     /// Récupère un snapshot caméra (JPEG) ; `nil` en cas d'échec (caméra absente, auth…).
     func cameraSnapshot(for printer: Printer) async -> Data? {
         do {

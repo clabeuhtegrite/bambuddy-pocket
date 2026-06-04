@@ -368,4 +368,17 @@ public extension APIClient {
     func deletePrinter(id: Int) async throws {
         try await delete("/printers/\(id)")
     }
+
+    // MARK: Profils d'avance de pression (K)
+
+    /// Profils K stockés sur l'imprimante (`GET /printers/{id}/kprofiles/`). Lecture seule :
+    /// l'app ne pousse aucun profil sur l'imprimante.
+    func kProfiles(printerID: Int) async throws -> KProfilesResponse {
+        try await get("/printers/\(printerID)/kprofiles/")
+    }
+
+    /// Notes utilisateur des profils K (`GET /printers/{id}/kprofiles/notes`).
+    func kProfileNotes(printerID: Int) async throws -> KProfileNotes {
+        try await get("/printers/\(printerID)/kprofiles/notes")
+    }
 }

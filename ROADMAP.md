@@ -33,7 +33,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 ## Phase 1 — MVP cœur (lecture, testable sur la démo) 🟦
 - ✅ **Liste multi-imprimantes** + statut **temps réel** (WebSocket, fusion des deltas).
 - ✅ **Détail imprimante** : température (buse/plateau/chambre), progression (couches, temps
-  restant), état, AMS/bobines, **erreurs HMS** (code+sévérité). ⬜ ventilateurs détaillés.
+  restant), état, AMS/bobines, **erreurs HMS** (code+sévérité), ✅ **ventilateurs détaillés**
+  (refroidissement de pièce, auxiliaire, chambre, heatbreak — champs réels du status),
+  ✅ **profils K (avance de pression)** en consultation seule (`/kprofiles/`).
 - 🟦 **Caméra** : ✅ snapshot rafraîchi + flux MJPEG, ✅ **détection de plateau vide** (check-plate),
   ✅ **état du flux** (camera/status) + **jeton de flux** (stream-token) ; ⬜ flux authentifié via token.
 - 🟦 **Archive d'impressions** : ✅ liste + détail (statut, durée, filament, coût/énergie,
