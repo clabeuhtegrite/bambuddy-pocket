@@ -9,6 +9,7 @@ struct BamPocketApp: App {
     @State private var model: ServerListModel
 
     init() {
+        UITestSeed.resetIfRequested()
         UITestSeed.seedIfRequested()
         _model = State(initialValue: ServerListModel(environment: .live()))
     }
@@ -22,10 +23,11 @@ struct BamPocketApp: App {
     }
 }
 
-/// Amorçage **uniquement pour les captures d'écran XCUITest** : si l'argument de lancement
-/// `-uitest-seed` est présent, enregistre un serveur de démonstration pointant sur l'instance
-/// Docker locale (auth désactivée) afin que les écrans affichent des données réelles. Aucun effet
-/// en production (l'argument n'est jamais passé par un build normal).
+/// Amorçage **uniquement pour les tests XCUITest**. `-uitest-fresh` repart d'une liste vide
+/// (parcours critiques déterministes). `-uitest-seed` enregistre un serveur de démonstration
+/// pointant sur l'instance Docker locale (auth désactivée) afin que les écrans de captures
+/// affichent des données réelles. Aucun effet en production (ces arguments ne sont jamais passés
+/// par un build normal).
 private enum UITestSeed {
     /// Schéma de couleurs forcé pour les captures XCUITest (`-uitest-appearance dark|light`).
     /// `nil` en build normal → l'app suit le réglage système.
@@ -41,6 +43,13 @@ private enum UITestSeed {
         case "light": return .light
         default: return nil
         }
+    }
+
+    /// Repart d'une liste de serveurs **vide** pour les tests XCUITest déterministes
+    /// (`-uitest-fresh`). Sans effet en build normal.
+    static func resetIfRequested() {
+        guard ProcessInfo.processInfo.arguments.contains("-uitest-fresh") else { return }
+        try? UserDefaultsServerStore().save([])
     }
 
     static func seedIfRequested() {

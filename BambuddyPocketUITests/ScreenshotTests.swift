@@ -36,6 +36,13 @@ final class ScreenshotTests: XCTestCase {
     }
 
     override func setUpWithError() throws {
+        // Ces captures s'appuient sur un backend Bambuddy en marche (Docker local) pour afficher
+        // des données réelles ; elles ne sont donc PAS déterministes en CI. On les exécute
+        // uniquement quand `UITEST_LIVE=1` est fourni (lancement manuel via le scheme captures).
+        try XCTSkipUnless(
+            ProcessInfo.processInfo.environment["UITEST_LIVE"] == "1",
+            "Captures ignorées hors environnement live (UITEST_LIVE=1)."
+        )
         continueAfterFailure = true
         try FileManager.default.createDirectory(
             at: outputDirectory,

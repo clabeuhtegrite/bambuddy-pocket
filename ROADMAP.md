@@ -85,7 +85,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ **Refonte UI — direction artistique Bambuddy** sur tous les écrans : design system
   (palette adaptative clair/sombre, accent vert, Inter, composants), **mode sombre** suivant
   le système, badges de statut sémantiques, barres de progression vertes (PR A→F).
-- ⬜ Tests (unitaires + UI) sur chemins critiques ; build sans warning.
+- 🟦 Tests **XCUITest sur chemins critiques** (`CriticalPathUITests`, exécutés en CI, sans backend) :
+  ajout d'un serveur via le formulaire → détail → navigation vers Imprimantes → centre de
+  notifications ; écran À propos ; annulation d'ajout. Captures (`ScreenshotTests`) isolées
+  derrière `UITEST_LIVE=1` (skip en CI). ⬜ étendre l'unitaire encore. Build sans warning.
 - 🟦 **Icône d'app** (✅ DA BamPocket : « B » sombre dans une pastille verte sur fond `#1A1A1A`,
   générée par script reproductible Core Graphics, toutes tailles + master 1024) et **launch
   screen** (✅ logo centré + fond sombre via `UILaunchScreen`) ; ⬜ captures, classification d'âge,

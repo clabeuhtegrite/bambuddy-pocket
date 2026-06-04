@@ -94,6 +94,18 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (34)** — **XCUITest sur chemins critiques (exécutés en CI, sans backend).**
+  Nouvelle cible de tests `CriticalPathUITests` ajoutée au **scheme `BamPocket`** (donc à la CI) :
+  3 parcours déterministes, indépendants de tout backend Bambuddy — (1) **état vide → ajout d'un
+  serveur** via le formulaire (URL + libellé) → liste → **détail** → **navigation vers
+  Imprimantes** (bouton « Add printer ») → retour → **centre de notifications** ; (2) écran **À
+  propos** (version) ; (3) **annulation** d'ajout (liste reste vide). Robustesse : locale **forcée
+  en anglais** (`-AppleLanguages (en)`) pour des sélecteurs stables quel que soit le simulateur ;
+  argument **`-uitest-fresh`** (nouveau dans `BamPocketApp`) qui repart d'une liste vide ;
+  sélecteurs basés sur les libellés/rôles réels (NavigationLink = Button). Les **captures**
+  (`ScreenshotTests`, dépendantes du Docker) sont désormais **isolées derrière `UITEST_LIVE=1`**
+  (skip propre en CI, fourni par le scheme `BamPocketScreenshots`). 184 SPM + 11 unitaires app +
+  **3 UI** verts, screenshot skippé, build sans warning, lint/format strict OK.
 - **2026-06-04 (33)** — **Privacy manifest + clés runtime (App Store / device réel).**
   `PrivacyInfo.xcprivacy` déclare désormais l'**API à raison requise** UserDefaults (`CA92.1`,
   persistance locale de la liste des serveurs) — aucun tracking, aucune collecte. Info.plist :

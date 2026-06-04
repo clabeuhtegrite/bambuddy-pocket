@@ -111,15 +111,20 @@ schemes:
       targets:
         BamPocket: all
         BamPocketTests: [test]
+        BamPocketUITests: [test]
     test:
       gatherCoverageData: true
+      # Tests unitaires + parcours critiques XCUITest (déterministes, sans backend).
+      # Les captures (ScreenshotTests) se skippent d'elles-mêmes hors UITEST_LIVE=1.
       targets:
         - BamPocketTests
+        - BamPocketUITests
     run:
       config: Debug
     profile:
       config: Release
 
+  # Scheme dédié aux captures : exécute les tests UI avec un backend live (Docker).
   BamPocketScreenshots:
     build:
       targets:
@@ -128,5 +133,7 @@ schemes:
     test:
       targets:
         - BamPocketUITests
+      environmentVariables:
+        UITEST_LIVE: "1"
     run:
       config: Debug
