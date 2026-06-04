@@ -70,6 +70,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Settings", systemImage: "gearshape")
                 }
+                NavigationLink {
+                    SystemStatusView(server: current, serverList: model)
+                } label: {
+                    Label("Server status", systemImage: "server.rack")
+                }
             }
             connectionSection
             testSection
