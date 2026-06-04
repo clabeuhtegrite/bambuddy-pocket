@@ -94,6 +94,15 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (33)** — **Privacy manifest + clés runtime (App Store / device réel).**
+  `PrivacyInfo.xcprivacy` déclare désormais l'**API à raison requise** UserDefaults (`CA92.1`,
+  persistance locale de la liste des serveurs) — aucun tracking, aucune collecte. Info.plist :
+  `NSLocalNetworkUsageDescription` (déjà présent) couvre les connexions directes REST/WS/caméra
+  aux IP locales saisies par l'utilisateur → invite « réseau local » sur device. **Décisions
+  documentées** : pas de `NSBonjourServices` (la découverte SSDP est faite par le serveur, pas par
+  l'iPhone — l'app n'effectue aucun browse Bonjour/mDNS) ni de `NSCameraUsageDescription` (la
+  « caméra » est le flux réseau MJPEG de l'imprimante, l'appareil photo de l'iPhone n'est jamais
+  utilisé). Manifest copié dans le bundle (vérifié). Build iOS sans warning, lint/format OK.
 - **2026-06-04 (32)** — **Icône d'app + launch screen (DA BamPocket).** Icône soignée : « B »
   géométrique sombre découpé dans une pastille verte (dégradé `#00C64D`→`#00AE42`) sur fond sombre
   dégradé, générée par **script reproductible** `scripts/icon/generate_app_icon.swift` (Core

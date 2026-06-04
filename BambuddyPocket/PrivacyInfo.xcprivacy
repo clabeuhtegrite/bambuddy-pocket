@@ -10,9 +10,19 @@
     <array/>
     <key>NSPrivacyCollectedDataTypes</key>
     <array/>
-    <!-- Les "required reason API" (ex. UserDefaults CA92.1) seront déclarées ici dès leur
-         utilisation effective (couche de persistance, Phase 0). -->
+    <!-- Required-reason API utilisées par l'app. -->
     <key>NSPrivacyAccessedAPITypes</key>
-    <array/>
+    <array>
+        <!-- UserDefaults : persistance locale de la liste des serveurs (UserDefaultsServerStore).
+             Raison CA92.1 = accès limité au conteneur de l'app, données non envoyées hors appareil. -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>CA92.1</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
