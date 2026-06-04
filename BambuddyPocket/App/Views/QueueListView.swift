@@ -7,13 +7,17 @@ import SwiftUI
 struct QueueListView: View {
     @State private var model: QueueListModel
     @State private var editing: QueueItem?
+    /// Centre de notifications partagé : porte l'état temps réel de la distribution automatique.
+    private let notificationCenter: ServerNotificationCenter
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makeQueueListModel(for: server))
+        notificationCenter = serverList.notificationCenter(for: server)
     }
 
     var body: some View {
         List {
+            dispatchSection
             if !model.batches.isEmpty {
                 Section("Batches") {
                     ForEach(model.batches) { batch in
@@ -111,10 +115,28 @@ struct QueueListView: View {
     }
 
     @ViewBuilder
+    private var dispatchSection: some View {
+        if let state = notificationCenter.dispatchState, state.isActive {
+            Section("Auto distribution") {
+                ForEach(state.activeJobs + state.dispatchedJobs) { job in
+                    DispatchRow(job: job, isActive: state.activeJobs.contains(job))
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                Task { await notificationCenter.cancelDispatchJob(job.jobID) }
+                            } label: {
+                                Label("Cancel", systemImage: "xmark.circle")
+                            }
+                        }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
     private var placeholder: some View {
         if !model.hasLoaded, model.items.isEmpty {
             ProgressView()
-        } else if model.items.isEmpty, model.batches.isEmpty {
+        } else if model.items.isEmpty, model.batches.isEmpty, notificationCenter.dispatchState == nil {
             if let error = model.loadError {
                 ContentUnavailableView {
                     Label("Couldn’t load the queue", systemImage: "exclamationmark.triangle")
@@ -171,6 +193,48 @@ private struct QueueRow: View {
                         .foregroundStyle(DSColor.textSecondary)
                         .accessibilityLabel("Manual start")
                 }
+            }
+        }
+        .padding(.vertical, DSSpacing.xs)
+    }
+}
+
+/// Ligne de distribution automatique : source, imprimante cible, progression de téléversement.
+private struct DispatchRow: View {
+    let job: BackgroundDispatchJob
+    let isActive: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: DSSpacing.xs) {
+            HStack {
+                Text(job.sourceName ?? String(localized: "Print job", comment: "Dispatch job fallback name"))
+                    .font(DSFont.headline)
+                    .foregroundStyle(DSColor.textPrimary)
+                    .lineLimit(1)
+                Spacer()
+                DSStatusBadge(
+                    isActive
+                        ? String(localized: "Sending", comment: "Dispatch active state")
+                        : String(localized: "Queued", comment: "Dispatch queued state"),
+                    intent: isActive ? .accent : .neutral,
+                    showsDot: false
+                )
+            }
+            if let printer = job.printerName {
+                Label(printer, systemImage: "printer")
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
+            }
+            if isActive, let percent = job.uploadProgressPct {
+                ProgressView(value: percent, total: 100)
+                    .tint(DSColor.accent)
+                Text("\(Int(percent.rounded()))%")
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
+            } else if isActive, let message = job.message, !message.isEmpty {
+                Text(message)
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
             }
         }
         .padding(.vertical, DSSpacing.xs)

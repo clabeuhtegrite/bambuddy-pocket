@@ -698,6 +698,17 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/queue/batches/1")
     }
 
+    @Test("cancelDispatchJob envoie DELETE /background-dispatch/{id}")
+    func cancelsDispatchJob() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"status":"cancelled","job_id":7}"#)
+        let client = try makeClient()
+        try await client.cancelDispatchJob(jobID: 7)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/background-dispatch/7")
+    }
+
     @Test("startDrying poste avec ?ams_id=1")
     func startsDrying() async throws {
         MockURLProtocol.reset()
