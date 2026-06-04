@@ -71,9 +71,10 @@ public actor RESTClient: APIClient {
         }
     }
 
-    /// Snapshot caméra (`GET /printers/{id}/camera/snapshot`) → données JPEG.
-    public func cameraSnapshot(printerID: Int) async throws -> Data {
-        try await data(forPath: "/printers/\(printerID)/camera/snapshot")
+    /// Snapshot caméra (`GET /printers/{id}/camera/snapshot`) → données JPEG. Le jeton de flux,
+    /// quand il est fourni, est ajouté en `?token=` (requis si l'auth est activée côté serveur).
+    public func cameraSnapshot(printerID: Int, token: String? = nil) async throws -> Data {
+        try await data(forPath: Self.appendingToken("/printers/\(printerID)/camera/snapshot", token))
     }
 
     /// Télécharge le fichier d'une archive (`GET /archives/{id}/download`) → données brutes.
@@ -81,14 +82,24 @@ public actor RESTClient: APIClient {
         try await data(forPath: "/archives/\(id)/download")
     }
 
-    /// Vignette d'une archive (`GET /archives/{id}/thumbnail`) → données image.
-    public func archiveThumbnail(id: Int) async throws -> Data {
-        try await data(forPath: "/archives/\(id)/thumbnail")
+    /// Vignette d'une archive (`GET /archives/{id}/thumbnail`) → données image. Le jeton de flux,
+    /// quand il est fourni, est ajouté en `?token=` (requis si l'auth est activée côté serveur).
+    public func archiveThumbnail(id: Int, token: String? = nil) async throws -> Data {
+        try await data(forPath: Self.appendingToken("/archives/\(id)/thumbnail", token))
     }
 
-    /// Vignette d'une plaque d'une archive (`GET /archives/{id}/plate-thumbnail/{index}`).
-    public func archivePlateThumbnail(id: Int, plateIndex: Int) async throws -> Data {
-        try await data(forPath: "/archives/\(id)/plate-thumbnail/\(plateIndex)")
+    /// Vignette d'une plaque d'une archive (`GET /archives/{id}/plate-thumbnail/{index}`). Jeton
+    /// de flux ajouté en `?token=` quand il est fourni (requis si l'auth est activée).
+    public func archivePlateThumbnail(id: Int, plateIndex: Int, token: String? = nil) async throws -> Data {
+        try await data(forPath: Self.appendingToken("/archives/\(id)/plate-thumbnail/\(plateIndex)", token))
+    }
+
+    /// Ajoute un jeton de flux caméra (`?token=`) à un chemin, en l'encodant pour l'URL. Renvoie
+    /// le chemin inchangé si le jeton est `nil`.
+    static func appendingToken(_ path: String, _ token: String?) -> String {
+        guard let token, !token.isEmpty else { return path }
+        let encoded = token.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? token
+        return "\(path)?token=\(encoded)"
     }
 }
 

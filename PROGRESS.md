@@ -7,6 +7,18 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Phase 1 — caméra : flux authentifié via jeton livré (`main` vert).** Le flux MJPEG, le snapshot
+et la vignette d'archive s'authentifient désormais via **`?token=`** quand l'auth est activée :
+`makeCameraStream(token:)` ajoute le jeton à l'URL du flux, `cameraSnapshot(token:)` /
+`archiveThumbnail(token:)` / `archivePlateThumbnail(token:)` l'ajoutent au chemin (encodé URL via
+`RESTClient.appendingToken`). `CameraView` récupère un jeton (`POST /printers/camera/stream-token`)
+une fois puis le passe au flux **et** à la boucle de snapshots ; `ArchiveListModel.thumbnail`
+récupère aussi un jeton. **Contrat vérifié à la doc amont** (`camera.py` : `RequireCameraStream
+TokenIfAuthEnabled` sur stream/snapshot/thumbnail/plate-thumbnail ; `auth.py`
+`require_camera_stream_token_if_auth_enabled`) **et au réel** (no-auth : `stream-token` renvoie un
+jeton, `?token=` inoffensif). Les en-têtes auth/Cloudflare restent appliqués partout. Tests :
+**244 SPM** (+2), 11 app + 3 UI, build iOS sans warning, lint/format strict OK.
+
 **Phase 1 — média d'archive livré (`main` vert).** Détail d'archive : **vignette d'impression**
 (`GET /archives/{id}/thumbnail` → image, section en tête de détail) + **métadonnées de timelapse**
 (`GET /archives/{id}/timelapse/info` → résolution, durée, débit d'images, taille). Modèle
