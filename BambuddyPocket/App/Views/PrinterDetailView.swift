@@ -25,7 +25,7 @@ struct PrinterDetailView: View {
             cameraLink
             deviceSection
             if let status, status.isPrinting {
-                printSection(status)
+                PrinterPrintSection(status: status)
                 controlsSection(status)
             }
             PrinterReadoutSections(status: status)
@@ -34,6 +34,7 @@ struct PrinterDetailView: View {
             }
             amsSection
             maintenanceSection
+            printOptionsSection
             informationSection
             managementSection
         }
@@ -178,29 +179,6 @@ struct PrinterDetailView: View {
         }
     }
 
-    private func printSection(_ status: PrinterStatus) -> some View {
-        Section("Current print") {
-            if let name = status.subtaskName ?? status.currentPrint {
-                LabeledContent("Job", value: name)
-            }
-            if let fraction = status.progressFraction {
-                VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                    ProgressView(value: fraction)
-                        .tint(DSColor.accent)
-                    Text("\(Int((status.progress ?? 0).rounded()))%")
-                        .font(DSFont.caption)
-                        .foregroundStyle(DSColor.textSecondary)
-                }
-            }
-            if let layer = status.layerNum, let total = status.totalLayers, total > 0 {
-                LabeledContent("Layer", value: "\(layer) / \(total)")
-            }
-            if let remaining = PrinterPresentation.remainingTime(minutes: status.remainingTime) {
-                LabeledContent("Remaining", value: remaining)
-            }
-        }
-    }
-
     private func errorsSection(_ status: PrinterStatus) -> some View {
         Section("Errors") {
             ForEach(status.hmsErrors ?? []) { error in
@@ -244,7 +222,18 @@ struct PrinterDetailView: View {
                 } label: {
                     Label("Calibration", systemImage: "scope")
                 }
+                BedJogControl(printer: printer, model: model)
+                if let mode = status?.airductMode {
+                    AirductPicker(printer: printer, model: model, current: mode)
+                }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var printOptionsSection: some View {
+        if status?.connected == true, let options = status?.printOptions {
+            PrintOptionsSection(printer: printer, model: model, options: options)
         }
     }
 
@@ -392,5 +381,104 @@ private struct TrayRow: View {
                     .foregroundStyle(.secondary)
             }
         }
+    }
+}
+
+/// Section « Impression en cours » (lecture seule) : nom, progression, couche, temps restant.
+private struct PrinterPrintSection: View {
+    let status: PrinterStatus
+
+    var body: some View {
+        Section("Current print") {
+            if let name = status.subtaskName ?? status.currentPrint {
+                LabeledContent("Job", value: name)
+            }
+            if let fraction = status.progressFraction {
+                VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                    ProgressView(value: fraction)
+                        .tint(DSColor.accent)
+                    Text("\(Int((status.progress ?? 0).rounded()))%")
+                        .font(DSFont.caption)
+                        .foregroundStyle(DSColor.textSecondary)
+                }
+            }
+            if let layer = status.layerNum, let total = status.totalLayers, total > 0 {
+                LabeledContent("Layer", value: "\(layer) / \(total)")
+            }
+            if let remaining = PrinterPresentation.remainingTime(minutes: status.remainingTime) {
+                LabeledContent("Remaining", value: remaining)
+            }
+        }
+    }
+}
+
+/// Contrôle d'ajustement de l'écart buse-plateau (`bed-jog`) par pas de 0,1 mm.
+private struct BedJogControl: View {
+    let printer: Printer
+    let model: PrinterListModel
+
+    var body: some View {
+        HStack {
+            Label("Nozzle-bed gap", systemImage: "arrow.up.and.down")
+            Spacer()
+            Button {
+                Task { await model.bedJog(printer, distance: -0.1) }
+            } label: {
+                Image(systemName: "minus.circle")
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel("Decrease gap by 0.1 mm")
+            Button {
+                Task { await model.bedJog(printer, distance: 0.1) }
+            } label: {
+                Image(systemName: "plus.circle")
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel("Increase gap by 0.1 mm")
+        }
+    }
+}
+
+/// Sélecteur du mode du conduit d'air (refroidissement / chauffage) sur les modèles compatibles.
+private struct AirductPicker: View {
+    let printer: Printer
+    let model: PrinterListModel
+    let current: Int
+
+    var body: some View {
+        Picker("Airduct", selection: binding) {
+            Text("Cooling").tag("cooling")
+            Text("Heating").tag("heating")
+        }
+    }
+
+    private var binding: Binding<String> {
+        Binding(
+            get: { current == 1 ? "heating" : "cooling" },
+            set: { newValue in Task { await model.setAirductMode(printer, mode: newValue) } }
+        )
+    }
+}
+
+/// Section des options d'impression / détection IA (lecture + bascule), `print-options`.
+private struct PrintOptionsSection: View {
+    let printer: Printer
+    let model: PrinterListModel
+    let options: PrintOptions
+
+    var body: some View {
+        Section("Print options") {
+            toggle("Spaghetti detection", module: "spaghetti_detector", on: options.spaghettiDetector)
+            toggle("First layer inspection", module: "first_layer_inspector", on: options.firstLayerInspector)
+            toggle("AI quality monitor", module: "printing_monitor", on: options.printingMonitor)
+            toggle("Allow skipping parts", module: "allow_skip_parts", on: options.allowSkipParts)
+        }
+    }
+
+    private func toggle(_ titleKey: LocalizedStringKey, module: String, on: Bool?) -> some View {
+        Toggle(titleKey, isOn: Binding(
+            get: { on ?? false },
+            set: { newValue in Task { await model.setPrintOption(printer, moduleName: module, enabled: newValue) } }
+        ))
     }
 }

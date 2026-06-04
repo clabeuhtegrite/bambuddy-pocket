@@ -164,4 +164,21 @@ struct PrinterStatusDecodingTests {
         )
         #expect(offline.displayableStage == nil)
     }
+
+    @Test("Décode les options d'impression (xcam) et le mode du conduit d'air")
+    func decodesPrintOptionsAndAirduct() throws {
+        let status = try decode(
+            PrinterStatus.self,
+            #"""
+            {"airduct_mode":1,
+             "print_options":{"spaghetti_detector":true,"first_layer_inspector":false,
+               "allow_skip_parts":true,"halt_print_sensitivity":"high"}}
+            """#
+        )
+        #expect(status.airductMode == 1)
+        #expect(status.printOptions?.spaghettiDetector == true)
+        #expect(status.printOptions?.firstLayerInspector == false)
+        #expect(status.printOptions?.allowSkipParts == true)
+        #expect(status.printOptions?.haltPrintSensitivity == "high")
+    }
 }

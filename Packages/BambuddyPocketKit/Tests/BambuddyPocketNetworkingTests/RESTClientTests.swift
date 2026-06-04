@@ -736,6 +736,40 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/5/drying/start?ams_id=1")
     }
 
+    @Test("setPrintOption poste avec module_name/enabled/print_halt/sensitivity")
+    func setsPrintOption() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.setPrintOption(id: 4, moduleName: "spaghetti_detector", enabled: true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString
+            == "https://host.example.com/api/v1/printers/4/print-options"
+            + "?module_name=spaghetti_detector&enabled=true&print_halt=true&sensitivity=medium")
+    }
+
+    @Test("setAirductMode poste avec ?mode=heating")
+    func setsAirductMode() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.setAirductMode(id: 4, mode: "heating")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/4/airduct-mode?mode=heating")
+    }
+
+    @Test("bedJog poste avec ?distance=&force=")
+    func sendsBedJog() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.bedJog(id: 4, distance: -0.1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString
+            == "https://host.example.com/api/v1/printers/4/bed-jog?distance=-0.1&force=false")
+    }
+
     @Test("reorderQueue poste sur /queue/reorder")
     func reordersQueue() async throws {
         MockURLProtocol.reset()

@@ -7,6 +7,20 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Phase 2 — contrôles avancés (print-options, bed-jog, airduct-mode) livrés (`main` vert).**
+Détail imprimante (imprimante connectée) : **options d'impression / détecteurs IA** (section
+« Print options » — lecture depuis `/status.print_options` + bascule via `POST …/print-options?
+module_name=…&enabled=…`), **bed-jog** (boutons ±0,1 mm → `POST …/bed-jog?distance=&force=`),
+**airduct-mode** (sélecteur refroidissement/chauffage → `POST …/airduct-mode?mode=`). Modèle
+`PrintOptions` (sous-ensemble robuste) + champs `printOptions`/`airductMode` sur `PrinterStatus`
+(décodés + fusionnés). **Contrats vérifiés à la doc amont** (`printers.py` set_print_option /
+set_airduct_mode / bed_jog ; `schemas/printer.py` PrintOptionsResponse) **et au réel sur la VP**
+(`VP-Test` id=1, virtuelle) : les 3 POST renvoient `200 success` (forme des query-params confirmée),
+état de la VP **restauré** après test. **Jamais exécuté sur l'imprimante physique.** Refactor :
+`PrinterDetailView` allégée (sections extraites : `PrinterPrintSection`, `BedJogControl`,
+`AirductPicker`, `PrintOptionsSection`) pour rester sous la limite de longueur de corps. Tests :
+**251 SPM** (+4), 11 app + 3 UI, build iOS sans warning, lint/format strict OK. i18n EN/FR/ES/DE.
+
 **Phase 2 — édition d'imprimante (PATCH) livrée (`main` vert).** Écran détail imprimante : bouton
 **« Modifier l'imprimante »** ouvrant une feuille d'édition (`PATCH /printers/{id}`) — nom, IP,
 modèle, emplacement, actif, archivage auto ; **code d'accès optionnel** (laissé vide = secret LAN
