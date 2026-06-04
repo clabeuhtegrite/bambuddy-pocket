@@ -315,6 +315,28 @@
         }
       }
     },
+    "AI quality monitor": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "KI-Qualitätsüberwachung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitor de calidad IA"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Surveillance qualité IA"
+          }
+        }
+      }
+    },
     "AMS %lld": {
       "localizations": {
         "de": {
@@ -333,6 +355,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "AMS %lld"
+          }
+        }
+      }
+    },
+    "AMS slot": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS-Fach"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ranura AMS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Emplacement AMS"
           }
         }
       }
@@ -547,6 +591,28 @@
         }
       }
     },
+    "Active extruder": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiver Extruder"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extrusor activo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extrudeur actif"
+          }
+        }
+      }
+    },
     "Active for": {
       "localizations": {
         "en": {
@@ -713,6 +779,28 @@
         }
       }
     },
+    "Add item": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Element hinzufügen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir elemento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un élément"
+          }
+        }
+      }
+    },
     "Add link": {
       "localizations": {
         "de": {
@@ -731,6 +819,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ajouter un lien"
+          }
+        }
+      }
+    },
+    "Add parts and materials to track this project’s build.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügen Sie Teile und Materialien hinzu, um den Aufbau dieses Projekts zu verfolgen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade piezas y materiales para seguir la construcción de este proyecto."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoutez pièces et matériaux pour suivre la fabrication de ce projet."
           }
         }
       }
@@ -829,6 +939,28 @@
         }
       }
     },
+    "Airduct": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luftkanal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conducto de aire"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conduit d’air"
+          }
+        }
+      }
+    },
     "All": {
       "localizations": {
         "en": {
@@ -881,6 +1013,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Unsicheres HTTP erlauben"
+          }
+        }
+      }
+    },
+    "Allow skipping parts": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teile überspringen erlauben"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir omitir piezas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser à ignorer des pièces"
           }
         }
       }
@@ -1091,6 +1245,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Application d’authentification"
+          }
+        }
+      }
+    },
+    "Auto distribution": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-Verteilung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distribución automática"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Distribution auto"
+          }
+        }
+      }
+    },
+    "Auto-archive prints": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drucke automatisch archivieren"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivar impresiones automáticamente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archiver les impressions automatiquement"
           }
         }
       }
@@ -1339,6 +1537,28 @@
         }
       }
     },
+    "Bambuddy on GitHub": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bambuddy auf GitHub"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bambuddy en GitHub"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bambuddy sur GitHub"
+          }
+        }
+      }
+    },
     "Batches": {
       "localizations": {
         "de": {
@@ -1455,6 +1675,28 @@
         }
       }
     },
+    "Bill of materials": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stückliste"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lista de materiales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nomenclature"
+          }
+        }
+      }
+    },
     "Branch": {
       "localizations": {
         "en": {
@@ -1545,6 +1787,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Bogues"
+          }
+        }
+      }
+    },
+    "Built with Bambuddy": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Bambuddy entwickelt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hecho con Bambuddy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conçu avec Bambuddy"
           }
         }
       }
@@ -2637,6 +2901,28 @@
         }
       }
     },
+    "Cooling": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kühlung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refrigeración"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refroidissement"
+          }
+        }
+      }
+    },
     "Copy this key now — it won’t be shown again.": {
       "localizations": {
         "de": {
@@ -3299,6 +3585,28 @@
         }
       }
     },
+    "Couldn’t load the trash": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papierkorb konnte nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar la papelera"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec du chargement de la corbeille"
+          }
+        }
+      }
+    },
     "Couldn’t load virtual printers": {
       "localizations": {
         "en": {
@@ -3553,6 +3861,28 @@
         }
       }
     },
+    "Decrease gap by 0.1 mm": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abstand um 0,1 mm verringern"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reducir la separación 0,1 mm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réduire l’écart de 0,1 mm"
+          }
+        }
+      }
+    },
     "Default": {
       "localizations": {
         "en": {
@@ -3621,6 +3951,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Supprimer"
+          }
+        }
+      }
+    },
+    "Delete permanently": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endgültig löschen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eliminar permanentemente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer définitivement"
+          }
+        }
+      }
+    },
+    "Delete permanently?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endgültig löschen?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eliminar permanentemente?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supprimer définitivement ?"
           }
         }
       }
@@ -4083,6 +4457,28 @@
         }
       }
     },
+    "Duration": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dauer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duración"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durée"
+          }
+        }
+      }
+    },
     "Edit": {
       "localizations": {
         "de": {
@@ -4173,6 +4569,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modifier le fichier"
+          }
+        }
+      }
+    },
+    "Edit printer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drucker bearbeiten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editar impresora"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifier l’imprimante"
           }
         }
       }
@@ -4635,6 +5053,28 @@
         }
       }
     },
+    "Estimated total": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschätzte Summe"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total estimado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total estimé"
+          }
+        }
+      }
+    },
     "Every %lld h": {
       "localizations": {
         "de": {
@@ -4899,6 +5339,28 @@
         }
       }
     },
+    "File uploaded": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei hochgeladen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivo subido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fichier téléversé"
+          }
+        }
+      }
+    },
     "Filename": {
       "localizations": {
         "de": {
@@ -4917,6 +5379,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nom du fichier"
+          }
+        }
+      }
+    },
+    "Files": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fichiers"
+          }
+        }
+      }
+    },
+    "Files are kept %lld days before automatic deletion.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dateien werden %lld Tage aufbewahrt, bevor sie automatisch gelöscht werden."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los archivos se conservan %lld días antes de la eliminación automática."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les fichiers sont conservés %lld jours avant suppression automatique."
           }
         }
       }
@@ -4965,6 +5471,50 @@
         }
       }
     },
+    "First layer inspection": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erste-Schicht-Prüfung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspección de primera capa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspection de première couche"
+          }
+        }
+      }
+    },
+    "Folders": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordner"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carpetas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dossiers"
+          }
+        }
+      }
+    },
     "Force color match": {
       "localizations": {
         "en": {
@@ -4989,6 +5539,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Farbabgleich erzwingen"
+          }
+        }
+      }
+    },
+    "Frame rate": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildrate"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Velocidad de fotogramas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fréquence d’images"
           }
         }
       }
@@ -5099,6 +5671,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Santé"
+          }
+        }
+      }
+    },
+    "Heatbreak": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heatbreak"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heatbreak"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heatbreak"
+          }
+        }
+      }
+    },
+    "Heating": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heizung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calefacción"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chauffage"
           }
         }
       }
@@ -5287,6 +5903,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Enthaltene Daten"
+          }
+        }
+      }
+    },
+    "Increase gap by 0.1 mm": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abstand um 0,1 mm vergrößern"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aumentar la separación 0,1 mm"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Augmenter l’écart de 0,1 mm"
           }
         }
       }
@@ -5779,6 +6417,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "En direct"
+          }
+        }
+      }
+    },
+    "Live camera feed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Live-Kamerabild"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transmisión de cámara en vivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flux caméra en direct"
           }
         }
       }
@@ -6331,6 +6991,50 @@
         }
       }
     },
+    "Move": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verschieben"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mover"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déplacer"
+          }
+        }
+      }
+    },
+    "Move file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei verschieben"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mover archivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déplacer le fichier"
+          }
+        }
+      }
+    },
     "Name": {
       "localizations": {
         "de": {
@@ -6393,6 +7097,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nouvelle clé d’API"
+          }
+        }
+      }
+    },
+    "New access code (optional)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer Zugangscode (optional)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuevo código de acceso (opcional)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau code d’accès (facultatif)"
           }
         }
       }
@@ -6563,6 +7289,28 @@
         }
       }
     },
+    "No K-profiles": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine K-Profile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin perfiles K"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun profil K"
+          }
+        }
+      }
+    },
     "No account": {
       "localizations": {
         "de": {
@@ -6647,6 +7395,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucune archive"
+          }
+        }
+      }
+    },
+    "No deleted files to restore.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine gelöschten Dateien zum Wiederherstellen."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay archivos eliminados para restaurar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun fichier supprimé à restaurer."
+          }
+        }
+      }
+    },
+    "No events": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Ereignisse"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin eventos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun événement"
           }
         }
       }
@@ -6757,6 +7549,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucun problème détecté."
+          }
+        }
+      }
+    },
+    "No items": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Elemente"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin elementos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun élément"
           }
         }
       }
@@ -7423,6 +8237,72 @@
         }
       }
     },
+    "Nozzle 1": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse 1"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla 1"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse 1"
+          }
+        }
+      }
+    },
+    "Nozzle 2": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse 2"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla 2"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse 2"
+          }
+        }
+      }
+    },
+    "Nozzle diameter": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düsendurchmesser"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diámetro de boquilla"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diamètre de buse"
+          }
+        }
+      }
+    },
     "Nozzle offset": {
       "localizations": {
         "de": {
@@ -7441,6 +8321,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Décalage de buse"
+          }
+        }
+      }
+    },
+    "Nozzle-bed gap": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düsen-Bett-Abstand"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Separación boquilla-cama"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écart buse-plateau"
           }
         }
       }
@@ -7532,6 +8434,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvrir le lien"
+          }
+        }
+      }
+    },
+    "Open source components": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open-Source-Komponenten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Componentes de código abierto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Composants open source"
           }
         }
       }
@@ -7800,6 +8724,28 @@
         }
       }
     },
+    "Pressure advance": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druckvorschub"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avance de presión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avance de pression"
+          }
+        }
+      }
+    },
     "Print archived": {
       "localizations": {
         "fr": {
@@ -7888,6 +8834,28 @@
         }
       }
     },
+    "Print job": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druckauftrag"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trabajo de impresión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Travail d’impression"
+          }
+        }
+      }
+    },
     "Print log": {
       "localizations": {
         "en": {
@@ -7956,6 +8924,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Options d’impression"
+          }
+        }
+      }
+    },
+    "Print preview": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druckvorschau"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista previa de impresión"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aperçu de l’impression"
           }
         }
       }
@@ -8324,6 +9314,50 @@
         }
       }
     },
+    "Qty %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anz. %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cant. %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qté %lld"
+          }
+        }
+      }
+    },
+    "Quantity: %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menge: %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cantidad: %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quantité : %lld"
+          }
+        }
+      }
+    },
     "Queue": {
       "localizations": {
         "de": {
@@ -8368,6 +9402,28 @@
         }
       }
     },
+    "Queued": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In Warteschlange"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En cola"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En attente"
+          }
+        }
+      }
+    },
     "Read status": {
       "localizations": {
         "de": {
@@ -8386,6 +9442,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lire l’état"
+          }
+        }
+      }
+    },
+    "Read the AGPL v3.0": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AGPL v3.0 lesen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer la AGPL v3.0"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lire l’AGPL v3.0"
           }
         }
       }
@@ -8480,6 +9558,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Restant"
+          }
+        }
+      }
+    },
+    "Remarks": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmerkungen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Observaciones"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remarques"
           }
         }
       }
@@ -8762,6 +9862,28 @@
         }
       }
     },
+    "Resolution": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auflösung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolución"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résolution"
+          }
+        }
+      }
+    },
     "Resources": {
       "localizations": {
         "de": {
@@ -8780,6 +9902,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ressources"
+          }
+        }
+      }
+    },
+    "Restore": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederherstellen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurer"
+          }
+        }
+      }
+    },
+    "Results": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergebnisse"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resultados"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résultats"
           }
         }
       }
@@ -8918,6 +10084,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rôle"
+          }
+        }
+      }
+    },
+    "Root": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stamm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raíz"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Racine"
           }
         }
       }
@@ -9234,6 +10422,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Les routines sélectionnées s’exécutent sur l’imprimante et peuvent prendre plusieurs minutes."
+          }
+        }
+      }
+    },
+    "Sending": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviando"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoi"
           }
         }
       }
@@ -9740,6 +10950,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code source"
+          }
+        }
+      }
+    },
+    "Spaghetti detection": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spaghetti-Erkennung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detección de espagueti"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Détection de spaghetti"
           }
         }
       }
@@ -10612,6 +11844,28 @@
         }
       }
     },
+    "The printer reported no pressure-advance calibration profiles.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Drucker meldete keine Druckvorschub-Kalibrierungsprofile."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La impresora no informó perfiles de calibración de avance de presión."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’imprimante n’a signalé aucun profil de calibration d’avance de pression."
+          }
+        }
+      }
+    },
     "The repository and access token will be removed from the server.": {
       "localizations": {
         "en": {
@@ -10756,6 +12010,72 @@
         }
       }
     },
+    "This file is already in the library": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Datei ist bereits in der Bibliothek"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este archivo ya está en la biblioteca"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce fichier est déjà dans la bibliothèque"
+          }
+        }
+      }
+    },
+    "This folder is empty.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Ordner ist leer."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta carpeta está vacía."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce dossier est vide."
+          }
+        }
+      }
+    },
+    "This permanently removes the file from the server.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dadurch wird die Datei endgültig vom Server entfernt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto elimina permanentemente el archivo del servidor."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ceci supprime définitivement le fichier du serveur."
+          }
+        }
+      }
+    },
     "This print has no skippable objects yet.": {
       "localizations": {
         "de": {
@@ -10774,6 +12094,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cette impression n’a pas encore d’objets ignorables."
+          }
+        }
+      }
+    },
+    "This project has no recorded activity yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für dieses Projekt wurde noch keine Aktivität aufgezeichnet."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este proyecto aún no tiene actividad registrada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce projet n’a encore aucune activité enregistrée."
           }
         }
       }
@@ -11026,6 +12368,72 @@
         }
       }
     },
+    "Trademarks belong to their respective owners.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marken gehören ihren jeweiligen Inhabern."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las marcas pertenecen a sus respectivos propietarios."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les marques appartiennent à leurs détenteurs respectifs."
+          }
+        }
+      }
+    },
+    "Trash": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papierkorb"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papelera"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corbeille"
+          }
+        }
+      }
+    },
+    "Trash is empty": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Papierkorb ist leer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La papelera está vacía"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La corbeille est vide"
+          }
+        }
+      }
+    },
     "Turn on the chamber light for reliable detection.": {
       "localizations": {
         "de": {
@@ -11117,6 +12525,28 @@
     "URL": {
       "shouldTranslate": false
     },
+    "Unaffiliated third-party client for the self-hosted Bambuddy server. BamPocket talks to it only over its public network API and bundles none of its source code.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unabhängiger, nicht zugehöriger Drittanbieter-Client für den selbst gehosteten Bambuddy-Server. BamPocket kommuniziert mit ihm nur über dessen öffentliche Netzwerk-API und enthält keinen seiner Quellcodes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliente de terceros independiente y no afiliado para el servidor autoalojado Bambuddy. BamPocket se comunica con él solo a través de su API de red pública y no incluye su código fuente."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client tiers indépendant et non affilié pour le serveur auto-hébergé Bambuddy. BamPocket dialogue avec lui uniquement via son API réseau publique et n’embarque aucun de son code source."
+          }
+        }
+      }
+    },
     "Unaffiliated third-party client. Trademarks belong to their respective owners.": {
       "localizations": {
         "de": {
@@ -11157,6 +12587,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Non autorisé — vérifie tes identifiants."
+          }
+        }
+      }
+    },
+    "Unit price": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stückpreis"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Precio unitario"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prix unitaire"
           }
         }
       }
@@ -11317,6 +12769,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mise à jour disponible"
+          }
+        }
+      }
+    },
+    "Upload": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hochladen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Téléverser"
+          }
+        }
+      }
+    },
+    "Upload failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hochladen fehlgeschlagen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error al subir"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec du téléversement"
           }
         }
       }
@@ -11659,6 +13155,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voir le modèle 3D"
+          }
+        }
+      }
+    },
+    "View G-code toolpath": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "G-Code-Werkzeugweg ansehen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver trayectoria G-code"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir le parcours G-code"
           }
         }
       }
@@ -12021,1458 +13539,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gestoppt"
-          }
-        }
-      }
-    },
-    "Pressure advance": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Druckvorschub"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avance de presión"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avance de pression"
-          }
-        }
-      }
-    },
-    "Nozzle diameter": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Düsendurchmesser"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diámetro de boquilla"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diamètre de buse"
-          }
-        }
-      }
-    },
-    "No K-profiles": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine K-Profile"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sin perfiles K"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun profil K"
-          }
-        }
-      }
-    },
-    "The printer reported no pressure-advance calibration profiles.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Der Drucker meldete keine Druckvorschub-Kalibrierungsprofile."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La impresora no informó perfiles de calibración de avance de presión."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "L’imprimante n’a signalé aucun profil de calibration d’avance de pression."
-          }
-        }
-      }
-    },
-    "AMS slot": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AMS-Fach"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ranura AMS"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Emplacement AMS"
-          }
-        }
-      }
-    },
-    "Heatbreak": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heatbreak"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heatbreak"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heatbreak"
-          }
-        }
-      }
-    },
-    "Folders": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ordner"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carpetas"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dossiers"
-          }
-        }
-      }
-    },
-    "Files": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dateien"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Archivos"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fichiers"
-          }
-        }
-      }
-    },
-    "Results": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ergebnisse"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Resultados"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Résultats"
-          }
-        }
-      }
-    },
-    "Trash": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Papierkorb"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Papelera"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Corbeille"
-          }
-        }
-      }
-    },
-    "Move": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verschieben"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mover"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Déplacer"
-          }
-        }
-      }
-    },
-    "Move file": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datei verschieben"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mover archivo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Déplacer le fichier"
-          }
-        }
-      }
-    },
-    "Root": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stamm"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Raíz"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Racine"
-          }
-        }
-      }
-    },
-    "This folder is empty.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dieser Ordner ist leer."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esta carpeta está vacía."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ce dossier est vide."
-          }
-        }
-      }
-    },
-    "Restore": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wiederherstellen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restaurar"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restaurer"
-          }
-        }
-      }
-    },
-    "Delete permanently": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Endgültig löschen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Eliminar permanentemente"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprimer définitivement"
-          }
-        }
-      }
-    },
-    "Delete permanently?": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Endgültig löschen?"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Eliminar permanentemente?"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Supprimer définitivement ?"
-          }
-        }
-      }
-    },
-    "This permanently removes the file from the server.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dadurch wird die Datei endgültig vom Server entfernt."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esto elimina permanentemente el archivo del servidor."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ceci supprime définitivement le fichier du serveur."
-          }
-        }
-      }
-    },
-    "Trash is empty": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Papierkorb ist leer"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La papelera está vacía"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La corbeille est vide"
-          }
-        }
-      }
-    },
-    "No deleted files to restore.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine gelöschten Dateien zum Wiederherstellen."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No hay archivos eliminados para restaurar."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun fichier supprimé à restaurer."
-          }
-        }
-      }
-    },
-    "Couldn’t load the trash": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Papierkorb konnte nicht geladen werden"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No se pudo cargar la papelera"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Échec du chargement de la corbeille"
-          }
-        }
-      }
-    },
-    "Files are kept %lld days before automatic deletion.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dateien werden %lld Tage aufbewahrt, bevor sie automatisch gelöscht werden."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Los archivos se conservan %lld días antes de la eliminación automática."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les fichiers sont conservés %lld jours avant suppression automatique."
-          }
-        }
-      }
-    },
-    "Bill of materials": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stückliste"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lista de materiales"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nomenclature"
-          }
-        }
-      }
-    },
-    "Add item": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Element hinzufügen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir elemento"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter un élément"
-          }
-        }
-      }
-    },
-    "Estimated total": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geschätzte Summe"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Total estimado"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Total estimé"
-          }
-        }
-      }
-    },
-    "No items": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine Elemente"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sin elementos"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun élément"
-          }
-        }
-      }
-    },
-    "Add parts and materials to track this project’s build.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fügen Sie Teile und Materialien hinzu, um den Aufbau dieses Projekts zu verfolgen."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añade piezas y materiales para seguir la construcción de este proyecto."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajoutez pièces et matériaux pour suivre la fabrication de ce projet."
-          }
-        }
-      }
-    },
-    "Qty %lld": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anz. %lld"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cant. %lld"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Qté %lld"
-          }
-        }
-      }
-    },
-    "Unit price": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stückpreis"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Precio unitario"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prix unitaire"
-          }
-        }
-      }
-    },
-    "Remarks": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anmerkungen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Observaciones"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remarques"
-          }
-        }
-      }
-    },
-    "No events": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keine Ereignisse"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sin eventos"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucun événement"
-          }
-        }
-      }
-    },
-    "This project has no recorded activity yet.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Für dieses Projekt wurde noch keine Aktivität aufgezeichnet."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Este proyecto aún no tiene actividad registrada."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ce projet n’a encore aucune activité enregistrée."
-          }
-        }
-      }
-    },
-    "Quantity: %lld": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Menge: %lld"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cantidad: %lld"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quantité : %lld"
-          }
-        }
-      }
-    },
-    "Resolution": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auflösung"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Resolución"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Résolution"
-          }
-        }
-      }
-    },
-    "Duration": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dauer"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Duración"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Durée"
-          }
-        }
-      }
-    },
-    "Frame rate": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bildrate"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Velocidad de fotogramas"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fréquence d’images"
-          }
-        }
-      }
-    },
-    "Print preview": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Druckvorschau"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vista previa de impresión"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aperçu de l’impression"
-          }
-        }
-      }
-    },
-    "Auto distribution": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auto-Verteilung"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Distribución automática"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Distribution auto"
-          }
-        }
-      }
-    },
-    "Print job": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Druckauftrag"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trabajo de impresión"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Travail d’impression"
-          }
-        }
-      }
-    },
-    "Sending": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Senden"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enviando"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Envoi"
-          }
-        }
-      }
-    },
-    "Queued": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In Warteschlange"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En cola"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En attente"
-          }
-        }
-      }
-    },
-    "Edit printer": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drucker bearbeiten"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Editar impresora"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Modifier l’imprimante"
-          }
-        }
-      }
-    },
-    "New access code (optional)": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neuer Zugangscode (optional)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nuevo código de acceso (opcional)"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nouveau code d’accès (facultatif)"
-          }
-        }
-      }
-    },
-    "Auto-archive prints": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drucke automatisch archivieren"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Archivar impresiones automáticamente"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Archiver les impressions automatiquement"
-          }
-        }
-      }
-    },
-    "Spaghetti detection": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Spaghetti-Erkennung"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detección de espagueti"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Détection de spaghetti"
-          }
-        }
-      }
-    },
-    "First layer inspection": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erste-Schicht-Prüfung"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inspección de primera capa"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Inspection de première couche"
-          }
-        }
-      }
-    },
-    "AI quality monitor": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "KI-Qualitätsüberwachung"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Monitor de calidad IA"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Surveillance qualité IA"
-          }
-        }
-      }
-    },
-    "Allow skipping parts": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Teile überspringen erlauben"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permitir omitir piezas"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Autoriser à ignorer des pièces"
-          }
-        }
-      }
-    },
-    "Nozzle-bed gap": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Düsen-Bett-Abstand"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Separación boquilla-cama"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Écart buse-plateau"
-          }
-        }
-      }
-    },
-    "Decrease gap by 0.1 mm": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abstand um 0,1 mm verringern"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reducir la separación 0,1 mm"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Réduire l’écart de 0,1 mm"
-          }
-        }
-      }
-    },
-    "Increase gap by 0.1 mm": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abstand um 0,1 mm vergrößern"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aumentar la separación 0,1 mm"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Augmenter l’écart de 0,1 mm"
-          }
-        }
-      }
-    },
-    "Airduct": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Luftkanal"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Conducto de aire"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Conduit d’air"
-          }
-        }
-      }
-    },
-    "Cooling": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kühlung"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Refrigeración"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Refroidissement"
-          }
-        }
-      }
-    },
-    "Heating": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heizung"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Calefacción"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chauffage"
-          }
-        }
-      }
-    },
-    "Upload": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hochladen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Subir"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Téléverser"
-          }
-        }
-      }
-    },
-    "File uploaded": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Datei hochgeladen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Archivo subido"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fichier téléversé"
-          }
-        }
-      }
-    },
-    "This file is already in the library": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Diese Datei ist bereits in der Bibliothek"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Este archivo ya está en la biblioteca"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ce fichier est déjà dans la bibliothèque"
-          }
-        }
-      }
-    },
-    "Upload failed": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hochladen fehlgeschlagen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Error al subir"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Échec du téléversement"
-          }
-        }
-      }
-    },
-    "View G-code toolpath": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "G-Code-Werkzeugweg ansehen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ver trayectoria G-code"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Voir le parcours G-code"
-          }
-        }
-      }
-    },
-    "Read the AGPL v3.0": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AGPL v3.0 lesen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leer la AGPL v3.0"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lire l’AGPL v3.0"
-          }
-        }
-      }
-    },
-    "Built with Bambuddy": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mit Bambuddy entwickelt"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hecho con Bambuddy"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Conçu avec Bambuddy"
-          }
-        }
-      }
-    },
-    "Bambuddy on GitHub": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bambuddy auf GitHub"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bambuddy en GitHub"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bambuddy sur GitHub"
-          }
-        }
-      }
-    },
-    "Open source components": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open-Source-Komponenten"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Componentes de código abierto"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Composants open source"
-          }
-        }
-      }
-    },
-    "Trademarks belong to their respective owners.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Marken gehören ihren jeweiligen Inhabern."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las marcas pertenecen a sus respectivos propietarios."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les marques appartiennent à leurs détenteurs respectifs."
-          }
-        }
-      }
-    },
-    "Unaffiliated third-party client for the self-hosted Bambuddy server. BamPocket talks to it only over its public network API and bundles none of its source code.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unabhängiger, nicht zugehöriger Drittanbieter-Client für den selbst gehosteten Bambuddy-Server. BamPocket kommuniziert mit ihm nur über dessen öffentliche Netzwerk-API und enthält keinen seiner Quellcodes."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cliente de terceros independiente y no afiliado para el servidor autoalojado Bambuddy. BamPocket se comunica con él solo a través de su API de red pública y no incluye su código fuente."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Client tiers indépendant et non affilié pour le serveur auto-hébergé Bambuddy. BamPocket dialogue avec lui uniquement via son API réseau publique et n’embarque aucun de son code source."
-          }
-        }
-      }
-    },
-    "Live camera feed": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Live-Kamerabild"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transmisión de cámara en vivo"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flux caméra en direct"
           }
         }
       }
