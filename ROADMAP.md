@@ -40,7 +40,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   ✅ **état du flux** (camera/status) + **jeton de flux** (stream-token) ; ⬜ flux authentifié via token.
 - 🟦 **Archive d'impressions** : ✅ liste + détail (statut, durée, filament, coût/énergie,
   chronologie) + **recherche serveur** (`/archives/search`), ✅ **favori** (PATCH/toggle),
-  ✅ **édition** (tags, notes, nom, lien), ✅ **suppression** ; ⬜ vignettes, photos, timelapse.
+  ✅ **édition** (tags, notes, nom, lien), ✅ **suppression**, ✅ **vignette** d'impression +
+  **métadonnées de timelapse** (résolution, durée, débit, taille) dans le détail.
 - ✅ État serveur (`/system/info`, `/system/health`, ressources/stockage/base) — écran dédié.
 
 ## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) 🟦

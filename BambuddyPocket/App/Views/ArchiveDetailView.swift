@@ -2,6 +2,7 @@
 import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
+import UIKit
 
 /// Détail d'une archive d'impression (lecture seule).
 struct ArchiveDetailView: View {
@@ -10,6 +11,8 @@ struct ArchiveDetailView: View {
 
     @State private var showAdded = false
     @State private var isEditing = false
+    @State private var thumbnail: UIImage?
+    @State private var timelapse: TimelapseInfo?
 
     private var fileExtension: String? {
         archive.filename?.split(separator: ".").last.map { $0.lowercased() }
@@ -21,6 +24,7 @@ struct ArchiveDetailView: View {
 
     var body: some View {
         List {
+            thumbnailSection
             if isRenderable {
                 Section {
                     NavigationLink {
@@ -45,6 +49,7 @@ struct ArchiveDetailView: View {
             notesSection
             filamentSection
             costSection
+            timelapseSection
             timelineSection
             detailsSection
         }
@@ -66,6 +71,51 @@ struct ArchiveDetailView: View {
         }
         .alert("Added to queue", isPresented: $showAdded) {
             Button("OK", role: .cancel) {}
+        }
+        .task { await loadMedia() }
+    }
+
+    private func loadMedia() async {
+        if archive.hasThumbnail, thumbnail == nil, let data = await model.thumbnail(archive) {
+            thumbnail = UIImage(data: data)
+        }
+        if archive.hasTimelapse, timelapse == nil {
+            timelapse = await model.timelapseInfo(archive)
+        }
+    }
+
+    @ViewBuilder
+    private var thumbnailSection: some View {
+        if let thumbnail {
+            Section {
+                Image(uiImage: thumbnail)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    .listRowInsets(EdgeInsets())
+                    .accessibilityLabel("Print preview")
+            }
+            .listRowBackground(DSColor.card)
+        }
+    }
+
+    @ViewBuilder
+    private var timelapseSection: some View {
+        if let timelapse {
+            Section("Timelapse") {
+                if let resolution = timelapse.resolution {
+                    LabeledContent("Resolution", value: resolution)
+                }
+                if let duration = timelapse.duration {
+                    LabeledContent("Duration", value: "\(Int(duration.rounded())) s")
+                }
+                if let fps = timelapse.fps {
+                    LabeledContent("Frame rate", value: "\(Int(fps.rounded())) fps")
+                }
+                if let size = timelapse.fileSize {
+                    LabeledContent("Size", value: Int64(size).formatted(.byteCount(style: .file)))
+                }
+            }
         }
     }
 

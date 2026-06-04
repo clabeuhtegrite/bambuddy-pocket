@@ -126,4 +126,24 @@ final class ArchiveListModel {
             return nil
         }
     }
+
+    /// Récupère les octets de la vignette d'une archive ; `nil` si absente ou en cas d'échec.
+    func thumbnail(_ archive: Archive) async -> Data? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.archiveThumbnail(id: archive.id)
+        } catch {
+            return nil
+        }
+    }
+
+    /// Métadonnées du timelapse d'une archive ; `nil` si absent ou en cas d'échec.
+    func timelapseInfo(_ archive: Archive) async -> TimelapseInfo? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.timelapseInfo(archiveID: archive.id)
+        } catch {
+            return nil
+        }
+    }
 }

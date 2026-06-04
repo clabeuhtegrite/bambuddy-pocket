@@ -29,10 +29,23 @@ public struct Archive: Codable, Sendable, Hashable, Identifiable {
     public var tags: String?
     public var notes: String?
     public var externalUrl: String?
+    public var thumbnailPath: String?
+    public var timelapsePath: String?
+    public var objectCount: Int?
 
     public init(id: Int, status: String) {
         self.id = id
         self.status = status
+    }
+
+    /// L'archive a-t-elle une vignette générée disponible côté serveur ?
+    public var hasThumbnail: Bool {
+        !(thumbnailPath ?? "").isEmpty
+    }
+
+    /// L'archive a-t-elle un timelapse disponible côté serveur ?
+    public var hasTimelapse: Bool {
+        !(timelapsePath ?? "").isEmpty
     }
 
     /// Étiquettes individuelles (le serveur stocke une chaîne séparée par des virgules).

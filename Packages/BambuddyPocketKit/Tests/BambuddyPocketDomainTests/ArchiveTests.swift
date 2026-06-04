@@ -42,6 +42,32 @@ struct ArchiveTests {
         #expect(archive.isFavorite == true)
     }
 
+    @Test("Décode les chemins de média (vignette/timelapse) et expose la disponibilité")
+    func decodesMediaPaths() throws {
+        let json = #"""
+        {"id":2,"status":"completed","thumbnail_path":"thumbs/2.png",
+         "timelapse_path":null,"object_count":4}
+        """#
+        let data = try #require(json.data(using: .utf8))
+        let archive = try JSONDecoder.bambuddy().decode(Archive.self, from: data)
+        #expect(archive.hasThumbnail)
+        #expect(archive.hasTimelapse == false)
+        #expect(archive.objectCount == 4)
+    }
+
+    @Test("Décode les métadonnées timelapse (résolution dérivée)")
+    func decodesTimelapseInfo() throws {
+        let json = #"""
+        {"duration":42.5,"width":1920,"height":1080,"fps":30.0,
+         "codec":"h264","file_size":1048576,"has_audio":false}
+        """#
+        let data = try #require(json.data(using: .utf8))
+        let info = try JSONDecoder.bambuddy().decode(TimelapseInfo.self, from: data)
+        #expect(info.duration == 42.5)
+        #expect(info.resolution == "1920 × 1080")
+        #expect(info.hasAudio == false)
+    }
+
     @Test("ArchiveUpdate omet les champs nil à l'encodage")
     func updateOmitsNilFields() throws {
         let update = ArchiveUpdate(tags: "a,b", isFavorite: true)

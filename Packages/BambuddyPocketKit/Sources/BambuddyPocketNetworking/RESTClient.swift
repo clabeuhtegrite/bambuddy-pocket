@@ -80,6 +80,16 @@ public actor RESTClient: APIClient {
     public func downloadArchive(id: Int) async throws -> Data {
         try await data(forPath: "/archives/\(id)/download")
     }
+
+    /// Vignette d'une archive (`GET /archives/{id}/thumbnail`) → données image.
+    public func archiveThumbnail(id: Int) async throws -> Data {
+        try await data(forPath: "/archives/\(id)/thumbnail")
+    }
+
+    /// Vignette d'une plaque d'une archive (`GET /archives/{id}/plate-thumbnail/{index}`).
+    public func archivePlateThumbnail(id: Int, plateIndex: Int) async throws -> Data {
+        try await data(forPath: "/archives/\(id)/plate-thumbnail/\(plateIndex)")
+    }
 }
 
 /// Réponse vide (pour les endpoints qui ne renvoient pas de corps utile).

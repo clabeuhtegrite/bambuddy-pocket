@@ -7,6 +7,19 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Phase 1 — média d'archive livré (`main` vert).** Détail d'archive : **vignette d'impression**
+(`GET /archives/{id}/thumbnail` → image, section en tête de détail) + **métadonnées de timelapse**
+(`GET /archives/{id}/timelapse/info` → résolution, durée, débit d'images, taille). Modèle
+`TimelapseInfo` (Domain) + champs `thumbnailPath`/`timelapsePath`/`objectCount` sur `Archive`
+(accesseurs `hasThumbnail`/`hasTimelapse`). Endpoints octets bruts `archiveThumbnail`/
+`archivePlateThumbnail` via `data(forPath:)`. **Contrat vérifié à la doc amont** (`archives.py` :
+`get_thumbnail`/`get_timelapse_info`/`get_plate_thumbnail` ; `schemas/timelapse.py`
+`TimelapseInfoResponse` ; `schemas/archive.py` `thumbnail_path`/`timelapse_path`/`object_count`).
+**Note auth** : `get_thumbnail`/`get_plate_thumbnail` exigent un **stream-token** (`?token=`)
+quand l'auth est activée (`RequireCameraStreamTokenIfAuthEnabled`) → couvert par la brique caméra
+« flux authentifié via token » (item ⬜ distinct). Tests : **242 SPM** (+3 décodage/endpoints),
+11 unitaires app + 3 UI, build iOS sans warning, lint/format strict OK. i18n EN/FR/ES/DE.
+
 **Tier 3 résiduel — gestion des imprimantes virtuelles livrée (`main` vert).** Écran **Imprimantes
 virtuelles** (`/virtual-printers`) : **CRUD complet** d'émulateurs Bambu (utile au dev/tests) —
 liste (état en cours/activé/désactivé, modèle, mode, série), **création** (nom, modèle, mode,
