@@ -7,6 +7,20 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Tier 3 résiduel — gestion des imprimantes virtuelles livrée (`main` vert).** Écran **Imprimantes
+virtuelles** (`/virtual-printers`) : **CRUD complet** d'émulateurs Bambu (utile au dev/tests) —
+liste (état en cours/activé/désactivé, modèle, mode, série), **création** (nom, modèle, mode,
+code d'accès, distribution auto, correspondance couleur), **édition** (+ bascule activé), 
+**suppression**. Modèles `VirtualPrinter`/`VirtualPrinterList` (+ table modèles)/`VirtualPrinterCreate`/
+`VirtualPrinterUpdate` (code d'accès écriture seule). **Contrat vérifié au réel** : round-trip
+**POST → GET → PUT → DELETE** exécuté sur le Docker (VP créée/renommée/supprimée), instance
+restaurée à la seule VP d'origine (`VP-Test` id=1, auth off). Tests : **221 SPM** (+9), 11 unitaires
+app + 3 UI, build sans warning, lint/format strict OK. `ServerDetailView` allégé (sections
+extraites) en amont. **Tier 3 vérifiable largement couvert.** Restants non vérifiables sur cette
+instance (notés) : kprofiles (imprimante non connectée), MakerWorld (404), metrics (Prometheus off),
+slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), labels (montés sous inventory/
+spoolman, dépendent d'un état spoolman/RFID).
+
 **Tier 3 résiduel — support / diagnostic livré (`main` vert).** Écran **Support** (`/support/`) :
 bascule du **journal de débogage** (état + durée d'activation), **consultation du journal applicatif**
 du serveur (filtre par niveau DEBUG/INFO/WARNING/ERROR, recherche plein-texte, total dans le

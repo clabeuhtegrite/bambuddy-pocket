@@ -1334,6 +1334,65 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/print-log/")
     }
 
+    @Test("virtualPrinters cible /virtual-printers et décode la liste + modèles")
+    func fetchesVirtualPrinters() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"printers":[{"id":1,"name":"VP","enabled":true,"mode":"immediate","#
+                + #""access_code_set":true,"auto_dispatch":true,"queue_force_color_match":false}],"#
+                + #""models":{"BL-P001":"X1C"}}"#
+        )
+        let client = try makeClient()
+        let list = try await client.virtualPrinters()
+        #expect(list.printers.first?.name == "VP")
+        #expect(list.models["BL-P001"] == "X1C")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/virtual-printers")
+    }
+
+    @Test("createVirtualPrinter POST et updateVirtualPrinter PUT ciblent les bons chemins")
+    func createsAndUpdatesVirtualPrinter() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"id":2,"name":"Dev","enabled":false,"mode":"immediate","access_code_set":false,"#
+                + #""auto_dispatch":true,"queue_force_color_match":false}"#
+        )
+        let client = try makeClient()
+        let created = try await client.createVirtualPrinter(VirtualPrinterCreate(name: "Dev", model: "C11"))
+        #expect(created.id == 2)
+        var request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/virtual-printers")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["name"] as? String == "Dev")
+        #expect(json["model"] as? String == "C11")
+
+        respond(
+            status: 200,
+            json: #"{"id":2,"name":"Renamed","enabled":false,"mode":"immediate","access_code_set":false,"#
+                + #""auto_dispatch":false,"queue_force_color_match":false}"#
+        )
+        let updated = try await client.updateVirtualPrinter(id: 2, VirtualPrinterUpdate(name: "Renamed"))
+        #expect(updated.name == "Renamed")
+        request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PUT")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/virtual-printers/2")
+    }
+
+    @Test("deleteVirtualPrinter DELETE /virtual-printers/{id}")
+    func deletesVirtualPrinter() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"message":"Deleted"}"#)
+        let client = try makeClient()
+        try await client.deleteVirtualPrinter(id: 2)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/virtual-printers/2")
+    }
+
     @Test("debugLoggingState et setDebugLogging ciblent /support/debug-logging")
     func togglesDebugLogging() async throws {
         MockURLProtocol.reset()
