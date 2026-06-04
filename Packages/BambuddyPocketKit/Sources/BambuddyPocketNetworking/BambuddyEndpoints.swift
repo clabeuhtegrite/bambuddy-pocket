@@ -181,6 +181,20 @@ public extension APIClient {
         return try await send("/settings/", method: .patch, body: body)
     }
 
+    // MARK: Maintenance (cf. docs/bambuddy-api.md §maintenance)
+
+    /// Vue d'ensemble de la maintenance par imprimante (`GET /maintenance/overview`).
+    func maintenanceOverview() async throws -> [MaintenanceOverview] {
+        try await get("/maintenance/overview")
+    }
+
+    /// Marque un élément de maintenance comme effectué (`POST /maintenance/items/{id}/perform`).
+    @discardableResult
+    func performMaintenance(itemID: Int, notes: String? = nil) async throws -> MaintenanceItem {
+        let body = try JSONEncoder.bambuddy().encode(PerformMaintenance(notes: notes))
+        return try await send("/maintenance/items/\(itemID)/perform", method: .post, body: body)
+    }
+
     // MARK: Prises connectées (cf. docs/bambuddy-api.md §smart-plugs)
 
     /// Liste les prises connectées (`GET /smart-plugs/`).

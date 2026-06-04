@@ -68,6 +68,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Smart plugs", systemImage: "powerplug")
                 }
+                NavigationLink {
+                    MaintenanceView(server: current, serverList: model)
+                } label: {
+                    Label("Maintenance", systemImage: "wrench.and.screwdriver")
+                }
             }
             Section {
                 NavigationLink {

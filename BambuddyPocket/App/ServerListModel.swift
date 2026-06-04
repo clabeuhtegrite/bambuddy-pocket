@@ -139,6 +139,11 @@ final class ServerListModel {
         SmartPlugsModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model de la maintenance pour ce serveur.
+    func makeMaintenanceModel(for configuration: ServerConfiguration) -> MaintenanceModel {
+        MaintenanceModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)
