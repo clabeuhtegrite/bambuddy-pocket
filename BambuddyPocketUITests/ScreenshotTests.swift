@@ -50,6 +50,19 @@ final class ScreenshotTests: XCTestCase {
         )
     }
 
+    /// Variables d'environnement de configuration du seed transmises à l'app sous test. Lues
+    /// **uniquement** depuis l'environnement du processus de test (jamais codées en dur) afin que
+    /// les captures puissent cibler un serveur authentifié (clé d'API + Cloudflare Access) sans
+    /// qu'aucun secret n'apparaisse dans le dépôt.
+    private static let forwardedSeedKeys = [
+        "UITEST_SERVER_URL",
+        "UITEST_AUTH_METHOD",
+        "UITEST_API_KEY",
+        "UITEST_USE_CLOUDFLARE",
+        "UITEST_CF_ID",
+        "UITEST_CF_SECRET"
+    ]
+
     /// Lance l'app en français, avec le thème demandé.
     private func launch(appearance: String) {
         app = XCUIApplication()
@@ -59,6 +72,10 @@ final class ScreenshotTests: XCTestCase {
             "-AppleLanguages", "(fr)",
             "-AppleLocale", "fr_FR"
         ]
+        let environment = ProcessInfo.processInfo.environment
+        for key in Self.forwardedSeedKeys where environment[key] != nil {
+            app.launchEnvironment[key] = environment[key]
+        }
         app.launch()
     }
 

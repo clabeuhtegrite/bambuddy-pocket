@@ -25,9 +25,11 @@ struct BamPocketApp: App {
 
 /// Amorçage **uniquement pour les tests XCUITest**. `-uitest-fresh` repart d'une liste vide
 /// (parcours critiques déterministes). `-uitest-seed` enregistre un serveur de démonstration
-/// pointant sur l'instance Docker locale (auth désactivée) afin que les écrans de captures
-/// affichent des données réelles. Aucun effet en production (ces arguments ne sont jamais passés
-/// par un build normal).
+/// configuré depuis des variables d'environnement (URL, méthode d'auth, Cloudflare Access) afin
+/// que les écrans de captures affichent des données réelles. Les secrets éventuels (clé d'API,
+/// service token Cloudflare) sont lus dans l'environnement et écrits dans le Keychain — jamais
+/// codés en dur. Aucun effet en production (ces arguments ne sont jamais passés par un build
+/// normal).
 private enum UITestSeed {
     /// Schéma de couleurs forcé pour les captures XCUITest (`-uitest-appearance dark|light`).
     /// `nil` en build normal → l'app suit le réglage système.
@@ -54,15 +56,46 @@ private enum UITestSeed {
 
     static func seedIfRequested() {
         guard ProcessInfo.processInfo.arguments.contains("-uitest-seed") else { return }
-        let urlString = ProcessInfo.processInfo.environment["UITEST_SERVER_URL"]
-            ?? "http://localhost:8000"
+        let environment = ProcessInfo.processInfo.environment
+        let urlString = environment["UITEST_SERVER_URL"] ?? "http://localhost:8000"
         guard let url = URL(string: urlString) else { return }
+
+        let authMethod: AuthMethod = switch environment["UITEST_AUTH_METHOD"]?.lowercased() {
+        case "apikey": .apiKey
+        case "userpassword": .userPassword
+        default: .none
+        }
+        let usesCloudflare = boolEnv(environment["UITEST_USE_CLOUDFLARE"])
+        let isInsecureLocal = url.scheme?.lowercased() == "http"
+
         let server = ServerConfiguration(
             label: "Atelier (démo)",
             baseURL: url,
-            authMethod: .none,
-            allowsInsecureLocalHTTP: true
+            authMethod: authMethod,
+            usesCloudflareAccess: usesCloudflare,
+            allowsInsecureLocalHTTP: isInsecureLocal
         )
+
+        // Les secrets ne sont jamais en dur : ils proviennent exclusivement de variables
+        // d'environnement transitoires passées au lancement du simulateur. On les écrit dans
+        // le Keychain via le même `SecretStore` que l'app utilise en production.
+        let secrets = ServerSecrets(
+            apiKey: authMethod == .apiKey ? environment["UITEST_API_KEY"] : nil,
+            cloudflareClientID: usesCloudflare ? environment["UITEST_CF_ID"] : nil,
+            cloudflareClientSecret: usesCloudflare ? environment["UITEST_CF_SECRET"] : nil
+        )
+
         try? UserDefaultsServerStore().save([server])
+        if !secrets.isEmpty {
+            try? KeychainSecretStore().setSecrets(secrets, for: server.id)
+        }
+    }
+
+    /// Interprète une variable d'environnement booléenne (`1`/`true`/`yes`, insensible à la casse).
+    private static func boolEnv(_ value: String?) -> Bool {
+        switch value?.lowercased() {
+        case "1", "true", "yes": true
+        default: false
+        }
     }
 }
