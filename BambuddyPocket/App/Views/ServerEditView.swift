@@ -128,7 +128,7 @@ struct ServerEditView: View {
     }
 
     private var authSection: some View {
-        Section("Authentication") {
+        Section {
             Picker("Method", selection: $authMethod) {
                 Text("None").tag(AuthMethod.none)
                 Text("API key").tag(AuthMethod.apiKey)
@@ -140,6 +140,25 @@ struct ServerEditView: View {
                     .autocorrectionDisabled()
             } else if authMethod == .userPassword {
                 loginRow
+            }
+        } header: {
+            Text("Authentication")
+        } footer: {
+            authFooter
+        }
+    }
+
+    /// Explique la différence entre clé d'API (consultation + la plupart des fonctions) et connexion
+    /// par identifiants (requise pour les fonctions d'administration : clés d'API, sauvegardes).
+    private var authFooter: some View {
+        VStack(alignment: .leading, spacing: DSSpacing.xs) {
+            switch authMethod {
+            case .userPassword:
+                Text("Signing in with your account unlocks every feature, including admin ones.")
+                Text("Admin features include managing API keys and backups.")
+            case .apiKey, .none:
+                Text("An API key allows monitoring and most actions.")
+                Text("Admin features — managing API keys and backups — require a username & password login.")
             }
         }
     }

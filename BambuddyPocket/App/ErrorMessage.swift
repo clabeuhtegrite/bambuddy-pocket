@@ -19,6 +19,16 @@ enum ErrorMessage {
             String(localized: "The server URL is not valid.")
         case .unauthorized:
             String(localized: "Unauthorized — check your credentials.")
+        case .forbidden:
+            // 403 : authentifié mais non autorisé. Côté Bambuddy, c'est le cas d'une **clé d'API**
+            // sur une fonction réservée à une session par identifiants (gestion des clés d'API,
+            // sauvegardes). On oriente vers une connexion par compte plutôt que de laisser croire à
+            // tort que les identifiants sont erronés (ce que ferait le message « unauthorized »).
+            String(
+                localized: "Admin login required — reconfigure this server with a username & password."
+            )
+        case let .http(status, _) where status == 404:
+            String(localized: "Not available on this server.")
         case let .transport(message):
             message
         case let .http(status, _):

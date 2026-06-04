@@ -12,6 +12,13 @@ final class BackupsModel {
     private(set) var backups: [BackupFile] = []
     private(set) var hasLoaded = false
     private(set) var isRunning = false
+    /// Le serveur a refusé l'accès (HTTP 403) : fonction d'administration réservée à une connexion
+    /// par identifiants. Avec une clé d'API, c'est le comportement **attendu** côté Bambuddy. L'UI
+    /// affiche un message d'orientation et masque les actions (« Sauvegarder maintenant »).
+    private(set) var isForbidden = false
+    /// La fonctionnalité de sauvegardes locales n'est pas disponible sur ce serveur (HTTP 404) :
+    /// l'UI affiche un état « non disponible » et masque les actions.
+    private(set) var isUnavailable = false
     var loadError: String?
 
     private let server: ServerConfiguration
@@ -30,7 +37,19 @@ final class BackupsModel {
             status = try await loadedStatus
             backups = await (try? loadedBackups) ?? []
             loadError = nil
+            isForbidden = false
+            isUnavailable = false
+        } catch let apiError as APIError where apiError.isForbidden {
+            isForbidden = true
+            isUnavailable = false
+            loadError = ErrorMessage.text(for: apiError)
+        } catch let apiError as APIError where apiError.isNotFound {
+            isUnavailable = true
+            isForbidden = false
+            loadError = nil
         } catch {
+            isForbidden = false
+            isUnavailable = false
             loadError = ErrorMessage.text(for: error)
         }
         hasLoaded = true

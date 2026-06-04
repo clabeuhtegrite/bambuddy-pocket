@@ -15,20 +15,30 @@ struct GitHubBackupView: View {
         _model = State(initialValue: serverList.makeGitHubBackupModel(for: server))
     }
 
+    /// Le chargement a échoué (403 admin requis, 404 indisponible ou autre erreur) et aucune donnée
+    /// n'est disponible : on n'affiche **que** l'état d'erreur — pas de section « Non configuré » ni
+    /// de bouton « Configurer » au-dessus d'un échec.
+    private var showsLoadFailure: Bool {
+        model.status == nil && model
+            .config == nil && (model.isForbidden || model.isUnavailable || model.loadError != nil)
+    }
+
     var body: some View {
         List {
-            statusSection
-            if let config = model.config {
-                configSection(config)
-                contentSection(config)
-            } else if model.hasLoaded {
-                notConfiguredSection
-            }
-            if !model.logs.isEmpty {
-                logsSection
-            }
-            if let message = model.actionMessage {
-                Section { Text(message).font(DSFont.caption).foregroundStyle(DSColor.textSecondary) }
+            if !showsLoadFailure {
+                statusSection
+                if let config = model.config {
+                    configSection(config)
+                    contentSection(config)
+                } else if model.hasLoaded {
+                    notConfiguredSection
+                }
+                if !model.logs.isEmpty {
+                    logsSection
+                }
+                if let message = model.actionMessage {
+                    Section { Text(message).font(DSFont.caption).foregroundStyle(DSColor.textSecondary) }
+                }
             }
         }
         .dsListBackground()
@@ -36,8 +46,10 @@ struct GitHubBackupView: View {
         .navigationTitle("Remote backup")
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(model.config == nil ? "Configure" : "Edit") { isEditing = true }
+            if !showsLoadFailure {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(model.config == nil ? "Configure" : "Edit") { isEditing = true }
+                }
             }
         }
         .refreshable { await model.load() }
@@ -165,7 +177,19 @@ struct GitHubBackupView: View {
     private var placeholder: some View {
         if !model.hasLoaded {
             ProgressView().tint(DSColor.accent)
-        } else if model.status == nil, model.config == nil, let error = model.loadError {
+        } else if model.isForbidden {
+            ContentUnavailableView {
+                Label("Admin login required", systemImage: "lock")
+            } description: {
+                Text("Admin login required — reconfigure this server with a username & password.")
+            }
+        } else if model.isUnavailable {
+            ContentUnavailableView {
+                Label("Not available", systemImage: "questionmark.circle")
+            } description: {
+                Text("Not available on this server.")
+            }
+        } else if showsLoadFailure, let error = model.loadError {
             ContentUnavailableView {
                 Label("Couldn’t load remote backup", systemImage: "exclamationmark.triangle")
             } description: {

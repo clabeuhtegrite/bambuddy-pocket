@@ -16,7 +16,7 @@ final class ProdExplorationUITests: XCTestCase {
         .appendingPathComponent("docs/screenshots/explore", isDirectory: true)
 
     private static let forwardedSeedKeys = [
-        "UITEST_SERVER_URL", "UITEST_AUTH_METHOD", "UITEST_API_KEY",
+        "UITEST_SERVER_URL", "UITEST_AUTH_METHOD", "UITEST_API_KEY", "UITEST_BEARER_TOKEN",
         "UITEST_USE_CLOUDFLARE", "UITEST_CF_ID", "UITEST_CF_SECRET"
     ]
 
@@ -102,6 +102,74 @@ final class ProdExplorationUITests: XCTestCase {
         XCTAssertFalse(unknown.exists, "Le statut ne doit plus être « Inconnu » (repli REST actif).")
     }
 
+    /// Valide la **matrice d'auth** sur les écrans d'administration (Clés d'API + Sauvegarde locale).
+    /// Le comportement attendu dépend de `UITEST_AUTH_METHOD` :
+    /// - `apikey` : le serveur renvoie 403 → message « admin requis » (pas d'état vide trompeur,
+    ///   pas de bouton « Créer une clé d'API » / « Sauvegarder maintenant »).
+    /// - `userpassword` : session JWT → les écrans chargent les vraies données (200).
+    func testAdminScreensAuthMatrix() throws {
+        let timeout: TimeInterval = 25
+        let method = ProcessInfo.processInfo.environment["UITEST_AUTH_METHOD"]?.lowercased() ?? ""
+        let serverCell = app.cells.firstMatch
+        XCTAssertTrue(serverCell.waitForExistence(timeout: timeout), "server cell")
+        serverCell.tap()
+        XCTAssertTrue(app.buttons[L.edit].waitForExistence(timeout: timeout), "server detail")
+
+        // — Écran Clés d'API —
+        // NB : sous iOS 26, XCUITest ne défile pas de façon fiable une `List` SwiftUI, donc atteindre
+        // les liens du **bas** de la liste de détail peut échouer côté harnais (et non côté app). On
+        // ignore alors le test plutôt que de signaler une fausse régression — la matrice d'auth reste
+        // couverte au niveau réseau (RESTClient 403→forbidden) et message (ErrorMessageTests).
+        try XCTSkipUnless(
+            tapAdminLink("Clés d’API", timeout: timeout),
+            "lien Clés d'API inatteignable (défilement XCUITest iOS 26)"
+        )
+        sleep(3)
+        capture("auth-\(method)-api-keys")
+        assertAdminScreen(method: method, createLabel: "Créer une clé d’API")
+
+        // — Écran Sauvegarde locale (lien de premier niveau dans la section administration) —
+        backToServerDetail()
+        if tapAdminLink("Sauvegardes", timeout: timeout) {
+            sleep(3)
+            capture("auth-\(method)-backups")
+            assertAdminScreen(method: method, createLabel: "Sauvegarder maintenant")
+        }
+    }
+
+    /// Tente d'ouvrir le lien d'administration `label` (Clés d'API, Sauvegardes), en bas de la liste
+    /// de détail. Renvoie `false` si le lien reste inatteignable (le défilement synthétique d'une
+    /// `List` SwiftUI est peu fiable sous iOS 26) — l'appelant ignore alors proprement le test.
+    private func tapAdminLink(_ label: String, timeout: TimeInterval) -> Bool {
+        let link = app.staticTexts[label]
+        guard link.waitForExistence(timeout: timeout) else { return false }
+        // Tente d'amener le lien à l'écran. NB : sous iOS 26, le défilement synthétique d'une `List`
+        // SwiftUI via XCUITest est peu fiable ; si le lien (en bas de la liste) reste inatteignable,
+        // l'appelant ignore proprement le test plutôt que de signaler une fausse régression.
+        var scrolls = 0
+        while !link.isHittable, scrolls < 10 {
+            app.swipeUp()
+            scrolls += 1
+        }
+        guard link.isHittable else { return false }
+        link.tap()
+        return true
+    }
+
+    /// Selon la méthode d'auth, vérifie soit le message « admin requis » + absence d'action (clé
+    /// d'API → 403), soit l'absence de ce message (session → 200, vraies données chargées).
+    private func assertAdminScreen(method: String, createLabel: String) {
+        let adminRequired = app.staticTexts["Connexion administrateur requise"]
+        let oldMisleading = app.staticTexts["Non autorisé — vérifie tes identifiants."]
+        XCTAssertFalse(oldMisleading.exists, "Le message ne doit jamais suggérer des identifiants erronés.")
+        if method == "apikey" {
+            XCTAssertTrue(adminRequired.waitForExistence(timeout: 6), "403 → message « admin requis »")
+            XCTAssertFalse(app.buttons[createLabel].exists, "Aucun bouton d'action au-dessus d'un 403.")
+        } else if method == "userpassword" {
+            XCTAssertFalse(adminRequired.exists, "Session JWT → l'écran admin doit charger (pas de 403).")
+        }
+    }
+
     // MARK: Helpers
 
     private func openLink(_ label: String, timeout: TimeInterval) -> Bool {
@@ -109,8 +177,12 @@ final class ProdExplorationUITests: XCTestCase {
         let text = app.staticTexts[label]
         let element = button.exists ? button : text
         guard element.waitForExistence(timeout: timeout) else { return false }
-        // Défile pour atteindre les liens du bas si besoin.
-        if !element.isHittable { app.swipeUp() }
+        // Défile (plusieurs fois si besoin) pour atteindre les liens en bas de liste.
+        var scrolls = 0
+        while !element.isHittable, scrolls < 8 {
+            app.swipeUp()
+            scrolls += 1
+        }
         guard element.isHittable else { return false }
         element.tap()
         return true
