@@ -1110,6 +1110,57 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/maintenance/overview")
     }
 
+    @Test("discoveryStatus et discoveryInfo ciblent les bons chemins")
+    func fetchesDiscovery() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"running":true}"#)
+        let client = try makeClient()
+        let status = try await client.discoveryStatus()
+        #expect(status.isRunning)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/discovery/status")
+
+        respond(
+            status: 200,
+            json: #"{"is_docker":true,"ssdp_running":false,"scan_running":false,"subnets":["172.18.0.0/16"]}"#
+        )
+        let info = try await client.discoveryInfo()
+        #expect(info.isDocker == true)
+        #expect(info.subnets == ["172.18.0.0/16"])
+    }
+
+    @Test("discoveredPrinters cible /discovery/printers et décode")
+    func fetchesDiscoveredPrinters() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"serial":"01ABC","name":"X1C","ip_address":"192.168.1.50","model":"X1C"}]"#
+        )
+        let client = try makeClient()
+        let printers = try await client.discoveredPrinters()
+        #expect(printers.first?.name == "X1C")
+        #expect(printers.first?.id == "01ABC")
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/discovery/printers")
+    }
+
+    @Test("startDiscovery et stopDiscovery postent sur les bons chemins")
+    func startsAndStopsDiscovery() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"running":true}"#)
+        let client = try makeClient()
+        let started = try await client.startDiscovery()
+        #expect(started.isRunning)
+        #expect(try #require(MockURLProtocol.lastRequest).httpMethod == "POST")
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/discovery/start")
+        respond(status: 200, json: #"{"running":false}"#)
+        let stopped = try await client.stopDiscovery()
+        #expect(stopped.isRunning == false)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/discovery/stop")
+    }
+
     @Test("backupStatus cible /local-backup/status et décode")
     func fetchesBackupStatus() async throws {
         MockURLProtocol.reset()

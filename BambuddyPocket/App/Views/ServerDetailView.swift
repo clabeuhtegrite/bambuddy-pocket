@@ -101,6 +101,11 @@ struct ServerDetailView: View {
                     Label("Backups", systemImage: "externaldrive")
                 }
                 NavigationLink {
+                    DiscoveryView(server: current, serverList: model)
+                } label: {
+                    Label("Discovery", systemImage: "antenna.radiowaves.left.and.right")
+                }
+                NavigationLink {
                     APIKeysView(server: current, serverList: model)
                 } label: {
                     Label("API keys", systemImage: "key")

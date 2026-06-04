@@ -38,7 +38,7 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - 🟦 **Archive d'impressions** : ✅ liste + détail (statut, durée, filament, coût/énergie,
   chronologie) + **recherche serveur** (`/archives/search`), ✅ **favori** (PATCH/toggle),
   ✅ **édition** (tags, notes, nom, lien), ✅ **suppression** ; ⬜ vignettes, photos, timelapse.
-- ⬜ État serveur (`/system/info`, santé) + sélecteur de serveur.
+- ✅ État serveur (`/system/info`, `/system/health`, ressources/stockage/base) — écran dédié.
 
 ## Phase 2 — Actions (écritures, Docker local / imprimante virtuelle) 🟦
 - 🟦 **Contrôles d'impression** : ✅ pause/reprise/stop, vitesse, lumière chambre, clear HMS,
@@ -53,6 +53,21 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   persistante) — fin/début d'impression, **HMS grave** (transition), bobine manquante, plateau non
   vide, archive créée ; feed lu/non-lu + badge + bannières.
 - 🟦 Gestion d'imprimante côté serveur : ✅ ajout (`PrinterCreate`), ✅ suppression ; ⬜ édition (PATCH).
+
+## Phase 4 — Réglages, serveur, comptes & intégrations (Tier 2/3) 🟦
+- ✅ **Réglages** serveur : langue, devise, imprimante par défaut, coûts (`/settings/`).
+- ✅ **État serveur** : `/system/info` + `/system/health` (app, machine, ressources, base).
+- ✅ **Clés d'API** : CRUD complet (`/api-keys/`) + secret montré une fois.
+- ✅ **Compte** : profil `/auth/me`, état 2FA `/auth/2fa/status`, **logout** `/auth/logout`.
+- ✅ **Prises connectées** : liste + état + alim **on/off** (`/smart-plugs/`).
+- ✅ **Maintenance** : vue d'ensemble + « effectué » (`/maintenance/`).
+- ✅ **Firmware** : disponibilité des mises à jour par imprimante (lecture, `/firmware/updates`).
+- ✅ **Catalogue de filaments** : liste de référence consultable (`/filament-catalog/`).
+- ✅ **Liens externes** : CRUD (`/external-links/`).
+- ✅ **Sauvegardes locales** : état + liste + déclenchement (`/local-backup/`).
+- ✅ **Découverte réseau** : SSDP start/stop + liste (`/discovery/`).
+- ⬜ Non vérifiables sur l'instance de dev (notés) : print-log (vide), MakerWorld (404), metrics
+  (Prometheus off), slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman.
 
 ## Phase 3 — Avancé ⬜
 - ⬜ **Viewer 3D** des 3MF/STL/gcode (décision d'approche : SceneKit/RealityKit + parseur natif,

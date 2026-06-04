@@ -7,12 +7,21 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
-**Refonte UI — DA Bambuddy diffusée sur tous les écrans + captures FR régénérées.** Lots A→F
-livrés (design system + serveurs/connexion/À propos + imprimantes/caméra + file/archives +
-inventaire/bibliothèque/projets + notifications/activité). App adaptative clair/sombre, accent
-vert, Inter, badges sémantiques, barres de progression vertes. **Captures françaises** régénérées
-en thème sombre (+ 2 écrans clés en clair) dans `docs/screenshots/` (gitignoré — artefacts de
-revue locaux). Refonte terminée ; suite = poursuite du backlog Tier 2/3 (cf. plus bas).
+**Tier 2 complet + vague Tier 3 livrés (PR #26→#37, `main` vert, 184 tests SPM + 11 tests app).**
+Correctif bug « Étape » (#26 : `PrinterStatus.displayableStage`, étape affichée seulement si
+impression active). **Tier 2** : Réglages (#27 langue/devise/imprimante par défaut/coûts),
+État serveur (#28 system/info + health + ressources), Clés d'API (#29 CRUD), Compte (#30 profil
+`/auth/me` + 2FA + logout `/auth/logout`). **Tier 3** (contrats vérifiés au réel sur le Docker) :
+prises connectées (#31 on/off + état), maintenance (#32 overview + perform), firmware (#33 updates
+lecture), catalogue filaments (#34), liens externes (#35 CRUD), sauvegardes locales (#36 status/
+list/run), découverte réseau (#37 SSDP start/stop + liste). Endpoints scindés en
+`BambuddyEndpoints+Management.swift` (< 500 lignes).
+
+Suite recommandée (Tier 3 restant, **vérifier le contrat au réel**) : print-log (paginé, schéma
+connu mais pas de données à décoder sur l'instance virtuelle), GitHub-backup (config/run),
+spoolman (intégration externe), makerworld (404 sur cette instance), metrics (Prometheus désactivé),
+slicer-presets/slice-jobs (sidecar non activé). **Finitions App Store** : icône/launch screen,
+captures, XCUITest sur chemins critiques. Endpoints non vérifiables ici → noter et passer.
 
 **Tier 1 approfondi + notifications transverses livrées** (`main`, dépôt public, CI verte,
 137 tests SPM + 11 tests app). Vague notifications (PR mergée) : **session WebSocket persistante
@@ -79,6 +88,17 @@ Build iOS : `export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` ; 
   Workflow : **branches + PR** (pas de push direct sur `main`).
 
 ## 🗒️ Journal (récent en haut)
+- **2026-06-04 (30)** — **Tier 2 complet + vague Tier 3 (PR #26→#37).** Correctif « Étape »
+  (#26). **Tier 2** : Réglages (#27), État serveur (#28), Clés d'API CRUD (#29), Compte/profil +
+  2FA + logout (#30). **Tier 3** (contrats vérifiés au curl sur le Docker, chaque décodage testé) :
+  prises connectées on/off + état (#31), maintenance overview + perform (#32), firmware updates
+  lecture (#33), catalogue filaments (#34), liens externes CRUD (#35), sauvegardes locales status/
+  list/run (#36), découverte réseau SSDP (#37). Auth vérifiée en activant temporairement l'auth du
+  Docker (setup → login → `/auth/me`/`/auth/2fa/status`/`/auth/logout`) puis instance restaurée
+  sans-auth. Endpoints scindés (`BambuddyEndpoints+Management.swift`) pour rester < 500 lignes.
+  **184 tests SPM** (+38), 11 tests app, build iOS sans warning, lint/format strict OK à chaque PR.
+  i18n FR/EN/ES/DE pour chaque écran. Non vérifiables sur cette instance (notés) : print-log (vide),
+  makerworld (404), metrics (Prometheus off), slicer-presets (sidecar off), cloud (auth requise).
 - **2026-06-04 (29)** — **Captures françaises (DA) + robustesse Keychain.** Cible XCUITest
   `BambuddyPocketScreenshots` rendue **multilingue/multi-thème** : lancement en **locale fr**
   (`-AppleLanguages (fr)` `-AppleLocale fr_FR`), **thème forcé** via `-uitest-appearance dark|light`
