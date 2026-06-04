@@ -33,7 +33,12 @@ public final class KeychainSecretStore: SecretStore, @unchecked Sendable {
 
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
-        if status == errSecItemNotFound {
+        // Absence de secret, ou Keychain indisponible (ex. build non signé sans groupe d'accès
+        // Keychain : `errSecMissingEntitlement`) → on traite comme « aucun secret ». Pour un
+        // serveur sans authentification, c'est le comportement correct ; pour un serveur
+        // authentifié, la requête échouera ensuite côté réseau avec un message clair plutôt que
+        // de masquer tout l'écran derrière une erreur Keychain opaque.
+        if status == errSecItemNotFound || status == errSecMissingEntitlement {
             return ServerSecrets()
         }
         guard status == errSecSuccess, let data = item as? Data else {

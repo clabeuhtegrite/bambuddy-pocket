@@ -4,7 +4,9 @@ import XCTest
 /// Capture les écrans principaux de l'app (tournant contre l'instance Docker locale) en PNG sur
 /// disque, pour la revue de présentation. L'app est amorcée avec un serveur de démo via l'argument
 /// de lancement `-uitest-seed` (cf. `BambuddyPocketApp`), de sorte que les écrans affichent des
-/// données réelles. Les fichiers sont écrits dans `docs/screenshots/` à la racine du dépôt.
+/// données réelles. Les captures sont produites en **français** et, par défaut, en **thème sombre**
+/// (le plus représentatif de la DA Bambuddy) ; deux écrans clés sont aussi capturés en thème clair
+/// pour illustrer l'adaptation. Les fichiers sont écrits dans `docs/screenshots/`.
 final class ScreenshotTests: XCTestCase {
     private var app: XCUIApplication!
 
@@ -14,21 +16,48 @@ final class ScreenshotTests: XCTestCase {
         .deletingLastPathComponent() // <repo>
         .appendingPathComponent("docs/screenshots", isDirectory: true)
 
+    /// Libellés français utilisés comme sélecteurs (l'app tourne en locale fr).
+    private enum L {
+        static let edit = "Modifier"
+        static let done = "Terminé"
+        static let about = "À propos"
+        static let notifications = "Notifications"
+        static let addServer = "Ajouter un serveur"
+        static let testConnection = "Tester la connexion"
+        static let cancel = "Annuler"
+        static let printers = "Imprimantes"
+        static let queue = "File d’attente"
+        static let history = "Historique d’impression"
+        static let filaments = "Filaments"
+        static let library = "Bibliothèque"
+        static let projects = "Projets"
+        static let activity = "Activité"
+        static let camera = "Caméra"
+    }
+
     override func setUpWithError() throws {
         continueAfterFailure = true
         try FileManager.default.createDirectory(
             at: outputDirectory,
             withIntermediateDirectories: true
         )
+    }
+
+    /// Lance l'app en français, avec le thème demandé.
+    private func launch(appearance: String) {
         app = XCUIApplication()
-        // Force English so screenshots and selectors are deterministic regardless of the host
-        // simulator locale.
-        app.launchArguments += ["-uitest-seed", "-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchArguments += [
+            "-uitest-seed",
+            "-uitest-appearance", appearance,
+            "-AppleLanguages", "(fr)",
+            "-AppleLocale", "fr_FR"
+        ]
         app.launch()
     }
 
     func testCaptureMainScreens() {
         let timeout: TimeInterval = 15
+        launch(appearance: "dark")
 
         // 01 — Liste des serveurs
         capture("01-servers")
@@ -37,33 +66,33 @@ final class ScreenshotTests: XCTestCase {
         let serverCell = app.cells.firstMatch
         XCTAssertTrue(serverCell.waitForExistence(timeout: timeout), "server cell")
         serverCell.tap()
-        XCTAssertTrue(app.buttons["Edit"].waitForExistence(timeout: timeout), "server detail")
+        XCTAssertTrue(app.buttons[L.edit].waitForExistence(timeout: timeout), "server detail")
         capture("02-server-detail")
 
         // 03 — Centre de notifications (bouton cloche dans la barre).
-        if app.buttons["Notifications"].waitForExistence(timeout: 5) {
-            app.buttons["Notifications"].tap()
-            _ = app.navigationBars["Notifications"].waitForExistence(timeout: 5)
+        if app.buttons[L.notifications].waitForExistence(timeout: 5) {
+            app.buttons[L.notifications].tap()
+            _ = app.navigationBars[L.notifications].waitForExistence(timeout: 5)
             capture("03-notifications")
-            tapIfExists(app.buttons["Done"])
+            tapIfExists(app.buttons[L.done])
         }
 
         // Imprimantes
-        navigate(to: "Printers", screenshot: "04-printers", timeout: timeout)
+        navigate(to: L.printers, screenshot: "04-printers", timeout: timeout)
         // Détail imprimante (première ligne).
         if tapFirstCell(timeout: timeout) {
             sleep(2)
             capture("05-printer-detail")
             // Caméra, accessible depuis le détail.
-            tapFirst(["Camera", "Caméra"], screenshot: "06-camera", settle: 3)
+            tapFirst([L.camera, "Camera"], screenshot: "06-camera", settle: 3)
             goBackIfPossible()
             goBackIfPossible()
         }
 
         // File d'attente
-        navigate(to: "Print queue", screenshot: "07-queue", timeout: timeout)
+        navigate(to: L.queue, screenshot: "07-queue", timeout: timeout)
         // Archives (liste + détail).
-        navigate(to: "Print history", screenshot: "08-archives", timeout: timeout)
+        navigate(to: L.history, screenshot: "08-archives", timeout: timeout)
         if tapFirstCell(timeout: timeout) {
             sleep(2)
             capture("09-archive-detail")
@@ -71,28 +100,48 @@ final class ScreenshotTests: XCTestCase {
         }
 
         // Inventaire
-        navigate(to: "Filaments", screenshot: "10-inventory", timeout: timeout)
+        navigate(to: L.filaments, screenshot: "10-inventory", timeout: timeout)
         // Bibliothèque
-        navigate(to: "Library", screenshot: "11-library", timeout: timeout)
+        navigate(to: L.library, screenshot: "11-library", timeout: timeout)
         // Projets
-        navigate(to: "Projects", screenshot: "12-projects", timeout: timeout)
+        navigate(to: L.projects, screenshot: "12-projects", timeout: timeout)
         // Activité
-        navigate(to: "Activity", screenshot: "13-activity", timeout: timeout)
+        navigate(to: L.activity, screenshot: "13-activity", timeout: timeout)
 
         // Ajout de serveur (depuis la liste des serveurs).
         backToRoot()
-        if app.buttons["Add server"].waitForExistence(timeout: 5) {
-            app.buttons["Add server"].tap()
+        if app.buttons[L.addServer].waitForExistence(timeout: 5) {
+            app.buttons[L.addServer].tap()
             sleep(1)
             capture("14-add-server")
-            tapFirst(["Cancel", "Annuler"], screenshot: nil)
+            tapFirst([L.cancel, "Cancel"], screenshot: nil)
         }
 
         // À propos.
-        if app.buttons["About"].waitForExistence(timeout: 5) {
-            app.buttons["About"].tap()
+        if app.buttons[L.about].waitForExistence(timeout: 5) {
+            app.buttons[L.about].tap()
             sleep(1)
             capture("15-about")
+        }
+
+        // Deux écrans clés en thème clair pour illustrer l'adaptation.
+        captureLightVariants(timeout: timeout)
+    }
+
+    /// Relance l'app en thème clair et capture les imprimantes (liste + détail).
+    private func captureLightVariants(timeout: TimeInterval) {
+        app.terminate()
+        launch(appearance: "light")
+
+        let serverCell = app.cells.firstMatch
+        guard serverCell.waitForExistence(timeout: timeout) else { return }
+        serverCell.tap()
+        guard app.buttons[L.edit].waitForExistence(timeout: timeout) else { return }
+
+        navigate(to: L.printers, screenshot: "04-printers-light", timeout: timeout)
+        if tapFirstCell(timeout: timeout) {
+            sleep(2)
+            capture("05-printer-detail-light")
         }
     }
 
@@ -169,22 +218,22 @@ final class ScreenshotTests: XCTestCase {
         }
     }
 
-    /// Remonte jusqu'au détail serveur, identifié par le bouton « Test connection » (unique à cet
-    /// écran — les libellés de liens comme « Filaments » sont aussi des titres d'autres écrans).
+    /// Remonte jusqu'au détail serveur, identifié par le bouton « Tester la connexion » (unique à
+    /// cet écran — les libellés de liens comme « Filaments » sont aussi des titres d'autres écrans).
     private func backToServerDetail() {
         for _ in 0 ..< 6 {
-            if app.buttons["Test connection"].exists { return }
+            if app.buttons[L.testConnection].exists { return }
             goBackIfPossible()
         }
-        _ = app.buttons["Test connection"].waitForExistence(timeout: 5)
+        _ = app.buttons[L.testConnection].waitForExistence(timeout: 5)
     }
 
     private func backToRoot() {
         for _ in 0 ..< 6 where app.navigationBars.buttons.firstMatch.exists {
             let back = app.navigationBars.buttons.firstMatch
-            guard back.isHittable, back.label != "Add server" else { break }
-            // S'arrêter une fois revenu à la liste des serveurs (bouton « Add server » présent).
-            if app.buttons["Add server"].exists { break }
+            guard back.isHittable, back.label != L.addServer else { break }
+            // S'arrêter une fois revenu à la liste des serveurs (bouton d'ajout présent).
+            if app.buttons[L.addServer].exists { break }
             back.tap()
             sleep(1)
         }
