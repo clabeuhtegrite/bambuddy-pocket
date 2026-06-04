@@ -75,6 +75,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Server status", systemImage: "server.rack")
                 }
+                NavigationLink {
+                    APIKeysView(server: current, serverList: model)
+                } label: {
+                    Label("API keys", systemImage: "key")
+                }
             }
             connectionSection
             testSection

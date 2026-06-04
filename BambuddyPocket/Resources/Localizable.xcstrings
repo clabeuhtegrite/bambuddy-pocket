@@ -275,6 +275,28 @@
         }
       }
     },
+    "API keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API-Schlüssel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claves de API"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clés d’API"
+          }
+        }
+      }
+    },
     "About": {
       "localizations": {
         "de": {
@@ -337,6 +359,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Échec de l’action"
+          }
+        }
+      }
+    },
+    "Active": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active"
           }
         }
       }
@@ -1199,6 +1243,28 @@
         }
       }
     },
+    "Cloud": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cloud"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nube"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cloud"
+          }
+        }
+      }
+    },
     "Cloudflare Access": {
       "localizations": {
         "de": {
@@ -1551,6 +1617,28 @@
         }
       }
     },
+    "Control printer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drucker steuern"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Controlar impresora"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contrôler l’imprimante"
+          }
+        }
+      }
+    },
     "Controls": {
       "localizations": {
         "de": {
@@ -1569,6 +1657,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Contrôles"
+          }
+        }
+      }
+    },
+    "Copy this key now — it won’t be shown again.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kopieren Sie diesen Schlüssel jetzt — er wird nicht erneut angezeigt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia esta clave ahora: no se volverá a mostrar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiez cette clé maintenant — elle ne sera plus affichée."
+          }
+        }
+      }
+    },
+    "Copy to clipboard": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In die Zwischenablage kopieren"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiar al portapapeles"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copier dans le presse-papiers"
           }
         }
       }
@@ -1679,6 +1811,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impossible d’enregistrer le serveur"
+          }
+        }
+      }
+    },
+    "Couldn’t load API keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API-Schlüssel konnten nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron cargar las claves de API"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les clés d’API"
           }
         }
       }
@@ -1899,6 +2053,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Créer"
+          }
+        }
+      }
+    },
+    "Create API key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "API-Schlüssel erstellen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear clave de API"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créer une clé d’API"
+          }
+        }
+      }
+    },
+    "Create a key to grant programmatic access.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erstellen Sie einen Schlüssel für programmatischen Zugriff."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea una clave para conceder acceso programático."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créez une clé pour accorder un accès programmatique."
           }
         }
       }
@@ -2427,6 +2625,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vide"
+          }
+        }
+      }
+    },
+    "Enable": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktivieren"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer"
           }
         }
       }
@@ -3688,6 +3908,28 @@
         }
       }
     },
+    "New API key": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neuer API-Schlüssel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nueva clave de API"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvelle clé d’API"
+          }
+        }
+      }
+    },
     "New project": {
       "localizations": {
         "de": {
@@ -3728,6 +3970,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nouveau serveur"
+          }
+        }
+      }
+    },
+    "No API keys": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine API-Schlüssel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin claves de API"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune clé d’API"
           }
         }
       }
@@ -3904,6 +4168,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucun objet"
+          }
+        }
+      }
+    },
+    "No permissions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Berechtigungen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin permisos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune autorisation"
           }
         }
       }
@@ -4394,6 +4680,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "En pause"
+          }
+        }
+      }
+    },
+    "Permissions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Berechtigungen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permisos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autorisations"
           }
         }
       }
@@ -4970,6 +5278,28 @@
         }
       }
     },
+    "Read status": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status lesen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer estado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lire l’état"
+          }
+        }
+      }
+    },
     "Reconnecting…": {
       "localizations": {
         "de": {
@@ -5164,6 +5494,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Reprendre"
+          }
+        }
+      }
+    },
+    "Revoke": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widerrufen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revocar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Révoquer"
+          }
+        }
+      }
+    },
+    "Revoked": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widerrufen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Revocada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Révoquée"
           }
         }
       }
