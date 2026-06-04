@@ -24,7 +24,10 @@ struct MaintenanceView: View {
                         .listRowBackground(DSColor.card)
                     }
                 } header: {
-                    Text(printer.printerName ?? String(localized: "Printer"))
+                    MaintenanceSectionHeader(
+                        name: printer.printerName ?? String(localized: "Printer"),
+                        rodType: printer.rodType
+                    )
                 }
             }
         }
@@ -58,6 +61,41 @@ struct MaintenanceView: View {
                     description: Text("No maintenance items are tracked for this server.")
                 )
             }
+        }
+    }
+}
+
+/// En-tête de section : nom de l'imprimante + type de rails/tiges (contexte de maintenance des
+/// axes). Le type de rails est masqué pour un modèle inconnu (`rodType == nil`).
+private struct MaintenanceSectionHeader: View {
+    let name: String
+    let rodType: RodType?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(name)
+            if let rodType, let label = MaintenancePresentation.rodTypeLabel(rodType) {
+                Text(label)
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
+                    .textCase(nil)
+                    .accessibilityLabel(Text("Motion system: \(label)"))
+            }
+        }
+    }
+}
+
+/// Libellés localisés propres à la maintenance.
+enum MaintenancePresentation {
+    /// Libellé lisible du type de rails/tiges, ou `nil` si inconnu.
+    static func rodTypeLabel(_ rodType: RodType) -> String? {
+        switch rodType {
+        case .carbon:
+            String(localized: "Carbon rods")
+        case .steelRod:
+            String(localized: "Steel rods")
+        case .linearRail:
+            String(localized: "Linear rails")
         }
     }
 }
