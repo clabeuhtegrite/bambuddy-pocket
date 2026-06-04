@@ -5,14 +5,15 @@ import Foundation
 import SwiftUI
 import WebKit
 
-/// Données d'un modèle à visualiser : contenu brut + extension (`stl` / `3mf`).
+/// Données d'un modèle à visualiser : contenu brut + extension (`stl` / `3mf` / `gcode`).
 struct ModelPayload: Hashable {
     let data: Data
     let ext: String
 }
 
 /// Viewer 3D embarqué : `WKWebView` + Three.js **bundlé** (hors-ligne, sans dépendance réseau).
-/// Le modèle est injecté via un `WKUserScript` à `documentStart`, la page le rend (STL/3MF).
+/// Le modèle est injecté via un `WKUserScript` à `documentStart`, la page le rend : maillage
+/// (STL/3MF) ou **parcours d'outil** (G-code, déplacements d'extrusion en lignes).
 struct Model3DView: UIViewRepresentable {
     let payload: ModelPayload
 

@@ -90,9 +90,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ⬜ Non vérifiables sur l'instance de dev (notés) : MakerWorld (404), metrics (Prometheus off),
   slicer-presets/slice-jobs (sidecar off), cloud Bambu (auth requise), Spoolman (à activer).
 
-## Phase 3 — Avancé ⬜
-- ⬜ **Viewer 3D** des 3MF/STL/gcode (décision d'approche : SceneKit/RealityKit + parseur natif,
-  ou WebView Three.js en v1 — cf. `gcode_viewer` amont). ADR à rédiger.
+## Phase 3 — Avancé 🟦
+- ✅ **Viewer 3D/parcours** des 3MF/STL **et G-code** : WebView Three.js **embarquée** (hors-ligne) ;
+  maillage pour STL/3MF, **parcours d'outil** (déplacements d'extrusion en lignes vertes) pour le
+  G-code via un parseur G-code minimal côté page (G0/G1, absolu/relatif, E croissant).
 - ⬜ **Slicing** : déclenchement du sidecar serveur (OrcaSlicer/Bambu Studio) s'il est activé
   (`use_slicer_api`, `slice-jobs`) — non testable sur la démo.
 - 🟦 Bibliothèque de modèles (✅ liste + recherche, détail, ajout à la file, édition nom/notes,

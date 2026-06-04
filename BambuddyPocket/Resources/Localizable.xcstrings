@@ -13334,6 +13334,28 @@
           }
         }
       }
+    },
+    "View G-code toolpath": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "G-Code-Werkzeugweg ansehen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver trayectoria G-code"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir le parcours G-code"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
