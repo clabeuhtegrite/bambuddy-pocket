@@ -230,6 +230,50 @@ struct PrinterStatusDecodingTests {
         #expect(HMSSeverity(code: 15) == .info)
     }
 
+    // MARK: Double extrudeur
+
+    @Test("Décode la seconde buse (nozzle_2) de la fixture X2D réelle")
+    func decodesSecondNozzleFromRealX2D() throws {
+        let status = try realX2DStatus()
+        #expect(status.temperatures?.nozzle == 27.0)
+        #expect(status.temperatures?.nozzle2 == 27.0)
+        #expect(status.temperatures?.nozzle2Target == 0.0)
+        #expect(status.activeExtruder == 1)
+        // Le statut expose les données de seconde buse, indépendamment du modèle.
+        #expect(status.statusReportsSecondNozzle)
+        // Avec les capacités X2D (double extrudeur), l'UI affiche la seconde buse.
+        let x2dCaps = PrinterCapabilities.forModel(PrinterModel(shortName: "X2D"))
+        #expect(status.showsSecondNozzle(capabilities: x2dCaps))
+    }
+
+    @Test("Mono-buse : pas de seconde buse, showsSecondNozzle == false")
+    func singleNozzleHasNoSecondNozzle() throws {
+        let status = try decode(
+            PrinterStatus.self,
+            #"{ "temperatures": { "nozzle": 210.0, "nozzle_target": 220.0 } }"#
+        )
+        #expect(status.temperatures?.nozzle2 == nil)
+        #expect(!status.statusReportsSecondNozzle)
+        let x1cCaps = PrinterCapabilities.forModel(PrinterModel(shortName: "X1C"))
+        #expect(!status.showsSecondNozzle(capabilities: x1cCaps))
+    }
+
+    @Test("Modèle dual mais firmware sans données de seconde buse : rien d'erroné")
+    func dualModelWithoutSecondNozzleData() throws {
+        let status = try decode(PrinterStatus.self, #"{ "temperatures": { "nozzle": 50.0 } }"#)
+        let x2dCaps = PrinterCapabilities.forModel(PrinterModel(shortName: "X2D"))
+        // Pas de nozzle_2 ni d'active_extruder → on n'affiche pas la 2ᵉ buse.
+        #expect(!status.showsSecondNozzle(capabilities: x2dCaps))
+    }
+
+    @Test("Statut sans modèle : capacités dégradées, pas de crash")
+    func missingModelDegradesSafely() throws {
+        let status = try decode(PrinterStatus.self, #"{ "state": "IDLE" }"#)
+        #expect(status.statusModel == nil)
+        #expect(status.statusCapabilities == .unknown)
+        #expect(!status.showsSecondNozzle(capabilities: .unknown))
+    }
+
     @Test("Décode les options d'impression (xcam) et le mode du conduit d'air")
     func decodesPrintOptionsAndAirduct() throws {
         let status = try decode(

@@ -40,4 +40,14 @@ public struct Printer: Codable, Sendable, Hashable, Identifiable {
         self.autoArchive = autoArchive
         self.externalCameraEnabled = externalCameraEnabled
     }
+
+    /// Modèle normalisé déduit du champ `model` (tolérant : nom 3MF, code ou nom court).
+    public var printerModel: PrinterModel? {
+        PrinterModel.resolve(model)
+    }
+
+    /// Capacités matérielles déduites du modèle (dégradé sûr si inconnu/absent).
+    public var capabilities: PrinterCapabilities {
+        PrinterCapabilities.forModel(printerModel)
+    }
 }
