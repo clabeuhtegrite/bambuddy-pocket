@@ -64,6 +64,13 @@ struct ServerDetailView: View {
                     Label("Projects", systemImage: "square.stack.3d.up")
                 }
             }
+            Section {
+                NavigationLink {
+                    SettingsView(server: current, serverList: model)
+                } label: {
+                    Label("Settings", systemImage: "gearshape")
+                }
+            }
             connectionSection
             testSection
             deleteSection

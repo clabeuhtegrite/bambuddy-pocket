@@ -1485,6 +1485,28 @@
         }
       }
     },
+    "Costs": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kosten"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Costes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coûts"
+          }
+        }
+      }
+    },
     "Could not save server": {
       "localizations": {
         "de": {
@@ -1617,6 +1639,28 @@
         }
       }
     },
+    "Couldn’t load settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen konnten nicht geladen werden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron cargar los ajustes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger les réglages"
+          }
+        }
+      }
+    },
     "Couldn’t load the library": {
       "localizations": {
         "de": {
@@ -1727,6 +1771,28 @@
         }
       }
     },
+    "Currency": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Währung"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moneda"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devise"
+          }
+        }
+      }
+    },
     "Current print": {
       "localizations": {
         "de": {
@@ -1745,6 +1811,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impression en cours"
+          }
+        }
+      }
+    },
+    "Default printer": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standarddrucker"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impresora predeterminada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imprimante par défaut"
           }
         }
       }
@@ -2167,6 +2255,28 @@
         }
       }
     },
+    "Energy cost (per kWh)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Energiekosten (pro kWh)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coste de la energía (por kWh)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coût de l’énergie (par kWh)"
+          }
+        }
+      }
+    },
     "Enter a server URL.": {
       "localizations": {
         "de": {
@@ -2365,6 +2475,28 @@
         }
       }
     },
+    "Filament cost (per kg)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filamentkosten (pro kg)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coste del filamento (por kg)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coût du filament (par kg)"
+          }
+        }
+      }
+    },
     "Filaments": {
       "localizations": {
         "de": {
@@ -2493,6 +2625,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Logiciel libre sous GNU AGPL v3.0 (exception App Store)."
+          }
+        }
+      }
+    },
+    "General": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allgemein"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Général"
           }
         }
       }
@@ -2716,6 +2870,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Libellé"
+          }
+        }
+      }
+    },
+    "Language": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sprache"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langue"
           }
         }
       }
@@ -4816,6 +4992,28 @@
         }
       }
     },
+    "Settings": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einstellungen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réglages"
+          }
+        }
+      }
+    },
     "Signed in": {
       "localizations": {
         "de": {
@@ -6157,6 +6355,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Utilisé"
+          }
+        }
+      }
+    },
+    "Used as the default target when adding prints to the queue.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standardziel beim Hinzufügen von Drucken zur Warteschlange."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Destino predeterminado al añadir impresiones a la cola."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cible par défaut lors de l’ajout d’impressions à la file."
           }
         }
       }

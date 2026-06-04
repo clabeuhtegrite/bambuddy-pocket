@@ -830,4 +830,60 @@ struct MockNetworkingTests {
         #expect(request.httpMethod == "DELETE")
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/printers/9")
     }
+
+    @Test("settings cible /settings/ et décode (langue, devise, imprimante par défaut)")
+    func fetchesSettings() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"language":"fr","currency":"EUR","default_printer_id":2,"#
+                + #""default_filament_cost":25.0,"energy_cost_per_kwh":0.15,"notification_language":"en"}"#
+        )
+        let client = try makeClient()
+        let settings = try await client.settings()
+        #expect(settings.language == "fr")
+        #expect(settings.currency == "EUR")
+        #expect(settings.defaultPrinterID == 2)
+        #expect(settings.energyCostPerKwh == 0.15)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/settings/")
+    }
+
+    @Test("settings tolère default_printer_id nul")
+    func fetchesSettingsWithNullDefaultPrinter() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"language":"en","currency":"USD","default_printer_id":null}"#)
+        let client = try makeClient()
+        let settings = try await client.settings()
+        #expect(settings.defaultPrinterID == nil)
+        #expect(settings.currency == "USD")
+    }
+
+    @Test("updateSettings PATCH /settings/ et omet les champs nil")
+    func updatesSettings() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"language":"de","currency":"USD"}"#)
+        let client = try makeClient()
+        let updated = try await client.updateSettings(AppSettingsUpdate(language: "de"))
+        #expect(updated.language == "de")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "PATCH")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/settings/")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["language"] as? String == "de")
+        #expect(json.keys.contains("currency") == false)
+    }
+
+    @Test("updateSettings encode default_printer_id quand fourni")
+    func updatesSettingsDefaultPrinter() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"default_printer_id":3}"#)
+        let client = try makeClient()
+        _ = try await client.updateSettings(AppSettingsUpdate(defaultPrinterID: 3))
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["default_printer_id"] as? Int == 3)
+        #expect(json.keys.contains("language") == false)
+    }
 }
