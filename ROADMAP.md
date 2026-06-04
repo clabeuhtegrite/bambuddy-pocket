@@ -106,6 +106,28 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   détail, édition, historique de consommation, reset compteur, suppression) ; ⬜ Spoolman/SpoolBuddy,
   intégrations (cloud, smart-plugs, Obico, MakerWorld) selon priorité.
 
+## Phase 5 — Support proactif de la gamme Bambu Lab ✅
+Nuances par modèle + décodage tolérant + UI adaptative + effets de bord. Source de vérité :
+`backend/app/utils/printer_models.py` (frozensets dual-nozzle / ethernet / rails / map de modèles).
+- ✅ **Fondation capacités** (`PrinterModel` + `PrinterCapabilities`, miroir amont) : résolution
+  nom 3MF / code interne / nom court → capacités (double buse, ethernet, type de rails
+  `get_rod_type`, AMS standard/Lite/HT, chambre chauffée, caméra), normalisation identique amont
+  (`upper`, sans espace/tiret). Modèle inconnu/futur → `.unknown` (capacités prudentes sûres).
+- ✅ **UI températures dual-extrudeur** : seconde buse affichée seulement si le modèle l'a **et**
+  que le statut l'expose (`nozzle_2`).
+- ✅ **Variantes AMS** (standard / Lite / HT) : type lu sur l'unité réelle (`is_ams_ht`,
+  `module_type` n3f/n3s/n3l, `id ≥ 128`) **prime** sur la capacité modèle ; libellés adaptés.
+- ✅ **Détail adaptatif caméra / réseau** par capacité confrontée au statut (rien d'affiché si
+  absent).
+- ✅ **Robustesse / effets de bord** : tous les modèles Domain décodent sans échec face aux champs
+  manquants / `null` / types inattendus / clés inconnues (API future), **firmware ancien**
+  (sous-ensembles), **imprimante hors ligne** (étape résiduelle masquée à la fusion), **status
+  minimal**, **AMS vide/absent**, températures partielles (mono vs dual). Pas de force-unwrap ;
+  `try #require` en test. Fixtures de bord (`offline_minimal_status.json`, `x2d_real_status.json`).
+- ✅ **Maintenance des axes par type de rails** (`get_rod_type`) : `MaintenanceOverview` expose
+  `capabilities`/`rodType` ; l'en-tête de section Maintenance affiche le type de rails
+  (carbone / acier / rail linéaire), masqué pour un modèle inconnu.
+
 ## Transverse / sortie App Store ⬜
 - ✅ **Refonte UI — direction artistique Bambuddy** sur tous les écrans : design system
   (palette adaptative clair/sombre, accent vert, Inter, composants), **mode sombre** suivant

@@ -3,10 +3,28 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-03 — Phase 0 en cours : socle + couche réseau + persistance
-faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
+**Dernière mise à jour** : 2026-06-04 — Phase 5 (support gamme Bambu) livrée : capacités par modèle,
+décodage tolérant, UI adaptative, effets de bord, maintenance par type de rails. Repo :
+https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Phase 5 — robustesse décodage + maintenance par rails livrée (`main` vert).** Brique 5 de la
+vague gamme Bambu (après #63 fondation capacités, #64 dual-extrudeur, #65 variantes AMS, #66 détail
+adaptatif caméra/réseau) : suite **Robustesse PrinterStatus (effets de bord)** garantissant que
+**tous** les modèles Domain décodent sans échec — champs `null`/absents/types inattendus, **clés
+inconnues** (API future), **firmware ancien** (sous-ensembles de payloads), **imprimante hors ligne**
+(fusion qui masque l'étape résiduelle), **status minimal** (`{}`), **AMS vide/absent**, températures
+partielles (mono vs dual), tolérance int/float. Fixtures de bord (`offline_minimal_status.json` P1S
+déconnectée ; réutilisation `x2d_real_status.json`). **Maintenance par type de rails**
+(`get_rod_type` amont) : `MaintenanceOverview` expose `capabilities`/`rodType` (tolérant : modèle
+absent/inconnu → `nil`/`.unknown`), l'en-tête de section Maintenance affiche le type de rails
+(carbone/acier/rail linéaire), masqué si inconnu ; libellé localisé + a11y « Système de mouvement ».
+Aucun force-unwrap (`try #require` en test). Tests : **295 SPM** (+3 maintenance robustesse) + 11 app
++ 4 UI verts, build iOS sans warning, lint/format strict OK. i18n EN/FR/ES/DE (4 chaînes ajoutées).
+**Docker propre** : seul `VP-Test` id=1 (X1C), `auth_enabled:false` ; aucune VP créée (fixtures +
+JSON synthétique ont suffi) ; imprimante physique non touchée. **Vague gamme Bambu complète.**
+
+### (historique) Audit de cohérence global
 **Audit de cohérence global (`main` vert).** Passage de cohérence par axe : **Nommage** — clean
 (aucun « Spoolside »/« Bambuddy Pocket » visible ; reliquats uniquement dans l'historique du journal
 et l'ADR de nommage ; le chemin de dossier « Bambuddy Pocket » dans SIDELOAD est volontaire ;
