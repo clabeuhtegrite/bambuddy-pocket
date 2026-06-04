@@ -1334,6 +1334,57 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/print-log/")
     }
 
+    @Test("debugLoggingState et setDebugLogging ciblent /support/debug-logging")
+    func togglesDebugLogging() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"enabled":false,"enabled_at":null,"duration_seconds":null}"#)
+        let client = try makeClient()
+        let state = try await client.debugLoggingState()
+        #expect(state.enabled == false)
+        var request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/support/debug-logging")
+
+        respond(status: 200, json: #"{"enabled":true,"enabled_at":"2026-06-04T14:00:00Z","duration_seconds":0}"#)
+        let toggled = try await client.setDebugLogging(enabled: true)
+        #expect(toggled.enabled == true)
+        request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["enabled"] as? Bool == true)
+    }
+
+    @Test("serverLogs cible /support/logs avec limit, level et search")
+    func fetchesServerLogs() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"entries":[{"timestamp":"t","level":"ERROR","logger_name":"n","message":"boom"}],"#
+                + #""total_in_file":100,"filtered_count":1}"#
+        )
+        let client = try makeClient()
+        let response = try await client.serverLogs(limit: 50, level: "ERROR", search: "boo m")
+        #expect(response.filteredCount == 1)
+        #expect(response.entries.first?.level == "ERROR")
+        let request = try #require(MockURLProtocol.lastRequest)
+        let url = try #require(request.url?.absoluteString)
+        #expect(url.hasPrefix("https://host.example.com/api/v1/support/logs?"))
+        #expect(url.contains("limit=50"))
+        #expect(url.contains("level=ERROR"))
+        #expect(url.contains("search=boo%20m"))
+    }
+
+    @Test("clearServerLogs DELETE /support/logs")
+    func clearsServerLogs() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"message":"Logs cleared"}"#)
+        let client = try makeClient()
+        try await client.clearServerLogs()
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "DELETE")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/support/logs")
+    }
+
     @Test("spoolmanStatus cible /spoolman/status et décode")
     func fetchesSpoolmanStatus() async throws {
         MockURLProtocol.reset()

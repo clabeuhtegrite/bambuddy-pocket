@@ -27,117 +27,8 @@ struct ServerDetailView: View {
 
     var body: some View {
         List {
-            Section {
-                NavigationLink {
-                    PrinterListView(server: current, serverList: model)
-                } label: {
-                    Label("Printers", systemImage: "printer")
-                }
-                NavigationLink {
-                    QueueListView(server: current, serverList: model)
-                } label: {
-                    Label("Print queue", systemImage: "list.number")
-                }
-                NavigationLink {
-                    ArchiveListView(server: current, serverList: model)
-                } label: {
-                    Label("Print history", systemImage: "clock.arrow.circlepath")
-                }
-                NavigationLink {
-                    PrintLogView(server: current, serverList: model)
-                } label: {
-                    Label("Print log", systemImage: "doc.text.below.ecg")
-                }
-                NavigationLink {
-                    ActivityListView(server: current, serverList: model)
-                } label: {
-                    Label("Activity", systemImage: "bell")
-                }
-                NavigationLink {
-                    InventoryListView(server: current, serverList: model)
-                } label: {
-                    Label("Filaments", systemImage: "circle.dashed")
-                }
-                NavigationLink {
-                    FilamentCatalogView(server: current, serverList: model)
-                } label: {
-                    Label("Filament catalog", systemImage: "books.vertical")
-                }
-                NavigationLink {
-                    SpoolmanView(server: current, serverList: model)
-                } label: {
-                    Label("Spoolman", systemImage: "spool")
-                }
-                NavigationLink {
-                    LibraryListView(server: current, serverList: model)
-                } label: {
-                    Label("Library", systemImage: "folder")
-                }
-                NavigationLink {
-                    ProjectListView(server: current, serverList: model)
-                } label: {
-                    Label("Projects", systemImage: "square.stack.3d.up")
-                }
-                NavigationLink {
-                    SmartPlugsView(server: current, serverList: model)
-                } label: {
-                    Label("Smart plugs", systemImage: "powerplug")
-                }
-                NavigationLink {
-                    MaintenanceView(server: current, serverList: model)
-                } label: {
-                    Label("Maintenance", systemImage: "wrench.and.screwdriver")
-                }
-                NavigationLink {
-                    FirmwareView(server: current, serverList: model)
-                } label: {
-                    Label("Firmware", systemImage: "cpu")
-                }
-            }
-            Section {
-                NavigationLink {
-                    SettingsView(server: current, serverList: model)
-                } label: {
-                    Label("Settings", systemImage: "gearshape")
-                }
-                NavigationLink {
-                    SystemStatusView(server: current, serverList: model)
-                } label: {
-                    Label("Server status", systemImage: "server.rack")
-                }
-                NavigationLink {
-                    BackupsView(server: current, serverList: model)
-                } label: {
-                    Label("Backups", systemImage: "externaldrive")
-                }
-                NavigationLink {
-                    GitHubBackupView(server: current, serverList: model)
-                } label: {
-                    Label("Remote backup", systemImage: "arrow.up.forward.app")
-                }
-                NavigationLink {
-                    DiscoveryView(server: current, serverList: model)
-                } label: {
-                    Label("Discovery", systemImage: "antenna.radiowaves.left.and.right")
-                }
-                NavigationLink {
-                    APIKeysView(server: current, serverList: model)
-                } label: {
-                    Label("API keys", systemImage: "key")
-                }
-                NavigationLink {
-                    ExternalLinksView(server: current, serverList: model)
-                } label: {
-                    Label("External links", systemImage: "link")
-                }
-                if current.authMethod == .userPassword {
-                    NavigationLink {
-                        AccountView(server: current, serverList: model)
-                    } label: {
-                        Label("Account", systemImage: "person.crop.circle")
-                    }
-                }
-            }
+            operationsSection
+            administrationSection
             connectionSection
             testSection
             deleteSection
@@ -178,6 +69,55 @@ struct ServerDetailView: View {
             }
         } message: {
             Text("Its stored credentials will be removed from this device.")
+        }
+    }
+
+    /// Section « exploitation » : écrans d'usage courant (impression, inventaire, bibliothèque…).
+    private var operationsSection: some View {
+        Section {
+            link("Printers", "printer") { PrinterListView(server: current, serverList: model) }
+            link("Print queue", "list.number") { QueueListView(server: current, serverList: model) }
+            link("Print history", "clock.arrow.circlepath") { ArchiveListView(server: current, serverList: model) }
+            link("Print log", "doc.text.below.ecg") { PrintLogView(server: current, serverList: model) }
+            link("Activity", "bell") { ActivityListView(server: current, serverList: model) }
+            link("Filaments", "circle.dashed") { InventoryListView(server: current, serverList: model) }
+            link("Filament catalog", "books.vertical") { FilamentCatalogView(server: current, serverList: model) }
+            link("Spoolman", "spool") { SpoolmanView(server: current, serverList: model) }
+            link("Library", "folder") { LibraryListView(server: current, serverList: model) }
+            link("Projects", "square.stack.3d.up") { ProjectListView(server: current, serverList: model) }
+            link("Smart plugs", "powerplug") { SmartPlugsView(server: current, serverList: model) }
+            link("Maintenance", "wrench.and.screwdriver") { MaintenanceView(server: current, serverList: model) }
+            link("Firmware", "cpu") { FirmwareView(server: current, serverList: model) }
+        }
+    }
+
+    /// Section « administration » : réglages, état serveur, sauvegardes, intégrations, compte.
+    private var administrationSection: some View {
+        Section {
+            link("Settings", "gearshape") { SettingsView(server: current, serverList: model) }
+            link("Server status", "server.rack") { SystemStatusView(server: current, serverList: model) }
+            link("Backups", "externaldrive") { BackupsView(server: current, serverList: model) }
+            link("Remote backup", "arrow.up.forward.app") { GitHubBackupView(server: current, serverList: model) }
+            link("Discovery", "antenna.radiowaves.left.and.right") { DiscoveryView(server: current, serverList: model) }
+            link("Support", "stethoscope") { SupportView(server: current, serverList: model) }
+            link("API keys", "key") { APIKeysView(server: current, serverList: model) }
+            link("External links", "link") { ExternalLinksView(server: current, serverList: model) }
+            if current.authMethod == .userPassword {
+                link("Account", "person.crop.circle") { AccountView(server: current, serverList: model) }
+            }
+        }
+    }
+
+    /// Fabrique un `NavigationLink` étiqueté homogène (libellé localisé + symbole SF).
+    private func link(
+        _ title: LocalizedStringKey,
+        _ systemImage: String,
+        @ViewBuilder destination: () -> some View
+    ) -> some View {
+        NavigationLink {
+            destination()
+        } label: {
+            Label(title, systemImage: systemImage)
         }
     }
 

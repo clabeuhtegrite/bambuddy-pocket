@@ -117,6 +117,34 @@
         }
       }
     },
+    "%lld s": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld s"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld s"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld s"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld s"
+          }
+        }
+      }
+    },
     "%lld unread": {
       "localizations": {
         "en": {
@@ -491,6 +519,34 @@
         }
       }
     },
+    "Active for": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active for"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actif depuis"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activo desde"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktiv seit"
+          }
+        }
+      }
+    },
     "Activity": {
       "localizations": {
         "de": {
@@ -685,6 +741,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ajouté à la file"
+          }
+        }
+      }
+    },
+    "All": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tous"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle"
           }
         }
       }
@@ -1633,6 +1717,34 @@
         }
       }
     },
+    "Clear logs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear logs"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vider les journaux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaciar registros"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokolle leeren"
+          }
+        }
+      }
+    },
     "Clear plate": {
       "localizations": {
         "de": {
@@ -1651,6 +1763,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Libérer la plaque"
+          }
+        }
+      }
+    },
+    "Clear server logs?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear server logs?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vider les journaux du serveur ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Vaciar los registros del servidor?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serverprotokolle leeren?"
           }
         }
       }
@@ -2643,6 +2783,34 @@
         }
       }
     },
+    "Couldn’t load diagnostics": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t load diagnostics"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de charger le diagnostic"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo cargar el diagnóstico"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnose konnte nicht geladen werden"
+          }
+        }
+      }
+    },
     "Couldn’t load discovery": {
       "localizations": {
         "de": {
@@ -3161,6 +3329,34 @@
         }
       }
     },
+    "Debug logging": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug logging"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journal de débogage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registro de depuración"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug-Protokollierung"
+          }
+        }
+      }
+    },
     "Default printer": {
       "localizations": {
         "de": {
@@ -3355,6 +3551,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Appareil"
+          }
+        }
+      }
+    },
+    "Diagnostics": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostics"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostic"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnóstico"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnose"
           }
         }
       }
@@ -5110,6 +5334,34 @@
         }
       }
     },
+    "Level": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Level"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niveau"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nivel"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ebene"
+          }
+        }
+      }
+    },
     "Library": {
       "localizations": {
         "de": {
@@ -5314,6 +5566,34 @@
         }
       }
     },
+    "Log level": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log level"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Niveau de journal"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nivel de registro"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokollebene"
+          }
+        }
+      }
+    },
     "Log out": {
       "localizations": {
         "de": {
@@ -5376,6 +5656,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Échec de la connexion."
+          }
+        }
+      }
+    },
+    "Logs (%lld total)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logs (%lld total)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journaux (%lld au total)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registros (%lld en total)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokolle (%lld gesamt)"
           }
         }
       }
@@ -6082,6 +6390,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucun lien"
+          }
+        }
+      }
+    },
+    "No log entries match the current filter.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No log entries match the current filter."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune entrée de journal ne correspond au filtre actuel."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ninguna entrada de registro coincide con el filtro actual."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Protokolleinträge entsprechen dem aktuellen Filter."
           }
         }
       }
@@ -8382,6 +8718,34 @@
         }
       }
     },
+    "Search logs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search logs"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rechercher dans les journaux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar en registros"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokolle durchsuchen"
+          }
+        }
+      }
+    },
     "Selected routines run on the printer and may take several minutes.": {
       "localizations": {
         "de": {
@@ -9540,6 +9904,34 @@
         }
       }
     },
+    "Support": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Soporte"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support"
+          }
+        }
+      }
+    },
     "Sync mode": {
       "localizations": {
         "en": {
@@ -9884,6 +10276,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cette URL n’est pas valide."
+          }
+        }
+      }
+    },
+    "This empties the server log file. It cannot be undone.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This empties the server log file. It cannot be undone."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cela vide le fichier de journal du serveur. C’est irréversible."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esto vacía el archivo de registro del servidor. No se puede deshacer."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dies leert die Server-Protokolldatei. Dies kann nicht rückgängig gemacht werden."
           }
         }
       }
@@ -10675,6 +11095,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Identifiant et mot de passe"
+          }
+        }
+      }
+    },
+    "Verbose logging helps diagnose issues. Turn it off when you are done.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbose logging helps diagnose issues. Turn it off when you are done."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le journal détaillé aide à diagnostiquer les problèmes. Désactivez-le une fois terminé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El registro detallado ayuda a diagnosticar problemas. Desactívalo cuando termines."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausführliche Protokollierung hilft bei der Fehlerdiagnose. Schalte sie danach wieder aus."
           }
         }
       }

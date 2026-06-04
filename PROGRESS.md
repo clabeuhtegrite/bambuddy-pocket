@@ -7,6 +7,18 @@
 faits ; lecture quasi complète + auth. Repo : https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Tier 3 résiduel — support / diagnostic livré (`main` vert).** Écran **Support** (`/support/`) :
+bascule du **journal de débogage** (état + durée d'activation), **consultation du journal applicatif**
+du serveur (filtre par niveau DEBUG/INFO/WARNING/ERROR, recherche plein-texte, total dans le
+fichier) et **effacement**. Modèles `DebugLoggingState`/`LogEntry`/`LogsResponse`. **Contrat vérifié
+au réel** sur le Docker (debug-logging off, logs réels filtrés/comptés — `total_in_file` ~24895) ;
+aucune mutation laissée (lecture seule côté instance). Refactor : `ServerDetailView` scindé en
+`operationsSection`/`administrationSection` + fabrique `link(...)` (sous la limite de longueur de
+corps). Tests : **214 SPM** (+7), 11 unitaires app + 3 UI, build sans warning, lint/format strict OK.
+Suite recommandée (vérifiable) : **virtual-printers** (CRUD, utile pour le dev — données riches au
+réel). Non vérifiables (notés) : kprofiles (imprimante non connectée — VP virtuelle), MakerWorld
+(404), metrics (off), slicer-presets (off), cloud Bambu (auth).
+
 **Tier 3 résiduel — intégration Spoolman livrée (`main` vert).** Écran **Spoolman**
 (`/spoolman/`, `/settings/spoolman`) : état (activé/connecté), réglages (activation, URL, mode de
 synchro auto/manuel, synchro du poids, usage partiel), **connecter/déconnecter**. Modèles

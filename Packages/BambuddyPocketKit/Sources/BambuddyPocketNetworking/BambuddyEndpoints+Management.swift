@@ -174,6 +174,38 @@ public extension APIClient {
         try await delete("/print-log/")
     }
 
+    // MARK: Support / diagnostic (cf. docs/bambuddy-api.md §support)
+
+    /// État du journal de débogage (`GET /support/debug-logging`).
+    func debugLoggingState() async throws -> DebugLoggingState {
+        try await get("/support/debug-logging")
+    }
+
+    /// Active ou désactive le journal de débogage (`POST /support/debug-logging`).
+    @discardableResult
+    func setDebugLogging(enabled: Bool) async throws -> DebugLoggingState {
+        let body = try JSONEncoder.bambuddy().encode(["enabled": enabled])
+        return try await send("/support/debug-logging", method: .post, body: body)
+    }
+
+    /// Journal applicatif récent du serveur (`GET /support/logs`), filtrable par niveau et texte.
+    func serverLogs(limit: Int = 200, level: String? = nil, search: String? = nil) async throws -> LogsResponse {
+        var query = "limit=\(limit)"
+        if let level, !level.isEmpty {
+            query += "&level=\(level)"
+        }
+        let trimmed = search?.isEmpty == false ? search : nil
+        if let encoded = trimmed?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            query += "&search=\(encoded)"
+        }
+        return try await get("/support/logs?\(query)")
+    }
+
+    /// Vide le journal applicatif du serveur (`DELETE /support/logs`).
+    func clearServerLogs() async throws {
+        try await delete("/support/logs")
+    }
+
     // MARK: Spoolman (cf. docs/bambuddy-api.md §spoolman)
 
     /// État de l'intégration Spoolman (`GET /spoolman/status`).
