@@ -1,0 +1,21 @@
+{
+  "name": "Atelier P1S",
+  "model": "P1S",
+  "connected": false,
+  "state": "IDLE",
+  "current_print": null,
+  "subtask_name": null,
+  "progress": null,
+  "remaining_time": null,
+  "layer_num": null,
+  "total_layers": null,
+  "temperatures": null,
+  "hms_errors": null,
+  "ams": null,
+  "vt_tray": null,
+  "wifi_signal": null,
+  "wired_network": null,
+  "chamber_light": null,
+  "firmware_version": null,
+  "stg_cur_name": "Printing"
+}

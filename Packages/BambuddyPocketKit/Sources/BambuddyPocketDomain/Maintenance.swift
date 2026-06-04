@@ -30,6 +30,17 @@ public struct MaintenanceOverview: Codable, Sendable, Hashable, Identifiable {
     public var dueItems: [MaintenanceItem] {
         (maintenanceItems ?? []).filter(\.isDueNow)
     }
+
+    /// Capacités déduites du modèle d'imprimante (tolérant si absent/inconnu).
+    public var capabilities: PrinterCapabilities {
+        PrinterCapabilities.forRawModel(printerModel)
+    }
+
+    /// Type de rails/tiges de mouvement (carbone / acier / rail linéaire), `nil` si inconnu.
+    /// Utile pour contextualiser la maintenance des axes (miroir de `get_rod_type` amont).
+    public var rodType: RodType? {
+        capabilities.rodType
+    }
 }
 
 /// Élément de maintenance suivi pour une imprimante (intervalle, échéance, état).
