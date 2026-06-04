@@ -90,6 +90,10 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
   générée par script reproductible Core Graphics, toutes tailles + master 1024) et **launch
   screen** (✅ logo centré + fond sombre via `UILaunchScreen`) ; ⬜ captures, classification d'âge,
   mentions open source.
-- ⬜ Privacy manifest + déclarations de collecte ; conformité HIG + App Review.
+- 🟦 **Privacy manifest** (`PrivacyInfo.xcprivacy`) : aucun tracking, aucune collecte ; **API à
+  raison requise** déclarée (UserDefaults `CA92.1`). Clés Info.plist runtime :
+  `NSLocalNetworkUsageDescription` (connexions directes aux serveurs/imprimantes locaux). Pas de
+  Bonjour/mDNS côté app (SSDP fait par le serveur) ni d'appareil photo (flux réseau). ⬜
+  conformité HIG + App Review (étape de soumission).
 - ⬜ Étapes nécessitant le compte Apple Developer (à la charge de l'utilisateur) : enrôlement,
   signature distribution, TestFlight, soumission, réponses à la revue.

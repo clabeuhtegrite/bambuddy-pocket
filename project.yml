@@ -48,7 +48,12 @@ targets:
           UIImageRespectsSafeAreaInsets: true
           UIColorName: LaunchBackground
         ITSAppUsesNonExemptEncryption: false
-        # Accès aux serveurs/imprimantes sur le réseau local (cf. ADR-0003).
+        # Accès au réseau local (cf. ADR-0003) : l'app se connecte directement aux IP/hôtes
+        # saisis par l'utilisateur (REST + WebSocket + flux caméra MJPEG). Déclenche l'invite
+        # « réseau local » sur device réel. Pas de Bonjour/mDNS côté app (la découverte SSDP est
+        # effectuée par le serveur Bambuddy, pas par l'iPhone) → pas de NSBonjourServices. Pas
+        # d'usage de l'appareil photo de l'iPhone (la « caméra » est le flux réseau de
+        # l'imprimante) → pas de NSCameraUsageDescription.
         NSLocalNetworkUsageDescription: >-
           BamPocket se connecte à vos serveurs Bambuddy et imprimantes sur votre réseau
           local pour afficher leur état et les piloter.
