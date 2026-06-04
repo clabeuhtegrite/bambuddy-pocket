@@ -5,6 +5,9 @@ import Foundation
 public struct Temperatures: Codable, Sendable, Hashable {
     public var nozzle: Double?
     public var nozzleTarget: Double?
+    /// Seconde buse (modèles double extrudeur : familles H2D / X2D). `nil` sur mono-buse.
+    public var nozzle2: Double?
+    public var nozzle2Target: Double?
     public var bed: Double?
     public var bedTarget: Double?
     public var chamber: Double?
@@ -13,6 +16,8 @@ public struct Temperatures: Codable, Sendable, Hashable {
     public init(
         nozzle: Double? = nil,
         nozzleTarget: Double? = nil,
+        nozzle2: Double? = nil,
+        nozzle2Target: Double? = nil,
         bed: Double? = nil,
         bedTarget: Double? = nil,
         chamber: Double? = nil,
@@ -20,6 +25,8 @@ public struct Temperatures: Codable, Sendable, Hashable {
     ) {
         self.nozzle = nozzle
         self.nozzleTarget = nozzleTarget
+        self.nozzle2 = nozzle2
+        self.nozzle2Target = nozzle2Target
         self.bed = bed
         self.bedTarget = bedTarget
         self.chamber = chamber
@@ -245,5 +252,36 @@ public struct PrinterStatus: Codable, Sendable, Hashable {
     /// Erreur HMS la plus grave (pour mise en avant).
     public var mostSevereError: HMSError? {
         hmsErrors?.min { lhs, rhs in (lhs.severity ?? 99) < (rhs.severity ?? 99) }
+    }
+
+    /// Modèle normalisé déduit du champ `model` du statut, **s'il est présent**.
+    ///
+    /// ⚠️ Le statut (`GET /printers/{id}/status`) n'expose pas toujours `model` — c'est le
+    /// `Printer` (liste) qui le porte de façon fiable. L'app combine donc `Printer.capabilities`
+    /// (modèle) avec ce que le statut expose réellement. Utiliser `Printer.printerModel` pour la
+    /// source de vérité du modèle.
+    public var statusModel: PrinterModel? {
+        PrinterModel.resolve(model)
+    }
+
+    /// Capacités déduites du seul statut (peut être `.unknown` si le statut n'a pas de modèle).
+    /// Préférer `Printer.capabilities` quand on dispose du `Printer`.
+    public var statusCapabilities: PrinterCapabilities {
+        PrinterCapabilities.forModel(statusModel)
+    }
+
+    /// Le statut expose-t-il une donnée de seconde buse (présence effective, indépendamment du
+    /// modèle) ? Sert de signal complémentaire à `PrinterCapabilities.dualNozzle`.
+    public var statusReportsSecondNozzle: Bool {
+        temperatures?.nozzle2 != nil || temperatures?.nozzle2Target != nil
+    }
+
+    /// L'UI doit-elle afficher la seconde buse pour ces capacités ?
+    ///
+    /// `true` si le modèle est double extrudeur **et** que le statut expose au moins une donnée de
+    /// seconde buse (température ou extrudeur actif). Robuste : un modèle dual sans données de
+    /// seconde buse (firmware ancien) n'affiche rien d'erroné.
+    public func showsSecondNozzle(capabilities: PrinterCapabilities) -> Bool {
+        capabilities.dualNozzle && (statusReportsSecondNozzle || activeExtruder != nil)
     }
 }
