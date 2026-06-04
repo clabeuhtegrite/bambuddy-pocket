@@ -134,6 +134,11 @@ final class ServerListModel {
         AccountModel(server: configuration, connectionFactory: connectionFactory, serverList: self)
     }
 
+    /// Construit le view-model des prises connectées pour ce serveur.
+    func makeSmartPlugsModel(for configuration: ServerConfiguration) -> SmartPlugsModel {
+        SmartPlugsModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Efface le JWT (`bearerToken`) stocké pour ce serveur après une déconnexion.
     func clearBearerToken(for configuration: ServerConfiguration) {
         var secrets = secrets(for: configuration)

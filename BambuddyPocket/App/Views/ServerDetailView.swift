@@ -63,6 +63,11 @@ struct ServerDetailView: View {
                 } label: {
                     Label("Projects", systemImage: "square.stack.3d.up")
                 }
+                NavigationLink {
+                    SmartPlugsView(server: current, serverList: model)
+                } label: {
+                    Label("Smart plugs", systemImage: "powerplug")
+                }
             }
             Section {
                 NavigationLink {

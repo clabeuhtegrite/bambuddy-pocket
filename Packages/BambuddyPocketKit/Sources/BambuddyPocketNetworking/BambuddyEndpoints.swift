@@ -181,6 +181,24 @@ public extension APIClient {
         return try await send("/settings/", method: .patch, body: body)
     }
 
+    // MARK: Prises connectées (cf. docs/bambuddy-api.md §smart-plugs)
+
+    /// Liste les prises connectées (`GET /smart-plugs/`).
+    func smartPlugs() async throws -> [SmartPlug] {
+        try await get("/smart-plugs/")
+    }
+
+    /// État temps réel d'une prise (`GET /smart-plugs/{id}/status`).
+    func smartPlugStatus(id: Int) async throws -> SmartPlugStatus {
+        try await get("/smart-plugs/\(id)/status")
+    }
+
+    /// Pilote l'alimentation d'une prise (`POST /smart-plugs/{id}/control`, action on/off/toggle).
+    func controlSmartPlug(id: Int, action: SmartPlugAction) async throws {
+        let body = try JSONEncoder.bambuddy().encode(SmartPlugControl(action: action))
+        try await post("/smart-plugs/\(id)/control", body: body)
+    }
+
     // MARK: Clés d'API (cf. docs/bambuddy-api.md §api-keys)
 
     /// Liste les clés d'API (`GET /api-keys/`). Le secret complet n'est pas renvoyé.

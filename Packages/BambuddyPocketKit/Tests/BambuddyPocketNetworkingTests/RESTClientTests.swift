@@ -1042,4 +1042,53 @@ struct MockNetworkingTests {
         #expect(request.httpMethod == "POST")
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/logout")
     }
+
+    @Test("smartPlugs cible /smart-plugs/ et décode")
+    func listsSmartPlugs() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":1,"name":"Bench plug","plug_type":"rest","enabled":true,"#
+                + #""printer_id":2,"last_state":"off"}]"#
+        )
+        let client = try makeClient()
+        let plugs = try await client.smartPlugs()
+        #expect(plugs.first?.name == "Bench plug")
+        #expect(plugs.first?.plugType == "rest")
+        #expect(plugs.first?.printerID == 2)
+        #expect(plugs.first?.isEnabled == true)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/smart-plugs/")
+    }
+
+    @Test("smartPlugStatus décode l'état, la joignabilité et la consommation")
+    func fetchesSmartPlugStatus() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"state":"on","reachable":true,"device_name":"Plug-A","#
+                + #""energy":{"power":42.5,"voltage":230.0,"today":0.12}}"#
+        )
+        let client = try makeClient()
+        let status = try await client.smartPlugStatus(id: 1)
+        #expect(status.isReachable)
+        #expect(status.isOn == true)
+        #expect(status.energy?.power == 42.5)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/smart-plugs/1/status")
+    }
+
+    @Test("controlSmartPlug poste l'action sur /smart-plugs/{id}/control")
+    func controlsSmartPlug() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.controlSmartPlug(id: 3, action: .on)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/smart-plugs/3/control")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["action"] as? String == "on")
+    }
 }
