@@ -39,6 +39,9 @@ targets:
         CFBundleDisplayName: Bambuddy Pocket
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        # Police Inter (TTF variable, OFL — cf. NOTICE). Direction artistique Bambuddy.
+        UIAppFonts:
+          - Inter-Variable.ttf
         UILaunchScreen:
           UIColorName: AccentColor
         ITSAppUsesNonExemptEncryption: false

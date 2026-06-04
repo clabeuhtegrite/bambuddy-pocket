@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import BambuddyPocketNetworking
 import SwiftUI
@@ -15,6 +16,7 @@ struct BambuddyPocketApp: App {
     var body: some Scene {
         WindowGroup {
             ServerListView(model: model)
+                .tint(DSColor.accent)
         }
     }
 }

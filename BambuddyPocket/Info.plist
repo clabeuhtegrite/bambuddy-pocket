@@ -29,6 +29,10 @@
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Bambuddy Pocket se connecte à vos serveurs Bambuddy et imprimantes sur votre réseau local pour afficher leur état et les piloter.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Inter-Variable.ttf</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>

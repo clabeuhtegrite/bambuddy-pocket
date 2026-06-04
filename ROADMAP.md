@@ -22,7 +22,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - 🟦 Modèles de domaine d'après le contrat (✅ PrinterStatus/AMS/HMS/Printer + événements WS + fusion ; ⬜ Archive, QueueItem…).
 - ✅ Multi-serveurs : ajout/édition par URL, test de connexion, stockage **Keychain** des secrets.
 - 🟦 Auth : détection `auth_status` (✅ sonde), clé d'API (✅), sans-auth (✅) ; ⬜ login user/pass + 2FA.
-- 🟦 Design system (✅ tokens ; ⬜ composants, typographie Dynamic Type), mode sombre.
+- ✅ Design system (✅ tokens, ✅ **composants** — carte/badge/boutons/fond/séparateur, ✅
+  **typographie Inter** Dynamic Type, ✅ palette adaptative), ✅ **mode sombre** (app adaptative
+  clair/sombre suivant le système, DA Bambuddy — PR A).
 - ✅ i18n FR/EN/ES/DE (String Catalog) ; ⬜ accessibilité (VoiceOver) au fil de l'eau.
 - ✅ Privacy manifest + `NSLocalNetworkUsageDescription` + ATS (exception HTTP local).
 - ✅ CI : build + tests + lint (SwiftLint/SwiftFormat) + shellcheck sur push/PR.
