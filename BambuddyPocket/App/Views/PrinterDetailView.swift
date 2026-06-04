@@ -19,6 +19,11 @@ struct PrinterDetailView: View {
         model.status(for: printer)
     }
 
+    /// Capacités matérielles déduites du modèle (source : `Printer.model`, fiable).
+    private var capabilities: PrinterCapabilities {
+        printer.capabilities
+    }
+
     var body: some View {
         List {
             statusSection
@@ -28,7 +33,7 @@ struct PrinterDetailView: View {
                 PrinterPrintSection(status: status)
                 controlsSection(status)
             }
-            PrinterReadoutSections(status: status)
+            PrinterReadoutSections(status: status, capabilities: capabilities)
             if let status, status.hasActiveErrors {
                 errorsSection(status)
             }
@@ -254,53 +259,6 @@ struct PrinterDetailView: View {
 
     private var informationSection: some View {
         PrinterInfoSection(printer: printer, status: status)
-    }
-}
-
-/// Sections en lecture seule : températures, ventilateurs et informations matérielles.
-private struct PrinterReadoutSections: View {
-    let status: PrinterStatus?
-
-    var body: some View {
-        temperatureSection
-        fansSection
-    }
-
-    @ViewBuilder
-    private var temperatureSection: some View {
-        if let temps = status?.temperatures {
-            Section("Temperatures") {
-                temperatureRow("Nozzle", temps.nozzle, temps.nozzleTarget)
-                temperatureRow("Bed", temps.bed, temps.bedTarget)
-                if temps.chamber != nil {
-                    temperatureRow("Chamber", temps.chamber, temps.chamberTarget)
-                }
-            }
-        }
-    }
-
-    private func temperatureRow(_ label: LocalizedStringKey, _ current: Double?, _ target: Double?) -> some View {
-        LabeledContent(label, value: PrinterPresentation.temperaturePair(current, target))
-    }
-
-    @ViewBuilder
-    private var fansSection: some View {
-        if let status, status.coolingFanSpeed != nil || status.bigFan1Speed != nil {
-            Section("Fans") {
-                if let speed = status.coolingFanSpeed {
-                    LabeledContent("Part cooling", value: "\(speed)%")
-                }
-                if let speed = status.bigFan1Speed {
-                    LabeledContent("Auxiliary", value: "\(speed)%")
-                }
-                if let speed = status.bigFan2Speed {
-                    LabeledContent("Chamber fan", value: "\(speed)%")
-                }
-                if let speed = status.heatbreakFanSpeed {
-                    LabeledContent("Heatbreak", value: "\(speed)%")
-                }
-            }
-        }
     }
 }
 
