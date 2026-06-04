@@ -90,7 +90,8 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ⬜ **Slicing** : déclenchement du sidecar serveur (OrcaSlicer/Bambu Studio) s'il est activé
   (`use_slicer_api`, `slice-jobs`) — non testable sur la démo.
 - 🟦 Bibliothèque de modèles (✅ liste + recherche, détail, ajout à la file, édition nom/notes,
-  suppression ; ⬜ dossiers, upload, déplacement) / projets (✅ liste + recherche, détail, création,
+  suppression, ✅ **arbre de dossiers** + navigation, ✅ **déplacement** de fichiers, ✅ **corbeille**
+  (restauration/suppression définitive) ; ⬜ upload) / projets (✅ liste + recherche, détail, création,
   édition, suppression ; ⬜ items/BOM/timeline), **inventaire
   filaments** (✅ liste,
   détail, édition, historique de consommation, reset compteur, suppression) ; ⬜ Spoolman/SpoolBuddy,

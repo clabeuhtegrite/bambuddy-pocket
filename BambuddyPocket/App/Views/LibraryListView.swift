@@ -8,44 +8,43 @@ import SwiftUI
 struct LibraryListView: View {
     @State private var model: LibraryListModel
     @State private var query = ""
+    @State private var moving: LibraryFile?
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makeLibraryListModel(for: server))
     }
 
-    private var filtered: [LibraryFile] {
-        guard !query.isEmpty else {
-            return model.files
+    private var isSearching: Bool {
+        !query.isEmpty
+    }
+
+    /// Quand on cherche : tous les fichiers ; sinon : seulement la racine (les autres sont
+    /// accessibles via leur dossier).
+    private var listedFiles: [LibraryFile] {
+        if isSearching {
+            return model.files.filter { $0.displayName.localizedCaseInsensitiveContains(query) }
         }
-        return model.files.filter { $0.displayName.localizedCaseInsensitiveContains(query) }
+        return model.files(inFolder: nil)
     }
 
     var body: some View {
         List {
-            ForEach(filtered) { file in
-                NavigationLink {
-                    LibraryFileDetailView(file: file, model: model)
-                } label: {
-                    LibraryRow(file: file)
-                }
-                .swipeActions(edge: .leading) {
-                    if file.isSliced {
-                        Button {
-                            Task { await model.enqueue(file) }
+            if !isSearching, !model.folders.isEmpty {
+                Section("Folders") {
+                    ForEach(model.folders) { folder in
+                        NavigationLink {
+                            LibraryFolderView(folder: folder, model: model)
                         } label: {
-                            Label("Add to queue", systemImage: "text.append")
+                            LibraryFolderRow(folder: folder)
                         }
-                        .tint(DSColor.accent)
+                        .listRowBackground(DSColor.card)
                     }
                 }
-                .swipeActions(edge: .trailing) {
-                    Button(role: .destructive) {
-                        Task { await model.delete(file) }
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                    }
+            }
+            Section(isSearching ? "Results" : "Files") {
+                ForEach(listedFiles) { file in
+                    fileRow(file)
                 }
-                .listRowBackground(DSColor.card)
             }
         }
         .dsListBackground()
@@ -53,6 +52,18 @@ struct LibraryListView: View {
         .overlay { placeholder }
         .navigationTitle("Library")
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    LibraryTrashView(model: model)
+                } label: {
+                    Label("Trash", systemImage: "trash")
+                }
+            }
+        }
+        .sheet(item: $moving) { file in
+            LibraryMoveSheet(file: file, model: model)
+        }
         .refreshable { await model.load() }
         .task {
             if !model.hasLoaded {
@@ -61,12 +72,42 @@ struct LibraryListView: View {
         }
     }
 
+    private func fileRow(_ file: LibraryFile) -> some View {
+        NavigationLink {
+            LibraryFileDetailView(file: file, model: model)
+        } label: {
+            LibraryRow(file: file)
+        }
+        .swipeActions(edge: .leading) {
+            if file.isSliced {
+                Button {
+                    Task { await model.enqueue(file) }
+                } label: {
+                    Label("Add to queue", systemImage: "text.append")
+                }
+                .tint(DSColor.accent)
+            }
+            Button { moving = file } label: {
+                Label("Move", systemImage: "folder")
+            }
+            .tint(DSColor.textSecondary)
+        }
+        .swipeActions(edge: .trailing) {
+            Button(role: .destructive) {
+                Task { await model.delete(file) }
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
+        .listRowBackground(DSColor.card)
+    }
+
     @ViewBuilder
     private var placeholder: some View {
         if !model.hasLoaded, model.files.isEmpty {
             ProgressView()
                 .tint(DSColor.accent)
-        } else if model.files.isEmpty {
+        } else if model.files.isEmpty, model.folders.isEmpty {
             if let error = model.loadError {
                 ContentUnavailableView {
                     Label("Couldn’t load the library", systemImage: "exclamationmark.triangle")
