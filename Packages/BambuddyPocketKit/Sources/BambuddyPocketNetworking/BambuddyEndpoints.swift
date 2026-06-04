@@ -21,6 +21,13 @@ public extension APIClient {
         return try await send("/printers/", method: .post, body: body)
     }
 
+    /// Met à jour une imprimante côté serveur (`PATCH /printers/{id}`). Seuls les champs non `nil`
+    /// de `PrinterUpdate` sont transmis (mise à jour partielle).
+    func updatePrinter(id: Int, _ update: PrinterUpdate) async throws -> Printer {
+        let body = try JSONEncoder.bambuddy().encode(update)
+        return try await send("/printers/\(id)", method: .patch, body: body)
+    }
+
     /// Archive d'impressions (`GET /archives/`), la plus récente d'abord côté serveur.
     func archives() async throws -> [Archive] {
         try await get("/archives/")

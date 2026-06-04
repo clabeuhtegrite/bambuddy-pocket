@@ -161,6 +161,20 @@ final class PrinterListModel {
         }
     }
 
+    /// Met à jour une imprimante côté serveur (PATCH partiel) puis recharge la liste. Renvoie
+    /// `true` au succès.
+    func updatePrinter(id: Int, _ update: PrinterUpdate) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            _ = try await client.updatePrinter(id: id, update)
+            await load()
+            return true
+        } catch {
+            controlError = ErrorMessage.text(for: error)
+            return false
+        }
+    }
+
     func startDrying(_ printer: Printer, amsID: Int) async {
         await runControl { try await $0.startDrying(id: printer.id, amsID: amsID) }
     }
