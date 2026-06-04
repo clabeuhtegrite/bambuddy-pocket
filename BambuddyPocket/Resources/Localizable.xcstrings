@@ -2033,6 +2033,28 @@
         }
       }
     },
+    "Carbon rods": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karbonstangen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varillas de carbono"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiges carbone"
+          }
+        }
+      }
+    },
     "Category": {
       "localizations": {
         "de": {
@@ -6553,6 +6575,28 @@
         }
       }
     },
+    "Linear rails": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linearschienen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guías lineales"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rails linéaires"
+          }
+        }
+      }
+    },
     "Link": {
       "localizations": {
         "de": {
@@ -7141,6 +7185,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Modèle"
+          }
+        }
+      }
+    },
+    "Motion system: %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bewegungssystem: %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistema de movimiento: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Système de mouvement : %@"
           }
         }
       }
@@ -11546,6 +11612,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Statut"
+          }
+        }
+      }
+    },
+    "Steel rods": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stahlstangen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varillas de acero"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiges acier"
           }
         }
       }
