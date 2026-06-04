@@ -1706,4 +1706,32 @@ struct MockNetworkingTests {
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/projects/3/timeline")
     }
+
+    @Test("timelapseInfo cible /archives/{id}/timelapse/info et décode")
+    func fetchesTimelapseInfo() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"duration":42.5,"width":1920,"height":1080,"fps":30,"codec":"h264","#
+                + #""file_size":1048576,"has_audio":false}"#
+        )
+        let client = try makeClient()
+        let info = try await client.timelapseInfo(archiveID: 8)
+        #expect(info.resolution == "1920 × 1080")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/archives/8/timelapse/info")
+    }
+
+    @Test("archiveThumbnail et archivePlateThumbnail récupèrent des octets bruts")
+    func fetchesArchiveThumbnails() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "binarydata")
+        let client = try makeClient()
+        _ = try await client.archiveThumbnail(id: 5)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/archives/5/thumbnail")
+        _ = try await client.archivePlateThumbnail(id: 5, plateIndex: 2)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/archives/5/plate-thumbnail/2")
+    }
 }

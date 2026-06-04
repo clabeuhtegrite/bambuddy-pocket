@@ -61,6 +61,11 @@ public extension APIClient {
         try await delete("/archives/\(id)")
     }
 
+    /// Métadonnées de la vidéo timelapse d'une archive (`GET /archives/{id}/timelapse/info`).
+    func timelapseInfo(archiveID: Int) async throws -> TimelapseInfo {
+        try await get("/archives/\(archiveID)/timelapse/info")
+    }
+
     /// File d'attente d'impression (`GET /queue/`).
     func queue() async throws -> [QueueItem] {
         try await get("/queue/")
