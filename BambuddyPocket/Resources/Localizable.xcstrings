@@ -6027,6 +6027,28 @@
         }
       }
     },
+    "History (%lld)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verlauf (%lld)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historial (%lld)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Historique (%lld)"
+          }
+        }
+      }
+    },
     "Home axes": {
       "localizations": {
         "de": {
