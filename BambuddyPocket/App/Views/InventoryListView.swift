@@ -91,7 +91,8 @@ private struct SpoolRow: View {
                     .font(DSFont.headline)
                     .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(1)
-                if let color = spool.colorName {
+                // Toujours un libellé : nom stocké lisible, sinon dérivé du hex (#8).
+                if let color = FilamentColorName.resolved(colorName: spool.colorName, hex: spool.rgba) {
                     Text(color)
                         .font(DSFont.caption)
                         .foregroundStyle(DSColor.textSecondary)
@@ -133,7 +134,7 @@ struct SpoolDetailView: View {
                 if let brand = current.brand {
                     LabeledContent("Brand", value: brand)
                 }
-                if let color = current.colorName {
+                if let color = FilamentColorName.resolved(colorName: current.colorName, hex: current.rgba) {
                     LabeledContent("Color") {
                         HStack(spacing: DSSpacing.sm) {
                             Circle()
