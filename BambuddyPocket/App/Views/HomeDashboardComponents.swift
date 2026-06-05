@@ -15,6 +15,14 @@ struct HeroPrintCard: View {
 
     let snapshot: PrinterSnapshot
     let onAction: (Action) -> Void
+    /// Ouvre le détail de l'imprimante (header tapotable), `nil` si non disponible.
+    var onOpenDetail: (() -> Void)?
+
+    init(snapshot: PrinterSnapshot, onOpenDetail: (() -> Void)? = nil, onAction: @escaping (Action) -> Void) {
+        self.snapshot = snapshot
+        self.onOpenDetail = onOpenDetail
+        self.onAction = onAction
+    }
 
     private var status: PrinterStatus? {
         snapshot.status
@@ -23,7 +31,13 @@ struct HeroPrintCard: View {
     var body: some View {
         DSCard {
             VStack(alignment: .leading, spacing: DSSpacing.md) {
-                header
+                if let onOpenDetail {
+                    Button(action: onOpenDetail) { header }
+                        .buttonStyle(.plain)
+                        .accessibilityHint(Text("Opens printer details"))
+                } else {
+                    header
+                }
                 if let fraction = snapshot.progressFraction {
                     ProgressView(value: fraction)
                         .tint(DSColor.accent)
