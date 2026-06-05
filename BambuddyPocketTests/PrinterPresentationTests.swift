@@ -45,4 +45,19 @@ struct PrinterPresentationTests {
         // Au-delà : pas de côté (libellé numéroté simple).
         #expect(!rightSides.contains { third.lowercased().contains($0) })
     }
+
+    @Test("isLightColor : seuil de luminance pour le contraste (numéro de slot AMS)")
+    func isLightColor() {
+        // Couleurs claires (texte sombre attendu).
+        #expect(PrinterPresentation.isLightColor(hexRGBA: "FFFFFF"))
+        #expect(PrinterPresentation.isLightColor(hexRGBA: "FFFF00")) // jaune vif
+        #expect(PrinterPresentation.isLightColor(hexRGBA: "#FAFAFA"))
+        // Couleurs sombres (texte clair attendu).
+        #expect(!PrinterPresentation.isLightColor(hexRGBA: "000000"))
+        #expect(!PrinterPresentation.isLightColor(hexRGBA: "0000FF")) // bleu pur
+        #expect(!PrinterPresentation.isLightColor(hexRGBA: "FF0000FF")) // rouge + alpha
+        // Hex inexploitable → considéré sombre (repli sûr : texte blanc).
+        #expect(!PrinterPresentation.isLightColor(hexRGBA: nil))
+        #expect(!PrinterPresentation.isLightColor(hexRGBA: "FFF"))
+    }
 }
