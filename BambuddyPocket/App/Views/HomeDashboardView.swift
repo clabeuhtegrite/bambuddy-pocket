@@ -90,6 +90,9 @@ struct HomeDashboardView: View {
         }
         .refreshable { await printers.load() }
         .task { await printers.run() }
+        .task(id: printers.printers.map(\.id)) {
+            await printers.observeActivePrinters(printers.printers.map(\.id))
+        }
     }
 
     /// Contenu de l'accueil selon la disposition choisie (A tableau de bord, B focus, C grille).

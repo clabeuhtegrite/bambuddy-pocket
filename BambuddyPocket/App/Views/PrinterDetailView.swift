@@ -72,6 +72,7 @@ struct PrinterDetailView: View {
         .background(DSColor.background)
         .navigationTitle(printer.name)
         .toolbarTitleDisplayMode(.inline)
+        .task { await model.observeActivePrinter(printer) }
         .sheet(isPresented: $showingCalibration) {
             CalibrationSheet(printer: printer, model: model)
         }

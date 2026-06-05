@@ -43,6 +43,14 @@ final class ServerNotificationCenter {
     private let connectionFactory: ServerConnectionFactory
     private var realtimeTask: Task<Void, Never>?
     private var pollTask: Task<Void, Never>?
+    /// Sondage REST **rapide** dédié à l'imprimante actuellement à l'écran (détail/accueil) : tant
+    /// qu'un écran imprimante est visible, on rafraîchit son statut à cadence serrée pour refléter
+    /// l'état quasi en temps réel quand le WebSocket ne passe pas Cloudflare.
+    private var activePollTask: Task<Void, Never>?
+    /// Imprimantes actuellement visibles à l'écran (compteur de références : plusieurs écrans
+    /// peuvent observer la même imprimante). Le sondage rapide tourne tant que cet ensemble n'est
+    /// pas vide.
+    private var activePrinterRefcounts: [Int: Int] = [:]
     /// Noms d'imprimante connus, pour enrichir les notifications.
     private var printerNames: [Int: String] = [:]
     /// Statuts précédents, pour ne notifier les erreurs HMS qu'à la transition.
@@ -60,6 +68,10 @@ final class ServerNotificationCenter {
     private static let maxNotifications = 100
     /// Cadence du repli REST quand le temps réel (WebSocket) est indisponible.
     private static let restPollInterval = Duration.seconds(10)
+    /// Cadence **rapide** du sondage de l'imprimante active (écran imprimante visible). Plus serrée
+    /// que le repli global car ciblée sur une seule imprimante : l'écran reflète l'état quasi en
+    /// temps réel quand le WebSocket ne passe pas Cloudflare (cf. web UI). Aligné sur ~2–3 s.
+    private static let activePollInterval = Duration.milliseconds(2500)
     /// Nombre d'échecs d'ouverture WebSocket **sans aucun événement reçu** avant de basculer en
     /// repli REST permanent (le handshake est rejeté, ex. Cloudflare Access refuse l'upgrade).
     private static let maxHandshakeFailuresBeforeRESTMode = 2
@@ -117,6 +129,9 @@ final class ServerNotificationCenter {
         realtimeTask = nil
         pollTask?.cancel()
         pollTask = nil
+        activePollTask?.cancel()
+        activePollTask = nil
+        activePrinterRefcounts.removeAll()
         cancelBadgeReconnectTask()
     }
 
@@ -282,6 +297,24 @@ final class ServerNotificationCenter {
         }
     }
 
+    /// Re-fetch **ciblé** du statut d'une seule imprimante (`GET /printers/{id}/status`) puis fusion
+    /// dans l'état partagé. Appelé juste après une action de contrôle pour resynchroniser
+    /// immédiatement tous les écrans (détail **et** accueil). Silencieux en cas d'échec réseau/auth.
+    @discardableResult
+    func refreshStatus(for printerID: Int) async -> PrinterStatus? {
+        guard let client = try? connectionFactory.makeClient(for: server) else { return nil }
+        guard let status = try? await client.printerStatus(id: printerID) else { return nil }
+        merge(status, into: printerID)
+        return statuses[printerID]
+    }
+
+    /// Fusionne un statut déjà décodé (ex. update optimiste local) dans l'état partagé. Exposé pour
+    /// permettre une mise à jour optimiste d'un champ juste après l'envoi d'une commande, avant que
+    /// le re-fetch ne confirme.
+    func applyOptimistic(_ delta: PrinterStatus, into printerID: Int) {
+        merge(delta, into: printerID)
+    }
+
     /// Injecte un événement comme s'il provenait du WebSocket (utilisé par les tests).
     func ingest(_ event: WebSocketEvent) {
         apply(event)
@@ -355,5 +388,52 @@ final class ServerNotificationCenter {
             notifications.removeLast(notifications.count - Self.maxNotifications)
         }
         latestBanner = notification
+    }
+}
+
+// MARK: - Imprimante active (sondage rapide)
+
+extension ServerNotificationCenter {
+    /// Signale qu'un écran observe maintenant cette imprimante (détail/accueil visible). Démarre le
+    /// sondage rapide si ce n'était pas déjà le cas. À équilibrer par `endObserving`.
+    func beginObserving(printerID: Int) {
+        activePrinterRefcounts[printerID, default: 0] += 1
+        startActivePollIfNeeded()
+    }
+
+    /// Signale qu'un écran ne regarde plus cette imprimante. Arrête le sondage rapide quand plus
+    /// aucun écran imprimante n'est visible.
+    func endObserving(printerID: Int) {
+        guard let count = activePrinterRefcounts[printerID] else { return }
+        if count <= 1 {
+            activePrinterRefcounts[printerID] = nil
+        } else {
+            activePrinterRefcounts[printerID] = count - 1
+        }
+        if activePrinterRefcounts.isEmpty {
+            activePollTask?.cancel()
+            activePollTask = nil
+        }
+    }
+
+    private func startActivePollIfNeeded() {
+        guard activePollTask == nil else { return }
+        activePollTask = Task { [weak self] in
+            await self?.activePollLoop()
+        }
+    }
+
+    /// Sondage rapide des imprimantes visibles. Tourne **en complément** du WebSocket (et non
+    /// seulement en repli) : il garantit que le toggle bouge vite après une action, même si le WS
+    /// passe Cloudflare mais avec de la latence. Cadence serrée mais ciblée (une à quelques
+    /// imprimantes), donc peu coûteuse.
+    private func activePollLoop() async {
+        while !Task.isCancelled {
+            let ids = Array(activePrinterRefcounts.keys)
+            for id in ids where !Task.isCancelled {
+                await refreshStatus(for: id)
+            }
+            try? await Task.sleep(for: Self.activePollInterval)
+        }
     }
 }
