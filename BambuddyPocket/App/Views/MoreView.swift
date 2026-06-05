@@ -55,11 +55,12 @@ struct MoreView: View {
         }
     }
 
-    /// Contenu : bibliothèque, projets.
+    /// Contenu : bibliothèque, projets, MakerWorld.
     private var contentSection: some View {
         Section("Content") {
             link("Library", "folder") { LibraryListView(server: current, serverList: model) }
             link("Projects", "square.stack.3d.up") { ProjectListView(server: current, serverList: model) }
+            link("MakerWorld", "globe") { MakerWorldView(server: current, serverList: model) }
         }
     }
 
@@ -82,6 +83,7 @@ struct MoreView: View {
             link("API keys", "key") { APIKeysView(server: current, serverList: model) }
             link("Backups", "externaldrive") { BackupsView(server: current, serverList: model) }
             link("Remote backup", "arrow.up.forward.app") { GitHubBackupView(server: current, serverList: model) }
+            link("Bambu Cloud", "cloud") { CloudAccountView(server: current, serverList: model) }
             link("External links", "link") { ExternalLinksView(server: current, serverList: model) }
             link("Support", "stethoscope") { SupportView(server: current, serverList: model) }
             if current.authMethod == .userPassword {
