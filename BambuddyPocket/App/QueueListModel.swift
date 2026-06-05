@@ -22,6 +22,20 @@ final class QueueListModel {
         self.connectionFactory = connectionFactory
     }
 
+    /// Éléments **actifs** de la file (en attente / en cours) : seuls ceux-ci sont ordonnés et
+    /// réordonnables. `GET /queue/` renvoie aussi les éléments terminaux (historique) mélangés ;
+    /// on les sépare ici comme le fait le tableau de bord web (sections « File » / « Historique »).
+    var activeItems: [QueueItem] {
+        items.filter { !$0.isTerminal }
+    }
+
+    /// Éléments **terminaux** (terminés / échoués / annulés / ignorés) — l'« Historique » de la file.
+    /// Triés du plus récent au plus ancien (id décroissant : un id plus élevé a été créé plus tard),
+    /// faute d'horodatage de fin fiable dans le sous-ensemble modélisé.
+    var historyItems: [QueueItem] {
+        items.filter(\.isTerminal).sorted { $0.id > $1.id }
+    }
+
     func load() async {
         do {
             let client = try connectionFactory.makeClient(for: server)
@@ -38,12 +52,17 @@ final class QueueListModel {
         hasLoaded = true
     }
 
-    /// Réordonne localement puis persiste le nouvel ordre sur le serveur.
+    /// Réordonne localement puis persiste le nouvel ordre sur le serveur. Les indices reçus portent
+    /// sur les **éléments actifs** affichés (`activeItems`) — les seuls réordonnables ; on recompose
+    /// ensuite `items` en conservant l'historique (éléments terminaux) inchangé.
     func move(from source: IndexSet, to destination: Int) {
-        items.move(fromOffsets: source, toOffset: destination)
-        let reordered = items.enumerated().map { offset, item in
+        var active = activeItems
+        active.move(fromOffsets: source, toOffset: destination)
+        let reordered = active.enumerated().map { offset, item in
             QueueReorderItem(id: item.id, position: offset + 1)
         }
+        // Reflète immédiatement le nouvel ordre actif dans `items` (historique préservé).
+        items = active + items.filter(\.isTerminal)
         Task { await persist(reordered) }
     }
 

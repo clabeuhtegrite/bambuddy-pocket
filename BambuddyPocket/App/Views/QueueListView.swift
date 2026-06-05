@@ -34,20 +34,23 @@ struct QueueListView: View {
                     }
                 }
             }
-            Section("Queue") {
-                ForEach(model.items) { item in
-                    QueueRow(item: item)
-                        .swipeActions(edge: .leading) {
-                            leadingActions(for: item)
-                        }
-                        .swipeActions(edge: .trailing) {
-                            trailingActions(for: item)
-                        }
-                }
-                .onMove { source, destination in
-                    model.move(from: source, to: destination)
+            if !model.activeItems.isEmpty {
+                Section("Queue") {
+                    ForEach(model.activeItems) { item in
+                        QueueRow(item: item)
+                            .swipeActions(edge: .leading) {
+                                leadingActions(for: item)
+                            }
+                            .swipeActions(edge: .trailing) {
+                                trailingActions(for: item)
+                            }
+                    }
+                    .onMove { source, destination in
+                        model.move(from: source, to: destination)
+                    }
                 }
             }
+            historySection
         }
         .scrollContentBackground(.hidden)
         .background(DSColor.background)
@@ -55,7 +58,8 @@ struct QueueListView: View {
         .navigationTitle("Print queue")
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
-            if !model.items.isEmpty {
+            // Le mode édition (réordonnancement) ne concerne que les éléments actifs.
+            if !model.activeItems.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
                     EditButton()
                 }
@@ -111,6 +115,30 @@ struct QueueListView: View {
                 Label("Cancel", systemImage: "xmark")
             }
             .tint(DSColor.statusWarning)
+        }
+    }
+
+    /// Historique de la file : éléments terminaux (terminés / échoués / annulés), du plus récent au
+    /// plus ancien, avec leur compte — équivalent de la section « Historique » du tableau de bord web.
+    /// `GET /queue/` les renvoie déjà ; on les présente à part au lieu de les noyer dans la file.
+    @ViewBuilder
+    private var historySection: some View {
+        let history = model.historyItems
+        if !history.isEmpty {
+            Section {
+                ForEach(history) { item in
+                    QueueRow(item: item)
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                Task { await model.delete(item) }
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
+                }
+            } header: {
+                Text("History (\(history.count))")
+            }
         }
     }
 
