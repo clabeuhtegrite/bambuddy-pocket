@@ -6557,6 +6557,28 @@
         }
       }
     },
+    "Flow calibration": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibration du débit"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibración de flujo"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durchflusskalibrierung"
+          }
+        }
+      }
+    },
     "Focus": {
       "localizations": {
         "en": {
@@ -7731,6 +7753,28 @@
         }
       }
     },
+    "Layer inspection": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspection de couche"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspección de capa"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schichtprüfung"
+          }
+        }
+      }
+    },
     "Layer shift": {
       "localizations": {
         "fr": {
@@ -7799,6 +7843,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Leer lassen, um das aktuelle Token zu behalten. Ein neuer Wert ersetzt es auf dem Server."
+          }
+        }
+      }
+    },
+    "Leave empty to auto-detect the plate from the sliced file.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laissez vide pour détecter automatiquement la plaque depuis le fichier tranché."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déjalo vacío para detectar automáticamente la placa del archivo laminado."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer lassen, um die Platte automatisch aus der gesliceten Datei zu erkennen."
           }
         }
       }
@@ -8009,6 +8075,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mehr laden"
+          }
+        }
+      }
+    },
+    "Loading printers…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement des imprimantes…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando impresoras…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drucker werden geladen…"
           }
         }
       }
@@ -9571,6 +9659,28 @@
         }
       }
     },
+    "No printers available": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune imprimante disponible"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay impresoras disponibles"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Drucker verfügbar"
+          }
+        }
+      }
+    },
     "No printers found yet.": {
       "localizations": {
         "de": {
@@ -10428,6 +10538,28 @@
         }
       }
     },
+    "Options": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Options"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opciones"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionen"
+          }
+        }
+      }
+    },
     "Overdue by %lld h": {
       "localizations": {
         "de": {
@@ -10582,6 +10714,28 @@
         }
       }
     },
+    "Plate": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plaque"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Placa"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platte"
+          }
+        }
+      }
+    },
     "Plate %lld": {
       "localizations": {
         "en": {
@@ -10676,6 +10830,28 @@
         }
       }
     },
+    "Plate number (optional)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Numéro de plaque (facultatif)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Número de placa (opcional)"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plattennummer (optional)"
+          }
+        }
+      }
+    },
     "Platform": {
       "localizations": {
         "de": {
@@ -10764,6 +10940,28 @@
         }
       }
     },
+    "Print": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imprimer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imprimir"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drucken"
+          }
+        }
+      }
+    },
     "Print archived": {
       "localizations": {
         "fr": {
@@ -10782,6 +10980,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Druck archiviert"
+          }
+        }
+      }
+    },
+    "Print dispatched": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impression lancée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impresión enviada"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druck gestartet"
           }
         }
       }
@@ -14434,6 +14654,28 @@
         }
       }
     },
+    "The print job has been sent to the printer.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La tâche d'impression a été envoyée à l'imprimante."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El trabajo de impresión se ha enviado a la impresora."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Druckauftrag wurde an den Drucker gesendet."
+          }
+        }
+      }
+    },
     "The printer reported no pressure-advance calibration profiles.": {
       "localizations": {
         "de": {
@@ -14712,6 +14954,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cette impression n’a pas encore d’objets ignorables."
+          }
+        }
+      }
+    },
+    "This printer is offline. Connect it before printing.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette imprimante est hors ligne. Connectez-la avant d'imprimer."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta impresora está desconectada. Conéctala antes de imprimir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Drucker ist offline. Verbinden Sie ihn vor dem Drucken."
           }
         }
       }
@@ -15807,6 +16071,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Version"
+          }
+        }
+      }
+    },
+    "Vibration calibration": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibration des vibrations"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calibración de vibración"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vibrationskalibrierung"
           }
         }
       }

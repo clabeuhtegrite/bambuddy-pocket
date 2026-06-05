@@ -118,6 +118,78 @@ struct MockNetworkingTests {
         }
     }
 
+    // MARK: - Lancement d'impression (contrats `…/print` et `…/reprint`)
+
+    private static let printDispatchedJSON = """
+    {"status":"dispatched","printer_id":3,"archive_id":null,"filename":"part.gcode.3mf",\
+    "dispatch_job_id":7,"dispatch_position":1}
+    """
+
+    @Test("Library print: printer_id en query, options en corps, décodage du dispatch")
+    func libraryPrint() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: Self.printDispatchedJSON)
+        let client = try makeClient()
+
+        let options = PrintLaunchOptions(plateId: 2, bedLevelling: false, timelapse: true, useAms: false)
+        let result = try await client.printLibraryFile(
+            id: 42,
+            printerID: 3,
+            request: FilePrintRequest(options: options, projectId: 9)
+        )
+
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.path == "/api/v1/library/files/42/print")
+        #expect(request.url?.query == "printer_id=3")
+
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["plate_id"] as? Int == 2)
+        #expect(json["bed_levelling"] as? Bool == false)
+        #expect(json["timelapse"] as? Bool == true)
+        #expect(json["use_ams"] as? Bool == false)
+        #expect(json["project_id"] as? Int == 9)
+        // Les champs non renseignés (auto-détection serveur) ne sont pas encodés.
+        #expect(json["ams_mapping"] == nil)
+        #expect(json["plate_name"] == nil)
+
+        #expect(result.status == "dispatched")
+        #expect(result.printerId == 3)
+        #expect(result.dispatchJobId == 7)
+        #expect(result.dispatchPosition == 1)
+    }
+
+    @Test("Archive reprint: printer_id en query, corps ReprintRequest, décodage du dispatch")
+    func archiveReprint() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: Self.printDispatchedJSON)
+        let client = try makeClient()
+
+        let result = try await client.reprintArchive(
+            id: 11,
+            printerID: 3,
+            request: ReprintRequest(options: PrintLaunchOptions())
+        )
+
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.path == "/api/v1/archives/11/reprint")
+        #expect(request.url?.query == "printer_id=3")
+
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        // Défauts amont préservés.
+        #expect(json["bed_levelling"] as? Bool == true)
+        #expect(json["vibration_cali"] as? Bool == true)
+        #expect(json["flow_cali"] as? Bool == false)
+        #expect(json["use_ams"] as? Bool == true)
+        // Pas de project_id sur une réimpression.
+        #expect(json["project_id"] == nil)
+
+        #expect(result.status == "dispatched")
+    }
+
     // MARK: - ServerConnectionFactory
 
     @Test("probe() interroge /auth/status avec les secrets injectés")

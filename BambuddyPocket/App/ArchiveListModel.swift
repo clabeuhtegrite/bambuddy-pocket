@@ -41,6 +41,15 @@ final class ArchiveListModel {
         }
     }
 
+    /// Construit le view-model de la feuille « Imprimer » pour la réimpression d'une archive.
+    func makePrintDispatchModel(for archive: Archive) -> PrintDispatchModel {
+        PrintDispatchModel(
+            source: .archive(id: archive.id, name: archive.displayName),
+            server: server,
+            connectionFactory: connectionFactory
+        )
+    }
+
     /// Ajoute une archive à la file d'attente d'impression. Renvoie `true` au succès.
     func enqueue(_ archive: Archive) async -> Bool {
         do {
