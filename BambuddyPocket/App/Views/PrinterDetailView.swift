@@ -162,7 +162,7 @@ struct PrinterDetailView: View {
 
     private var statusSection: some View {
         Section("Status") {
-            StateBadge(state: status?.state, connected: status?.connected)
+            StateBadge(state: status?.liveState, connected: status?.connected)
             if let stage = status?.displayableStage {
                 LabeledContent("Stage", value: stage)
             }

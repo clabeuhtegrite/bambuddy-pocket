@@ -125,7 +125,7 @@ private struct PrinterRow: View {
                     .font(DSFont.headline)
                     .foregroundStyle(DSColor.textPrimary)
                 Spacer()
-                StateBadge(state: status?.state, connected: status?.connected)
+                StateBadge(state: status?.liveState, connected: status?.connected)
             }
             if let status, status.isPrinting {
                 activePrint(status)
