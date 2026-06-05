@@ -1,6 +1,28 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ on %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ auf %2$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ en %2$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ sur %2$@"
+          }
+        }
+      }
+    },
     "%lld cancelled": {
       "localizations": {
         "de": {
@@ -617,6 +639,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Température AMS"
+          }
+        }
+      }
+    },
+    "AMS · spool almost empty": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS · Spule fast leer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS · bobina casi vacía"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AMS · bobine presque vide"
           }
         }
       }
@@ -4869,6 +4913,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Terminé"
+          }
+        }
+      }
+    },
+    "Dual nozzle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doppeldüse"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doble boquilla"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bi-buse"
           }
         }
       }
@@ -9225,6 +9291,72 @@
         }
       }
     },
+    "Nozzle L": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse L"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla I"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse G"
+          }
+        }
+      }
+    },
+    "Nozzle L / R": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse L / R"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla I / D"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse G / D"
+          }
+        }
+      }
+    },
+    "Nozzle R": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse R"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla D"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse D"
+          }
+        }
+      }
+    },
     "Nozzle diameter": {
       "localizations": {
         "de": {
@@ -9598,6 +9730,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Le plateau semble vide"
+          }
+        }
+      }
+    },
+    "Plate not cleared": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Platte nicht geleert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bandeja sin vaciar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plateau non vidé"
           }
         }
       }
@@ -10412,6 +10566,28 @@
         }
       }
     },
+    "Quick actions": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schnellaktionen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acciones rápidas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actions rapides"
+          }
+        }
+      }
+    },
     "Read status": {
       "localizations": {
         "de": {
@@ -10452,6 +10628,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lire l’AGPL v3.0"
+          }
+        }
+      }
+    },
+    "Recent activity": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Aktivität"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actividad reciente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activité récente"
           }
         }
       }
@@ -10746,6 +10944,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Supprimer l’imprimante ?"
+          }
+        }
+      }
+    },
+    "Remove the print from %@ to continue": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druck von %@ entfernen, um fortzufahren"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retira la impresión de %@ para continuar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retirez l'impression de %@ pour continuer"
           }
         }
       }
@@ -11766,6 +11986,28 @@
         }
       }
     },
+    "Single nozzle": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einzeldüse"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla única"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mono-buse"
+          }
+        }
+      }
+    },
     "Size": {
       "localizations": {
         "de": {
@@ -11894,6 +12136,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Découpe"
+          }
+        }
+      }
+    },
+    "Slot %lld — about %lld%% left on %@": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slot %1$lld — ca. %2$lld%% übrig auf %3$@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ranura %1$lld — aprox. %2$lld%% restante en %3$@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slot %1$lld — env. %2$lld%% restant sur %3$@"
           }
         }
       }
@@ -14607,6 +14871,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Commit %@"
+          }
+        }
+      }
+    },
+    "layer %lld/%lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schicht %1$lld/%2$lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "capa %1$lld/%2$lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "couche %1$lld/%2$lld"
           }
         }
       }
