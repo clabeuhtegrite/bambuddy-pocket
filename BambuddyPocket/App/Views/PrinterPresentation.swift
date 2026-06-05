@@ -34,6 +34,24 @@ enum PrinterPresentation {
         DSStatusIntent.forPrinterState(state).color
     }
 
+    /// Libellé parlant de l'extrudeur actif (modèles double buse), à partir de l'index brut
+    /// rapporté par le firmware (`active_extruder`, 0-indexé : 0 = gauche, 1 = droite).
+    ///
+    /// On évite le chiffre brut « 2 » (peu parlant) au profit de « Buse 2 (droite) » / « Buse 1
+    /// (gauche) », cohérent avec les lignes de température « Buse 1 / Buse 2 ». Au-delà de la
+    /// seconde buse (cas non attendu sur le matériel actuel) on retombe sur « Buse N ».
+    static func activeExtruderLabel(_ index: Int) -> String {
+        let nozzleNumber = index + 1
+        switch index {
+        case 0:
+            return String(localized: "Nozzle \(nozzleNumber) (left)")
+        case 1:
+            return String(localized: "Nozzle \(nozzleNumber) (right)")
+        default:
+            return String(localized: "Nozzle \(nozzleNumber)")
+        }
+    }
+
     /// Température en °C arrondie (« 210° »), ou « — » si inconnue.
     static func temperature(_ value: Double?) -> String {
         guard let value else {

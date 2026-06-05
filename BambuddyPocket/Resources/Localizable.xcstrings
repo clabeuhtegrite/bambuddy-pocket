@@ -8655,6 +8655,72 @@
         }
       }
     },
+    "Nozzle %lld": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse %lld"
+          }
+        }
+      }
+    },
+    "Nozzle %lld (left)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse %lld (links)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla %lld (izquierda)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse %lld (gauche)"
+          }
+        }
+      }
+    },
+    "Nozzle %lld (right)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse %lld (rechts)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla %lld (derecha)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse %lld (droite)"
+          }
+        }
+      }
+    },
     "Nozzle 1": {
       "localizations": {
         "de": {
