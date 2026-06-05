@@ -1443,13 +1443,17 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/filament-catalog/")
     }
 
-    @Test("firmwareUpdates cible /firmware/updates et décode la disponibilité")
+    @Test("firmwareUpdates cible /firmware/updates et décode la disponibilité + versions")
     func fetchesFirmwareUpdates() async throws {
         MockURLProtocol.reset()
         respond(
             status: 200,
             json: #"{"updates":[{"printer_id":1,"printer_name":"VP-Test","model":"X1C","#
-                + #""current_version":"01.07.00.00","latest_version":"01.11.02.00","update_available":true},"#
+                + #""current_version":"01.07.00.00","latest_version":"01.11.02.00","update_available":true,"#
+                + #""download_url":"https://cdn/fw.zip","available_versions":["#
+                + #"{"version":"01.11.02.00","file_available":true,"download_url":"https://cdn/fw.zip","#
+                + #""release_notes":"Notes v1","release_time":"20260520"},"#
+                + #"{"version":"01.07.00.00","file_available":false}]},"#
                 + #"{"printer_id":2,"printer_name":"P1S","current_version":"1.0","latest_version":"1.0","#
                 + #""update_available":false}]}"#
         )
@@ -1458,6 +1462,13 @@ struct MockNetworkingTests {
         #expect(updates.updates?.count == 2)
         #expect(updates.availableCount == 1)
         #expect(updates.updates?.first?.isUpdateAvailable == true)
+        let first = try #require(updates.updates?.first)
+        #expect(first.downloadUrl == "https://cdn/fw.zip")
+        #expect(first.versions.count == 2)
+        #expect(first.versions.first?.version == "01.11.02.00")
+        #expect(first.versions.first?.hasFile == true)
+        #expect(first.versions.first?.releaseNotes == "Notes v1")
+        #expect(first.versions.last?.hasFile == false)
         let request = try #require(MockURLProtocol.lastRequest)
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/firmware/updates")
     }
