@@ -1914,4 +1914,153 @@ struct MockNetworkingTests {
         #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
             == "https://host.example.com/api/v1/archives/5/plate-thumbnail/2")
     }
+
+    // MARK: - Bambu Cloud
+
+    @Test("cloudStatus cible /cloud/status et décode l'état d'authentification")
+    func fetchesCloudStatus() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"is_authenticated":true,"email":"a@b.com","region":"global"}"#)
+        let client = try makeClient()
+        let status = try await client.cloudStatus()
+        #expect(status.isAuthenticated)
+        #expect(status.email == "a@b.com")
+        #expect(status.region == "global")
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/cloud/status")
+    }
+
+    @Test("loginCloud POST /cloud/login encode l'e-mail/mdp et décode needs_verification")
+    func loginsCloud() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"success":false,"needs_verification":true,"message":"code sent","#
+                + #""verification_type":"email","tfa_key":"abc"}"#
+        )
+        let client = try makeClient()
+        let response = try await client.loginCloud(
+            CloudLoginRequest(email: "u@x.com", password: "secret", region: "global")
+        )
+        #expect(response.needsVerification)
+        #expect(response.tfaKey == "abc")
+        #expect(response.verificationType == "email")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/cloud/login")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["email"] as? String == "u@x.com")
+        #expect(json["password"] as? String == "secret")
+    }
+
+    @Test("verifyCloud POST /cloud/verify transmet le code et le tfa_key")
+    func verifiesCloud() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"success":true,"needs_verification":false,"message":"ok"}"#)
+        let client = try makeClient()
+        let response = try await client.verifyCloud(
+            CloudVerifyRequest(email: "u@x.com", code: "123456", tfaKey: "abc")
+        )
+        #expect(response.success)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/cloud/verify")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["code"] as? String == "123456")
+        #expect(json["tfa_key"] as? String == "abc")
+    }
+
+    @Test("logoutCloud POST /cloud/logout")
+    func logoutsCloud() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: "{}")
+        let client = try makeClient()
+        try await client.logoutCloud()
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/cloud/logout")
+    }
+
+    // MARK: - MakerWorld
+
+    @Test("makerWorldStatus cible /makerworld/status et décode les capacités")
+    func fetchesMakerWorldStatus() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"has_cloud_token":true,"can_download":true}"#)
+        let client = try makeClient()
+        let status = try await client.makerWorldStatus()
+        #expect(status.hasCloudToken)
+        #expect(status.canDownload)
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/makerworld/status")
+    }
+
+    @Test("makerWorldRecentImports décode la liste d'imports récents")
+    func fetchesMakerWorldRecentImports() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"library_file_id":7,"filename":"cube.3mf","folder_id":2,"#
+                + #""thumbnail_path":"/t/7.png","source_url":"https://makerworld.com/models/1","#
+                + #""created_at":"2026-06-05T10:00:00Z"}]"#
+        )
+        let client = try makeClient()
+        let imports = try await client.makerWorldRecentImports()
+        #expect(imports.count == 1)
+        #expect(imports.first?.libraryFileId == 7)
+        #expect(imports.first?.filename == "cube.3mf")
+        #expect(try #require(MockURLProtocol.lastRequest).url?.absoluteString
+            == "https://host.example.com/api/v1/makerworld/recent-imports")
+    }
+
+    @Test("resolveMakerWorld POST /makerworld/resolve envoie l'URL et décode les instances")
+    func resolvesMakerWorld() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"model_id":42,"profile_id":99,"design":{"title":"Vase","designer_name":"Bob","#
+                + #""cover_url":"https://c/x.png"},"instances":[{"instance_id":1,"name":"Plate 1","#
+                + #""thumbnail_url":"https://c/1.png"},{"instance_id":2,"title":"Plate 2"}],"#
+                + #""already_imported_library_ids":[3]}"#
+        )
+        let client = try makeClient()
+        let model = try await client.resolveMakerWorld(url: "https://makerworld.com/models/42")
+        #expect(model.modelId == 42)
+        #expect(model.profileId == 99)
+        #expect(model.design.title == "Vase")
+        #expect(model.design.designer == "Bob")
+        #expect(model.instances.count == 2)
+        #expect(model.instances.first?.name == "Plate 1")
+        #expect(model.instances.last?.name == "Plate 2")
+        #expect(model.alreadyImportedLibraryIds == [3])
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/makerworld/resolve")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["url"] as? String == "https://makerworld.com/models/42")
+    }
+
+    @Test("importMakerWorld POST /makerworld/import encode model/instance et décode la réponse")
+    func importsMakerWorld() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"library_file_id":12,"filename":"vase.3mf","folder_id":2,"#
+                + #""profile_id":99,"was_existing":false}"#
+        )
+        let client = try makeClient()
+        let response = try await client.importMakerWorld(
+            MakerWorldImportRequest(modelId: 42, profileId: 99, instanceId: 1, folderId: 2)
+        )
+        #expect(response.libraryFileId == 12)
+        #expect(response.wasExisting == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/makerworld/import")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["model_id"] as? Int == 42)
+        #expect(json["instance_id"] as? Int == 1)
+    }
 }

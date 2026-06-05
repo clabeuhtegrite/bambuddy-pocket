@@ -179,6 +179,16 @@ final class ServerListModel {
         GitHubBackupModel(server: configuration, connectionFactory: connectionFactory)
     }
 
+    /// Construit le view-model du compte Bambu Cloud pour ce serveur.
+    func makeCloudAccountModel(for configuration: ServerConfiguration) -> CloudAccountModel {
+        CloudAccountModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
+    /// Construit le view-model de l'intégration MakerWorld pour ce serveur.
+    func makeMakerWorldModel(for configuration: ServerConfiguration) -> MakerWorldModel {
+        MakerWorldModel(server: configuration, connectionFactory: connectionFactory)
+    }
+
     /// Construit le view-model de l'intégration Spoolman pour ce serveur.
     func makeSpoolmanModel(for configuration: ServerConfiguration) -> SpoolmanModel {
         SpoolmanModel(server: configuration, connectionFactory: connectionFactory)
