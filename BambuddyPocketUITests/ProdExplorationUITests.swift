@@ -147,6 +147,43 @@ final class ProdExplorationUITests: XCTestCase {
         XCTAssertTrue(app.cells.firstMatch.waitForExistence(timeout: timeout), "au moins un élément de file")
     }
 
+    /// Vérifie le correctif **Caméra** : l'écran ne doit jamais rester bloqué sur un indicateur
+    /// tournant. Sous Cloudflare, le flux peut être injoignable → un message d'erreur explicite doit
+    /// apparaître dans le délai de garde (15 s) au lieu d'un spinner infini.
+    func testCameraDoesNotSpinForever() {
+        let timeout: TimeInterval = 20
+        let serverCell = app.cells.firstMatch
+        XCTAssertTrue(serverCell.waitForExistence(timeout: timeout), "server cell")
+        serverCell.tap()
+        XCTAssertTrue(app.buttons[L.edit].waitForExistence(timeout: timeout), "server detail")
+
+        XCTAssertTrue(openLink("Imprimantes", timeout: timeout), "printers link")
+        let printerCell = app.cells.firstMatch
+        XCTAssertTrue(printerCell.waitForExistence(timeout: timeout), "printer cell")
+        printerCell.tap()
+
+        let camera = app.buttons["Caméra"].firstMatch
+        XCTAssertTrue(camera.waitForExistence(timeout: timeout), "camera link")
+        camera.tap()
+
+        // Dans le délai de garde (15 s + marge), l'écran doit se résoudre : soit une image (flux/
+        // snapshot), soit l'état d'erreur explicite — l'indicateur tournant ne doit plus être seul à
+        // l'écran indéfiniment.
+        let unavailable = app.staticTexts["Caméra indisponible"]
+        let liveFeed = app.images["Live camera feed"]
+        var resolved = false
+        for _ in 0 ..< 24 where !resolved {
+            // Le spinner n'est plus visible, ou l'un des états finaux est atteint.
+            resolved = unavailable.exists || liveFeed.exists || !app.activityIndicators.firstMatch.exists
+            if !resolved { sleep(1) }
+        }
+        capture("camera-resolved")
+        XCTAssertTrue(
+            resolved,
+            "La caméra doit aboutir à une image ou à un message d'erreur, pas à un spinner infini."
+        )
+    }
+
     /// Valide la **matrice d'auth** sur les écrans d'administration (Clés d'API + Sauvegarde locale).
     /// Le comportement attendu dépend de `UITEST_AUTH_METHOD` :
     /// - `apikey` : le serveur renvoie 403 → message « admin requis » (pas d'état vide trompeur,

@@ -12284,6 +12284,28 @@
         }
       }
     },
+    "The camera feed couldn’t be reached. Check that the printer is online and the camera is enabled.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Kamerastream ist nicht erreichbar. Prüfe, ob der Drucker online und die Kamera aktiviert ist."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo acceder a la cámara. Comprueba que la impresora esté en línea y la cámara activada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le flux caméra est injoignable. Vérifie que l’imprimante est en ligne et que la caméra est activée."
+          }
+        }
+      }
+    },
     "The library is empty.": {
       "localizations": {
         "de": {
