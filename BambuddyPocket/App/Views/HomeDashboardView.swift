@@ -16,6 +16,8 @@ struct HomeDashboardView: View {
 
     @State private var printers: PrinterListModel
     @State private var showingNotifications = false
+    /// Imprimante dont le détail est poussé depuis la carte hero (navigation programmatique).
+    @State private var heroDetailPrinter: Printer?
     /// Disposition d'accueil choisie par l'utilisateur, persistée entre les lancements.
     @AppStorage("homeVariant") private var variantRaw = HomeVariant.dashboard.rawValue
 
@@ -52,6 +54,9 @@ struct HomeDashboardView: View {
             .padding(DSSpacing.md)
         }
         .background(DSColor.background)
+        .navigationDestination(item: $heroDetailPrinter) { printer in
+            PrinterDetailView(printer: printer, model: printers)
+        }
         .navigationTitle(server.label)
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
@@ -96,7 +101,11 @@ struct HomeDashboardView: View {
         case .dashboard:
             subtitle(snapshots)
             if let hero {
-                HeroPrintCard(snapshot: hero) { handle($0, for: hero.printer) }
+                HeroPrintCard(
+                    snapshot: hero,
+                    onOpenDetail: { heroDetailPrinter = hero.printer },
+                    onAction: { handle($0, for: hero.printer) }
+                )
             }
             if let alert {
                 HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
@@ -107,7 +116,11 @@ struct HomeDashboardView: View {
         case .focus:
             subtitle(snapshots)
             if let hero {
-                HeroPrintCard(snapshot: hero) { handle($0, for: hero.printer) }
+                HeroPrintCard(
+                    snapshot: hero,
+                    onOpenDetail: { heroDetailPrinter = hero.printer },
+                    onAction: { handle($0, for: hero.printer) }
+                )
             } else {
                 idlePlaceholder
             }
@@ -184,8 +197,10 @@ struct HomeDashboardView: View {
                     spacing: DSSpacing.sm
                 ) {
                     ForEach(snapshots) { snapshot in
-                        Button {
-                            onSelectTab(.printers)
+                        // Taper une imprimante ouvre **directement** son détail (sa propre pile de
+                        // navigation), au lieu de basculer sur l'onglet « Imprimantes » (#1).
+                        NavigationLink {
+                            PrinterDetailView(printer: snapshot.printer, model: printers)
                         } label: {
                             CompactPrinterCard(snapshot: snapshot)
                         }
