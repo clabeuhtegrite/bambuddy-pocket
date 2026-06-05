@@ -95,38 +95,23 @@ struct HomeDashboardView: View {
     /// Contenu de l'accueil selon la disposition choisie (A tableau de bord, B focus, C grille).
     @ViewBuilder
     private func content(_ snapshots: [PrinterSnapshot]) -> some View {
-        let hero = HomeDashboardPresentation.heroSnapshot(snapshots)
         let alert = HomeDashboardPresentation.alert(snapshots)
         switch variant {
         case .dashboard:
             subtitle(snapshots)
-            if let hero {
-                HeroPrintCard(
-                    snapshot: hero,
-                    onOpenDetail: { heroDetailPrinter = hero.printer },
-                    onAction: { handle($0, for: hero.printer) }
-                )
-            }
-            if let alert {
-                HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
-            }
+            heroCard(snapshots)
+            if let alert { alertBanner(alert) }
             printersSection(snapshots)
             quickActionsSection
             recentActivitySection
         case .focus:
             subtitle(snapshots)
-            if let hero {
-                HeroPrintCard(
-                    snapshot: hero,
-                    onOpenDetail: { heroDetailPrinter = hero.printer },
-                    onAction: { handle($0, for: hero.printer) }
-                )
+            if HomeDashboardPresentation.heroSnapshot(snapshots) != nil {
+                heroCard(snapshots)
             } else {
                 idlePlaceholder
             }
-            if let alert {
-                HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
-            }
+            if let alert { alertBanner(alert) }
             quickActionsSection
         case .grid:
             HomeStatStrip(
@@ -134,11 +119,21 @@ struct HomeDashboardView: View {
                 ready: HomeDashboardPresentation.readyCount(snapshots),
                 alerts: HomeDashboardPresentation.alertCount(snapshots)
             ) { onSelectTab(.printers) }
-            if let alert {
-                HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
-            }
+            if let alert { alertBanner(alert) }
             printersSection(snapshots)
             quickActionsSection
+        }
+    }
+
+    /// Carte hero de l'impression active (si une impression tourne), avec ouverture du détail.
+    @ViewBuilder
+    private func heroCard(_ snapshots: [PrinterSnapshot]) -> some View {
+        if let hero = HomeDashboardPresentation.heroSnapshot(snapshots) {
+            HeroPrintCard(
+                snapshot: hero,
+                onOpenDetail: { heroDetailPrinter = hero.printer },
+                onAction: { handle($0, for: hero.printer) }
+            )
         }
     }
 
@@ -249,6 +244,30 @@ struct HomeDashboardView: View {
                 .dsCardSurface()
             }
         }
+    }
+
+    /// Bandeau d'alerte d'accueil : tapotable pour ouvrir le **détail de l'imprimante concernée**,
+    /// et — pour un plateau non vidé — porteur de l'action directe « Nettoyé » (clear-plate, #2).
+    @ViewBuilder
+    private func alertBanner(_ alert: HomeAlert) -> some View {
+        let printer = printers.printers.first { $0.id == alert.printerID }
+        HomeAlertBanner(
+            alert: alert,
+            onClearPlate: alert.kind == .plateNotCleared ? { clearPlate(printerID: alert.printerID) } : nil,
+            onTap: {
+                if let printer {
+                    heroDetailPrinter = printer
+                } else {
+                    onSelectTab(.printers)
+                }
+            }
+        )
+    }
+
+    /// Envoie le retrait de plateau (clear-plate) à l'imprimante concernée par l'alerte.
+    private func clearPlate(printerID: Int) {
+        guard let printer = printers.printers.first(where: { $0.id == printerID }) else { return }
+        Task { await printers.clearPlate(printer) }
     }
 
     /// Exécute une action de la carte hero (pause/reprise/arrêt) sur l'imprimante concernée.

@@ -221,56 +221,6 @@ struct HomeStatStrip: View {
     }
 }
 
-// MARK: - Bandeau d'alerte conditionnel
-
-/// Bandeau d'alerte d'accueil (ambre/rouge selon la gravité), tapotable pour ouvrir le détail.
-struct HomeAlertBanner: View {
-    let alert: HomeAlert
-    let onTap: () -> Void
-
-    private var tint: Color {
-        switch alert.severity {
-        case .error: DSColor.statusError
-        case .warning: DSColor.statusWarning
-        }
-    }
-
-    var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: DSSpacing.sm) {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundStyle(tint)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(alert.title)
-                        .font(DSFont.captionMedium)
-                        .foregroundStyle(tint)
-                    Text(alert.detail)
-                        .font(DSFont.caption)
-                        .foregroundStyle(DSColor.textSecondary)
-                        .lineLimit(2)
-                }
-                Spacer(minLength: DSSpacing.sm)
-                Image(systemName: "chevron.right")
-                    .font(DSFont.caption)
-                    .foregroundStyle(DSColor.textMuted)
-                    .accessibilityHidden(true)
-            }
-            .padding(DSSpacing.md)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(tint.opacity(0.12))
-            .clipShape(RoundedRectangle(cornerRadius: DSRadius.card, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: DSRadius.card, style: .continuous)
-                    .strokeBorder(tint.opacity(0.35), lineWidth: DSBorder.thin)
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityHint(Text("Opens printer details"))
-    }
-}
-
 // MARK: - Carte imprimante compacte
 
 /// Carte imprimante compacte : nom, modèle, badge d'état, strip de deux mesures (buses G/D ou

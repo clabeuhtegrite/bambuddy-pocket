@@ -91,6 +91,21 @@ struct HomeDashboardPresentationTests {
         #expect(alert?.detail.contains("3") == true)
     }
 
+    @Test("alert : plateau non vidé porte le type et l'imprimante pour l'action directe (#2)")
+    func alertPlateNotClearedCarriesAction() {
+        var status = PrinterStatus()
+        status.connected = true
+        status.state = .finish
+        status.awaitingPlateClear = true
+
+        let snapshots = HomeDashboardPresentation.snapshots(printers: [printer(7, "Atelier")]) { _ in status }
+        let alert = HomeDashboardPresentation.alert(snapshots)
+        #expect(alert?.severity == .warning)
+        #expect(alert?.kind == .plateNotCleared)
+        // L'alerte référence l'imprimante concernée pour dispatcher le clear-plate.
+        #expect(alert?.printerID == 7)
+    }
+
     @Test("readyCount : connectée, au repos, sans erreur (ni en impression ni hors ligne)")
     func readyCountExcludesPrintingOfflineAndError() {
         let printers = [printer(1, "Ready"), printer(2, "Printing"), printer(3, "Offline"), printer(4, "Error")]
