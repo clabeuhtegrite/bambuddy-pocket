@@ -24,6 +24,15 @@ struct APIErrorTests {
         #expect(!APIError.forbidden(reason: "nope").isNotFound)
     }
 
+    @Test("isConflict ne vaut true que pour un HTTP 409 (état désiré déjà atteint)")
+    func isConflictOnlyFor409() {
+        #expect(APIError.http(status: 409, body: nil).isConflict)
+        #expect(!APIError.http(status: 404, body: nil).isConflict)
+        #expect(!APIError.http(status: 500, body: nil).isConflict)
+        #expect(!APIError.unauthorized.isConflict)
+        #expect(!APIError.forbidden(reason: "nope").isConflict)
+    }
+
     @Test("isForbidden ne vaut true que pour un 403 (fonction admin réservée)")
     func isForbiddenOnlyFor403() {
         #expect(APIError.forbidden(reason: nil).isForbidden)

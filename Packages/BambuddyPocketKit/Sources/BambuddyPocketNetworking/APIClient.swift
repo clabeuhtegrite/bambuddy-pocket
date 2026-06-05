@@ -43,6 +43,15 @@ public extension APIError {
         if case let .http(status, _) = self, status == 404 { return true }
         return false
     }
+
+    /// `true` quand le serveur a répondu `409` (conflit) : l'**état désiré est déjà atteint**
+    /// (ex. « AMS already drying », lumière déjà dans l'état demandé). Du point de vue de
+    /// l'utilisateur, l'action a réussi — l'UI doit traiter ce cas comme un **no-op** (pas d'erreur
+    /// affichée) et simplement rafraîchir le statut pour resynchroniser le toggle.
+    var isConflict: Bool {
+        if case let .http(status, _) = self, status == 409 { return true }
+        return false
+    }
 }
 
 /// Contrat d'un client REST Bambuddy. L'implémentation concrète (URLSession, injection des

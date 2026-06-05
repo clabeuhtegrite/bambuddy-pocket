@@ -66,77 +66,109 @@ final class PrinterListModel {
         await load()
     }
 
+    /// Maintient le **sondage rapide** de l'imprimante active tant que l'écran qui l'appelle est
+    /// affiché (à brancher sur `.task` : la tâche est annulée à la disparition de la vue). Le
+    /// statut de l'imprimante est rafraîchi à cadence serrée (~2,5 s) pour refléter l'état quasi en
+    /// temps réel quand le WebSocket ne passe pas Cloudflare.
+    func observeActivePrinter(_ printer: Printer) async {
+        await observeActivePrinters([printer.id])
+    }
+
+    /// Variante multi-imprimantes (accueil/liste) : maintient le sondage rapide pour tout un jeu
+    /// d'imprimantes tant que l'écran est affiché.
+    func observeActivePrinters(_ printerIDs: [Int]) async {
+        for id in printerIDs {
+            notificationCenter.beginObserving(printerID: id)
+        }
+        defer {
+            for id in printerIDs {
+                notificationCenter.endObserving(printerID: id)
+            }
+        }
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(3600))
+        }
+    }
+
     // MARK: Contrôles d'impression
 
     func pause(_ printer: Printer) async {
-        await runControl { try await $0.pausePrint(id: printer.id) }
+        await runControl(for: printer) { try await $0.pausePrint(id: printer.id) }
     }
 
     func resume(_ printer: Printer) async {
-        await runControl { try await $0.resumePrint(id: printer.id) }
+        await runControl(for: printer) { try await $0.resumePrint(id: printer.id) }
     }
 
     func stop(_ printer: Printer) async {
-        await runControl { try await $0.stopPrint(id: printer.id) }
+        await runControl(for: printer) { try await $0.stopPrint(id: printer.id) }
     }
 
     func clearErrors(_ printer: Printer) async {
-        await runControl { try await $0.clearHMS(id: printer.id) }
+        await runControl(for: printer) { try await $0.clearHMS(id: printer.id) }
     }
 
     func setChamberLight(_ printer: Printer, on: Bool) async {
-        await runControl { try await $0.setChamberLight(id: printer.id, on: on) }
+        // Update **optimiste** : le toggle bouge tout de suite (comme la web UI), avant même le
+        // re-fetch — sur la X2D réelle la commande MQTT met ~1 s à se refléter. Le re-fetch de
+        // `runControl` confirmera ensuite l'état réel.
+        var optimistic = PrinterStatus()
+        optimistic.chamberLight = on
+        notificationCenter.applyOptimistic(optimistic, into: printer.id)
+        await runControl(for: printer) { try await $0.setChamberLight(id: printer.id, on: on) }
     }
 
     func setSpeed(_ printer: Printer, mode: Int) async {
-        await runControl { try await $0.setPrintSpeed(id: printer.id, mode: mode) }
+        await runControl(for: printer) { try await $0.setPrintSpeed(id: printer.id, mode: mode) }
     }
 
     /// Active/désactive une option d'impression / détection IA.
     func setPrintOption(_ printer: Printer, moduleName: String, enabled: Bool) async {
-        await runControl { try await $0.setPrintOption(id: printer.id, moduleName: moduleName, enabled: enabled) }
+        await runControl(for: printer) {
+            try await $0.setPrintOption(id: printer.id, moduleName: moduleName, enabled: enabled)
+        }
     }
 
     /// Règle le mode du conduit d'air (`cooling`/`heating`).
     func setAirductMode(_ printer: Printer, mode: String) async {
-        await runControl { try await $0.setAirductMode(id: printer.id, mode: mode) }
+        await runControl(for: printer) { try await $0.setAirductMode(id: printer.id, mode: mode) }
     }
 
     /// Ajuste l'écart buse-plateau d'une distance relative (mm).
     func bedJog(_ printer: Printer, distance: Double, force: Bool = false) async {
-        await runControl { try await $0.bedJog(id: printer.id, distance: distance, force: force) }
+        await runControl(for: printer) { try await $0.bedJog(id: printer.id, distance: distance, force: force) }
     }
 
     func unloadFilament(_ printer: Printer) async {
-        await runControl { try await $0.amsUnload(id: printer.id) }
+        await runControl(for: printer) { try await $0.amsUnload(id: printer.id) }
     }
 
     func loadFilament(_ printer: Printer, trayID: Int) async {
-        await runControl { try await $0.amsLoad(id: printer.id, trayID: trayID) }
+        await runControl(for: printer) { try await $0.amsLoad(id: printer.id, trayID: trayID) }
     }
 
     func clearPlate(_ printer: Printer) async {
-        await runControl { try await $0.clearPlate(id: printer.id) }
+        await runControl(for: printer) { try await $0.clearPlate(id: printer.id) }
     }
 
     func homeAxes(_ printer: Printer) async {
-        await runControl { try await $0.homeAxes(id: printer.id) }
+        await runControl(for: printer) { try await $0.homeAxes(id: printer.id) }
     }
 
     func connect(_ printer: Printer) async {
-        await runControl { try await $0.connectPrinter(id: printer.id) }
+        await runControl(for: printer) { try await $0.connectPrinter(id: printer.id) }
     }
 
     func disconnect(_ printer: Printer) async {
-        await runControl { try await $0.disconnectPrinter(id: printer.id) }
+        await runControl(for: printer) { try await $0.disconnectPrinter(id: printer.id) }
     }
 
     func calibrate(_ printer: Printer, options: CalibrationOptions) async {
-        await runControl { try await $0.calibrate(id: printer.id, options: options) }
+        await runControl(for: printer) { try await $0.calibrate(id: printer.id, options: options) }
     }
 
     func skipObjects(_ printer: Printer, objectIDs: [Int]) async {
-        await runControl { try await $0.skipObjects(id: printer.id, objectIDs: objectIDs) }
+        await runControl(for: printer) { try await $0.skipObjects(id: printer.id, objectIDs: objectIDs) }
     }
 
     /// Charge les objets imprimables de la plaque courante (`nil` en cas d'échec).
@@ -191,11 +223,11 @@ final class PrinterListModel {
     }
 
     func startDrying(_ printer: Printer, amsID: Int) async {
-        await runControl { try await $0.startDrying(id: printer.id, amsID: amsID) }
+        await runControl(for: printer) { try await $0.startDrying(id: printer.id, amsID: amsID) }
     }
 
     func stopDrying(_ printer: Printer, amsID: Int) async {
-        await runControl { try await $0.stopDrying(id: printer.id, amsID: amsID) }
+        await runControl(for: printer) { try await $0.stopDrying(id: printer.id, amsID: amsID) }
     }
 
     /// Demande un jeton de flux caméra réutilisable (`POST /printers/camera/stream-token`).
@@ -250,14 +282,35 @@ final class PrinterListModel {
         }
     }
 
-    private func runControl(_ action: (RESTClient) async throws -> Void) async {
+    /// Exécute une action de contrôle puis **resynchronise le statut** de l'imprimante concernée :
+    ///
+    /// 1. envoie la commande (lumière, séchage, vitesse, AMS load/unload, clear-plate…) ;
+    /// 2. **re-fetch** `GET /printers/{id}/status` et le **fusionne** dans
+    ///    `ServerNotificationCenter` → tous les écrans (détail **et** accueil) reflètent le nouvel
+    ///    état immédiatement, sans attendre le WebSocket (qui ne passe pas Cloudflare) ;
+    /// 3. un **409** (conflit) est traité comme un **no-op réussi** : l'état désiré est déjà atteint
+    ///    (« AMS already drying », lumière déjà dans l'état demandé). Pas d'erreur affichée — on
+    ///    rafraîchit simplement le statut pour resynchroniser le toggle.
+    ///
+    /// C'est le cœur du correctif P1 : avant, la commande partait sans re-fetch, donc le toggle
+    /// restait figé jusqu'à un redémarrage de l'app (et un re-clic renvoyait 409).
+    private func runControl(
+        for printer: Printer,
+        _ action: (RESTClient) async throws -> Void
+    ) async {
         do {
             let client = try connectionFactory.makeClient(for: server)
             try await action(client)
             controlError = nil
+        } catch let error as APIError where error.isConflict {
+            // 409 : l'état désiré est déjà atteint → succès du point de vue utilisateur.
+            controlError = nil
         } catch {
             controlError = Self.message(for: error)
         }
+        // Resynchronise le statut quel que soit le résultat (succès ou 409) : le re-fetch confirme
+        // l'état réel et fait bouger le toggle sur tous les écrans.
+        await notificationCenter.refreshStatus(for: printer.id)
     }
 
     private static func message(for error: Error) -> String {
