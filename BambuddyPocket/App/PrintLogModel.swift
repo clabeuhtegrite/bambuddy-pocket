@@ -26,6 +26,19 @@ final class PrintLogModel {
         self.connectionFactory = connectionFactory
     }
 
+    /// Construit la feuille « Imprimer » pour **réimprimer** l'archive référencée par une entrée
+    /// d'historique (#7). Renvoie `nil` si l'entrée ne référence aucune archive (l'archive a pu être
+    /// supprimée alors que la trace d'historique survit) — la réimpression n'est alors pas possible.
+    func makeReprintModel(for entry: PrintLogEntry) -> PrintDispatchModel? {
+        guard let archiveID = entry.archiveID else { return nil }
+        let name = entry.printName ?? String(localized: "Untitled print")
+        return PrintDispatchModel(
+            source: .archive(id: archiveID, name: name),
+            server: server,
+            connectionFactory: connectionFactory
+        )
+    }
+
     /// Reste-t-il des entrées à charger au-delà de celles déjà affichées ?
     var canLoadMore: Bool {
         entries.count < total

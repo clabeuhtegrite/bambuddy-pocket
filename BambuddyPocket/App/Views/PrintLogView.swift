@@ -9,6 +9,8 @@ struct PrintLogView: View {
     @State private var model: PrintLogModel
     @State private var searchText = ""
     @State private var confirmingClear = false
+    /// Feuille « Imprimer » de réimpression d'archive depuis l'historique (#7), `nil` si fermée.
+    @State private var reprintModel: PrintDispatchModel?
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makePrintLogModel(for: server))
@@ -19,6 +21,12 @@ struct PrintLogView: View {
             ForEach(model.entries) { entry in
                 PrintLogRow(entry: entry)
                     .listRowBackground(DSColor.card)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        reprintButton(for: entry)
+                    }
+                    .contextMenu {
+                        reprintButton(for: entry)
+                    }
             }
             if model.canLoadMore {
                 loadMoreRow
@@ -28,6 +36,9 @@ struct PrintLogView: View {
         .overlay { placeholder }
         .navigationTitle("Print history")
         .toolbarTitleDisplayMode(.inline)
+        .sheet(item: $reprintModel) { dispatch in
+            PrintSheet(model: dispatch)
+        }
         .searchable(text: $searchText, prompt: Text("Search by name"))
         .onSubmit(of: .search) { Task { await model.search(searchText) } }
         .onChange(of: searchText) { _, newValue in
@@ -62,6 +73,20 @@ struct PrintLogView: View {
             }
         } message: {
             Text("This removes all log entries. Archives and the queue are not affected.")
+        }
+    }
+
+    /// Bouton « Réimprimer » : disponible uniquement si l'entrée référence encore une archive.
+    /// Ouvre la feuille « Imprimer » (choix imprimante + options) qui dispatche la réimpression (#7).
+    @ViewBuilder
+    private func reprintButton(for entry: PrintLogEntry) -> some View {
+        if entry.archiveID != nil {
+            Button {
+                reprintModel = model.makeReprintModel(for: entry)
+            } label: {
+                Label("Reprint", systemImage: "arrow.clockwise")
+            }
+            .tint(DSColor.accent)
         }
     }
 
