@@ -113,6 +113,16 @@ final class LibraryListModel {
         }
     }
 
+    /// Construit le view-model de la feuille « Trancher » (découpe) pour un fichier source.
+    func makeSliceJobModel(for file: LibraryFile) -> SliceJobModel {
+        SliceJobModel(
+            fileID: file.id,
+            fileName: file.displayName,
+            server: server,
+            connectionFactory: connectionFactory
+        )
+    }
+
     /// Construit le view-model de la feuille « Imprimer » pour un fichier de bibliothèque tranché.
     func makePrintDispatchModel(for file: LibraryFile) -> PrintDispatchModel {
         PrintDispatchModel(

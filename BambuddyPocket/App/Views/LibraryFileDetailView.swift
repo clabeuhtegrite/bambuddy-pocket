@@ -11,6 +11,7 @@ struct LibraryFileDetailView: View {
     @State private var isEditing = false
     @State private var showAdded = false
     @State private var printModel: PrintDispatchModel?
+    @State private var sliceModel: SliceJobModel?
 
     /// Fichier à jour depuis le view-model (reflète les éditions), sinon l'instance passée.
     private var current: LibraryFile {
@@ -35,6 +36,18 @@ struct LibraryFileDetailView: View {
                     } label: {
                         Label("Add to queue", systemImage: "text.append")
                     }
+                }
+            }
+            if current.isSliceable {
+                Section {
+                    Button {
+                        sliceModel = model.makeSliceJobModel(for: current)
+                    } label: {
+                        Label("Slice", systemImage: "square.stack.3d.up")
+                    }
+                    .accessibilityIdentifier("slice-file")
+                } footer: {
+                    Text("Slice this model into a printable file.")
                 }
             }
             Section("File") {
@@ -72,6 +85,11 @@ struct LibraryFileDetailView: View {
         }
         .sheet(item: $printModel) { printModel in
             PrintSheet(model: printModel)
+        }
+        .sheet(item: $sliceModel) { sliceModel in
+            SliceSheet(model: sliceModel) {
+                Task { await model.load() }
+            }
         }
         .alert("Added to queue", isPresented: $showAdded) {
             Button("OK", role: .cancel) {}

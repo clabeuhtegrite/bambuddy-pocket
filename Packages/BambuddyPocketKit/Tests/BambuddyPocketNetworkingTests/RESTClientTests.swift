@@ -2146,4 +2146,110 @@ struct MockNetworkingTests {
         #expect(json["model_id"] as? Int == 42)
         #expect(json["instance_id"] as? Int == 1)
     }
+
+    // MARK: - Découpe (slicing)
+
+    @Test("slicerPresets cible /slicer/presets et décode les tiers + cloud_status")
+    func listsSlicerPresets() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"cloud":{"printer":[],"process":[],"filament":[]},"#
+                + #""local":{"printer":[{"id":"7","name":"X1C 0.4","source":"local"}],"#
+                + #""process":[{"id":"8","name":"0.20 Standard","source":"local"}],"#
+                + #""filament":[{"id":"9","name":"Bambu PLA","source":"local","filament_type":"PLA"}]},"#
+                + #""standard":{"printer":[],"process":[],"filament":[]},"#
+                + #""cloud_status":"not_authenticated"}"#
+        )
+        let client = try makeClient()
+        let presets = try await client.slicerPresets()
+        #expect(presets.cloudStatus == .notAuthenticated)
+        #expect(presets.allPrinters.first?.name == "X1C 0.4")
+        #expect(presets.allFilaments.first?.filamentType == "PLA")
+        #expect(presets.isEmpty == false)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "GET")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/slicer/presets")
+    }
+
+    @Test("slicerPresets vides ⇒ isEmpty true (formulaire de découpe inutilisable)")
+    func emptySlicerPresetsAreEmpty() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"cloud":{"printer":[],"process":[],"filament":[]},"#
+                + #""local":{"printer":[],"process":[],"filament":[]},"#
+                + #""standard":{"printer":[],"process":[],"filament":[]},"#
+                + #""cloud_status":"not_authenticated"}"#
+        )
+        let client = try makeClient()
+        #expect(try await client.slicerPresets().isEmpty)
+    }
+
+    @Test("sliceLibraryFile POST /library/files/{id}/slice encode les présets source-aware")
+    func slicesLibraryFile() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 202,
+            json: #"{"job_id":5,"status":"pending","status_url":"/api/v1/slice-jobs/5"}"#
+        )
+        let client = try makeClient()
+        let handle = try await client.sliceLibraryFile(
+            id: 3,
+            SliceRequest(
+                printerPreset: SlicePresetRef(source: .local, id: "7"),
+                processPreset: SlicePresetRef(source: .local, id: "8"),
+                filamentPresets: [SlicePresetRef(source: .standard, id: "Bambu PLA")],
+                plate: nil,
+                export3mf: true
+            )
+        )
+        #expect(handle.jobId == 5)
+        #expect(handle.status == "pending")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/3/slice")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        let printer = try #require(json["printer_preset"] as? [String: Any])
+        #expect(printer["source"] as? String == "local")
+        #expect(printer["id"] as? String == "7")
+        let filaments = try #require(json["filament_presets"] as? [[String: Any]])
+        #expect(filaments.first?["source"] as? String == "standard")
+        #expect(json["export_3mf"] as? Bool == true)
+    }
+
+    @Test("sliceJob GET /slice-jobs/{id} décode statut + résultat à la complétion")
+    func decodesSliceJobCompleted() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"job_id":5,"status":"completed","kind":"library_file","progress":1.0,"#
+                + #""result":{"library_file_id":12,"name":"vase.gcode.3mf","print_time_seconds":3600,"#
+                + #""filament_used_g":24.5}}"#
+        )
+        let client = try makeClient()
+        let job = try await client.sliceJob(id: 5)
+        #expect(job.status == .completed)
+        #expect(job.isTerminal)
+        #expect(job.result?.libraryFileId == 12)
+        #expect(job.result?.printTimeSeconds == 3600)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/slice-jobs/5")
+    }
+
+    @Test("sliceJob décode un échec avec error_detail")
+    func decodesSliceJobFailed() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"{"job_id":6,"status":"failed","error_status":500,"error_detail":"Slicer crashed"}"#
+        )
+        let client = try makeClient()
+        let job = try await client.sliceJob(id: 6)
+        #expect(job.status == .failed)
+        #expect(job.isTerminal)
+        #expect(job.errorStatus == 500)
+        #expect(job.errorDetail == "Slicer crashed")
+    }
 }

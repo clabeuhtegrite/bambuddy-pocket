@@ -27,6 +27,17 @@ struct LibraryFileTests {
         #expect(LibraryFile(id: 4, filename: "shape.stl").isSliced == false)
     }
 
+    @Test("isSliceable : STL/STEP/3MF non tranché oui, .gcode(.3mf) non")
+    func sliceableRecognisesSources() {
+        #expect(LibraryFile(id: 1, filename: "shape.stl").isSliceable)
+        #expect(LibraryFile(id: 2, filename: "part.STEP").isSliceable)
+        #expect(LibraryFile(id: 3, filename: "part.stp").isSliceable)
+        #expect(LibraryFile(id: 4, filename: "model.3mf").isSliceable)
+        // Déjà tranché : pas une source de découpe.
+        #expect(LibraryFile(id: 5, filename: "model.gcode.3mf").isSliceable == false)
+        #expect(LibraryFile(id: 6, filename: "model.gcode").isSliceable == false)
+    }
+
     @Test("LibraryFileUpdate omet les champs nil à l'encodage")
     func updateOmitsNilFields() throws {
         let update = LibraryFileUpdate(filename: "x.gcode.3mf", notes: "n")
