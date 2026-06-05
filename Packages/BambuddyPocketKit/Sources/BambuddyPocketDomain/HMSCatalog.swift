@@ -35,6 +35,19 @@ public enum HMSCatalog {
         return code
     }
 
+    /// Le code est-il **reconnu par la web UI** (présent dans `ERROR_DESCRIPTIONS`) ?
+    ///
+    /// La web UI ne surface qu'un code dont le code court figure dans son dictionnaire exhaustif
+    /// (`filterKnownHMSErrors`). On réplique exactement ce filtre : un code dont l'`attr` est absent
+    /// ou dont le code court n'est pas catalogué est considéré **inconnu** et doit être masqué
+    /// (badge, bannière, section Erreurs, notifications) — comme le fait la web UI. Cela élimine les
+    /// faux positifs de calibration/vision/statut (p. ex. `0500_0070`, `0503_0027`, `0C00_0015`) que
+    /// la gamme X2D/H2D émet en continu.
+    public static func isKnown(attr: Int?, code: String) -> Bool {
+        guard let short = shortCode(attr: attr, code: code) else { return false }
+        return HMSKnownCodes.all.contains(short)
+    }
+
     /// Clé stable de raison connue (pour i18n côté présentation), ou `nil` si le code est inconnu.
     public static func failureReasonKey(attr: Int?, code: String) -> String? {
         guard let short = shortCode(attr: attr, code: code) else { return nil }
