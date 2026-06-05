@@ -86,3 +86,4 @@ BamPocket.xcodeproj/
 BambuddyPocket.xcodeproj/
 # Heartbeat runtime du superviseur
 scripts/supervisor/.interactive-active
+docs/webui-ref/
