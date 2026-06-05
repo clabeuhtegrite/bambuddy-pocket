@@ -3,11 +3,32 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-04 — Phase 5 (support gamme Bambu) livrée : capacités par modèle,
-décodage tolérant, UI adaptative, effets de bord, maintenance par type de rails. Repo :
+**Dernière mise à jour** : 2026-06-05 — Vague **refonte UI/UX** livrée : navigation par onglets
+(#83), Accueil A tableau de bord (#84), détail imprimante enrichi B (#85), + captures FR
+sombre/clair des nouveaux écrans pour comparaison aux maquettes. Repo :
 https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Refonte UI/UX livrée (`main` vert).** Coquille de navigation par **onglets** (#83 — `ServerHomeView`
++ `MoreView` : `Accueil · Imprimantes · File · Bibliothèque · Plus`, chaque onglet sa pile
+`NavigationStack`, retour à la liste multi-serveurs via l'en-tête / « Plus → Serveur »), **Accueil A**
+tableau de bord (#84 — `HomeDashboardView`/`HomeDashboardComponents`/`HomeDashboardPresentation` :
+carte hero impression conditionnelle, cartes imprimantes avec strip températures, bandeau alerte
+conditionnel, actions rapides), **détail imprimante enrichi B** (#85 — `PrinterDetailHeader` :
+en-tête caméra, strip températures buse(s)/plateau/caisson, strip AMS). **Multi-serveurs** intact :
+la sélection d'un serveur ouvre la coquille à onglets ; le bouton « coffre » de l'en-tête Accueil et
+« Plus → Serveur » ramènent à la liste / permettent de basculer de serveur. **Captures de revue**
+(`docs/screenshots/refonte/`, FR, sombre + clair, scheme `BamPocketScreenshots` + `UITEST_LIVE=1`
+contre Docker dev) : `01-accueil-sombre`, `02-imprimantes`, `03-detail-imprimante-B`, `04-plus`,
+`05-accueil-clair`. **Variante C (grille flotte)** : non implémentée — notée en amélioration future
+(cf. ROADMAP). **Limite connue** : XCUITest ne défile pas une `List` SwiftUI sous iOS 26 → le bas du
+`04-plus` (sections « Matériel »/au-delà) est tronqué ; l'Accueil/détail (`ScrollView`) capturent
+intégralement le haut. Tests : **325 SPM** + 11 app/UI verts (captures live skippées hors
+`UITEST_LIVE=1`), build iOS sans warning, lint/format strict OK. **Docker propre** : seul `X2D` id=1
+(N6), `auth_enabled:false`, base inchangée (le seed n'écrit que côté app — UserDefaults/Keychain —
+jamais sur le backend) ; imprimante physique non touchée.
+
+### (historique) Phase 5 — robustesse décodage + maintenance par rails
 **Phase 5 — robustesse décodage + maintenance par rails livrée (`main` vert).** Brique 5 de la
 vague gamme Bambu (après #63 fondation capacités, #64 dual-extrudeur, #65 variantes AMS, #66 détail
 adaptatif caméra/réseau) : suite **Robustesse PrinterStatus (effets de bord)** garantissant que
