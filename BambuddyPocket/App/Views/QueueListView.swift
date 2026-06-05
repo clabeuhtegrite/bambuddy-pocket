@@ -247,6 +247,30 @@ private struct DispatchRow: View {
 private struct BatchRow: View {
     let batch: PrintBatch
 
+    /// Récapitulatif sous la barre, honnête vis-à-vis du statut.
+    ///
+    /// - Lot **annulé** : met en avant l'annulation (« X annulés ») et, le cas échéant, la part
+    ///   réellement terminée — jamais « 2/2 terminés », qui sous-entendrait une réussite.
+    /// - Sinon : « réussis / total » + le restant en attente (comportement nominal).
+    private var progressSummary: String {
+        if batch.isCancelled {
+            if batch.completedCount > 0 {
+                return String(
+                    localized: "\(batch.cancelledCount) cancelled · \(batch.completedCount)/\(batch.quantity) done",
+                    comment: "Batch summary: partially printed then cancelled"
+                )
+            }
+            return String(
+                localized: "\(batch.cancelledCount) cancelled",
+                comment: "Batch summary: fully cancelled batch"
+            )
+        }
+        return String(
+            localized: "\(batch.completedCount)/\(batch.quantity) done · \(batch.pendingCount) pending",
+            comment: "Batch summary: completed over total and pending count"
+        )
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: DSSpacing.xs) {
             HStack {
@@ -261,9 +285,12 @@ private struct BatchRow: View {
                     showsDot: false
                 )
             }
-            ProgressView(value: Double(batch.resolvedCount), total: Double(max(batch.quantity, 1)))
-                .tint(DSColor.accent)
-            Text("\(batch.resolvedCount)/\(batch.quantity) done · \(batch.pendingCount) pending")
+            // La barre suit la **fraction réellement aboutie** (réussites), pas le simple « résolu » :
+            // un lot annulé n'a rien produit → barre vide, jamais une barre pleine et verte. Le tint
+            // suit le statut (annulé = ambre) pour rester cohérent avec le badge.
+            ProgressView(value: batch.progressFraction, total: 1)
+                .tint(DSStatusIntent.forRawStatus(batch.displayStatus).color)
+            Text(progressSummary)
                 .font(DSFont.caption)
                 .foregroundStyle(DSColor.textSecondary)
         }
