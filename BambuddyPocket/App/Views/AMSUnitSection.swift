@@ -86,13 +86,30 @@ struct TrayRow: View {
                 .fill(PrinterPresentation.color(hexRGBA: tray.trayColor) ?? .secondary)
                 .frame(width: 16, height: 16)
                 .overlay(Circle().strokeBorder(.quaternary))
-            Text(displayType)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(displayType)
+                // Nom de couleur dérivé (toujours présent quand un filament est chargé, #8).
+                if isLoaded, let colorName {
+                    Text(colorName)
+                        .font(DSFont.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
             Spacer()
             if let remain = tray.remain {
                 Text("\(remain)%")
                     .foregroundStyle(.secondary)
             }
         }
+    }
+
+    private var isLoaded: Bool {
+        tray.trayType?.isEmpty == false
+    }
+
+    /// Nom de couleur lisible, dérivé du hex si le slot est chargé.
+    private var colorName: String? {
+        FilamentColorName.from(hex: tray.trayColor)
     }
 
     /// Type de filament, ou « Empty » pour un slot vide (type nil **ou** chaîne vide).
