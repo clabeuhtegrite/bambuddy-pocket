@@ -168,6 +168,45 @@ struct HeroPrintCard: View {
     }
 }
 
+// MARK: - Bandeau de compteurs (disposition Grille)
+
+/// Bandeau de trois compteurs de la disposition « Grille » (maquette `06-accueil-C`) : imprimantes
+/// en cours, prêtes, en alerte. Le tout est tapotable pour ouvrir l'onglet Imprimantes.
+struct HomeStatStrip: View {
+    let printing: Int
+    let ready: Int
+    let alerts: Int
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: DSSpacing.sm) {
+                stat(value: printing, label: "Printing", tint: DSColor.accent)
+                stat(value: ready, label: "Ready", tint: DSColor.textPrimary)
+                stat(value: alerts, label: "Alerts", tint: alerts > 0 ? DSColor.statusWarning : DSColor.textPrimary)
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityHint(Text("Opens printers"))
+    }
+
+    private func stat(value: Int, label: LocalizedStringKey, tint: Color) -> some View {
+        VStack(spacing: DSSpacing.xxs) {
+            Text("\(value)")
+                .font(DSFont.inter(24, weight: .bold, relativeTo: .title))
+                .foregroundStyle(tint)
+            Text(label)
+                .font(DSFont.caption)
+                .textCase(.uppercase)
+                .foregroundStyle(DSColor.textMuted)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, DSSpacing.md)
+        .dsCardSurface()
+        .accessibilityElement(children: .combine)
+    }
+}
+
 // MARK: - Bandeau d'alerte conditionnel
 
 /// Bandeau d'alerte d'accueil (ambre/rouge selon la gravité), tapotable pour ouvrir le détail.

@@ -12,6 +12,38 @@ enum HomeTab: Hashable {
     case more
 }
 
+/// Disposition de l'écran d'accueil, choisie par l'utilisateur (persistée via `@AppStorage`).
+/// Reflète les maquettes : A = tableau de bord, B = focus imprimante, C = grille flotte.
+enum HomeVariant: String, CaseIterable, Identifiable {
+    /// A — tableau de bord : carte hero + cartes compactes + activité (maquette `01-accueil-A`).
+    case dashboard
+    /// B — focus imprimante : grande carte hero seule, le reste replié (maquette `02-accueil-B`).
+    case focus
+    /// C — grille flotte : bandeau de compteurs + grille d'imprimantes (maquette `06-accueil-C`).
+    case grid
+
+    var id: String {
+        rawValue
+    }
+
+    /// Libellé localisé court pour le sélecteur de vue.
+    var label: LocalizedStringKey {
+        switch self {
+        case .dashboard: "Dashboard"
+        case .focus: "Focus"
+        case .grid: "Grid"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .dashboard: "square.grid.2x2"
+        case .focus: "rectangle.portrait"
+        case .grid: "square.grid.3x3"
+        }
+    }
+}
+
 /// Coquille de navigation par **onglets** appliquée au serveur sélectionné : Accueil · Imprimantes
 /// · File · Bibliothèque · Plus. Chaque onglet porte sa propre pile de navigation. La liste des
 /// serveurs (multi-serveurs) reste accessible : retour via le bouton dédié de l'en-tête / depuis
