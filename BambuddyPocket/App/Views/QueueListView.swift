@@ -23,7 +23,7 @@ struct QueueListView: View {
                     ForEach(model.batches) { batch in
                         BatchRow(batch: batch)
                             .swipeActions(edge: .trailing) {
-                                if batch.status == "active" {
+                                if batch.displayStatus == "active", !batch.isFullyResolved {
                                     Button(role: .destructive) {
                                         Task { await model.cancelBatch(batch) }
                                     } label: {
@@ -160,7 +160,9 @@ private struct QueueRow: View {
 
     var body: some View {
         HStack(spacing: DSSpacing.md) {
-            Text("\(item.position)")
+            // La position n'est affichée que pour les éléments encore actifs : un élément terminal
+            // garde une position serveur obsolète (souvent « 1 ») qui n'a pas de sens à l'écran.
+            Text(item.displayPosition.map(String.init) ?? "")
                 .font(.headline.monospacedDigit())
                 .foregroundStyle(DSColor.textMuted)
                 .frame(minWidth: 24, alignment: .trailing)
@@ -254,8 +256,8 @@ private struct BatchRow: View {
                     .lineLimit(1)
                 Spacer()
                 DSStatusBadge(
-                    batch.status.capitalized,
-                    intent: DSStatusIntent.forRawStatus(batch.status),
+                    batch.displayStatus.capitalized,
+                    intent: DSStatusIntent.forRawStatus(batch.displayStatus),
                     showsDot: false
                 )
             }
