@@ -3,12 +3,39 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-05 — Vague **refonte UI/UX** livrée : navigation par onglets
-(#83), Accueil A tableau de bord (#84), détail imprimante enrichi B (#85), + captures FR
-sombre/clair des nouveaux écrans pour comparaison aux maquettes. Repo :
+**Dernière mise à jour** : 2026-06-05 — Vague **« maximum codable »** livrée (`main` vert) :
+**CI fiabilisée** (#87 — fin du flaky « objc duplicate class »), **intégrations Bambu Cloud +
+MakerWorld** (#88 — écrans compte cloud login/verify + MakerWorld status/resolve/import, gated admin),
+**Firmware enrichi** (#89 — catalogue `available_versions` du cloud, lecture seule), **accueil A/B/C**
+avec sélecteur de disposition + **variante C grille** (#90), **XCUITests** des nouveaux écrans (#91) et
+**captures** MakerWorld/Cloud/grille (#92). Repo :
 https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
 
 ## 🔆 Prochaine action (point de reprise)
+**Vague « maximum codable » livrée (`main` vert, dépôt = `main` seul).** Détail par brique :
+- **P1 CI (#87)** : le bundle de tests `BamPocketTests` reliait en plus le produit SPM `Domain`
+  (statique) déjà lié par l'app → classes objc dupliquées → crashs aléatoires en CI. Retrait de la
+  dépendance directe : le bundle récupère les frameworks via son test host. Plus de phase Frameworks
+  → CI fiabilisée.
+- **P2 Cloud/MakerWorld (#88)** : `CloudAccountView` (état connecté ? e-mail/région + flux
+  login/verify ; identifiants jamais persistés), `MakerWorldView` (status, résolution d'URL lecture,
+  plates importables, imports récents ; import gardé derrière `canImport` + confirmation, dev only).
+  Contrats vérifiés sur l'OpenAPI serveur + état réel Docker. Gated admin (403 → « connexion admin
+  requise », pattern #70 ; 404 → « non disponible »).
+- **P2 Firmware (#89)** : `FirmwareUpdate` enrichi (`availableVersions`/`downloadUrl`) + écran
+  « Toutes les versions » (lecture seule, **aucune** action de MAJ exposée).
+- **P3 GitHub backup** : contrat vérifié au réel (Docker) — modèles/écran **déjà conformes**, aucun
+  changement nécessaire.
+- **P4 Accueil A/B/C (#90)** : sélecteur de disposition (`@AppStorage`) + **variante C grille**
+  (`HomeStatStrip` + grille), helpers testés `readyCount`/`alertCount`. **XCUITests (#91)** : Cloud,
+  MakerWorld, sélecteur grille (déterministes, sans backend). **Captures (#92)** : `06-makerworld`,
+  `07-bambu-cloud`, `08-accueil-grille` (live Docker, non versionnées).
+
+**Reste (amélioration future)** : iPad `NavigationSplitView` (layout adaptatif), pagination des
+grandes listes (archives/file/bibliothèque/print-log). **Tests : 333 SPM + 13 app/UI** verts.
+**Docker propre** (`auth_enabled:false`, aucun import MakerWorld effectué, base inchangée).
+
+## 🔆 Historique de reprise (avant la vague « maximum codable »)
 **Refonte UI/UX livrée (`main` vert).** Coquille de navigation par **onglets** (#83 — `ServerHomeView`
 + `MoreView` : `Accueil · Imprimantes · File · Bibliothèque · Plus`, chaque onglet sa pile
 `NavigationStack`, retour à la liste multi-serveurs via l'en-tête / « Plus → Serveur »), **Accueil A**
