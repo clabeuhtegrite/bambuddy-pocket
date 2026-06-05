@@ -7,6 +7,8 @@ import SwiftUI
 struct QueueListView: View {
     @State private var model: QueueListModel
     @State private var editing: QueueItem?
+    /// Les lots sont une vue secondaire : repliés par défaut pour ne pas reléguer la file active.
+    @State private var batchesExpanded = false
     /// Centre de notifications partagé : porte l'état temps réel de la distribution automatique.
     private let notificationCenter: ServerNotificationCenter
 
@@ -17,23 +19,9 @@ struct QueueListView: View {
 
     var body: some View {
         List {
+            // Ordre logique : ce qui part maintenant (distribution auto) → la file active → son
+            // historique → les lots (vue secondaire, repliée par défaut).
             dispatchSection
-            if !model.batches.isEmpty {
-                Section("Batches") {
-                    ForEach(model.batches) { batch in
-                        BatchRow(batch: batch)
-                            .swipeActions(edge: .trailing) {
-                                if batch.displayStatus == "active", !batch.isFullyResolved {
-                                    Button(role: .destructive) {
-                                        Task { await model.cancelBatch(batch) }
-                                    } label: {
-                                        Label("Cancel batch", systemImage: "xmark.circle")
-                                    }
-                                }
-                            }
-                    }
-                }
-            }
             if !model.activeItems.isEmpty {
                 Section("Queue") {
                     ForEach(model.activeItems) { item in
@@ -51,6 +39,7 @@ struct QueueListView: View {
                 }
             }
             historySection
+            batchesSection
         }
         .scrollContentBackground(.hidden)
         .background(DSColor.background)
@@ -138,6 +127,34 @@ struct QueueListView: View {
                 }
             } header: {
                 Text("History (\(history.count))")
+            }
+        }
+    }
+
+    /// Lots d'impression : vue secondaire repliable (collapsée par défaut) placée **après** la file
+    /// active et l'historique, pour ne pas reléguer la file en bas de l'écran.
+    @ViewBuilder
+    private var batchesSection: some View {
+        if !model.batches.isEmpty {
+            Section {
+                DisclosureGroup(isExpanded: $batchesExpanded) {
+                    ForEach(model.batches) { batch in
+                        BatchRow(batch: batch)
+                            .swipeActions(edge: .trailing) {
+                                if batch.displayStatus == "active", !batch.isFullyResolved {
+                                    Button(role: .destructive) {
+                                        Task { await model.cancelBatch(batch) }
+                                    } label: {
+                                        Label("Cancel batch", systemImage: "xmark.circle")
+                                    }
+                                }
+                            }
+                    }
+                } label: {
+                    Text("Batches (\(model.batches.count))")
+                        .font(DSFont.headline)
+                        .foregroundStyle(DSColor.textPrimary)
+                }
             }
         }
     }
