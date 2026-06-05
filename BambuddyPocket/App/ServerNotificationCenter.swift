@@ -250,20 +250,25 @@ final class ServerNotificationCenter {
         let merged = current.merged(with: delta)
         // Erreur HMS grave : ne notifier qu'à l'apparition (transition d'état) et hors fenêtre de
         // grâce anti-flapping (un code qui clignote ne ré-alarme pas).
-        if let hms = merged.severeHMSEvent(comparedTo: previousStatuses[id], printerID: id),
-           let detail = hms.detail
-        {
-            let key = "\(id):\(detail)"
-            let now = Date()
-            if let last = lastHMSNotified[key], now.timeIntervalSince(last) < Self.hmsClearGrace {
-                // Réapparition trop rapprochée : on ignore (mais on met à jour le statut fusionné).
-            } else {
-                lastHMSNotified[key] = now
-                record(hms)
-            }
+        let hms = merged.severeHMSEvent(comparedTo: previousStatuses[id], printerID: id)
+        if let hms, shouldNotifyHMS(hms, printerID: id) {
+            record(hms)
         }
         previousStatuses[id] = merged
         statuses[id] = merged
+    }
+
+    /// Le HMS grave doit-il alarmer ? Non s'il a déjà été notifié dans la fenêtre de grâce (anti-
+    /// flapping). Met à jour l'horodatage de dernière alarme quand la réponse est `true`.
+    private func shouldNotifyHMS(_ hms: NotableEvent, printerID: Int) -> Bool {
+        guard let detail = hms.detail else { return true }
+        let key = "\(printerID):\(detail)"
+        let now = Date()
+        if let last = lastHMSNotified[key], now.timeIntervalSince(last) < Self.hmsClearGrace {
+            return false
+        }
+        lastHMSNotified[key] = now
+        return true
     }
 
     private func record(_ notable: NotableEvent?) {

@@ -76,7 +76,7 @@ public extension PrinterStatus {
         let appeared = Set(severeNow.keys).subtracting(severeBefore)
         // On notifie le code le plus grave nouvellement apparu, avec un libellé humain
         // (« HMS 0503_0027 ») plutôt que le code brut.
-        guard let code = appeared.sorted().first, let error = severeNow[code] else { return nil }
+        guard let code = appeared.min(), let error = severeNow[code] else { return nil }
         return NotableEvent(kind: .hmsError, printerID: printerID, detail: error.displayCode)
     }
 

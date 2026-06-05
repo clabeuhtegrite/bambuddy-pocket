@@ -197,27 +197,7 @@ struct PrinterDetailView: View {
         // informatifs/de statut que la gamme H2D/X2D émet en continu sont filtrés à la source.
         Section("Errors") {
             ForEach(status.alarmingErrors) { error in
-                HStack(spacing: DSSpacing.sm) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(PrinterPresentation.severityColor(error.effectiveSeverity))
-                    VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                        Text(PrinterPresentation.hmsTitle(error))
-                        if let url = error.wikiURL {
-                            Link(destination: url) {
-                                HStack(spacing: DSSpacing.xs) {
-                                    Text(error.displayCode).font(.subheadline.monospaced())
-                                    Image(systemName: "arrow.up.right.square")
-                                }
-                            }
-                            .font(.subheadline)
-                        } else {
-                            Text(error.displayCode).font(.subheadline.monospaced())
-                        }
-                        Text(PrinterPresentation.severityText(error.effectiveSeverity))
-                            .font(DSFont.caption)
-                            .foregroundStyle(DSColor.textSecondary)
-                    }
-                }
+                HMSErrorRow(error: error)
             }
             Button("Clear errors") {
                 Task { await model.clearErrors(printer) }
@@ -422,5 +402,40 @@ private struct PrintOptionsSection: View {
             get: { on ?? false },
             set: { newValue in Task { await model.setPrintOption(printer, moduleName: module, enabled: newValue) } }
         ))
+    }
+}
+
+/// Ligne d'une erreur HMS alarmante : icône colorée par gravité, libellé humain, code court lisible
+/// (avec lien wiki Bambu si disponible) et gravité.
+private struct HMSErrorRow: View {
+    let error: HMSError
+
+    var body: some View {
+        HStack(spacing: DSSpacing.sm) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(PrinterPresentation.severityColor(error.effectiveSeverity))
+            VStack(alignment: .leading, spacing: DSSpacing.xs) {
+                Text(PrinterPresentation.hmsTitle(error))
+                codeLabel
+                Text(PrinterPresentation.severityText(error.effectiveSeverity))
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var codeLabel: some View {
+        if let url = error.wikiURL {
+            Link(destination: url) {
+                HStack(spacing: DSSpacing.xs) {
+                    Text(error.displayCode).font(.subheadline.monospaced())
+                    Image(systemName: "arrow.up.right.square")
+                }
+            }
+            .font(.subheadline)
+        } else {
+            Text(error.displayCode).font(.subheadline.monospaced())
+        }
     }
 }
