@@ -21,6 +21,31 @@ struct PrinterSnapshot: Identifiable, Hashable {
         guard isPrinting else { return nil }
         return status?.progressFraction
     }
+
+    /// Nom du travail en cours (sous-tâche, sinon impression courante), `nil` si au repos.
+    var jobName: String? {
+        guard isPrinting else { return nil }
+        return status?.subtaskName ?? status?.currentPrint
+    }
+
+    /// Nombre de bobines AMS **chargées** (slots avec un type de filament), `nil` si aucun AMS.
+    var loadedSpoolCount: Int? {
+        guard let units = status?.ams, !units.isEmpty else { return nil }
+        return units.reduce(0) { sum, unit in
+            sum + (unit.tray ?? []).count { ($0.trayType?.isEmpty == false) }
+        }
+    }
+
+    /// Résumé d'alerte de la carte (le plus prioritaire) : erreur HMS > plateau > bobine basse.
+    /// `nil` si rien d'alarmant — la carte montre alors l'état AMS neutre.
+    func cardAlert(lowFilamentThreshold: Int = 10) -> HomeAlertKind? {
+        guard let status else { return nil }
+        if status.mostSevereError != nil { return .hmsError }
+        if status.awaitingPlateClear == true { return .plateNotCleared }
+        let low = HomeDashboardPresentation.lowestLoadedFilament(in: status)
+        if let low, low <= lowFilamentThreshold { return .lowFilament }
+        return nil
+    }
 }
 
 /// Niveau de gravité d'un bandeau d'alerte d'accueil (ordre = priorité décroissante).
@@ -169,5 +194,11 @@ enum HomeDashboardPresentation {
             }
         }
         return lowest
+    }
+
+    /// Niveau restant le plus bas parmi les slots **chargés** (filament présent), `nil` si aucun.
+    /// Variante légère de `lowestFilament` pour le résumé d'une carte (sans numéro de slot).
+    static func lowestLoadedFilament(in status: PrinterStatus) -> Int? {
+        lowestFilament(in: status)?.remain
     }
 }
