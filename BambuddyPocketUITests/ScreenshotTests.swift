@@ -22,6 +22,10 @@ final class ScreenshotTests: XCTestCase {
         static let more = "Plus"
         static let queue = "File"
         static let library = "Bibliothèque"
+        static let homeLayout = "Disposition d’accueil"
+        static let grid = "Grille"
+        static let bambuCloud = "Bambu Cloud"
+        static let makerWorld = "MakerWorld"
     }
 
     override func setUpWithError() throws {
@@ -90,6 +94,30 @@ final class ScreenshotTests: XCTestCase {
         sleep(1)
         capture("04-plus")
 
+        // 06 — MakerWorld (depuis Plus → Contenu).
+        if openFromMore(L.makerWorld, timeout: timeout) {
+            sleep(2)
+            capture("06-makerworld")
+            goBackIfPossible()
+        }
+
+        // 07 — Bambu Cloud (depuis Plus → Serveur).
+        app.tabBars.buttons[L.more].tap()
+        sleep(1)
+        if openFromMore(L.bambuCloud, timeout: timeout) {
+            sleep(2)
+            capture("07-bambu-cloud")
+            goBackIfPossible()
+        }
+
+        // 08 — Accueil C (grille) : bascule via le menu de disposition.
+        app.tabBars.buttons[L.home].tap()
+        sleep(2)
+        if switchHomeLayout(to: L.grid, timeout: timeout) {
+            sleep(3)
+            capture("08-accueil-grille")
+        }
+
         // 05 — Accueil A (clair).
         app.terminate()
         launch(appearance: "light")
@@ -138,5 +166,40 @@ final class ScreenshotTests: XCTestCase {
             back.tap()
             sleep(1)
         }
+    }
+
+    /// Ouvre un lien de l'onglet Plus (avec défilement si besoin). Renvoie `false` s'il reste
+    /// introuvable.
+    @discardableResult
+    private func openFromMore(_ label: String, timeout: TimeInterval) -> Bool {
+        let link = app.buttons[label]
+        var attempts = 0
+        while !link.exists, attempts < 5 {
+            app.swipeUp()
+            attempts += 1
+        }
+        guard link.waitForExistence(timeout: timeout) else { return false }
+        while !link.isHittable, attempts < 8 {
+            app.swipeUp()
+            attempts += 1
+        }
+        if link.isHittable {
+            link.tap()
+        } else {
+            link.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
+        return true
+    }
+
+    /// Bascule la disposition d'accueil via le menu de la barre d'outils (libellé d'accessibilité).
+    @discardableResult
+    private func switchHomeLayout(to option: String, timeout: TimeInterval) -> Bool {
+        let menu = app.buttons[L.homeLayout]
+        guard menu.waitForExistence(timeout: timeout), menu.isHittable else { return false }
+        menu.tap()
+        let choice = app.buttons[option]
+        guard choice.waitForExistence(timeout: timeout) else { return false }
+        choice.tap()
+        return true
     }
 }
