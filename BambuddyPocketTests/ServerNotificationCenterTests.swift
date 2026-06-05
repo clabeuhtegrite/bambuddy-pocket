@@ -65,13 +65,14 @@ struct ServerNotificationCenterTests {
     func severeHMSNotifiesOnce() throws {
         let center = try makeCenter()
         var withError = PrinterStatus()
-        withError.hmsErrors = [HMSError(code: "0300_0100", severity: 1)]
+        // 0700_4001 (connu) ; attr 0x07000200 → module 0x0700, quartet de gravité 2 (serious).
+        withError.hmsErrors = [HMSError(code: "0x4001", attr: 0x0700_0200)]
         center.ingest(.printerStatus(printerID: 1, status: withError))
         center.ingest(.printerStatus(printerID: 1, status: withError))
 
         let hms = center.notifications.filter { $0.kind == .hmsError }
         #expect(hms.count == 1)
-        #expect(hms.first?.detail == "0300_0100")
+        #expect(hms.first?.detail == "HMS 0700_4001")
     }
 
     @Test("Un HMS informatif (X2D 0x30027, sev. effective .info) ne notifie pas")
@@ -89,7 +90,8 @@ struct ServerNotificationCenterTests {
     func flappingSevereHMSDoesNotReAlarmWithinGrace() throws {
         let center = try makeCenter()
         var withError = PrinterStatus()
-        withError.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        // 0700_4001 (connu, grave) ; attr 0x07000200 → module 0x0700, quartet de gravité 2.
+        withError.hmsErrors = [HMSError(code: "0x4001", attr: 0x0700_0200)]
         var clear = PrinterStatus()
         clear.hmsErrors = [] // delta explicite : la liste se vide (sinon le merge conserve l'ancienne)
 
