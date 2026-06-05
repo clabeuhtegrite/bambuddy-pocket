@@ -26,7 +26,7 @@ struct PrintLogView: View {
         }
         .dsListBackground()
         .overlay { placeholder }
-        .navigationTitle("Print log")
+        .navigationTitle("Print history")
         .toolbarTitleDisplayMode(.inline)
         .searchable(text: $searchText, prompt: Text("Search by name"))
         .onSubmit(of: .search) { Task { await model.search(searchText) } }
