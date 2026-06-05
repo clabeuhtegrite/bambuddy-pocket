@@ -240,6 +240,9 @@ struct PrinterTempStrip: View {
     }
 
     var body: some View {
+        // Cellules de largeur égale (`flex-1`) sur une seule rangée. Le contenu (libellé +
+        // température) reste lisible : libellé tronqué proprement plutôt que de pousser la mise en
+        // page. Réplique le strip web (`flex items-stretch gap-1.5`) avec des cellules `flex-1`.
         HStack(spacing: DSSpacing.sm) {
             if showsSecondNozzle {
                 cell(label: "Nozzle L", current: temps?.nozzle, target: temps?.nozzleTarget)
@@ -260,12 +263,17 @@ struct PrinterTempStrip: View {
                 .font(DSFont.caption)
                 .textCase(.uppercase)
                 .foregroundStyle(DSColor.textMuted)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
             Text(value(current: current, target: target))
                 .font(DSFont.bodyMedium)
                 .foregroundStyle(DSColor.textPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, DSSpacing.sm)
+        .padding(.horizontal, DSSpacing.xs)
         .dsCardSurface()
         .accessibilityElement(children: .combine)
     }
@@ -281,28 +289,65 @@ struct PrinterTempStrip: View {
 // MARK: - Strip AMS (bobines colorées)
 
 /// Bandeau AMS visuel : anneaux colorés par bobine, type, couleur/niveau (niveau bas en ambre).
+///
+/// Mise en page inspirée du strip AMS de la web UI (`flex items-stretch gap-1.5 flex-wrap`,
+/// bobines de **taille fixe**) : plutôt que d'écraser les bobines dans une rangée à largeur fixe
+/// (chevauchement, anneaux coupés, libellés tronqués quand il y a plusieurs unités de 4 plateaux),
+/// les bobines gardent une largeur fixe et la rangée **défile horizontalement**. Chaque unité AMS
+/// est présentée comme un groupe distinct (en-tête + bobines), comme la web UI groupe par AMS.
 struct PrinterAMSStrip: View {
     let units: [AMSUnit]
 
-    private var trays: [(unit: Int, tray: AMSTray)] {
-        units.flatMap { unit in (unit.tray ?? []).map { (unit.id, $0) } }
-    }
-
     private var loadedCount: Int {
-        trays.count { ($0.tray.trayType?.isEmpty == false) }
+        units.reduce(0) { sum, unit in
+            sum + (unit.tray ?? []).count { ($0.trayType?.isEmpty == false) }
+        }
     }
 
     var body: some View {
         DSCard {
             VStack(alignment: .leading, spacing: DSSpacing.sm) {
                 header
-                HStack(alignment: .top, spacing: DSSpacing.sm) {
-                    ForEach(Array(trays.enumerated()), id: \.offset) { _, entry in
-                        SpoolView(tray: entry.tray)
+                // Défilement horizontal : les bobines conservent leur taille (pas d'écrasement) même
+                // avec plusieurs unités AMS. Les groupes par unité sont séparés visuellement.
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(alignment: .top, spacing: DSSpacing.md) {
+                        ForEach(units) { unit in
+                            unitGroup(unit)
+                        }
                     }
                 }
             }
         }
+    }
+
+    /// Un groupe = une unité AMS : libellé d'unité (+ humidité si rapportée) puis ses bobines.
+    private func unitGroup(_ unit: AMSUnit) -> some View {
+        VStack(alignment: .leading, spacing: DSSpacing.xs) {
+            HStack(spacing: DSSpacing.xs) {
+                Text(unitLabel(unit))
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
+                if let humidity = unit.humidity {
+                    Text("\(humidity)%")
+                        .font(DSFont.caption)
+                        .foregroundStyle(DSColor.textMuted)
+                }
+            }
+            HStack(alignment: .top, spacing: DSSpacing.sm) {
+                ForEach(unit.tray ?? []) { tray in
+                    SpoolView(tray: tray)
+                }
+            }
+        }
+    }
+
+    /// Libellé court d'une unité (l'AMS-HT a des id ≥ 128 ; sinon 1-based).
+    private func unitLabel(_ unit: AMSUnit) -> String {
+        if unit.id >= 128 {
+            return String(localized: "AMS-HT \(unit.id - 128 + 1)")
+        }
+        return String(localized: "AMS \(unit.id + 1)")
     }
 
     private var header: some View {
@@ -319,9 +364,13 @@ struct PrinterAMSStrip: View {
     }
 }
 
-/// Représentation visuelle d'une bobine : anneau coloré + type + couleur/niveau.
+/// Représentation visuelle d'une bobine : anneau coloré + type + couleur/niveau. Largeur **fixe**
+/// pour éviter l'écrasement quand la rangée contient beaucoup de bobines (défilement horizontal).
 private struct SpoolView: View {
     let tray: AMSTray
+
+    /// Largeur fixe d'une bobine (anneau + libellé), suffisante pour un type de filament court.
+    private static let width: CGFloat = 56
 
     private var isLow: Bool {
         (tray.remain ?? 100) <= 10 && isLoaded
@@ -346,13 +395,15 @@ private struct SpoolView: View {
                 .font(DSFont.caption)
                 .foregroundStyle(DSColor.textPrimary)
                 .lineLimit(1)
+                .truncationMode(.tail)
+                .minimumScaleFactor(0.8)
             if let remain = tray.remain, isLoaded {
                 Text("\(remain)%")
                     .font(DSFont.caption)
                     .foregroundStyle(isLow ? DSColor.statusWarning : DSColor.textSecondary)
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(width: Self.width)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityText)
     }
