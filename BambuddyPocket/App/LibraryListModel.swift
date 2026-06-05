@@ -113,6 +113,15 @@ final class LibraryListModel {
         }
     }
 
+    /// Construit le view-model de la feuille « Imprimer » pour un fichier de bibliothèque tranché.
+    func makePrintDispatchModel(for file: LibraryFile) -> PrintDispatchModel {
+        PrintDispatchModel(
+            source: .libraryFile(id: file.id, name: file.displayName),
+            server: server,
+            connectionFactory: connectionFactory
+        )
+    }
+
     /// Ajoute un fichier à la file d'attente d'impression. Renvoie `true` au succès.
     func enqueue(_ file: LibraryFile) async -> Bool {
         do {

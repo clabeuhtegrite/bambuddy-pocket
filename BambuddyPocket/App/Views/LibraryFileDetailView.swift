@@ -10,6 +10,7 @@ struct LibraryFileDetailView: View {
 
     @State private var isEditing = false
     @State private var showAdded = false
+    @State private var printModel: PrintDispatchModel?
 
     /// Fichier à jour depuis le view-model (reflète les éditions), sinon l'instance passée.
     private var current: LibraryFile {
@@ -20,6 +21,11 @@ struct LibraryFileDetailView: View {
         List {
             if current.isSliced {
                 Section {
+                    Button {
+                        printModel = model.makePrintDispatchModel(for: current)
+                    } label: {
+                        Label("Print", systemImage: "printer")
+                    }
                     Button {
                         Task {
                             if await model.enqueue(current) {
@@ -63,6 +69,9 @@ struct LibraryFileDetailView: View {
         }
         .sheet(isPresented: $isEditing) {
             LibraryFileEditSheet(file: current, model: model)
+        }
+        .sheet(item: $printModel) { printModel in
+            PrintSheet(model: printModel)
         }
         .alert("Added to queue", isPresented: $showAdded) {
             Button("OK", role: .cancel) {}

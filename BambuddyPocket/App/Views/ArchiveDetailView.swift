@@ -13,6 +13,7 @@ struct ArchiveDetailView: View {
     @State private var isEditing = false
     @State private var thumbnail: UIImage?
     @State private var timelapse: TimelapseInfo?
+    @State private var printModel: PrintDispatchModel?
 
     private var fileExtension: String? {
         archive.filename?.split(separator: ".").last.map { $0.lowercased() }
@@ -40,6 +41,11 @@ struct ArchiveDetailView: View {
                 }
             }
             Section {
+                Button {
+                    printModel = model.makePrintDispatchModel(for: archive)
+                } label: {
+                    Label("Print", systemImage: "printer")
+                }
                 Button {
                     Task {
                         if await model.enqueue(archive) {
@@ -73,6 +79,9 @@ struct ArchiveDetailView: View {
         }
         .sheet(isPresented: $isEditing) {
             ArchiveEditSheet(archive: archive, model: model)
+        }
+        .sheet(item: $printModel) { printModel in
+            PrintSheet(model: printModel)
         }
         .alert("Added to queue", isPresented: $showAdded) {
             Button("OK", role: .cancel) {}
