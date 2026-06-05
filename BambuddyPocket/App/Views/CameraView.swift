@@ -16,6 +16,16 @@ struct CameraView: View {
     @State private var showsPlateResult = false
     @State private var isChecking = false
 
+    /// Délai au-delà duquel, sans aucune image reçue, on bascule sur l'état d'erreur explicite
+    /// (plutôt qu'un indicateur tournant à l'infini). Couvre le cas d'un flux/snapshot injoignable
+    /// ou bloqué (ex. proxy Cloudflare qui ne renvoie jamais d'octet sur le MJPEG).
+    private static let firstFrameTimeout = Duration.seconds(15)
+
+    /// Message d'erreur affiché quand le flux caméra reste injoignable.
+    private static let unavailableDescription = LocalizedStringKey(
+        "The camera feed couldn’t be reached. Check that the printer is online and the camera is enabled."
+    )
+
     var body: some View {
         ZStack {
             DSColor.background.ignoresSafeArea()
@@ -25,7 +35,11 @@ struct CameraView: View {
                     .scaledToFit()
                     .accessibilityLabel("Live camera feed")
             } else if failed {
-                ContentUnavailableView("Camera unavailable", systemImage: "video.slash")
+                ContentUnavailableView {
+                    Label("Camera unavailable", systemImage: "video.slash")
+                } description: {
+                    Text(Self.unavailableDescription)
+                }
             } else {
                 ProgressView()
                     .tint(DSColor.accent)
@@ -84,6 +98,28 @@ struct CameraView: View {
     }
 
     private func run() async {
+        // Course entre l'acquisition du flux (qui peut ne jamais émettre d'octet si le flux est
+        // injoignable/bloqué) et un délai de garde : sans la moindre image au bout du délai, on
+        // affiche un état d'erreur explicite plutôt qu'un indicateur tournant à l'infini.
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask { await feed() }
+            group.addTask { await watchdog() }
+            // Dès qu'une tâche se termine (timeout déclenché, ou flux fermé), on annule l'autre.
+            await group.next()
+            group.cancelAll()
+        }
+    }
+
+    /// Bascule sur l'état d'erreur si aucune image n'est arrivée avant l'échéance.
+    private func watchdog() async {
+        try? await Task.sleep(for: Self.firstFrameTimeout)
+        if !Task.isCancelled, image == nil {
+            failed = true
+        }
+    }
+
+    /// Acquiert le flux MJPEG puis, à défaut, les snapshots. Met à jour `image`/`failed`.
+    private func feed() async {
         // Jeton de flux : requis sur un serveur protégé (le flux/snapshot est chargé sans en-tête
         // d'autorisation côté serveur) ; inoffensif si l'auth est désactivée.
         let token = await model.cameraStreamToken()
