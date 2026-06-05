@@ -261,18 +261,41 @@ final class CriticalPathUITests: XCTestCase {
         _ = app.buttons["Library"].waitForExistence(timeout: timeout)
     }
 
-    /// Fait défiler vers le bas jusqu'à ce que l'élément soit **réellement frappable**, puis le tape.
+    /// Fait défiler la liste jusqu'à ce que l'élément soit **réellement frappable**, puis le tape.
+    ///
     /// Dans une `List` SwiftUI, les lignes hors écran n'existent pas dans l'arbre d'accessibilité :
-    /// on balaye donc et on re-teste `exists`/`isHittable` à chaque itération. Renvoie `false` si
-    /// l'élément reste introuvable après plusieurs balayages.
+    /// on balaye et on re-teste `exists`/`isHittable` à chaque itération. Le balayage est **petit et
+    /// borné** (`velocity` lent) pour éviter de dépasser la cible sur les machines CI lentes, et on
+    /// tente un retour vers le haut si l'on a atteint le bas sans trouver l'élément (robustesse).
+    /// Renvoie `false` si l'élément reste introuvable après plusieurs balayages dans les deux sens.
     @discardableResult
     private func scrollToAndTap(_ element: XCUIElement) -> Bool {
-        var attempts = 0
-        while !element.isHittable, attempts < 10 {
-            app.swipeUp()
-            attempts += 1
+        let scrollHost: XCUIElement = if app.collectionViews.firstMatch.exists {
+            app.collectionViews.firstMatch
+        } else if app.tables.firstMatch.exists {
+            app.tables.firstMatch
+        } else {
+            app
         }
-        guard element.isHittable else { return false }
+
+        // Descente : petits balayages lents, re-test à chaque pas (l'élément peut apparaître puis
+        // n'être frappable qu'au pas suivant, le temps que l'animation de défilement se stabilise).
+        for _ in 0 ..< 12 {
+            if element.exists, element.isHittable {
+                element.tap()
+                return true
+            }
+            scrollHost.swipeUp(velocity: .slow)
+        }
+        // Remontée : on a peut-être dépassé la cible ; on remonte lentement en re-testant.
+        for _ in 0 ..< 12 {
+            if element.exists, element.isHittable {
+                element.tap()
+                return true
+            }
+            scrollHost.swipeDown(velocity: .slow)
+        }
+        guard element.exists, element.isHittable else { return false }
         element.tap()
         return true
     }
