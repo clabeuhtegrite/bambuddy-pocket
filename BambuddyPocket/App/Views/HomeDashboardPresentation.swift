@@ -29,6 +29,16 @@ enum HomeAlertSeverity: Int {
     case warning = 1
 }
 
+/// Nature d'un bandeau d'alerte d'accueil — détermine l'action directe proposée sur la bannière.
+enum HomeAlertKind: Hashable {
+    /// Erreur HMS alarmante (ouvre le détail).
+    case hmsError
+    /// Plateau non vidé : propose l'action directe « Nettoyé » (clear-plate) sur la bannière (#2).
+    case plateNotCleared
+    /// Bobine AMS presque vide (ouvre le détail).
+    case lowFilament
+}
+
 /// Bandeau d'alerte conditionnel de l'accueil : n'apparaît **que** si une condition réellement
 /// alarmante est détectée (erreur HMS de gravité ≥ serious, bobine AMS presque vide, plateau non
 /// vidé). Réplique la logique de gravité corrigée (#81) : **pas de fausse alarme** sur les codes
@@ -36,6 +46,9 @@ enum HomeAlertSeverity: Int {
 struct HomeAlert: Identifiable, Hashable {
     let id: String
     let severity: HomeAlertSeverity
+    let kind: HomeAlertKind
+    /// Imprimante concernée (pour ouvrir son détail ou agir directement, p. ex. clear-plate).
+    let printerID: Int
     let title: String
     let detail: String
 }
@@ -102,6 +115,8 @@ enum HomeDashboardPresentation {
                 alerts.append(HomeAlert(
                     id: "hms-\(snapshot.id)",
                     severity: .error,
+                    kind: .hmsError,
+                    printerID: snapshot.id,
                     title: PrinterPresentation.hmsTitle(error),
                     detail: String(localized: "\(error.displayCode) on \(name)")
                 ))
@@ -112,6 +127,8 @@ enum HomeDashboardPresentation {
                 alerts.append(HomeAlert(
                     id: "plate-\(snapshot.id)",
                     severity: .warning,
+                    kind: .plateNotCleared,
+                    printerID: snapshot.id,
                     title: String(localized: "Plate not cleared"),
                     detail: String(localized: "Remove the print from \(name) to continue")
                 ))
@@ -122,6 +139,8 @@ enum HomeDashboardPresentation {
                 alerts.append(HomeAlert(
                     id: "ams-\(snapshot.id)-\(low.slot)",
                     severity: .warning,
+                    kind: .lowFilament,
+                    printerID: snapshot.id,
                     title: String(localized: "AMS · spool almost empty"),
                     detail: String(localized: "Slot \(low.slot) — about \(low.remain)% left on \(name)")
                 ))

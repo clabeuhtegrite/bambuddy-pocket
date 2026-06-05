@@ -2987,6 +2987,34 @@
         }
       }
     },
+    "Cleared": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geleert"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleared"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpiada"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nettoyé"
+          }
+        }
+      }
+    },
     "Client ID": {
       "localizations": {
         "de": {
@@ -3359,6 +3387,62 @@
           "stringUnit": {
             "state": "translated",
             "value": "Konfiguriert"
+          }
+        }
+      }
+    },
+    "Confirm the print has been removed from the plate.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätigen Sie, dass der Druck von der Platte entfernt wurde."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm the print has been removed from the plate."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirma que la impresión se ha retirado de la bandeja."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirmez que l'impression a été retirée du plateau."
+          }
+        }
+      }
+    },
+    "Confirms the plate has been removed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bestätigt, dass die Platte geleert wurde"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirms the plate has been removed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirma que la bandeja se ha limpiado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirme que le plateau a été nettoyé"
           }
         }
       }
@@ -8507,6 +8591,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Marquer comme effectué"
+          }
+        }
+      }
+    },
+    "Mark plate as cleared?": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druckplatte als geleert markieren?"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark plate as cleared?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Marcar la bandeja como limpiada?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer le plateau comme nettoyé ?"
           }
         }
       }
