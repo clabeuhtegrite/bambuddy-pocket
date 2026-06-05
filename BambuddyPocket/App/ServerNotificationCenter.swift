@@ -51,6 +51,11 @@ final class ServerNotificationCenter {
     /// pour appliquer une **grâce** anti-flapping : un code qui réapparaît dans la fenêtre ne
     /// ré-alarme pas (la X2D fait clignoter certains codes ; cf. `_HMS_CLEAR_GRACE_SECONDS` amont).
     private var lastHMSNotified: [String: Date] = [:]
+    /// Jeton WebSocket mis en cache (`POST /auth/ws-token`) + date de frappe. Réutilisé entre
+    /// reconnexions pour **éviter un aller-retour réseau à chaque repli** : le jeton dure ~60 min,
+    /// on ne le refrappe que s'il manque, qu'il a dépassé sa durée de vie utile, ou après une
+    /// connexion qui a vécu (où le serveur a pu le faire tourner).
+    private var cachedWebSocketToken: (value: String, fetchedAt: Date)?
 
     private static let maxNotifications = 100
     /// Cadence du repli REST quand le temps réel (WebSocket) est indisponible.
@@ -64,6 +69,16 @@ final class ServerNotificationCenter {
     /// Fenêtre de grâce anti-flapping pour les erreurs HMS (aligné sur `_HMS_CLEAR_GRACE_SECONDS`
     /// amont) : un code alarmant déjà notifié il y a moins de ce délai ne ré-alarme pas.
     private static let hmsClearGrace: TimeInterval = 30
+    /// Durée de vie utile d'un jeton WebSocket en cache. Le serveur émet des jetons ~60 min ; on
+    /// reste prudemment en deçà pour qu'une reconnexion tardive ne tombe pas sur un jeton expiré.
+    private static let webSocketTokenTTL: TimeInterval = 45 * 60
+    /// Délai du **premier** essai de reconnexion après une coupure d'une connexion établie : court,
+    /// pour reconnecter vite sur un simple « blip » (ex. expiration d'inactivité côté proxy).
+    private static let firstReconnectDelay = Duration.milliseconds(250)
+    /// Tolérance avant d'afficher « Reconnexion… » : une connexion qui retombe puis revient dans
+    /// cette fenêtre ne fait pas clignoter le badge (le badge reste « connecté »). Ce n'est qu'au-
+    /// delà — vraie coupure — que l'on passe en `.reconnecting`.
+    private static let reconnectBadgeGrace = Duration.seconds(2)
 
     init(server: ServerConfiguration, connectionFactory: ServerConnectionFactory) {
         self.server = server
@@ -102,6 +117,7 @@ final class ServerNotificationCenter {
         realtimeTask = nil
         pollTask?.cancel()
         pollTask = nil
+        cancelBadgeReconnectTask()
     }
 
     /// Fournit les noms d'imprimante connus (depuis la liste REST) pour enrichir les notifications.
@@ -137,14 +153,17 @@ final class ServerNotificationCenter {
         // distinguer un WebSocket qui tombe en cours de route (à reconnecter) d'un upgrade
         // systématiquement refusé (Cloudflare) → repli REST.
         var handshakeFailures = 0
+        // Le dernier passage a-t-il établi une connexion vivante puis l'a perdue ? Sert à donner sa
+        // chance à un reconnect rapide **avant** d'afficher « Reconnexion… » (tolérance au blip).
+        var droppedFromLive = false
         while !Task.isCancelled {
             var receivedEvent = false
             do {
                 // Auth activée : le handshake WebSocket ne porte pas l'en-tête `Authorization`, donc
-                // on frappe d'abord un jeton court (`POST /auth/ws-token`) ajouté en `?token=`. Sans
-                // lui le serveur refuse l'upgrade (`close 4401`). Le jeton est refrappé à chaque
-                // (re)connexion : il dure ~60 min mais une reconnexion tardive doit rester valide.
-                let token = await connectionFactory.webSocketToken(for: server)
+                // on passe un jeton court (`POST /auth/ws-token`) ajouté en `?token=`. Sans lui le
+                // serveur refuse l'upgrade (`close 4401`). Le jeton est **mis en cache** et réutilisé
+                // entre reconnexions : on n'inflige pas un aller-retour réseau à chaque blip.
+                let token = await webSocketToken(forceRefresh: droppedFromLive)
                 let socket = try connectionFactory.makeWebSocketClient(for: server, token: token)
                 for try await event in socket.events() {
                     if Task.isCancelled { break }
@@ -154,6 +173,7 @@ final class ServerNotificationCenter {
                     if !receivedEvent {
                         receivedEvent = true
                         handshakeFailures = 0
+                        cancelBadgeReconnectTask()
                         realtimeState = .connected
                     }
                     apply(event)
@@ -165,16 +185,26 @@ final class ServerNotificationCenter {
             if Task.isCancelled { break }
 
             if receivedEvent {
-                // La connexion a vécu puis est tombée : on tente une vraie reconnexion (back-off).
-                realtimeState = .reconnecting
-                try? await Task.sleep(for: backoff)
-                backoff = min(backoff * 2, .seconds(30))
+                // La connexion a vécu puis est tombée. On **ne bascule pas immédiatement** le badge :
+                // on tente d'abord un reconnect rapide en restant « connecté ». Ce n'est que si la
+                // reconnexion tarde au-delà de la fenêtre de grâce que l'on affichera « Reconnexion ».
+                droppedFromLive = true
+                cancelBadgeReconnectTask()
+                badgeReconnectTask = Task { [weak self] in
+                    try? await Task.sleep(for: Self.reconnectBadgeGrace)
+                    guard !Task.isCancelled else { return }
+                    self?.markReconnectingIfStillDown()
+                }
+                try? await Task.sleep(for: Self.firstReconnectDelay)
+                backoff = .seconds(1)
             } else {
+                droppedFromLive = false
                 // Échec d'ouverture sans aucun événement : probablement un upgrade refusé.
                 handshakeFailures += 1
                 if handshakeFailures >= Self.maxHandshakeFailuresBeforeRESTMode {
                     // Temps réel exclu : on passe en repli REST (badge honnête) et on retentera le
                     // WebSocket beaucoup plus tard, au cas où la configuration change.
+                    cancelBadgeReconnectTask()
                     realtimeState = .restMode
                     try? await Task.sleep(for: Self.restModeProbeInterval)
                 } else {
@@ -184,6 +214,41 @@ final class ServerNotificationCenter {
                 }
             }
         }
+        cancelBadgeReconnectTask()
+    }
+
+    /// Tâche différée qui affiche « Reconnexion… » si la reconnexion ne s'est pas rétablie dans la
+    /// fenêtre de grâce. Annulée dès qu'une reconnexion réussit (passage à `.connected`).
+    private var badgeReconnectTask: Task<Void, Never>?
+
+    private func cancelBadgeReconnectTask() {
+        badgeReconnectTask?.cancel()
+        badgeReconnectTask = nil
+    }
+
+    /// Passe en `.reconnecting` seulement si l'on n'est pas déjà revenu en ligne entre-temps
+    /// (la boucle remet `realtimeState = .connected` dès le premier événement reçu).
+    private func markReconnectingIfStillDown() {
+        if realtimeState != .connected, realtimeState != .restMode {
+            realtimeState = .reconnecting
+        }
+    }
+
+    /// Jeton WebSocket, **mis en cache**. Refrappé seulement s'il manque, qu'il a dépassé sa durée de
+    /// vie utile, ou qu'on `forceRefresh` (reconnexion après une connexion qui a vécu : le serveur a
+    /// pu faire tourner le jeton). Sur instance sans auth, renvoie `nil` sans aucun appel réseau.
+    private func webSocketToken(forceRefresh: Bool) async -> String? {
+        guard server.authMethod != .none else { return nil }
+        if !forceRefresh, let cached = cachedWebSocketToken,
+           Date().timeIntervalSince(cached.fetchedAt) < Self.webSocketTokenTTL
+        {
+            return cached.value
+        }
+        let fresh = await connectionFactory.webSocketToken(for: server)
+        if let fresh {
+            cachedWebSocketToken = (fresh, Date())
+        }
+        return fresh
     }
 
     /// Repli REST : amorce les statuts puis les rafraîchit périodiquement **tant que** le temps réel
