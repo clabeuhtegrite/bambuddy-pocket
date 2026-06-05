@@ -132,6 +132,21 @@ Nuances par modèle + décodage tolérant + UI adaptative + effets de bord. Sour
 - ✅ **Refonte UI — direction artistique Bambuddy** sur tous les écrans : design system
   (palette adaptative clair/sombre, accent vert, Inter, composants), **mode sombre** suivant
   le système, badges de statut sémantiques, barres de progression vertes (PR A→F).
+- ✅ **Refonte navigation & accueil** (maquettes `docs/mockups/`) :
+  - ✅ **Navigation par onglets** (#83) — `ServerHomeView` + `MoreView` : `Accueil · Imprimantes ·
+    File · Bibliothèque · Plus`, chaque onglet sa pile `NavigationStack`, écran « Plus » groupé par
+    sections ; multi-serveurs préservé (retour à la liste via l'en-tête / « Plus → Serveur »).
+  - ✅ **Accueil A — tableau de bord** (#84) — carte hero impression conditionnelle, cartes
+    imprimantes (strip températures), bandeau alerte conditionnel, actions rapides.
+  - ✅ **Détail imprimante enrichi B** (#85) — en-tête caméra, strip températures, strip AMS.
+  - ✅ **Captures de revue** FR sombre/clair des nouveaux écrans (`docs/screenshots/refonte/`) via
+    le scheme `BamPocketScreenshots` (`UITEST_LIVE=1`, Docker dev).
+  - ⬜ **Variante C — grille flotte** (maquette `06-accueil-C-grille.png`) : disposition alternative
+    de l'Accueil en grille de tuiles imprimantes pour parcs multi-machines. **Non implémentée** —
+    amélioration future (A retenue comme défaut ; C envisageable en option/iPad).
+  - ⬜ **Données de revue riches** : les captures actuelles montrent l'X2D **au repos** (Docker dev
+    idle, sans AMS ni impression active) → la carte hero et le strip AMS restent en état vide. Pour
+    coller pleinement aux maquettes, piloter la VP en impression active (gcode + flux MQTT).
 - 🟦 Tests **XCUITest sur chemins critiques** (`CriticalPathUITests`, exécutés en CI, sans backend) :
   ajout d'un serveur via le formulaire → détail → navigation vers Imprimantes → centre de
   notifications ; écran À propos ; annulation d'ajout. Captures (`ScreenshotTests`) isolées
