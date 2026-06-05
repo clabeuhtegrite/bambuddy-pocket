@@ -193,14 +193,27 @@ struct PrinterDetailView: View {
     }
 
     private func errorsSection(_ status: PrinterStatus) -> some View {
+        // Seules les erreurs **alarmantes** (gravité effective ≥ serious) sont listées : les codes
+        // informatifs/de statut que la gamme H2D/X2D émet en continu sont filtrés à la source.
         Section("Errors") {
-            ForEach(status.hmsErrors ?? []) { error in
+            ForEach(status.alarmingErrors) { error in
                 HStack(spacing: DSSpacing.sm) {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(PrinterPresentation.severityColor(error.severityLevel))
+                        .foregroundStyle(PrinterPresentation.severityColor(error.effectiveSeverity))
                     VStack(alignment: .leading, spacing: DSSpacing.xs) {
-                        Text(error.code).font(.subheadline.monospaced())
-                        Text(PrinterPresentation.severityText(error.severityLevel))
+                        Text(PrinterPresentation.hmsTitle(error))
+                        if let url = error.wikiURL {
+                            Link(destination: url) {
+                                HStack(spacing: DSSpacing.xs) {
+                                    Text(error.displayCode).font(.subheadline.monospaced())
+                                    Image(systemName: "arrow.up.right.square")
+                                }
+                            }
+                            .font(.subheadline)
+                        } else {
+                            Text(error.displayCode).font(.subheadline.monospaced())
+                        }
+                        Text(PrinterPresentation.severityText(error.effectiveSeverity))
                             .font(DSFont.caption)
                             .foregroundStyle(DSColor.textSecondary)
                     }

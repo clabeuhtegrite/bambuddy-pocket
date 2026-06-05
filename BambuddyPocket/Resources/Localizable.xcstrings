@@ -2541,6 +2541,28 @@
         }
       }
     },
+    "Clogged nozzle": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buse obstruée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boquilla obstruida"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse verstopft"
+          }
+        }
+      }
+    },
     "Close": {
       "localizations": {
         "de": {
@@ -5603,6 +5625,28 @@
         }
       }
     },
+    "Filament runout": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filament épuisé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filamento agotado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filament leer"
+          }
+        }
+      }
+    },
     "Filaments": {
       "localizations": {
         "de": {
@@ -5797,6 +5841,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Inspection de première couche"
+          }
+        }
+      }
+    },
+    "First layer issue": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Problème de première couche"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Problema en la primera capa"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Problem mit erster Schicht"
           }
         }
       }
@@ -6023,6 +6089,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Heatbreak"
+          }
+        }
+      }
+    },
+    "Heated bed not heating": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le plateau ne chauffe pas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La cama no calienta"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Druckbett heizt nicht"
           }
         }
       }
@@ -6625,6 +6713,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Couche"
+          }
+        }
+      }
+    },
+    "Layer shift": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Décalage de couche"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desplazamiento de capa"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schichtversatz"
           }
         }
       }
@@ -8849,6 +8959,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Diamètre de buse"
+          }
+        }
+      }
+    },
+    "Nozzle not heating": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La buse ne chauffe pas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La boquilla no calienta"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düse heizt nicht"
           }
         }
       }
@@ -11522,6 +11654,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Code source"
+          }
+        }
+      }
+    },
+    "Spaghetti detected": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spaghetti détecté"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espagueti detectado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spaghetti erkannt"
           }
         }
       }
