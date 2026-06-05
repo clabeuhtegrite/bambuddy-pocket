@@ -117,6 +117,29 @@ enum PrinterPresentation {
         DSStatusIntent.forHMSSeverity(severity).color
     }
 
+    /// Titre humain d'une erreur HMS : raison connue traduite (Layer shift, Filament runout…) ou,
+    /// à défaut, un libellé générique « Printer error » plutôt que le code brut.
+    static func hmsTitle(_ error: HMSError) -> String {
+        switch error.failureReasonKey {
+        case "hms.reason.layerShift":
+            String(localized: "Layer shift")
+        case "hms.reason.filamentRunout":
+            String(localized: "Filament runout")
+        case "hms.reason.cloggedNozzle":
+            String(localized: "Clogged nozzle")
+        case "hms.reason.bedNotHeating":
+            String(localized: "Heated bed not heating")
+        case "hms.reason.nozzleNotHeating":
+            String(localized: "Nozzle not heating")
+        case "hms.reason.firstLayerFailed":
+            String(localized: "First layer issue")
+        case "hms.reason.spaghettiDetected":
+            String(localized: "Spaghetti detected")
+        default:
+            String(localized: "Printer error")
+        }
+    }
+
     /// Convertit une couleur de bobine au format hex `RRGGBB` ou `RRGGBBAA` en `Color`.
     static func color(hexRGBA hex: String?) -> Color? {
         guard var string = hex else {

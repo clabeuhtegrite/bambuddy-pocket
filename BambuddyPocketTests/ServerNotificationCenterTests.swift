@@ -74,6 +74,33 @@ struct ServerNotificationCenterTests {
         #expect(hms.first?.detail == "0300_0100")
     }
 
+    @Test("Un HMS informatif (X2D 0x30027, sev. effective .info) ne notifie pas")
+    func informationalHMSDoesNotNotify() throws {
+        let center = try makeCenter()
+        var status = PrinterStatus()
+        // Code réel X2D : champ severity:2 mais quartet d'attr → gravité 0 → .info.
+        status.hmsErrors = [HMSError(code: "0x30027", attr: 0x0503_0000, module: 5, severity: 2)]
+        center.ingest(.printerStatus(printerID: 1, status: status))
+
+        #expect(center.notifications.count(where: { $0.kind == .hmsError }) == 0)
+    }
+
+    @Test("Une erreur grave qui clignote ne ré-alarme pas dans la fenêtre de grâce")
+    func flappingSevereHMSDoesNotReAlarmWithinGrace() throws {
+        let center = try makeCenter()
+        var withError = PrinterStatus()
+        withError.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        var clear = PrinterStatus()
+        clear.hmsErrors = [] // delta explicite : la liste se vide (sinon le merge conserve l'ancienne)
+
+        center.ingest(.printerStatus(printerID: 1, status: withError))
+        center.ingest(.printerStatus(printerID: 1, status: clear))
+        center.ingest(.printerStatus(printerID: 1, status: withError)) // réapparition immédiate
+
+        // Une seule notification malgré l'apparition → disparition → réapparition rapprochée.
+        #expect(center.notifications.count(where: { $0.kind == .hmsError }) == 1)
+    }
+
     @Test("clear vide le feed et la bannière")
     func clearsFeed() throws {
         let center = try makeCenter()

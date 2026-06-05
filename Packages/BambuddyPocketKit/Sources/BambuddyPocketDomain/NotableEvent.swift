@@ -70,22 +70,23 @@ public extension PrinterStatus {
     ///   - printerID: identifiant de l'imprimante, reporté dans la notification.
     /// - Returns: une notification HMS, ou `nil` si aucune nouvelle erreur grave.
     func severeHMSEvent(comparedTo previous: PrinterStatus?, printerID: Int) -> NotableEvent? {
-        let severeNow = Set(Self.severeCodes(in: self))
+        let severeNow = Self.alarmingErrors(in: self)
         guard !severeNow.isEmpty else { return nil }
-        let severeBefore = Set(Self.severeCodes(in: previous))
-        let appeared = severeNow.subtracting(severeBefore)
-        guard let code = appeared.min() else { return nil }
-        return NotableEvent(kind: .hmsError, printerID: printerID, detail: code)
+        let severeBefore = Set(Self.alarmingErrors(in: previous).keys)
+        let appeared = Set(severeNow.keys).subtracting(severeBefore)
+        // On notifie le code le plus grave nouvellement apparu, avec un libellé humain
+        // (« HMS 0503_0027 ») plutôt que le code brut.
+        guard let code = appeared.min(), let error = severeNow[code] else { return nil }
+        return NotableEvent(kind: .hmsError, printerID: printerID, detail: error.displayCode)
     }
 
-    private static func severeCodes(in status: PrinterStatus?) -> [String] {
-        (status?.hmsErrors ?? [])
-            .filter { error in
-                switch error.severityLevel {
-                case .fatal, .serious: true
-                case .common, .info: false
-                }
-            }
-            .map(\.code)
+    /// Erreurs alarmantes (gravité effective ≥ serious) indexées par code brut — réplique le filtre
+    /// amont qui ignore l'informatif/statut (`severity >= 2`).
+    private static func alarmingErrors(in status: PrinterStatus?) -> [String: HMSError] {
+        var result: [String: HMSError] = [:]
+        for error in status?.hmsErrors ?? [] where error.isAlarming {
+            result[error.code] = error
+        }
+        return result
     }
 }

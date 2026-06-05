@@ -47,6 +47,10 @@ final class ServerNotificationCenter {
     private var printerNames: [Int: String] = [:]
     /// Statuts précédents, pour ne notifier les erreurs HMS qu'à la transition.
     private var previousStatuses: [Int: PrinterStatus] = [:]
+    /// Dernière notification émise pour un code HMS alarmant donné (`"<printerID>:<code>"` → date),
+    /// pour appliquer une **grâce** anti-flapping : un code qui réapparaît dans la fenêtre ne
+    /// ré-alarme pas (la X2D fait clignoter certains codes ; cf. `_HMS_CLEAR_GRACE_SECONDS` amont).
+    private var lastHMSNotified: [String: Date] = [:]
 
     private static let maxNotifications = 100
     /// Cadence du repli REST quand le temps réel (WebSocket) est indisponible.
@@ -57,6 +61,9 @@ final class ServerNotificationCenter {
     /// Intervalle entre deux nouvelles tentatives WebSocket une fois en repli REST (au cas où le
     /// proxy/serveur se mette à accepter l'upgrade).
     private static let restModeProbeInterval = Duration.seconds(120)
+    /// Fenêtre de grâce anti-flapping pour les erreurs HMS (aligné sur `_HMS_CLEAR_GRACE_SECONDS`
+    /// amont) : un code alarmant déjà notifié il y a moins de ce délai ne ré-alarme pas.
+    private static let hmsClearGrace: TimeInterval = 30
 
     init(server: ServerConfiguration, connectionFactory: ServerConnectionFactory) {
         self.server = server
@@ -241,12 +248,27 @@ final class ServerNotificationCenter {
     private func merge(_ delta: PrinterStatus, into id: Int) {
         let current = statuses[id] ?? PrinterStatus()
         let merged = current.merged(with: delta)
-        // Erreur HMS grave : ne notifier qu'à l'apparition (transition d'état).
-        if let hms = merged.severeHMSEvent(comparedTo: previousStatuses[id], printerID: id) {
+        // Erreur HMS grave : ne notifier qu'à l'apparition (transition d'état) et hors fenêtre de
+        // grâce anti-flapping (un code qui clignote ne ré-alarme pas).
+        let hms = merged.severeHMSEvent(comparedTo: previousStatuses[id], printerID: id)
+        if let hms, shouldNotifyHMS(hms, printerID: id) {
             record(hms)
         }
         previousStatuses[id] = merged
         statuses[id] = merged
+    }
+
+    /// Le HMS grave doit-il alarmer ? Non s'il a déjà été notifié dans la fenêtre de grâce (anti-
+    /// flapping). Met à jour l'horodatage de dernière alarme quand la réponse est `true`.
+    private func shouldNotifyHMS(_ hms: NotableEvent, printerID: Int) -> Bool {
+        guard let detail = hms.detail else { return true }
+        let key = "\(printerID):\(detail)"
+        let now = Date()
+        if let last = lastHMSNotified[key], now.timeIntervalSince(last) < Self.hmsClearGrace {
+            return false
+        }
+        lastHMSNotified[key] = now
+        return true
     }
 
     private func record(_ notable: NotableEvent?) {

@@ -96,4 +96,22 @@ struct SevereHMSEventTests {
         let current = status(severeCode: nil)
         #expect(current.severeHMSEvent(comparedTo: nil, printerID: 1) == nil)
     }
+
+    @Test("La gravité effective vient d'attr : un code X2D info ne notifie pas")
+    func attrDerivedSeverityFilters() {
+        var current = PrinterStatus()
+        // 0x30027 réel : attr 0x05030000 → quartet de gravité 0 → .info, malgré severity:2.
+        current.hmsErrors = [HMSError(code: "0x30027", attr: 0x0503_0000, module: 5, severity: 2)]
+        #expect(current.severeHMSEvent(comparedTo: nil, printerID: 1) == nil)
+    }
+
+    @Test("Une erreur réellement grave notifie avec un libellé humain (pas le code brut)")
+    func severeNotifiesWithHumanLabel() {
+        var current = PrinterStatus()
+        // attr quartet 0x..0100.. → gravité 1 (fatal) ; module 0x0300, détail 0x0001.
+        current.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        let event = current.severeHMSEvent(comparedTo: nil, printerID: 1)
+        #expect(event?.kind == .hmsError)
+        #expect(event?.detail == "HMS 0300_0001")
+    }
 }

@@ -25,7 +25,7 @@ struct PrinterStatusDecodingTests {
       "cover_url": "/api/v1/printers/1/cover",
       "current_archive_id": 7,
       "temperatures": { "nozzle": 220.0, "nozzle_target": 220.0, "bed": 60.0, "bed_target": 60.0, "chamber": 32.0, "chamber_target": 0.0 },
-      "hms_errors": [ { "code": "0300_0100_0002_0001", "attr": 50348039, "module": 3, "severity": 2 } ],
+      "hms_errors": [ { "code": "0300_0100_0002_0001", "attr": 50332160, "module": 3, "severity": 2 } ],
       "ams": [ { "id": 0, "humidity": 25, "temp": 28.0, "is_ams_ht": false, "dry_time": 0,
         "tray": [ { "id": 0, "tray_color": "FF6A13FF", "tray_type": "PLA", "remain": 78,
                     "nozzle_temp_min": 190, "nozzle_temp_max": 230, "state": 0 } ] } ],
@@ -245,16 +245,41 @@ struct PrinterStatusDecodingTests {
     @Test("Une gravité HMS réelle hors plage 1…3 (6) retombe sur .info (pas .unknown)")
     func realHMSSeverityFallsBackToInfo() throws {
         let status = try realX2DStatus()
-        // La X2D réelle a renvoyé deux erreurs HMS : severity 6 et severity 2.
+        // La X2D réelle a renvoyé deux erreurs HMS : severity (brut) 6 et 2.
         #expect(status.hmsErrors?.count == 2)
         let severities = (status.hmsErrors ?? []).compactMap(\.severity).sorted()
         #expect(severities == [2, 6])
         let sev6 = try #require(status.hmsErrors?.first { $0.severity == 6 })
         #expect(sev6.severityLevel == .info)
         let sev2 = try #require(status.hmsErrors?.first { $0.severity == 2 })
+        // Le champ brut `severity:2` se lit `.serious`…
         #expect(sev2.severityLevel == .serious)
-        // La plus grave reste triée par `severity` brut (2 < 6).
-        #expect(status.mostSevereError?.severity == 2)
+        // …mais la **gravité effective** dérive du quartet `(attr >> 8) & 0xF` (sémantique réelle
+        // X2D) : pour `0x30027` (attr 0x05030000) ce quartet vaut 0 → `.info`, donc non alarmant.
+        #expect(sev2.effectiveSeverity == .info)
+        #expect(sev2.isAlarming == false)
+    }
+
+    @Test("Les deux HMS réels X2D sont informatifs/de statut : aucune alarme")
+    func realHMSAreNonAlarming() throws {
+        let status = try realX2DStatus()
+        // Les codes 0x20070 (sev 6) et 0x30027 (sev 2) sont des messages info/statut que la X2D
+        // émet en continu : ni l'un ni l'autre ne doit alarmer ni faire surface comme erreur.
+        #expect(status.alarmingErrors.isEmpty)
+        #expect(status.hasActiveErrors == false)
+        #expect(status.mostSevereError == nil)
+    }
+
+    @Test("Code court canonique MMMM_CCCC + libellé humain pour le HMS réel 0x30027")
+    func realHMSShortCodeAndLabel() throws {
+        let status = try realX2DStatus()
+        let error = try #require(status.hmsErrors?.first { $0.code == "0x30027" })
+        // attr 0x05030000 → module 0x0503, code&0xFFFF = 0x0027.
+        #expect(error.shortCode == "0503_0027")
+        #expect(error.displayCode == "HMS 0503_0027")
+        // Code inconnu de la table : pas de raison connue, mais un libellé lisible (jamais 0x… brut).
+        #expect(error.failureReasonKey == nil)
+        #expect(error.displayCode.contains("0x") == false)
     }
 
     @Test("HMSSeverity : 0 et toute valeur ≥ 4 → .info (forward-compat)")

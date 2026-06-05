@@ -56,6 +56,16 @@ public enum HMSSeverity: Sendable, Hashable {
         default: self = .info
         }
     }
+
+    /// Rang de gravité décroissante (`fatal` = plus grave) pour trier/comparer les erreurs.
+    public var rank: Int {
+        switch self {
+        case .fatal: 0
+        case .serious: 1
+        case .common: 2
+        case .info: 3
+        }
+    }
 }
 
 /// Erreur HMS (Health Management System) Bambu. Le code se résout en message via une table
@@ -70,8 +80,45 @@ public struct HMSError: Codable, Sendable, Hashable, Identifiable {
         code
     }
 
+    /// Sévérité telle qu'exposée par le champ `severity` brut (interprétation directe). Conservée
+    /// pour la rétro-compatibilité ; préférer `effectiveSeverity` pour décider d'alarmer.
     public var severityLevel: HMSSeverity {
         HMSSeverity(code: severity ?? 0)
+    }
+
+    /// Sévérité **effective** retenue pour décider d'afficher/notifier, dérivée en priorité du
+    /// quartet `(attr >> 8) & 0xF` (sémantique réelle X2D), cf. `HMSCatalog.effectiveSeverity`.
+    public var effectiveSeverity: HMSSeverity {
+        HMSCatalog.effectiveSeverity(attr: attr, severity: severity)
+    }
+
+    /// Cette entrée doit-elle déclencher une alarme (affichage erreur + notification) ?
+    /// Réplique le filtre amont « ne surface que `severity >= 2` » en ignorant l'informatif/statut.
+    public var isAlarming: Bool {
+        switch effectiveSeverity {
+        case .fatal, .serious: true
+        case .common, .info: false
+        }
+    }
+
+    /// Code court canonique `MMMM_CCCC` (ou `nil` si non calculable faute d'`attr`).
+    public var shortCode: String? {
+        HMSCatalog.shortCode(attr: attr, code: code)
+    }
+
+    /// Libellé affichable lisible (« HMS 0503_0027 » plutôt que `0x30027`).
+    public var displayCode: String {
+        HMSCatalog.displayCode(attr: attr, code: code)
+    }
+
+    /// Clé i18n d'une raison connue (Layer shift, Filament runout…), ou `nil`.
+    public var failureReasonKey: String? {
+        HMSCatalog.failureReasonKey(attr: attr, code: code)
+    }
+
+    /// Lien wiki Bambu pour ce code (ou `nil`).
+    public var wikiURL: URL? {
+        HMSCatalog.wikiURL(attr: attr, code: code)
     }
 
     public init(code: String, attr: Int? = nil, module: Int? = nil, severity: Int? = nil) {
@@ -251,9 +298,16 @@ public struct PrinterStatus: Codable, Sendable, Hashable {
         progress.map { max(0, min(1, $0 / 100)) }
     }
 
-    /// L'imprimante signale-t-elle au moins une erreur HMS ?
+    /// Erreurs HMS **alarmantes** (gravité effective ≥ serious) : seules celles-ci doivent être
+    /// affichées comme erreur et notifiées. Les codes informatifs/de statut (que la gamme H2D/X2D
+    /// émet en continu) sont filtrés, comme le fait l'amont (`severity >= 2`).
+    public var alarmingErrors: [HMSError] {
+        (hmsErrors ?? []).filter(\.isAlarming)
+    }
+
+    /// L'imprimante signale-t-elle au moins une erreur HMS **alarmante** ?
     public var hasActiveErrors: Bool {
-        !(hmsErrors ?? []).isEmpty
+        !alarmingErrors.isEmpty
     }
 
     /// Étape courante (`stg_cur_name`) à n'afficher **que** lorsqu'une impression est active.
@@ -269,9 +323,9 @@ public struct PrinterStatus: Codable, Sendable, Hashable {
         return stage
     }
 
-    /// Erreur HMS la plus grave (pour mise en avant).
+    /// Erreur HMS **alarmante** la plus grave (pour mise en avant), ou `nil` si aucune n'alarme.
     public var mostSevereError: HMSError? {
-        hmsErrors?.min { lhs, rhs in (lhs.severity ?? 99) < (rhs.severity ?? 99) }
+        alarmingErrors.min { lhs, rhs in lhs.effectiveSeverity.rank < rhs.effectiveSeverity.rank }
     }
 
     /// Modèle normalisé déduit du champ `model` du statut, **s'il est présent**.
