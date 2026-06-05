@@ -55,8 +55,8 @@ struct HomeDashboardPresentationTests {
     @Test("alert : erreur HMS alarmante prioritaire sur une bobine faible")
     func alertPrioritizesHMS() {
         var printingWithError = printingStatus(progress: 40)
-        // Sévérité 1 (fatal) → alarmante (cf. logique #81).
-        printingWithError.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        // 0700_4001 (connu) + quartet de gravité 2 (serious) → alarmante (cf. logique #81 + filtrage connu).
+        printingWithError.hmsErrors = [HMSError(code: "0x4001", attr: 0x0700_0200)]
         // Et une bobine faible sur la même imprimante.
         var lowUnit = AMSUnit(id: 0)
         var tray = AMSTray(id: 0)
@@ -100,7 +100,7 @@ struct HomeDashboardPresentationTests {
         var errored = PrinterStatus()
         errored.connected = true
         errored.state = .idle
-        errored.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        errored.hmsErrors = [HMSError(code: "0x4001", attr: 0x0700_0200)]
         var ready = PrinterStatus()
         ready.connected = true
         ready.state = .idle
@@ -117,7 +117,7 @@ struct HomeDashboardPresentationTests {
     @Test("alertCount : compte les imprimantes en alerte (erreur, plateau, bobine basse)")
     func alertCountCountsAlertingPrinters() {
         var errored = printingStatus(progress: 20)
-        errored.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        errored.hmsErrors = [HMSError(code: "0x4001", attr: 0x0700_0200)]
         var lowSpool = PrinterStatus()
         lowSpool.connected = true
         lowSpool.state = .idle

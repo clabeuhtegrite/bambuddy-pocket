@@ -25,7 +25,7 @@ struct PrinterStatusDecodingTests {
       "cover_url": "/api/v1/printers/1/cover",
       "current_archive_id": 7,
       "temperatures": { "nozzle": 220.0, "nozzle_target": 220.0, "bed": 60.0, "bed_target": 60.0, "chamber": 32.0, "chamber_target": 0.0 },
-      "hms_errors": [ { "code": "0300_0100_0002_0001", "attr": 50332160, "module": 3, "severity": 2 } ],
+      "hms_errors": [ { "code": "0700_4001_0002_0001", "attr": 117441024, "module": 7, "severity": 2 } ],
       "ams": [ { "id": 0, "humidity": 25, "temp": 28.0, "is_ams_ht": false, "dry_time": 0,
         "tray": [ { "id": 0, "tray_color": "FF6A13FF", "tray_type": "PLA", "remain": 78,
                     "nozzle_temp_min": 190, "nozzle_temp_max": 230, "state": 0 } ] } ],
@@ -72,7 +72,8 @@ struct PrinterStatusDecodingTests {
         #expect(status.hasActiveErrors)
         #expect(status.hmsErrors?.count == 1)
         #expect(status.mostSevereError?.severityLevel == .serious)
-        #expect(status.mostSevereError?.code == "0300_0100_0002_0001")
+        #expect(status.mostSevereError?.code == "0700_4001_0002_0001")
+        #expect(status.mostSevereError?.shortCode == "0700_4001")
     }
 
     @Test("Un état inconnu retombe sur .unknown (forward-compat)")
@@ -268,6 +269,25 @@ struct PrinterStatusDecodingTests {
         #expect(status.alarmingErrors.isEmpty)
         #expect(status.hasActiveErrors == false)
         #expect(status.mostSevereError == nil)
+    }
+
+    @Test("Filtrage par catalogue connu (parité web UI) : les codes X2D réels sont *inconnus* donc masqués")
+    func knownCodeFilterMatchesWebUI() throws {
+        let status = try realX2DStatus()
+        // La web UI (`filterKnownHMSErrors`) ne surface qu'un code présent dans `ERROR_DESCRIPTIONS`.
+        // Les deux codes réels de la X2D (`0500_0070`, `0503_0027`) en sont absents → masqués.
+        for error in status.hmsErrors ?? [] {
+            #expect(error.isKnown == false)
+            #expect(error.isAlarming == false)
+        }
+        // Un code *connu et grave* (0700_4001, quartet de gravité 2) doit, lui, alarmer.
+        let known = HMSError(code: "0x4001", attr: 0x0700_0200)
+        #expect(known.isKnown)
+        #expect(known.isAlarming)
+        // Un code *connu mais informatif* (quartet 0) ne doit pas alarmer.
+        let knownInfo = HMSError(code: "0x4001", attr: 0x0700_0000)
+        #expect(knownInfo.isKnown)
+        #expect(knownInfo.isAlarming == false)
     }
 
     @Test("Code court canonique MMMM_CCCC + libellé humain pour le HMS réel 0x30027")

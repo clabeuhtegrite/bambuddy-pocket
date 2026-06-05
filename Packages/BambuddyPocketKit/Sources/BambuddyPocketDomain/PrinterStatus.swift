@@ -92,12 +92,23 @@ public struct HMSError: Codable, Sendable, Hashable, Identifiable {
         HMSCatalog.effectiveSeverity(attr: attr, severity: severity)
     }
 
+    /// Ce code est-il **reconnu** par la web UI (présent dans son catalogue) ? Les codes inconnus
+    /// (calibration/vision/statut émis en continu, p. ex. `0500_0070`) sont masqués comme côté web.
+    public var isKnown: Bool {
+        HMSCatalog.isKnown(attr: attr, code: code)
+    }
+
     /// Cette entrée doit-elle déclencher une alarme (affichage erreur + notification) ?
-    /// Réplique le filtre amont « ne surface que `severity >= 2` » en ignorant l'informatif/statut.
+    ///
+    /// Réplique le double filtre de la web UI : **(1)** le code doit être *connu*
+    /// (`filterKnownHMSErrors`), sinon il est masqué quelle que soit sa gravité — c'est ce qui élimine
+    /// les faux positifs `0C00_0015`/`0500_0070`/`0503_0027` ; **(2)** la gravité effective doit être
+    /// ≥ serious (`severity >= 2` amont), pour ne pas alarmer sur de l'informatif connu.
     public var isAlarming: Bool {
+        guard isKnown else { return false }
         switch effectiveSeverity {
-        case .fatal, .serious: true
-        case .common, .info: false
+        case .fatal, .serious: return true
+        case .common, .info: return false
         }
     }
 

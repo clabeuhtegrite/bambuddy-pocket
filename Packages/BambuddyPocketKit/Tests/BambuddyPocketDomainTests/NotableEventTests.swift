@@ -59,41 +59,53 @@ struct NotableEventTests {
 
 @Suite("PrinterStatus.severeHMSEvent")
 struct SevereHMSEventTests {
-    private func status(severeCode: String?, severity: Int = 1) -> PrinterStatus {
+    /// Construit un statut avec une unique erreur HMS. `attr` encode le module (`>>16`) et la gravité
+    /// (quartet `>>8`) ; sans `attr`, le code est *inconnu* (non calculable) et donc masqué, comme la
+    /// web UI. Les tests fournissent donc un `attr` cohérent avec un code court catalogué.
+    private func status(code: String?, attr: Int? = nil) -> PrinterStatus {
         var status = PrinterStatus()
-        if let severeCode {
-            status.hmsErrors = [HMSError(code: severeCode, severity: severity)]
+        if let code {
+            status.hmsErrors = [HMSError(code: code, attr: attr)]
         } else {
             status.hmsErrors = []
         }
         return status
     }
 
-    @Test("Une nouvelle erreur fatale produit une notification HMS")
+    @Test("Une nouvelle erreur grave connue produit une notification HMS")
     func detectsNewSevereError() {
-        let current = status(severeCode: "0300_0100", severity: 1)
-        let event = current.severeHMSEvent(comparedTo: status(severeCode: nil), printerID: 7)
+        // 0700_4001 (connu, série AMS) ; attr 0x07000200 → module 0x0700, quartet de gravité 2 (serious).
+        let current = status(code: "0x4001", attr: 0x0700_0200)
+        let event = current.severeHMSEvent(comparedTo: status(code: nil), printerID: 7)
         #expect(event?.kind == .hmsError)
         #expect(event?.printerID == 7)
-        #expect(event?.detail == "0300_0100")
+        #expect(event?.detail == "HMS 0700_4001")
     }
 
     @Test("Une erreur déjà présente ne renotifie pas")
     func ignoresExistingError() {
-        let previous = status(severeCode: "0300_0100", severity: 1)
-        let current = status(severeCode: "0300_0100", severity: 1)
+        let previous = status(code: "0x4001", attr: 0x0700_0200)
+        let current = status(code: "0x4001", attr: 0x0700_0200)
         #expect(current.severeHMSEvent(comparedTo: previous, printerID: 1) == nil)
     }
 
     @Test("Une erreur de faible gravité n'est pas notable")
     func ignoresLowSeverity() {
-        let current = status(severeCode: "0500_0200", severity: 4)
-        #expect(current.severeHMSEvent(comparedTo: status(severeCode: nil), printerID: 1) == nil)
+        // 0700_4025 (connu) mais quartet de gravité 4 → .info → non alarmant.
+        let current = status(code: "0x4025", attr: 0x0700_0400)
+        #expect(current.severeHMSEvent(comparedTo: status(code: nil), printerID: 1) == nil)
+    }
+
+    @Test("Une erreur grave mais inconnue (hors catalogue web) n'est pas notable")
+    func ignoresUnknownSevereCode() {
+        // 0500_0070 réel (X2D) : quartet de gravité 1 (fatal) mais code absent du catalogue web → masqué.
+        let current = status(code: "0x70", attr: 0x0500_0100)
+        #expect(current.severeHMSEvent(comparedTo: status(code: nil), printerID: 1) == nil)
     }
 
     @Test("Sans erreur, aucune notification")
     func noErrorNoEvent() {
-        let current = status(severeCode: nil)
+        let current = status(code: nil)
         #expect(current.severeHMSEvent(comparedTo: nil, printerID: 1) == nil)
     }
 
@@ -108,10 +120,10 @@ struct SevereHMSEventTests {
     @Test("Une erreur réellement grave notifie avec un libellé humain (pas le code brut)")
     func severeNotifiesWithHumanLabel() {
         var current = PrinterStatus()
-        // attr quartet 0x..0100.. → gravité 1 (fatal) ; module 0x0300, détail 0x0001.
-        current.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        // 0300_8000 (connu : « Printing was paused… ») ; attr 0x03000100 → module 0x0300, quartet 1 (fatal).
+        current.hmsErrors = [HMSError(code: "0x8000", attr: 0x0300_0100, module: 3, severity: 1)]
         let event = current.severeHMSEvent(comparedTo: nil, printerID: 1)
         #expect(event?.kind == .hmsError)
-        #expect(event?.detail == "HMS 0300_0001")
+        #expect(event?.detail == "HMS 0300_8000")
     }
 }
