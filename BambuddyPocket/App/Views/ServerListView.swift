@@ -8,8 +8,28 @@ struct ServerListView: View {
     @Bindable var model: ServerListModel
     @State private var presentedForm: ServerFormMode?
     @State private var showingAbout = false
+    /// Serveur sélectionné : présente la coquille à onglets (`ServerHomeView`) en plein écran.
+    @State private var selectedServer: ServerConfiguration?
 
     var body: some View {
+        Group {
+            if let selectedServer, model.servers.contains(where: { $0.id == selectedServer.id }) {
+                ServerHomeView(
+                    model: model,
+                    server: selectedServer,
+                    onBackToServers: { self.selectedServer = nil },
+                    onSelectServer: { self.selectedServer = $0 }
+                )
+                // L'identité dépend du serveur : recompose toute la coquille (et ses view-models)
+                // à la bascule de serveur.
+                .id(selectedServer.id)
+            } else {
+                serverChooser
+            }
+        }
+    }
+
+    private var serverChooser: some View {
         NavigationStack {
             Group {
                 if model.servers.isEmpty {
@@ -49,7 +69,9 @@ struct ServerListView: View {
     private var serverList: some View {
         List {
             ForEach(model.servers) { server in
-                NavigationLink(value: server) {
+                Button {
+                    selectedServer = server
+                } label: {
                     ServerRow(server: server)
                 }
                 .listRowBackground(DSColor.card)
@@ -60,9 +82,6 @@ struct ServerListView: View {
         }
         .scrollContentBackground(.hidden)
         .background(DSColor.background)
-        .navigationDestination(for: ServerConfiguration.self) { server in
-            ServerDetailView(model: model, server: server)
-        }
     }
 
     private var emptyState: some View {

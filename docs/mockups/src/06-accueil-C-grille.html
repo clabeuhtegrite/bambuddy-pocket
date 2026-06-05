@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="theme.css">
+<style>
+  .summary { display: flex; gap: 10px; margin: 4px 0 2px; }
+  .scard { flex: 1; padding: 11px 12px; text-align: center; }
+  .scard .v { font-size: 21px; font-weight: 800; }
+  .scard .v.green { color: var(--green-light); }
+  .scard .v.warn { color: var(--warn); }
+  .scard .l { font-size: 10px; color: var(--text3); font-weight: 600; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-top: 6px; }
+  .gcard { padding: 12px; }
+  .gthumb {
+    width: 100%; height: 82px; border-radius: 10px; margin-bottom: 10px;
+    border: 1px solid var(--border); position: relative; overflow: hidden;
+    background: radial-gradient(120% 100% at 50% 25%, #454b51, #25282c 70%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gthumb.idle { background: linear-gradient(135deg,#34383d,#222528); }
+  .gthumb.idle svg { opacity: 0.4; }
+  .gthumb svg { width: 30px; height: 30px; }
+  .gthumb .ov { position: absolute; bottom: 6px; left: 7px; font-size: 11px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
+  .gthumb .liveb { position: absolute; top: 6px; right: 6px; }
+  .gcard .top { display: flex; justify-content: space-between; align-items: center; }
+  .gcard .nm { font-size: 14px; font-weight: 700; }
+  .gcard .md { font-size: 11px; color: var(--text2); }
+  .gcard .progress { height: 6px; margin: 9px 0 7px; }
+  .gcard .foot { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; }
+  .gcard .foot .pct { color: var(--green-light); }
+  .gcard .foot .rem { color: var(--text2); }
+  .gcard .nozz { display: flex; gap: 5px; margin-top: 8px; }
+  .gcard .nb { flex:1; font-size:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px; padding:4px 5px; text-align:center; font-weight:700; }
+  .gcard .nb span { color: var(--text3); font-weight:600; }
+  .idle-foot { font-size:11px; color:var(--text3); font-weight:600; margin-top:9px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.4"/></svg>
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.2c2.3 0 4.4.9 6 2.4l1.2-1.3C13.8 1.4 11.3.4 8.5.4S3.2 1.4 1.3 3.3L2.5 4.6C4.1 3.1 6.2 2.2 8.5 2.2zM8.5 5.7c1.4 0 2.6.5 3.6 1.4l1.2-1.3c-1.3-1.2-3-1.9-4.8-1.9s-3.5.7-4.8 1.9l1.2 1.3c1-.9 2.2-1.4 3.6-1.4zM8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z"/></svg>
+      <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="currentColor"/><rect x="23.5" y="4" width="1.5" height="5" rx="0.75" fill="currentColor" opacity="0.4"/></svg>
+    </span>
+  </div>
+
+  <div class="navbar">
+    <div><div class="title">Atelier</div><div class="sub">Vue d'ensemble · 4 imprimantes</div></div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <span class="badge badge-live"><span class="dot"></span>En direct</span>
+      <div class="iconbtn" style="position:relative;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span style="position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:999px;background:var(--err);border:2px solid var(--card);"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <!-- SUMMARY -->
+    <div class="summary">
+      <div class="card scard"><div class="v green">2</div><div class="l">En impr.</div></div>
+      <div class="card scard"><div class="v">1</div><div class="l">Prêtes</div></div>
+      <div class="card scard"><div class="v warn">1</div><div class="l">Alerte</div></div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+      <!-- X2D printing -->
+      <div class="card gcard">
+        <div class="gthumb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00C64D" stroke-width="1.5"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+          <span class="liveb badge badge-live"><span class="dot"></span></span>
+          <span class="ov">68%</span>
+        </div>
+        <div class="top"><div><div class="nm">X2D</div><div class="md">Bi-buse</div></div></div>
+        <div class="progress"><i style="width:68%"></i></div>
+        <div class="foot"><span class="pct">support_bracket</span><span class="rem">23 min</span></div>
+        <div class="nozz"><div class="nb">220° <span>G</span></div><div class="nb">215° <span>D</span></div></div>
+      </div>
+
+      <!-- A1 mini printing -->
+      <div class="card gcard">
+        <div class="gthumb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00C64D" stroke-width="1.5"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+          <span class="liveb badge badge-live"><span class="dot"></span></span>
+          <span class="ov">34%</span>
+        </div>
+        <div class="top"><div><div class="nm">A1 mini</div><div class="md">Mono-buse</div></div></div>
+        <div class="progress"><i style="width:34%"></i></div>
+        <div class="foot"><span class="pct">cosplay_helmet</span><span class="rem">1 h 12</span></div>
+        <div class="nozz"><div class="nb">210° <span>BUSE</span></div><div class="nb">60° <span>PLAT.</span></div></div>
+      </div>
+
+      <!-- P1S idle/ready with alert -->
+      <div class="card gcard">
+        <div class="gthumb idle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" stroke-width="1.5"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+          <span class="liveb badge badge-warn"><span class="dot"></span></span>
+        </div>
+        <div class="top"><div><div class="nm">P1S</div><div class="md">Mono-buse</div></div></div>
+        <div class="idle-foot" style="color:var(--warn)">Filament faible · slot 3</div>
+        <div class="nozz"><div class="nb">28° <span>BUSE</span></div><div class="nb">24° <span>PLAT.</span></div></div>
+      </div>
+
+      <!-- A1 ready -->
+      <div class="card gcard">
+        <div class="gthumb idle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" stroke-width="1.5"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+          <span class="liveb badge badge-ok"><span class="dot"></span></span>
+        </div>
+        <div class="top"><div><div class="nm">A1</div><div class="md">Mono-buse</div></div></div>
+        <div class="idle-foot" style="color:var(--ok)">Prête · au repos</div>
+        <div class="nozz"><div class="nb">26° <span>BUSE</span></div><div class="nb">23° <span>PLAT.</span></div></div>
+      </div>
+    </div>
+
+    <div class="sec-head">Actions rapides</div>
+    <div style="display:flex; gap:9px; overflow:hidden;">
+      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#00C64D" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ajouter à la file</div>
+      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#00C64D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m23 7-7 5 7 5z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Caméras</div>
+      <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="#00C64D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>Filaments</div>
+    </div>
+    <div style="height:14px"></div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>Accueil</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 22h10M12 18v4M8 9h8M8 13h5"/></svg>Imprimantes</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>File</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Biblio.</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>Plus</div>
+  </div>
+  <div class="home-indicator"></div>
+</div>
+</body>
+</html>

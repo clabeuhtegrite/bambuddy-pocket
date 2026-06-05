@@ -3,57 +3,41 @@ import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import SwiftUI
 
-/// Détail d'un serveur : informations de connexion, test (`GET /auth/status`), édition et
-/// suppression. Reflète les éditions en relisant la configuration depuis le view-model.
-struct ServerDetailView: View {
+/// Informations et gestion de connexion d'un serveur : détails, test (`GET /auth/status`),
+/// édition, suppression et **bascule vers un autre serveur**. Accessible depuis « Plus → Serveur ».
+/// Reprend la logique de l'ancien détail serveur sans le mur de menus (désormais réparti en
+/// onglets / dans « Plus »).
+struct ServerInfoView: View {
     let model: ServerListModel
     let server: ServerConfiguration
+
+    /// Callback optionnel pour basculer vers un autre serveur (revient à la liste de serveurs).
+    var onSelectServer: ((ServerConfiguration) -> Void)?
 
     @Environment(\.dismiss) private var dismiss
     @State private var testState: ConnectionTestState = .idle
     @State private var isEditing = false
     @State private var confirmingDelete = false
-    @State private var showingNotifications = false
 
     /// Configuration à jour (relue après une édition), repli sur la valeur initiale.
     private var current: ServerConfiguration {
         model.servers.first { $0.id == server.id } ?? server
     }
 
-    /// Centre de notifications persistant du serveur (session WebSocket vivante).
-    private var notificationCenter: ServerNotificationCenter {
-        model.notificationCenter(for: current)
-    }
-
     var body: some View {
         List {
-            operationsSection
-            administrationSection
             connectionSection
             testSection
+            switchServerSection
             deleteSection
         }
-        .scrollContentBackground(.hidden)
-        .background(DSColor.background)
+        .dsListBackground()
         .navigationTitle(current.label)
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                NotificationsToolbarButton(center: notificationCenter) {
-                    showingNotifications = true
-                }
-            }
             ToolbarItem(placement: .primaryAction) {
                 Button("Edit") { isEditing = true }
             }
-        }
-        .overlay(alignment: .top) {
-            NotificationBanner(center: notificationCenter) {
-                showingNotifications = true
-            }
-        }
-        .sheet(isPresented: $showingNotifications) {
-            NotificationsView(center: notificationCenter)
         }
         .sheet(isPresented: $isEditing) {
             ServerEditView(model: model, mode: .edit(current))
@@ -69,58 +53,6 @@ struct ServerDetailView: View {
             }
         } message: {
             Text("Its stored credentials will be removed from this device.")
-        }
-    }
-
-    /// Section « exploitation » : écrans d'usage courant (impression, inventaire, bibliothèque…).
-    private var operationsSection: some View {
-        Section {
-            link("Printers", "printer") { PrinterListView(server: current, serverList: model) }
-            link("Print queue", "list.number") { QueueListView(server: current, serverList: model) }
-            link("Print history", "clock.arrow.circlepath") { ArchiveListView(server: current, serverList: model) }
-            link("Print log", "doc.text.below.ecg") { PrintLogView(server: current, serverList: model) }
-            link("Activity", "bell") { ActivityListView(server: current, serverList: model) }
-            link("Filaments", "circle.dashed") { InventoryListView(server: current, serverList: model) }
-            link("Filament catalog", "books.vertical") { FilamentCatalogView(server: current, serverList: model) }
-            // `spool` n'existe pas comme symbole SF sur le SDK cible → la ligne s'affichait sans
-            // icône. `cylinder` (présent) représente bien une bobine de filament.
-            link("Spoolman", "cylinder") { SpoolmanView(server: current, serverList: model) }
-            link("Library", "folder") { LibraryListView(server: current, serverList: model) }
-            link("Projects", "square.stack.3d.up") { ProjectListView(server: current, serverList: model) }
-            link("Smart plugs", "powerplug") { SmartPlugsView(server: current, serverList: model) }
-            link("Maintenance", "wrench.and.screwdriver") { MaintenanceView(server: current, serverList: model) }
-            link("Firmware", "cpu") { FirmwareView(server: current, serverList: model) }
-        }
-    }
-
-    /// Section « administration » : réglages, état serveur, sauvegardes, intégrations, compte.
-    private var administrationSection: some View {
-        Section {
-            link("Settings", "gearshape") { SettingsView(server: current, serverList: model) }
-            link("Server status", "server.rack") { SystemStatusView(server: current, serverList: model) }
-            link("Backups", "externaldrive") { BackupsView(server: current, serverList: model) }
-            link("Remote backup", "arrow.up.forward.app") { GitHubBackupView(server: current, serverList: model) }
-            link("Discovery", "antenna.radiowaves.left.and.right") { DiscoveryView(server: current, serverList: model) }
-            link("Virtual printers", "printer.dotmatrix") { VirtualPrintersView(server: current, serverList: model) }
-            link("Support", "stethoscope") { SupportView(server: current, serverList: model) }
-            link("API keys", "key") { APIKeysView(server: current, serverList: model) }
-            link("External links", "link") { ExternalLinksView(server: current, serverList: model) }
-            if current.authMethod == .userPassword {
-                link("Account", "person.crop.circle") { AccountView(server: current, serverList: model) }
-            }
-        }
-    }
-
-    /// Fabrique un `NavigationLink` étiqueté homogène (libellé localisé + symbole SF).
-    private func link(
-        _ title: LocalizedStringKey,
-        _ systemImage: String,
-        @ViewBuilder destination: () -> some View
-    ) -> some View {
-        NavigationLink {
-            destination()
-        } label: {
-            Label(title, systemImage: systemImage)
         }
     }
 
@@ -184,6 +116,29 @@ struct ServerDetailView: View {
         }
     }
 
+    /// Bascule vers un autre serveur configuré (multi-serveurs), si un callback est fourni et qu'au
+    /// moins un autre serveur existe.
+    @ViewBuilder
+    private var switchServerSection: some View {
+        let others = model.servers.filter { $0.id != current.id }
+        if let onSelectServer, !others.isEmpty {
+            Section("Switch server") {
+                ForEach(others) { other in
+                    Button {
+                        onSelectServer(other)
+                    } label: {
+                        Label {
+                            Text(other.label)
+                                .foregroundStyle(DSColor.textPrimary)
+                        } icon: {
+                            Image(systemName: "arrow.left.arrow.right.circle")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private var deleteSection: some View {
         Section {
             Button("Delete server", role: .destructive) {
@@ -211,7 +166,7 @@ struct ServerDetailView: View {
 
 #Preview {
     NavigationStack {
-        ServerDetailView(
+        ServerInfoView(
             model: ServerListModel(environment: .inMemory()),
             server: ServerConfiguration(
                 label: "Atelier",

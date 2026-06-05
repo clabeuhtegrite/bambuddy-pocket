@@ -32,7 +32,8 @@ final class CriticalPathUITests: XCTestCase {
         app = nil
     }
 
-    /// Parcours complet : état vide → ajout d'un serveur → détail → imprimantes → notifications.
+    /// Parcours complet : état vide → ajout d'un serveur → coquille à onglets → Accueil →
+    /// onglet Imprimantes → onglet Plus → notifications.
     func testAddServerThenNavigateToPrintersAndNotifications() {
         // 1) État vide : l'invite « Add server » est présente.
         let addServerButtons = app.buttons["Add server"]
@@ -66,39 +67,40 @@ final class CriticalPathUITests: XCTestCase {
             "Le serveur enregistré doit apparaître dans la liste."
         )
 
-        // 5) Ouvre le détail serveur (titre = libellé du serveur). Le lien « Printers » est en
-        // haut de la liste — repère fiable de l'écran de détail (les sections plus bas, comme
-        // « Test connection », ne sont pas garanties dans l'arbre d'accessibilité sans défilement).
+        // 5) Sélectionne le serveur : la coquille à onglets s'ouvre sur l'onglet Accueil (titre =
+        // libellé du serveur).
         tap(serverCell)
         XCTAssertTrue(
             app.navigationBars["Atelier"].waitForExistence(timeout: timeout),
-            "Le détail serveur doit s'ouvrir (titre = libellé)."
+            "L'onglet Accueil doit s'ouvrir (titre = libellé du serveur)."
+        )
+        // L'onglet Accueil expose un bouton « Servers » (retour multi-serveurs) — repère fiable.
+        XCTAssertTrue(
+            app.buttons["Servers"].waitForExistence(timeout: timeout),
+            "L'accueil doit présenter le bouton de retour à la liste des serveurs."
         )
 
-        // 6) Navigue vers les imprimantes : on tape la **cellule** « Printers » (un NavigationLink
-        // de la liste) pour déclencher la navigation, puis on vérifie la barre « Printers ».
-        // Chaque NavigationLink est exposé comme un Button (libellé = titre de la ligne).
-        let printersButton = app.buttons["Printers"]
-        XCTAssertTrue(
-            printersButton.waitForExistence(timeout: timeout),
-            "Le détail serveur doit présenter la ligne « Printers »."
-        )
-        tap(printersButton)
-        // L'écran Imprimantes porte le libellé du serveur comme titre ; on l'identifie via son
-        // bouton « Add printer » (unique à cet écran).
+        // 6) Bascule sur l'onglet « Printers » via la barre d'onglets, puis vérifie l'écran.
+        let printersTab = app.tabBars.buttons["Printers"]
+        XCTAssertTrue(printersTab.waitForExistence(timeout: timeout), "Onglet Imprimantes.")
+        printersTab.tap()
         XCTAssertTrue(
             app.buttons["Add printer"].waitForExistence(timeout: timeout),
             "L'écran Imprimantes doit s'ouvrir (bouton « Add printer »)."
         )
 
-        // Reviens au détail serveur (le lien « Printers » réapparaît dans la liste).
-        goBack()
+        // 7) Bascule sur l'onglet « More » : sections groupées (« Production », etc.).
+        let moreTab = app.tabBars.buttons["More"]
+        XCTAssertTrue(moreTab.waitForExistence(timeout: timeout), "Onglet Plus.")
+        moreTab.tap()
         XCTAssertTrue(
-            app.buttons["Printers"].waitForExistence(timeout: timeout),
-            "Retour au détail serveur attendu."
+            app.staticTexts["PRODUCTION"].waitForExistence(timeout: timeout)
+                || app.buttons["Print queue"].waitForExistence(timeout: timeout),
+            "L'onglet Plus doit présenter les sections groupées."
         )
 
-        // 7) Ouvre le centre de notifications (cloche dans la barre) puis le referme.
+        // 8) Ouvre le centre de notifications depuis l'accueil (cloche dans la barre) puis referme.
+        app.tabBars.buttons["Home"].tap()
         let notifications = app.buttons["Notifications"]
         if notifications.waitForExistence(timeout: 5) {
             notifications.tap()
