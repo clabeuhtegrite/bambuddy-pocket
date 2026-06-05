@@ -34,6 +34,18 @@ public struct LibraryFile: Codable, Sendable, Hashable, Identifiable {
         let lower = filename.lowercased()
         return lower.hasSuffix(".gcode") || lower.hasSuffix(".gcode.3mf")
     }
+
+    /// `true` si le fichier peut être **tranché** (modèle source) : STL, STEP/STP, ou 3MF non encore
+    /// tranché. Aligné sur le serveur (`POST /library/files/{id}/slice` : « Source file must be STL,
+    /// 3MF, or STEP »).
+    public var isSliceable: Bool {
+        let lower = filename.lowercased()
+        if lower.hasSuffix(".stl") || lower.hasSuffix(".step") || lower.hasSuffix(".stp") {
+            return true
+        }
+        // Un 3MF déjà tranché (`.gcode.3mf`) n'est pas une source de découpe.
+        return lower.hasSuffix(".3mf") && !isSliced
+    }
 }
 
 /// Corps d'édition d'un fichier de bibliothèque (`PUT /library/files/{id}`, `FileUpdate`). Tous les

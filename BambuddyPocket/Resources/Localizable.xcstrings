@@ -1321,6 +1321,28 @@
         }
       }
     },
+    "Added to your library. Open it to print or add it to the queue.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouté à votre bibliothèque. Ouvrez-le pour l'imprimer ou l'ajouter à la file."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadido a tu biblioteca. Ábrelo para imprimir o añadirlo a la cola."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Ihrer Bibliothek hinzugefügt. Öffnen Sie sie zum Drucken oder zur Warteschlange hinzufügen."
+          }
+        }
+      }
+    },
     "Admin features include managing API keys and backups.": {
       "localizations": {
         "de": {
@@ -8213,6 +8235,28 @@
         }
       }
     },
+    "Loading slicer presets…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement des présets…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando ajustes…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slicer-Presets werden geladen…"
+          }
+        }
+      }
+    },
     "Loading…": {
       "localizations": {
         "de": {
@@ -9975,6 +10019,28 @@
         }
       }
     },
+    "No slicer presets are available. Sign in to Bambu Cloud or import presets on the server.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun préset de découpe disponible. Connectez-vous à Bambu Cloud ou importez des présets sur le serveur."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay ajustes de corte disponibles. Inicia sesión en Bambu Cloud o importa ajustes en el servidor."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine Slicer-Presets verfügbar. Bei Bambu Cloud anmelden oder Presets auf dem Server importieren."
+          }
+        }
+      }
+    },
     "No smart plug is configured on this server.": {
       "localizations": {
         "de": {
@@ -10109,6 +10175,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aucune"
+          }
+        }
+      }
+    },
+    "None available": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun disponible"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ninguno disponible"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keine verfügbar"
           }
         }
       }
@@ -11526,6 +11614,28 @@
         }
       }
     },
+    "Process": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Process"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proceso"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prozess"
+          }
+        }
+      }
+    },
     "Production": {
       "localizations": {
         "de": {
@@ -12646,6 +12756,28 @@
         }
       }
     },
+    "Result": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résultat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resultado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ergebnis"
+          }
+        }
+      }
+    },
     "Results": {
       "localizations": {
         "de": {
@@ -12708,6 +12840,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rétention"
+          }
+        }
+      }
+    },
+    "Retry": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réessayer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reintentar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erneut versuchen"
           }
         }
       }
@@ -13662,6 +13816,50 @@
         }
       }
     },
+    "Slice": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trancher"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cortar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slicen"
+          }
+        }
+      }
+    },
+    "Slice this model into a printable file.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trancher ce modèle en un fichier imprimable."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corta este modelo en un archivo imprimible."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Modell in eine druckbare Datei slicen."
+          }
+        }
+      }
+    },
     "Sliced for": {
       "localizations": {
         "de": {
@@ -13702,6 +13900,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "Découpe"
+          }
+        }
+      }
+    },
+    "Slicing %@…": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découpe de %@…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cortando %@…"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ wird geslict…"
+          }
+        }
+      }
+    },
+    "Slicing complete": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découpe terminée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corte completado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slicen abgeschlossen"
+          }
+        }
+      }
+    },
+    "Slicing failed.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec de la découpe."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El corte falló."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slicen fehlgeschlagen."
           }
         }
       }
@@ -14984,6 +15248,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Le serveur a renvoyé un statut inattendu (%lld)."
+          }
+        }
+      }
+    },
+    "The sliced file will be added to your library. Nothing is printed automatically.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le fichier tranché sera ajouté à votre bibliothèque. Rien n'est imprimé automatiquement."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El archivo cortado se añadirá a tu biblioteca. No se imprime nada automáticamente."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die geslicte Datei wird zu Ihrer Bibliothek hinzugefügt. Es wird nichts automatisch gedruckt."
+          }
+        }
+      }
+    },
+    "The slicer is not available on this server.": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le trancheur n'est pas disponible sur ce serveur."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El cortador no está disponible en este servidor."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Slicer ist auf diesem Server nicht verfügbar."
           }
         }
       }
