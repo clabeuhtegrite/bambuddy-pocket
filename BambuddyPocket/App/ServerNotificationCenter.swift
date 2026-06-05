@@ -6,9 +6,16 @@ import Observation
 
 /// État de la connexion temps réel (WebSocket) d'un serveur.
 enum RealtimeState: Equatable {
+    /// Première tentative d'ouverture du WebSocket (aucun événement encore reçu).
     case connecting
+    /// WebSocket établi : les deltas vivants arrivent en temps réel.
     case connected
+    /// WebSocket tombé après avoir été établi : tentative de reconnexion en cours.
     case reconnecting
+    /// WebSocket indisponible (ex. upgrade refusé par un proxy Cloudflare) : l'app fonctionne en
+    /// **repli REST** (rafraîchissement périodique). Les données restent vivantes, mais sans
+    /// streaming. Évite d'afficher « Reconnexion… » indéfiniment quand le temps réel est exclu.
+    case restMode
 }
 
 /// Service de notifications **au niveau serveur** : maintient une session WebSocket persistante
@@ -44,6 +51,12 @@ final class ServerNotificationCenter {
     private static let maxNotifications = 100
     /// Cadence du repli REST quand le temps réel (WebSocket) est indisponible.
     private static let restPollInterval = Duration.seconds(10)
+    /// Nombre d'échecs d'ouverture WebSocket **sans aucun événement reçu** avant de basculer en
+    /// repli REST permanent (le handshake est rejeté, ex. Cloudflare Access refuse l'upgrade).
+    private static let maxHandshakeFailuresBeforeRESTMode = 2
+    /// Intervalle entre deux nouvelles tentatives WebSocket une fois en repli REST (au cas où le
+    /// proxy/serveur se mette à accepter l'upgrade).
+    private static let restModeProbeInterval = Duration.seconds(120)
 
     init(server: ServerConfiguration, connectionFactory: ServerConnectionFactory) {
         self.server = server
@@ -113,28 +126,58 @@ final class ServerNotificationCenter {
 
     private func realtimeLoop() async {
         var backoff = Duration.seconds(1)
+        // Nombre d'échecs consécutifs d'ouverture sans avoir reçu le moindre événement : permet de
+        // distinguer un WebSocket qui tombe en cours de route (à reconnecter) d'un upgrade
+        // systématiquement refusé (Cloudflare) → repli REST.
+        var handshakeFailures = 0
         while !Task.isCancelled {
+            var receivedEvent = false
             do {
                 let socket = try connectionFactory.makeWebSocketClient(for: server)
-                realtimeState = .connected
                 for try await event in socket.events() {
                     if Task.isCancelled { break }
+                    // Le tout premier événement confirme que l'upgrade est passé : c'est seulement
+                    // ici qu'on peut affirmer que la connexion est réellement établie (le simple
+                    // fait de construire le client n'ouvre pas la socket).
+                    if !receivedEvent {
+                        receivedEvent = true
+                        handshakeFailures = 0
+                        realtimeState = .connected
+                    }
                     apply(event)
                     backoff = .seconds(1)
                 }
             } catch {
-                // Connexion tombée : on tente une reconnexion ci-dessous.
+                // Connexion tombée / upgrade refusé : on décide ci-dessous entre reconnexion et repli.
             }
             if Task.isCancelled { break }
-            realtimeState = .reconnecting
-            try? await Task.sleep(for: backoff)
-            backoff = min(backoff * 2, .seconds(30))
+
+            if receivedEvent {
+                // La connexion a vécu puis est tombée : on tente une vraie reconnexion (back-off).
+                realtimeState = .reconnecting
+                try? await Task.sleep(for: backoff)
+                backoff = min(backoff * 2, .seconds(30))
+            } else {
+                // Échec d'ouverture sans aucun événement : probablement un upgrade refusé.
+                handshakeFailures += 1
+                if handshakeFailures >= Self.maxHandshakeFailuresBeforeRESTMode {
+                    // Temps réel exclu : on passe en repli REST (badge honnête) et on retentera le
+                    // WebSocket beaucoup plus tard, au cas où la configuration change.
+                    realtimeState = .restMode
+                    try? await Task.sleep(for: Self.restModeProbeInterval)
+                } else {
+                    realtimeState = .connecting
+                    try? await Task.sleep(for: backoff)
+                    backoff = min(backoff * 2, .seconds(30))
+                }
+            }
         }
     }
 
     /// Repli REST : amorce les statuts puis les rafraîchit périodiquement **tant que** le temps réel
-    /// n'est pas établi. Dès que le WebSocket est `connected`, il pousse les deltas vivants et ce
-    /// repli se met en sommeil (il reprend si la connexion retombe).
+    /// n'est pas établi (états `connecting`, `reconnecting`, `restMode`). Dès que le WebSocket est
+    /// `connected`, il pousse les deltas vivants et ce repli se met en sommeil (il reprend si la
+    /// connexion retombe).
     private func restPollLoop() async {
         while !Task.isCancelled {
             if realtimeState != .connected {
