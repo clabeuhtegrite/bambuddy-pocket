@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="theme.css">
+<style>
+  html, body { width: 1400px; height: 900px; overflow: hidden; }
+  body { background: var(--bg); padding: 48px 56px; }
+  .page-title { font-size: 30px; font-weight: 800; }
+  .page-sub { font-size: 15px; color: var(--text2); margin-top: 6px; }
+  .cols { display: flex; gap: 40px; margin-top: 34px; align-items: stretch; }
+  .col { flex: 1; }
+  .col-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .col-head .tag { font-size: 13px; font-weight: 800; padding: 5px 13px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.6px; }
+  .tag-old { background: rgba(239,68,68,0.16); color: var(--err); }
+  .tag-new { background: rgba(0,174,66,0.18); color: var(--green-light); }
+  .col-head h2 { font-size: 20px; font-weight: 700; }
+
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px 24px; height: 540px; }
+
+  /* OLD: flat wall */
+  .wall .wrow { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
+  .wall .wrow:last-child { border: none; }
+  .wall .wd { width: 9px; height: 9px; border-radius: 2px; background: var(--green); flex: 0 0 9px; }
+  .wall .wchev { margin-left: auto; color: var(--text3); }
+  .wall .pill { font-size: 11px; font-weight: 700; color: var(--err); background: rgba(239,68,68,0.14); padding: 3px 10px; border-radius: 999px; }
+
+  /* NEW: grouped */
+  .ngroup { margin-bottom: 16px; }
+  .ngroup .gh { font-size: 11px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 7px; }
+  .ngroup .gbox { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 4px 14px; }
+  .ngroup .nr { display: flex; align-items: center; gap: 9px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .ngroup .nr:last-child { border: none; }
+  .ngroup .nd { width: 8px; height: 8px; border-radius: 999px; background: var(--green-light); }
+  .tabhint { display: flex; gap: 8px; margin-bottom: 14px; }
+  .tabhint .tb { flex: 1; text-align: center; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 9px 4px; font-size: 12px; font-weight: 700; color: var(--text2); }
+  .tabhint .tb.act { color: var(--green-light); border-color: var(--green); background: rgba(0,174,66,0.1); }
+
+  .legend { margin-top: 26px; display: flex; gap: 30px; font-size: 14px; color: var(--text2); }
+  .legend b { color: var(--text); }
+  .legend .li { display: flex; align-items: flex-start; gap: 10px; max-width: 420px; }
+  .legend .li .ic { width: 26px; height: 26px; border-radius: 7px; flex: 0 0 26px; display: flex; align-items: center; justify-content: center; }
+  .arrow { display: flex; align-items: center; justify-content: center; flex: 0 0 56px; color: var(--green-light); }
+</style>
+</head>
+<body>
+  <div class="page-title">BamPocket — Refonte de la navigation</div>
+  <div class="page-sub">D'un « mur de menus » plat sur le détail serveur vers une page d'accueil + navigation par onglets + écran « Plus » groupé.</div>
+
+  <div class="cols">
+    <!-- OLD -->
+    <div class="col">
+      <div class="col-head"><span class="tag tag-old">Avant</span><h2>Détail serveur — 16 lignes plates</h2></div>
+      <div class="panel wall">
+        <div class="wrow"><span class="wd"></span>Imprimantes<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>File d'attente<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Historique d'impression<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Journal d'impression<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Activité<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Filaments<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Catalogue de filaments<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Spoolman<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Bibliothèque<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Projets<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Prises connectées<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Maintenance<span class="wchev">›</span></div>
+        <div class="wrow"><span class="wd"></span>Micrologiciel · Découverte · Réglages…<span class="pill">+ 5 lignes</span></div>
+      </div>
+    </div>
+
+    <!-- ARROW -->
+    <div class="arrow">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </div>
+
+    <!-- NEW -->
+    <div class="col">
+      <div class="col-head"><span class="tag tag-new">Après</span><h2>Onglets + Accueil + « Plus » groupé</h2></div>
+      <div class="panel">
+        <div class="tabhint">
+          <div class="tb act">Accueil</div>
+          <div class="tb">Imprimantes</div>
+          <div class="tb">File</div>
+          <div class="tb">Biblio.</div>
+          <div class="tb">Plus</div>
+        </div>
+        <div class="ngroup"><div class="gh">Production</div><div class="gbox"><div class="nr"><span class="nd"></span>File · Historique · Activité</div></div></div>
+        <div class="ngroup"><div class="gh">Matériaux</div><div class="gbox"><div class="nr"><span class="nd"></span>Filaments · Catalogue · Spoolman</div></div></div>
+        <div class="ngroup"><div class="gh">Contenu</div><div class="gbox"><div class="nr"><span class="nd"></span>Bibliothèque · Projets</div></div></div>
+        <div class="ngroup"><div class="gh">Matériel</div><div class="gbox"><div class="nr"><span class="nd"></span>Prises · Maintenance · Micrologiciel · Découverte</div></div></div>
+        <div class="ngroup"><div class="gh">Serveur</div><div class="gbox"><div class="nr"><span class="nd"></span>Réglages · État · Clés API · Sauvegardes · À propos</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="li">
+      <div class="ic" style="background:rgba(239,68,68,0.14)"><svg viewBox="0 0 24 24" width="16" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
+      <div><b>Avant :</b> tout au même niveau, aucune hiérarchie, pas d'aperçu de l'impression en cours. L'utilisateur doit parcourir 16 lignes pour trouver une fonction.</div>
+    </div>
+    <div class="li">
+      <div class="ic" style="background:rgba(0,174,66,0.16)"><svg viewBox="0 0 24 24" width="16" fill="none" stroke="#00C64D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div><b>Après :</b> l'essentiel (état d'impression, imprimantes, alertes) en page d'accueil ; les 5 destinations clés en onglets ; le reste rangé dans « Plus » par catégories.</div>
+    </div>
+  </div>
+</body>
+</html>

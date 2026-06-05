@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* hero camera */
+  .feed {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    height: 196px;
+    background:
+      radial-gradient(120% 90% at 50% 30%, #4a5158 0%, #2a2e33 55%, #1b1e21 100%);
+  }
+  .feed .platebed {
+    position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%) perspective(300px) rotateX(52deg);
+    width: 210px; height: 120px; border-radius: 10px;
+    background: linear-gradient(180deg,#3a3f44,#2c3034);
+    border: 1px solid #4a5056;
+    box-shadow: 0 14px 26px rgba(0,0,0,0.45);
+  }
+  .feed .model3d {
+    position: absolute; left: 50%; bottom: 56px; transform: translateX(-50%);
+    width: 70px; height: 70px;
+  }
+  .feed .gantry {
+    position: absolute; left: 18px; right: 18px; top: 34px; height: 8px; border-radius: 4px;
+    background: linear-gradient(90deg,#5a6168,#42474c,#5a6168);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .feed .toolhead {
+    position: absolute; top: 30px; left: 46%; width: 30px; height: 36px; border-radius: 5px;
+    background: linear-gradient(180deg,#6a7178,#3c4146); box-shadow: 0 6px 10px rgba(0,0,0,0.5);
+  }
+  .feed .topbar {
+    position: absolute; top: 10px; left: 12px; right: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .feed .name { font-size: 15px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
+  .feed .rec { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; background:rgba(0,0,0,0.45); padding:4px 9px; border-radius:999px; }
+  .feed .rec .dot { width:7px;height:7px;border-radius:999px;background:var(--err); }
+  .feed .bottombar {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 22px 12px 11px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.7));
+    display: flex; align-items: center; gap: 10px;
+  }
+  .feed .bottombar .pct { font-size: 26px; font-weight: 800; line-height:1; }
+  .feed .bottombar .pct small { font-size: 14px; color: #cfcfcf; }
+  .feed .bottombar .meta { font-size: 11px; color: #d4d4d4; font-weight:600; }
+  .ctl { width: 34px; height: 34px; border-radius: 999px; background: rgba(255,255,255,0.16); display:flex;align-items:center;justify-content:center; backdrop-filter: blur(6px); }
+  .ctl svg { width: 17px; height: 17px; }
+
+  /* temps strip */
+  .tstrip { display: flex; gap: 8px; margin-top: 10px; }
+  .tcell { flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 9px 10px; text-align:center; }
+  .tcell .l { font-size: 9px; color: var(--text3); font-weight: 700; letter-spacing:0.4px; }
+  .tcell .v { font-size: 15px; font-weight: 800; margin-top: 2px; }
+  .tcell .v small { font-size: 10px; color: var(--text3); font-weight:600; }
+
+  /* AMS strip */
+  .ams { margin-top: 10px; padding: 11px 12px; }
+  .ams-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
+  .ams-head .t { font-size: 12px; font-weight: 700; }
+  .ams-head .s { font-size: 11px; color: var(--text2); }
+  .spools { display: flex; gap: 9px; }
+  .spool { flex:1; text-align:center; }
+  .coil {
+    width: 100%; aspect-ratio: 1/1; max-width:54px; margin:0 auto; border-radius: 999px;
+    border: 4px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    position: relative;
+  }
+  .coil::after { content:''; position:absolute; inset:11px; border-radius:999px; background:var(--card); border:1px solid var(--border); }
+  .spool .pl { font-size: 10px; font-weight:700; margin-top:6px; }
+  .spool .pc { font-size: 9px; color: var(--text3); }
+
+  /* horizontal other printers */
+  .hscroll { display: flex; gap: 11px; margin-top: 6px; overflow: hidden; }
+  .ocard { flex: 0 0 158px; padding: 12px; }
+  .ocard .nm { font-size: 13px; font-weight: 700; }
+  .ocard .md { font-size: 11px; color: var(--text2); margin: 1px 0 9px; }
+  .ocard .row { display:flex; justify-content:space-between; font-size:11px; color:var(--text2); margin-top:8px; font-weight:600; }
+  .ocard .progress { height:5px; margin-top:8px; }
+
+  /* feed list */
+  .nlist { padding: 4px 14px; margin-top: 6px; }
+  .nrow { display:flex; align-items:center; gap:11px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .nrow:last-child { border:none; }
+  .nic { width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:0 0 30px; }
+  .nic svg { width:16px;height:16px; }
+  .nrow .tx { flex:1;min-width:0; }
+  .nrow .tx .t { font-size:12px;font-weight:600; }
+  .nrow .tx .s { font-size:11px;color:var(--text3);margin-top:1px; }
+  .nrow .w { font-size:10px;color:var(--text3);font-weight:600; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.4"/></svg>
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.2c2.3 0 4.4.9 6 2.4l1.2-1.3C13.8 1.4 11.3.4 8.5.4S3.2 1.4 1.3 3.3L2.5 4.6C4.1 3.1 6.2 2.2 8.5 2.2zM8.5 5.7c1.4 0 2.6.5 3.6 1.4l1.2-1.3c-1.3-1.2-3-1.9-4.8-1.9s-3.5.7-4.8 1.9l1.2 1.3c1-.9 2.2-1.4 3.6-1.4zM8.5 9c.7 0 1.3.3 1.8.7l-1.8 2-1.8-2c.5-.4 1.1-.7 1.8-.7z"/></svg>
+      <svg width="26" height="13" viewBox="0 0 26 13" fill="none"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="currentColor"/><rect x="23.5" y="4" width="1.5" height="5" rx="0.75" fill="currentColor" opacity="0.4"/></svg>
+    </span>
+  </div>
+
+  <div class="navbar">
+    <div>
+      <div class="title">Atelier</div>
+      <div class="sub">Imprimante principale · X2D</div>
+    </div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <span class="badge badge-live"><span class="dot"></span>En direct</span>
+      <div class="iconbtn" style="position:relative;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#A0A0A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        <span style="position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:999px;background:var(--err);border:2px solid var(--card);"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <!-- HERO FEED -->
+    <div class="feed">
+      <div class="gantry"></div>
+      <div class="toolhead"></div>
+      <div class="platebed"></div>
+      <svg class="model3d" viewBox="0 0 24 24" fill="none" stroke="#00C64D" stroke-width="1.4"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+      <div class="topbar">
+        <span class="name">X2D</span>
+        <span class="rec"><span class="dot"></span>EN DIRECT</span>
+      </div>
+      <div class="bottombar">
+        <div class="pct">68<small>%</small></div>
+        <div>
+          <div class="meta" style="color:#fff;font-weight:700;">support_bracket_v3.3mf</div>
+          <div class="meta">couche 142/210 · 23 min restantes</div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <div class="ctl"><svg viewBox="0 0 24 24" fill="#fff"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></div>
+          <div class="ctl"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" stroke-linecap="round"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMP STRIP: 2 nozzles + chamber -->
+    <div class="tstrip">
+      <div class="tcell"><div class="l">BUSE G</div><div class="v">220<small>°/220°</small></div></div>
+      <div class="tcell"><div class="l">BUSE D</div><div class="v">215<small>°/215°</small></div></div>
+      <div class="tcell"><div class="l">PLATEAU</div><div class="v">65<small>°</small></div></div>
+      <div class="tcell"><div class="l">CHAMBRE</div><div class="v">41<small>°</small></div></div>
+    </div>
+
+    <!-- AMS -->
+    <div class="card ams">
+      <div class="ams-head"><span class="t">AMS</span><span class="s">4 bobines · slot 3 faible</span></div>
+      <div class="spools">
+        <div class="spool"><div class="coil" style="border-color:#E8732B"></div><div class="pl">PETG</div><div class="pc">Orange · 74%</div></div>
+        <div class="spool"><div class="coil" style="border-color:#1F6FEB"></div><div class="pl">PLA</div><div class="pc">Bleu · 90%</div></div>
+        <div class="spool"><div class="coil" style="border-color:#E4E4E4"></div><div class="pl">PLA</div><div class="pc" style="color:var(--warn)">Blanc · 8%</div></div>
+        <div class="spool"><div class="coil" style="border-color:#222"></div><div class="pl">ABS</div><div class="pc">Noir · 55%</div></div>
+      </div>
+    </div>
+
+    <!-- OTHER PRINTERS -->
+    <div class="sec-head">Autres imprimantes</div>
+    <div class="hscroll">
+      <div class="card ocard">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div class="nm">P1S</div><div class="md">Mono-buse</div></div><span class="badge badge-ok"><span class="dot"></span>Prête</span></div>
+        <div class="progress"><i style="width:0%"></i></div>
+        <div class="row"><span>Au repos</span><span>28°</span></div>
+      </div>
+      <div class="card ocard">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div class="nm">A1 mini</div><div class="md">Mono-buse</div></div><span class="badge badge-live"><span class="dot"></span>Imp.</span></div>
+        <div class="progress"><i style="width:34%"></i></div>
+        <div class="row"><span>34% · 1 h 12</span><span>210°</span></div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY FEED -->
+    <div class="sec-head">Notifications</div>
+    <div class="card nlist">
+      <div class="nrow">
+        <div class="nic" style="background:rgba(245,158,11,0.14)"><svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+        <div class="tx"><div class="t">Bobine PLA Blanc presque vide</div><div class="s">X2D · AMS slot 3</div></div>
+        <div class="w">2 min</div>
+      </div>
+      <div class="nrow">
+        <div class="nic" style="background:rgba(34,197,94,0.14)"><svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <div class="tx"><div class="t">benchy_calib.gcode terminé</div><div class="s">P1S · 41 min</div></div>
+        <div class="w">12 min</div>
+      </div>
+    </div>
+    <div style="height:14px"></div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tab active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>Accueil</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 22h10M12 18v4M8 9h8M8 13h5"/></svg>Imprimantes</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>File</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Biblio.</div>
+    <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>Plus</div>
+  </div>
+  <div class="home-indicator"></div>
+</div>
+</body>
+</html>
