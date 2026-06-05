@@ -26,6 +26,7 @@ struct PrinterDetailView: View {
 
     var body: some View {
         List {
+            heroHeaderSection
             statusSection
             cameraLink
             deviceSection
@@ -85,6 +86,13 @@ struct PrinterDetailView: View {
             Button("OK", role: .cancel) { model.controlError = nil }
         } message: {
             Text(model.controlError ?? "")
+        }
+    }
+
+    /// En-tête enrichi (proposition B) : flux caméra/rendu, strip de températures, strip AMS coloré.
+    private var heroHeaderSection: some View {
+        Section {
+            PrinterDetailHero(printer: printer, model: model, status: status, capabilities: capabilities)
         }
     }
 
