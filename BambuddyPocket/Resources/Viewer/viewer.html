@@ -64,12 +64,18 @@
           controls.update();
         }
 
-        // Parse minimal du G-code : trace les déplacements d'extrusion (G0/G1 avec E croissant)
-        // en lignes vertes ; les déplacements à vide sont ignorés. Tolère G90/G91 (absolu/relatif).
-        function gcodeToObject(buffer) {
-          var text = new TextDecoder('utf-8').decode(new Uint8Array(buffer));
+        // Parse minimal du G-code → segments de ligne. Trace en priorité les déplacements
+        // d'**extrusion** (G0/G1 avec E croissant) en vert ; si le fichier ne contient aucune
+        // extrusion (G-code de déplacement seul), on retombe sur les déplacements G0/G1 pour
+        // afficher tout de même un tracé. Tolère G90/G91 (absolu/relatif) et M82/M83 (E abs/rel).
+        // Accepte un ArrayBuffer/Uint8Array **ou** une chaîne déjà décodée.
+        function gcodeToObject(input) {
+          var text = (typeof input === 'string')
+            ? input
+            : new TextDecoder('utf-8').decode(new Uint8Array(input));
           var lines = text.split('\n');
-          var positions = [];
+          var extrude = [];
+          var travel = [];
           var x = 0, y = 0, z = 0, e = 0;
           var absolute = true, absoluteE = true;
           var px = 0, py = 0, pz = 0;
@@ -86,25 +92,56 @@
             if (cmd === 'M82') { absoluteE = true; continue; }
             if (cmd === 'M83') { absoluteE = false; continue; }
             if (cmd !== 'G0' && cmd !== 'G1') { continue; }
-            var nx = x, ny = y, nz = z, ne = e, hasE = false;
+            var nx = x, ny = y, nz = z, ne = e, hasE = false, moved = false;
             for (var p = 1; p < parts.length; p++) {
               var tok = parts[p], axis = tok[0].toUpperCase(), val = parseFloat(tok.slice(1));
               if (isNaN(val)) { continue; }
-              if (axis === 'X') { nx = absolute ? val : x + val; }
-              else if (axis === 'Y') { ny = absolute ? val : y + val; }
-              else if (axis === 'Z') { nz = absolute ? val : z + val; }
+              if (axis === 'X') { nx = absolute ? val : x + val; moved = true; }
+              else if (axis === 'Y') { ny = absolute ? val : y + val; moved = true; }
+              else if (axis === 'Z') { nz = absolute ? val : z + val; moved = true; }
               else if (axis === 'E') { ne = absoluteE ? val : e + val; hasE = true; }
             }
             // Three.js Y-up : on mappe Z imprimante → Y, Y imprimante → Z.
             if (hasE && ne > e + 1e-4) {
-              positions.push(px, pz, py, nx, nz, ny);
+              extrude.push(px, pz, py, nx, nz, ny);
+            } else if (moved) {
+              travel.push(px, pz, py, nx, nz, ny);
             }
             x = nx; y = ny; z = nz; e = ne; px = nx; py = ny; pz = nz;
           }
-          if (positions.length === 0) { throw new Error('no extrusion'); }
+          // Préfère les tracés d'extrusion (vert). À défaut, montre les déplacements (gris).
+          var positions = extrude.length ? extrude : travel;
+          var color = extrude.length ? 0x00ae42 : 0x6e6e73;
+          if (positions.length === 0) { throw new Error('no toolpath'); }
           var g = new THREE.BufferGeometry();
           g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-          return new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0x00ae42 }));
+          return new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: color }));
+        }
+
+        // Une archive Bambu **slicée** est un conteneur 3MF (zip) dont la géométrie utile vit dans
+        // `Metadata/plate_*.gcode` ; le `3D/3dmodel.model` est souvent vide (→ maillage vide → grille
+        // seule). On extrait donc ce G-code via fflate (bundlé) pour le rendre en tracés d'outil.
+        // Renvoie la chaîne G-code de la première plaque, ou `null` si le 3MF n'est pas slicé.
+        function extractPlateGcode(buffer) {
+          if (typeof fflate === 'undefined' || !fflate.unzipSync) { return null; }
+          var files;
+          try {
+            files = fflate.unzipSync(new Uint8Array(buffer));
+          } catch (e) {
+            return null;
+          }
+          var names = Object.keys(files);
+          var plate = null;
+          for (var i = 0; i < names.length; i++) {
+            var n = names[i];
+            // Insensible à la casse / au séparateur ; cible `Metadata/plate_<n>.gcode`.
+            if (/(^|\/)metadata\/plate_\d+\.gcode$/i.test(n.replace(/\\/g, '/'))) {
+              // Privilégie la première plaque dans l'ordre naturel des noms.
+              if (plate === null || n < plate) { plate = n; }
+            }
+          }
+          if (plate === null) { return null; }
+          return fflate.strFromU8(files[plate]);
         }
 
         var ext = window.__MODEL_EXT;
@@ -116,7 +153,14 @@
           var mat = new THREE.MeshPhongMaterial({ color: 0x00a3ad, specular: 0x222222, shininess: 40 });
           obj = new THREE.Mesh(geo, mat);
         } else if (ext === '3mf') {
-          obj = new THREE.ThreeMFLoader().parse(buf);
+          // Détection robuste (pas seulement l'extension) : un `.3mf` contenant un
+          // `Metadata/plate_*.gcode` est une archive slicée → on rend le G-code. Sinon maillage.
+          var sliced = extractPlateGcode(buf);
+          if (sliced !== null) {
+            obj = gcodeToObject(sliced);
+          } else {
+            obj = new THREE.ThreeMFLoader().parse(buf);
+          }
         } else if (ext === 'gcode') {
           obj = gcodeToObject(buf);
         } else {
