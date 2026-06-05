@@ -1801,6 +1801,28 @@
         }
       }
     },
+    "Batches (%lld)": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stapel (%lld)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lotes (%lld)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lots (%lld)"
+          }
+        }
+      }
+    },
     "Bed": {
       "localizations": {
         "de": {
