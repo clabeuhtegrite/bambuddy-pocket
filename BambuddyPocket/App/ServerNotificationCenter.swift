@@ -133,7 +133,12 @@ final class ServerNotificationCenter {
         while !Task.isCancelled {
             var receivedEvent = false
             do {
-                let socket = try connectionFactory.makeWebSocketClient(for: server)
+                // Auth activée : le handshake WebSocket ne porte pas l'en-tête `Authorization`, donc
+                // on frappe d'abord un jeton court (`POST /auth/ws-token`) ajouté en `?token=`. Sans
+                // lui le serveur refuse l'upgrade (`close 4401`). Le jeton est refrappé à chaque
+                // (re)connexion : il dure ~60 min mais une reconnexion tardive doit rester valide.
+                let token = await connectionFactory.webSocketToken(for: server)
+                let socket = try connectionFactory.makeWebSocketClient(for: server, token: token)
                 for try await event in socket.events() {
                     if Task.isCancelled { break }
                     // Le tout premier événement confirme que l'upgrade est passé : c'est seulement

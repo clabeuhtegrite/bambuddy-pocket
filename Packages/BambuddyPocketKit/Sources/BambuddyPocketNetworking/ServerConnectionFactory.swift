@@ -28,8 +28,19 @@ public struct ServerConnectionFactory: Sendable {
     }
 
     /// Construit le client WebSocket temps réel pour ce serveur (mêmes en-têtes auth/Cloudflare).
-    public func makeWebSocketClient(for configuration: ServerConfiguration) throws -> WebSocketClient {
-        guard let url = configuration.webSocketURL else { throw APIError.invalidURL }
+    ///
+    /// Le `token` (frappé via `POST /auth/ws-token`), quand il est fourni, est ajouté en `?token=` :
+    /// **requis** si l'auth est activée car le handshake WebSocket ne transporte pas l'en-tête
+    /// `Authorization` — le serveur refuse alors la connexion (`close 4401`) sans ce jeton. Les
+    /// en-têtes Cloudflare Access, eux, restent posés sur la requête d'upgrade.
+    public func makeWebSocketClient(
+        for configuration: ServerConfiguration,
+        token: String? = nil
+    ) throws -> WebSocketClient {
+        guard var url = configuration.webSocketURL else { throw APIError.invalidURL }
+        if let token, !token.isEmpty {
+            url.append(queryItems: [URLQueryItem(name: "token", value: token)])
+        }
         let secrets = try secretStore.secrets(for: configuration.id)
         let authorization = RequestAuthorization(configuration: configuration, secrets: secrets)
         return WebSocketClient(
@@ -37,6 +48,19 @@ public struct ServerConnectionFactory: Sendable {
             headers: authorization.headerFields,
             connector: URLSessionWebSocketConnector(session: session)
         )
+    }
+
+    /// Frappe un jeton WebSocket court (`POST /auth/ws-token`) à passer à `makeWebSocketClient`.
+    /// Renvoie `nil` si l'auth est désactivée (jeton inutile) ou en cas d'échec — l'appelant tente
+    /// alors une connexion sans jeton (valide uniquement sur instance non authentifiée).
+    public func webSocketToken(for configuration: ServerConfiguration) async -> String? {
+        guard configuration.authMethod != .none else { return nil }
+        do {
+            let client = try makeClient(for: configuration)
+            return try await client.webSocketToken().token
+        } catch {
+            return nil
+        }
     }
 
     /// Construit le client de flux caméra MJPEG pour une imprimante (mêmes en-têtes auth). Le jeton

@@ -153,6 +153,49 @@ struct MockNetworkingTests {
         }
     }
 
+    @Test("webSocketToken() POST /auth/ws-token avec auth, décode le jeton")
+    func mintsWebSocketTokenWhenAuthEnabled() async throws {
+        MockURLProtocol.reset()
+        let config = try makeConfig() // authMethod = .apiKey
+        let store = InMemorySecretStore()
+        try store.setSecrets(ServerSecrets(apiKey: "bb_key"), for: config.id)
+        respond(status: 200, json: #"{"token":"ws-opaque-xyz"}"#)
+
+        let factory = ServerConnectionFactory(secretStore: store, session: makeMockSession())
+        let token = await factory.webSocketToken(for: config)
+        #expect(token == "ws-opaque-xyz")
+
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/ws-token")
+        #expect(request.httpMethod == "POST")
+        #expect(request.value(forHTTPHeaderField: "X-API-Key") == "bb_key")
+    }
+
+    @Test("webSocketToken() renvoie nil sans aller-retour quand l'auth est désactivée")
+    func skipsWebSocketTokenWhenAuthDisabled() async throws {
+        MockURLProtocol.reset()
+        let config = try ServerConfiguration(
+            label: "Local",
+            baseURL: #require(URL(string: "http://localhost:8000")),
+            authMethod: .none
+        )
+        let factory = ServerConnectionFactory(secretStore: InMemorySecretStore(), session: makeMockSession())
+        let token = await factory.webSocketToken(for: config)
+        #expect(token == nil)
+        // Aucune requête ne doit avoir été émise (court-circuit avant réseau).
+        #expect(MockURLProtocol.lastRequest == nil)
+    }
+
+    @Test("webSocketToken() renvoie nil si la frappe échoue (repli sans jeton)")
+    func returnsNilOnMintFailure() async throws {
+        MockURLProtocol.reset()
+        let config = try makeConfig()
+        respond(status: 403, json: #"{"detail":"forbidden"}"#)
+        let factory = ServerConnectionFactory(secretStore: InMemorySecretStore(), session: makeMockSession())
+        let token = await factory.webSocketToken(for: config)
+        #expect(token == nil)
+    }
+
     // MARK: - Endpoints typés
 
     @Test("printers() cible /printers/ et décode la liste")
