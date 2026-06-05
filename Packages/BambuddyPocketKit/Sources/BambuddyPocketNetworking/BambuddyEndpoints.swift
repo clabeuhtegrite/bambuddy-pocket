@@ -119,9 +119,16 @@ public extension APIClient {
         try await delete("/inventory/spools/\(id)")
     }
 
-    /// Fichiers de la bibliothèque de modèles (`GET /library/files/`).
+    /// Fichiers de la bibliothèque de modèles à la **racine** (`GET /library/files/`). Sans filtre,
+    /// l'API ne renvoie que les fichiers sans dossier (`folder_id IS NULL`).
     func libraryFiles() async throws -> [LibraryFile] {
         try await get("/library/files/")
+    }
+
+    /// Fichiers contenus dans un **dossier** donné (`GET /library/files/?folder_id={id}`). Le
+    /// listing racine n'inclut pas les fichiers des dossiers : il faut interroger chaque dossier.
+    func libraryFiles(inFolder folderID: Int) async throws -> [LibraryFile] {
+        try await get("/library/files/?folder_id=\(folderID)")
     }
 
     /// Détail d'un fichier de bibliothèque (`GET /library/files/{id}`).

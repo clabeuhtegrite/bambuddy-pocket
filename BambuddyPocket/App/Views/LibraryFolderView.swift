@@ -44,10 +44,7 @@ struct LibraryFolderView: View {
                     .listRowBackground(DSColor.card)
                 }
                 if files.isEmpty {
-                    Text("This folder is empty.")
-                        .font(DSFont.caption)
-                        .foregroundStyle(DSColor.textSecondary)
-                        .listRowBackground(DSColor.card)
+                    folderPlaceholder
                 }
             }
         }
@@ -56,6 +53,34 @@ struct LibraryFolderView: View {
         .toolbarTitleDisplayMode(.inline)
         .sheet(item: $moving) { file in
             LibraryMoveSheet(file: file, model: model)
+        }
+        .refreshable { await model.loadFolder(folder.id) }
+        .task {
+            // Le listing racine n'inclut pas le contenu des dossiers : on le récupère ici via
+            // `GET /library/files/?folder_id=…` (sinon un dossier non vide s'affiche vide).
+            if !model.hasLoadedFolder(folder.id) {
+                await model.loadFolder(folder.id)
+            }
+        }
+    }
+
+    /// Distingue « en cours de chargement » de « réellement vide » pour ne plus afficher « vide »
+    /// par défaut alors que le contenu n'a pas encore été récupéré.
+    @ViewBuilder
+    private var folderPlaceholder: some View {
+        if model.isLoadingFolder(folder.id) || !model.hasLoadedFolder(folder.id) {
+            HStack {
+                ProgressView()
+                Text("Loading…")
+                    .font(DSFont.caption)
+                    .foregroundStyle(DSColor.textSecondary)
+            }
+            .listRowBackground(DSColor.card)
+        } else {
+            Text("This folder is empty.")
+                .font(DSFont.caption)
+                .foregroundStyle(DSColor.textSecondary)
+                .listRowBackground(DSColor.card)
         }
     }
 }
