@@ -106,6 +106,63 @@ struct HomeDashboardPresentationTests {
         #expect(alert?.printerID == 7)
     }
 
+    @Test("carte : nom du travail en impression, sinon nil ; bobines AMS chargées comptées (#3)")
+    func cardJobAndSpoolCount() {
+        var printing = printingStatus(progress: 50)
+        printing.subtaskName = "Benchy"
+        var unit = AMSUnit(id: 0)
+        var loaded = AMSTray(id: 0)
+        loaded.trayType = "PLA"
+        loaded.remain = 80
+        let empty = AMSTray(id: 1) // pas de type → non compté
+        unit.tray = [loaded, empty]
+        printing.ams = [unit]
+        let printingSnap = PrinterSnapshot(printer: printer(1, "X2D"), status: printing)
+        #expect(printingSnap.jobName == "Benchy")
+        #expect(printingSnap.loadedSpoolCount == 1)
+
+        var idle = PrinterStatus()
+        idle.connected = true
+        idle.state = .idle
+        let idleSnap = PrinterSnapshot(printer: printer(2, "A1"), status: idle)
+        #expect(idleSnap.jobName == nil)
+        #expect(idleSnap.loadedSpoolCount == nil)
+    }
+
+    @Test("carte : résumé d'alerte priorisé (erreur > plateau > bobine basse), sinon nil (#3)")
+    func cardAlertPriority() {
+        // Erreur HMS prioritaire (même si le plateau attend aussi).
+        var errored = printingStatus(progress: 20)
+        errored.hmsErrors = [HMSError(code: "0x4001", attr: 0x0700_0200)]
+        errored.awaitingPlateClear = true
+        #expect(PrinterSnapshot(printer: printer(1, "E"), status: errored).cardAlert() == .hmsError)
+
+        // Plateau non vidé (sans erreur).
+        var plate = PrinterStatus()
+        plate.connected = true
+        plate.state = .finish
+        plate.awaitingPlateClear = true
+        #expect(PrinterSnapshot(printer: printer(2, "P"), status: plate).cardAlert() == .plateNotCleared)
+
+        // Bobine basse (sans erreur ni plateau).
+        var low = PrinterStatus()
+        low.connected = true
+        low.state = .idle
+        var unit = AMSUnit(id: 0)
+        var tray = AMSTray(id: 0)
+        tray.trayType = "PLA"
+        tray.remain = 5
+        unit.tray = [tray]
+        low.ams = [unit]
+        #expect(PrinterSnapshot(printer: printer(3, "L"), status: low).cardAlert() == .lowFilament)
+
+        // Statut sain → aucune alerte.
+        var healthy = PrinterStatus()
+        healthy.connected = true
+        healthy.state = .idle
+        #expect(PrinterSnapshot(printer: printer(4, "H"), status: healthy).cardAlert() == nil)
+    }
+
     @Test("readyCount : connectée, au repos, sans erreur (ni en impression ni hors ligne)")
     func readyCountExcludesPrintingOfflineAndError() {
         let printers = [printer(1, "Ready"), printer(2, "Printing"), printer(3, "Offline"), printer(4, "Error")]

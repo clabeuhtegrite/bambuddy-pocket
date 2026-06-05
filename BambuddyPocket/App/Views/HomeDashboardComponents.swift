@@ -245,6 +245,7 @@ struct CompactPrinterCard: View {
         VStack(alignment: .leading, spacing: DSSpacing.sm) {
             header
             metricsStrip
+            statusRow
             footer
         }
         .padding(DSSpacing.sm + DSSpacing.xxs)
@@ -260,13 +261,65 @@ struct CompactPrinterCard: View {
                     .font(DSFont.bodyMedium)
                     .foregroundStyle(DSColor.textPrimary)
                     .lineLimit(1)
-                Text(modelLabel)
+                // En impression : le **nom du travail** ; sinon le modèle (#3).
+                Text(snapshot.jobName ?? modelLabel)
                     .font(DSFont.caption)
                     .foregroundStyle(DSColor.textSecondary)
                     .lineLimit(1)
             }
             Spacer(minLength: DSSpacing.xs)
             StateBadge(state: status?.liveState, connected: status?.connected)
+        }
+    }
+
+    /// Ligne d'état AMS / alerte (#3) : une **alerte** prioritaire (erreur, plateau, bobine basse)
+    /// en couleur, sinon le **nombre de bobines AMS chargées** si l'imprimante a un AMS.
+    @ViewBuilder
+    private var statusRow: some View {
+        if let alert = snapshot.cardAlert() {
+            chip(systemImage: alertIcon(alert), text: alertText(alert), tint: alertTint(alert))
+        } else if let count = snapshot.loadedSpoolCount {
+            chip(
+                systemImage: "square.stack.3d.up",
+                text: String(localized: "\(count) spools"),
+                tint: DSColor.textSecondary
+            )
+        }
+    }
+
+    private func chip(systemImage: String, text: String, tint: Color) -> some View {
+        HStack(spacing: DSSpacing.xs) {
+            Image(systemName: systemImage)
+                .font(.system(size: 10))
+            Text(text)
+                .font(DSFont.caption)
+                .lineLimit(1)
+            Spacer(minLength: 0)
+        }
+        .foregroundStyle(tint)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func alertIcon(_ kind: HomeAlertKind) -> String {
+        switch kind {
+        case .hmsError: "exclamationmark.triangle.fill"
+        case .plateNotCleared: "tray.full"
+        case .lowFilament: "drop.triangle"
+        }
+    }
+
+    private func alertText(_ kind: HomeAlertKind) -> String {
+        switch kind {
+        case .hmsError: String(localized: "Error")
+        case .plateNotCleared: String(localized: "Plate not cleared")
+        case .lowFilament: String(localized: "Spool low")
+        }
+    }
+
+    private func alertTint(_ kind: HomeAlertKind) -> Color {
+        switch kind {
+        case .hmsError: DSColor.statusError
+        case .plateNotCleared, .lowFilament: DSColor.statusWarning
         }
     }
 
