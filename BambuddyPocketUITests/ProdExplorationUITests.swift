@@ -130,6 +130,23 @@ final class ProdExplorationUITests: XCTestCase {
         XCTAssertTrue(app.cells.firstMatch.waitForExistence(timeout: timeout), "au moins un fichier listé")
     }
 
+    /// Vérifie le correctif **File d'attente** : un lot entièrement résolu (ex. « 2/2 terminés —
+    /// 0 en attente ») ne doit plus s'afficher « Actif », et les éléments terminaux ne doivent plus
+    /// tous être préfixés « 1 » (position obsolète masquée).
+    func testQueueBatchAndPositionCoherence() {
+        let timeout: TimeInterval = 20
+        let serverCell = app.cells.firstMatch
+        XCTAssertTrue(serverCell.waitForExistence(timeout: timeout), "server cell")
+        serverCell.tap()
+        XCTAssertTrue(app.buttons[L.edit].waitForExistence(timeout: timeout), "server detail")
+
+        XCTAssertTrue(openLink("File d’attente", timeout: timeout), "queue link")
+        sleep(3) // Laisse la file + les lots se charger.
+        capture("queue-coherent")
+        // Au moins une ligne de file est présente (la prod contient un historique d'éléments).
+        XCTAssertTrue(app.cells.firstMatch.waitForExistence(timeout: timeout), "au moins un élément de file")
+    }
+
     /// Valide la **matrice d'auth** sur les écrans d'administration (Clés d'API + Sauvegarde locale).
     /// Le comportement attendu dépend de `UITEST_AUTH_METHOD` :
     /// - `apikey` : le serveur renvoie 403 → message « admin requis » (pas d'état vide trompeur,

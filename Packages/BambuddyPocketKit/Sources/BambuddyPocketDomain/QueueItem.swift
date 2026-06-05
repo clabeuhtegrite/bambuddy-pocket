@@ -47,6 +47,22 @@ public struct QueueItem: Codable, Sendable, Hashable, Identifiable {
         }
         return "#\(id)"
     }
+
+    /// Statuts terminaux : l'élément ne progresse plus dans la file.
+    private static let terminalStatuses: Set<String> = ["completed", "failed", "cancelled"]
+
+    /// Indique si l'élément est dans un état terminal (terminé, échoué, annulé).
+    public var isTerminal: Bool {
+        Self.terminalStatuses.contains(status.lowercased())
+    }
+
+    /// Position d'**ordonnancement** à afficher, ou `nil` si elle n'a pas de sens. Le serveur garde
+    /// une `position` héritée (souvent `1`) sur les éléments terminaux, ce qui faisait afficher « 1 »
+    /// devant chaque ligne d'historique. On ne montre la position que pour les éléments encore actifs
+    /// (en attente / en cours), où l'ordre compte réellement.
+    public var displayPosition: Int? {
+        isTerminal ? nil : position
+    }
 }
 
 /// Une paire (id, position) pour le réordonnancement de la file.
@@ -211,5 +227,26 @@ public struct PrintBatch: Codable, Sendable, Hashable, Identifiable {
     /// Nombre d'éléments terminés ou annulés (progression du lot).
     public var resolvedCount: Int {
         completedCount + failedCount + cancelledCount
+    }
+
+    /// Indique si le lot est entièrement résolu (tous ses éléments terminés/échoués/annulés, aucun
+    /// en attente ni en cours).
+    public var isFullyResolved: Bool {
+        pendingCount == 0 && printingCount == 0 && resolvedCount >= quantity && quantity > 0
+    }
+
+    /// Statut **cohérent** pour l'affichage. Le serveur laisse parfois `status` à `"active"` alors
+    /// que tous les éléments sont en réalité résolus (champ obsolète). On dérive alors le statut des
+    /// compteurs : tout annulé → « annulé », tout échoué → « échoué », sinon « terminé ». Les lots
+    /// réellement en cours conservent le statut serveur.
+    public var displayStatus: String {
+        guard isFullyResolved else { return status }
+        if completedCount == 0, failedCount == 0, cancelledCount > 0 {
+            return "cancelled"
+        }
+        if completedCount == 0, failedCount > 0, cancelledCount == 0 {
+            return "failed"
+        }
+        return "completed"
     }
 }

@@ -70,5 +70,53 @@ struct QueueItemTests {
         #expect(batch.quantity == 3)
         #expect(batch.pendingCount == 2)
         #expect(batch.resolvedCount == 1)
+        #expect(batch.isFullyResolved == false)
+        #expect(batch.displayStatus == "active") // En cours → on garde le statut serveur.
+    }
+
+    @Test("Un lot « active » obsolète mais tout annulé s'affiche « cancelled »")
+    func batchStatusDerivedWhenResolved() {
+        // Reproduit la prod : status « active » alors que 2/2 sont annulés (0 en attente).
+        let batch = PrintBatch(
+            id: 1,
+            name: "HRC Clamp ×2",
+            quantity: 2,
+            status: "active",
+            pendingCount: 0,
+            printingCount: 0,
+            completedCount: 0,
+            failedCount: 0,
+            cancelledCount: 2
+        )
+        #expect(batch.isFullyResolved == true)
+        #expect(batch.displayStatus == "cancelled")
+    }
+
+    @Test("displayStatus dérive « completed » / « failed » selon les compteurs")
+    func batchStatusVariants() {
+        let completed = PrintBatch(
+            id: 2, name: "x", quantity: 2, status: "active",
+            completedCount: 2
+        )
+        #expect(completed.displayStatus == "completed")
+        let failed = PrintBatch(
+            id: 3, name: "x", quantity: 1, status: "active",
+            failedCount: 1
+        )
+        #expect(failed.displayStatus == "failed")
+    }
+
+    @Test("displayPosition : masquée pour les éléments terminaux, affichée sinon")
+    func positionHiddenForTerminalItems() {
+        var pending = QueueItem(id: 1, position: 3, status: "pending")
+        #expect(pending.displayPosition == 3)
+        pending.status = "printing"
+        #expect(pending.displayPosition == 3)
+
+        for terminal in ["completed", "failed", "cancelled"] {
+            let item = QueueItem(id: 2, position: 1, status: terminal)
+            #expect(item.isTerminal == true)
+            #expect(item.displayPosition == nil)
+        }
     }
 }
