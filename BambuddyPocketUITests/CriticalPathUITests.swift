@@ -112,6 +112,63 @@ final class CriticalPathUITests: XCTestCase {
         }
     }
 
+    /// Parcours des **nouveaux écrans d'intégration** : depuis l'onglet Plus, ouvre « Bambu Cloud »
+    /// puis « MakerWorld » et vérifie que chaque écran s'ouvre (titre de navigation). Sans backend,
+    /// les écrans affichent un état vide/chargement — on n'asserte que sur la **structure**.
+    func testIntegrationScreensReachableFromMore() {
+        addServerNamedAtelier()
+
+        // MakerWorld (section Contenu, en haut de la liste).
+        openMoreTabFresh()
+        XCTAssertTrue(scrollToAndTap(app.buttons["MakerWorld"]), "Le lien MakerWorld doit être accessible.")
+        XCTAssertTrue(
+            app.navigationBars["MakerWorld"].waitForExistence(timeout: timeout),
+            "L'écran MakerWorld doit s'ouvrir."
+        )
+
+        // Re-tape l'onglet Plus (déjà actif) : en SwiftUI, cela **dépile** sa pile de navigation et
+        // ramène à la racine de la liste groupée — déterministe, sans dépendre du bouton retour.
+        app.tabBars.buttons["More"].tap()
+        XCTAssertTrue(
+            app.buttons["MakerWorld"].waitForExistence(timeout: timeout),
+            "Retour à la racine de l'onglet Plus attendu."
+        )
+
+        // Bambu Cloud (section Serveur, plus bas). Dans une `List` SwiftUI les lignes hors écran ne
+        // sont pas dans l'arbre d'accessibilité : il faut défiler pour la révéler, puis l'ouvrir.
+        XCTAssertTrue(scrollToAndTap(app.buttons["Bambu Cloud"]), "Le lien Bambu Cloud doit être accessible.")
+        XCTAssertTrue(
+            app.navigationBars["Bambu Cloud"].waitForExistence(timeout: timeout),
+            "L'écran Bambu Cloud doit s'ouvrir."
+        )
+    }
+
+    /// Parcours du **sélecteur de disposition d'accueil** : le menu de la barre d'outils propose les
+    /// trois vues (Dashboard/Focus/Grid) ; sélectionner « Grid » garde l'accueil fonctionnel.
+    func testHomeLayoutSelectorSwitchesToGrid() {
+        addServerNamedAtelier()
+
+        // Le menu de disposition est repérable par son libellé d'accessibilité.
+        let layoutMenu = app.buttons["Home layout"]
+        XCTAssertTrue(layoutMenu.waitForExistence(timeout: timeout), "Le menu de disposition d'accueil.")
+        layoutMenu.tap()
+
+        // Le menu propose au moins l'option « Grid ».
+        let gridOption = app.buttons["Grid"]
+        XCTAssertTrue(gridOption.waitForExistence(timeout: timeout), "L'option Grille doit être proposée.")
+        gridOption.tap()
+
+        // L'accueil reste fonctionnel : le titre (libellé serveur) et le retour multi-serveurs.
+        XCTAssertTrue(
+            app.navigationBars["Atelier"].waitForExistence(timeout: timeout),
+            "L'accueil doit rester affiché après bascule en Grille."
+        )
+        XCTAssertTrue(
+            app.buttons["Servers"].waitForExistence(timeout: timeout),
+            "Le bouton de retour multi-serveurs reste présent."
+        )
+    }
+
     /// Parcours secondaire : l'écran « About » est accessible depuis la liste des serveurs et
     /// affiche ses informations (version, licence).
     func testAboutScreenIsReachable() {
@@ -165,6 +222,60 @@ final class CriticalPathUITests: XCTestCase {
     }
 
     // MARK: Helpers
+
+    /// Ajoute un serveur « Atelier » via le formulaire, puis le sélectionne pour ouvrir la coquille
+    /// à onglets (accueil). Factorise la mise en place commune aux parcours de navigation.
+    private func addServerNamedAtelier() {
+        let addServer = app.buttons["Add server"].firstMatch
+        XCTAssertTrue(addServer.waitForExistence(timeout: timeout), "Invite d'ajout de serveur.")
+        addServer.tap()
+
+        let urlField = app.textFields["Server URL"]
+        XCTAssertTrue(urlField.waitForExistence(timeout: timeout), "Champ URL.")
+        urlField.tap()
+        urlField.typeText("http://printer.local:8000")
+
+        let labelField = app.textFields["Label"]
+        XCTAssertTrue(labelField.waitForExistence(timeout: 5), "Champ libellé.")
+        labelField.tap()
+        labelField.typeText("Atelier")
+
+        let saveButton = app.buttons["Save"]
+        XCTAssertTrue(saveButton.waitForExistence(timeout: 5), "Bouton Enregistrer.")
+        saveButton.tap()
+
+        let serverCell = app.cells.firstMatch
+        XCTAssertTrue(serverCell.waitForExistence(timeout: timeout), "Serveur enregistré dans la liste.")
+        tap(serverCell)
+        XCTAssertTrue(
+            app.navigationBars["Atelier"].waitForExistence(timeout: timeout),
+            "L'accueil (titre = libellé serveur) doit s'ouvrir."
+        )
+    }
+
+    /// Ouvre l'onglet Plus (racine de la liste groupée).
+    private func openMoreTabFresh() {
+        let moreTab = app.tabBars.buttons["More"]
+        XCTAssertTrue(moreTab.waitForExistence(timeout: timeout), "Onglet Plus.")
+        moreTab.tap()
+        _ = app.buttons["Library"].waitForExistence(timeout: timeout)
+    }
+
+    /// Fait défiler vers le bas jusqu'à ce que l'élément soit **réellement frappable**, puis le tape.
+    /// Dans une `List` SwiftUI, les lignes hors écran n'existent pas dans l'arbre d'accessibilité :
+    /// on balaye donc et on re-teste `exists`/`isHittable` à chaque itération. Renvoie `false` si
+    /// l'élément reste introuvable après plusieurs balayages.
+    @discardableResult
+    private func scrollToAndTap(_ element: XCUIElement) -> Bool {
+        var attempts = 0
+        while !element.isHittable, attempts < 10 {
+            app.swipeUp()
+            attempts += 1
+        }
+        guard element.isHittable else { return false }
+        element.tap()
+        return true
+    }
 
     private func goBack() {
         let back = app.navigationBars.buttons.firstMatch
