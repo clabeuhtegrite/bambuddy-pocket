@@ -84,10 +84,13 @@ targets:
     platform: iOS
     sources:
       - path: BambuddyPocketTests
+    # Le bundle de tests s'héberge dans l'app (test host) et récupère les frameworks
+    # SPM (Domain/Networking) **via l'app** — il ne les relie PAS lui-même. Relier les
+    # produits statiques à la fois dans l'app ET dans le bundle de tests dupliquait les
+    # classes Objective-C (« objc duplicate class »), source de crashs aléatoires en CI.
+    # Les `@testable import` restent valides car les modules sont liés (testable) par l'hôte.
     dependencies:
       - target: BamPocket
-      - package: BambuddyPocketKit
-        product: BambuddyPocketDomain
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.bampocket.app.tests
