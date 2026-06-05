@@ -165,4 +165,27 @@ enum PrinterPresentation {
         }
         return Color(.sRGB, red: red, green: green, blue: blue, opacity: alpha)
     }
+
+    /// Une couleur hex est-elle **claire** (pour choisir un texte contrasté) ? Luminance pondérée
+    /// `0.299·R + 0.587·G + 0.114·B`, seuil 0,6 — aligné sur l'amont (`isLightColor`).
+    static func isLightColor(hexRGBA hex: String?) -> Bool {
+        guard var string = hex else {
+            return false
+        }
+        if string.hasPrefix("#") {
+            string.removeFirst()
+        }
+        guard string.count >= 6 else {
+            return false
+        }
+        let chars = Array(string)
+        guard let red = Int(String(chars[0 ... 1]), radix: 16),
+              let green = Int(String(chars[2 ... 3]), radix: 16),
+              let blue = Int(String(chars[4 ... 5]), radix: 16)
+        else {
+            return false
+        }
+        let luminance = (0.299 * Double(red) + 0.587 * Double(green) + 0.114 * Double(blue)) / 255
+        return luminance > 0.6
+    }
 }
