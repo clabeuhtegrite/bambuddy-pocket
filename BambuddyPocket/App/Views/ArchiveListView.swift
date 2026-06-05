@@ -61,7 +61,7 @@ struct ArchiveListView: View {
             ArchiveEditSheet(archive: archive, model: model)
         }
         .overlay { placeholder }
-        .navigationTitle("Print history")
+        .navigationTitle("Archives")
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

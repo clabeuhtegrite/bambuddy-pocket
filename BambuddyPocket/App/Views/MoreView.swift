@@ -35,13 +35,17 @@ struct MoreView: View {
         }
     }
 
-    /// Production : file, historique, activité.
+    /// Production. Sémantique alignée sur la web UI Bambuddy :
+    /// - **File d'impression** : travaux planifiés / en cours (+ historique terminal de la file).
+    /// - **Historique d'impression** : journal paginé des **travaux** d'impression (succès/échec).
+    /// - **Archives** : **modèles distincts** archivés (3MF), indépendants des travaux.
+    /// - **Activité** : flux d'événements du serveur (notifications), distinct des travaux.
     private var productionSection: some View {
         Section("Production") {
             link("Print queue", "list.number") { QueueListView(server: current, serverList: model) }
-            link("Print history", "clock.arrow.circlepath") { ArchiveListView(server: current, serverList: model) }
+            link("Print history", "clock.arrow.circlepath") { PrintLogView(server: current, serverList: model) }
+            link("Archives", "archivebox") { ArchiveListView(server: current, serverList: model) }
             link("Activity", "waveform.path.ecg") { ActivityListView(server: current, serverList: model) }
-            link("Print log", "doc.text.below.ecg") { PrintLogView(server: current, serverList: model) }
         }
     }
 
