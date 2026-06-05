@@ -106,6 +106,52 @@ struct QueueItemTests {
         #expect(failed.displayStatus == "failed")
     }
 
+    @Test("Lot annulé : barre vide (rien d'abouti), jamais pleine et « terminée »")
+    func cancelledBatchProgressIsEmpty() {
+        // Le bug : « 2/2 terminés » + barre verte pleine pour un lot annulé.
+        let batch = PrintBatch(
+            id: 1, name: "HRC Clamp ×2", quantity: 2, status: "active",
+            pendingCount: 0, printingCount: 0, completedCount: 0, failedCount: 0, cancelledCount: 2
+        )
+        #expect(batch.isCancelled == true)
+        // resolvedCount vaut 2 (tous résolus) mais aucune réussite → barre vide.
+        #expect(batch.resolvedCount == 2)
+        #expect(batch.progressFraction == 0)
+    }
+
+    @Test("Lot mixte (réussites + annulations) : statut « completed », barre pleine cohérente")
+    func mixedCompletedAndCancelled() {
+        let batch = PrintBatch(
+            id: 2, name: "x", quantity: 4, status: "active",
+            completedCount: 1, cancelledCount: 3
+        )
+        // Dès qu'il reste une réussite, ce n'est pas un lot « annulé » : displayStatus = completed.
+        // La barre suit alors les éléments résolus (cohérente avec le badge « Terminé »).
+        #expect(batch.isFullyResolved == true)
+        #expect(batch.isCancelled == false)
+        #expect(batch.displayStatus == "completed")
+        #expect(batch.progressFraction == 1)
+    }
+
+    @Test("Lot terminé avec succès : barre pleine")
+    func completedBatchProgressIsFull() {
+        let batch = PrintBatch(id: 3, name: "x", quantity: 2, status: "active", completedCount: 2)
+        #expect(batch.isCancelled == false)
+        #expect(batch.progressFraction == 1)
+    }
+
+    @Test("Lot en cours : la barre suit les éléments résolus")
+    func inProgressBatchProgress() {
+        let batch = PrintBatch(
+            id: 4, name: "x", quantity: 4, status: "active",
+            pendingCount: 2, printingCount: 0, completedCount: 1, cancelledCount: 1
+        )
+        #expect(batch.isFullyResolved == false)
+        #expect(batch.isCancelled == false)
+        // En cours : annulés + réussis comptent comme « traités » pour que la barre avance.
+        #expect(batch.progressFraction == 0.5)
+    }
+
     @Test("displayPosition : masquée pour les éléments terminaux, affichée sinon")
     func positionHiddenForTerminalItems() {
         var pending = QueueItem(id: 1, position: 3, status: "pending")

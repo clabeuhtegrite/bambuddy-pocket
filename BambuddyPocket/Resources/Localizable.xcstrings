@@ -1,6 +1,50 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%lld cancelled": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld abgebrochen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld cancelados"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld annulés"
+          }
+        }
+      }
+    },
+    "%lld cancelled · %lld/%lld done": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld abgebrochen · %2$lld/%3$lld fertig"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld cancelados · %2$lld/%3$lld hechos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld annulés · %2$lld/%3$lld terminés"
+          }
+        }
+      }
+    },
     "%lld cores": {
       "localizations": {
         "de": {

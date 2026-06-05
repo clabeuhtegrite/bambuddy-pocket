@@ -249,4 +249,25 @@ public struct PrintBatch: Codable, Sendable, Hashable, Identifiable {
         }
         return "completed"
     }
+
+    /// Le lot a-t-il été **annulé** (entièrement résolu sans aucune réussite ni échec) ? Dans ce cas,
+    /// une barre verte « terminé » et un comptage « 2/2 terminés » sont trompeurs : rien n'a abouti.
+    public var isCancelled: Bool {
+        displayStatus == "cancelled"
+    }
+
+    /// Fraction (0…1) de la barre de progression, fondée sur les **réussites réelles**
+    /// (`completedCount`) et non sur le simple fait d'avoir « résolu » les éléments.
+    ///
+    /// Un lot annulé n'a rien produit : sa barre doit être **vide** (et non pleine et verte). Un lot
+    /// partiellement imprimé puis annulé reflète sa part réellement terminée. Pour le suivi d'un lot
+    /// encore en cours, les annulations/échecs comptent comme « traités » afin que la barre progresse
+    /// jusqu'au bout.
+    public var progressFraction: Double {
+        let total = Double(max(quantity, 1))
+        if isCancelled {
+            return Double(completedCount) / total
+        }
+        return Double(resolvedCount) / total
+    }
 }
