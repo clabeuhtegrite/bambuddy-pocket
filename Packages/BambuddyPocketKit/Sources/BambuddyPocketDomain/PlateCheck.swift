@@ -49,3 +49,17 @@ public struct CameraStreamToken: Codable, Sendable, Hashable {
         self.token = token
     }
 }
+
+/// Jeton court (60 min, réutilisable) d'accès au WebSocket temps réel (`POST /auth/ws-token`).
+///
+/// Le handshake WebSocket ne permet pas d'attacher l'en-tête `Authorization` côté client, donc le
+/// serveur (auth activée) attend ce jeton opaque en query param : `wss://…/api/v1/ws?token=<jeton>`.
+/// Il est frappé derrière la permission `WEBSOCKET_CONNECT` (JWT **ou** clé d'API l'obtiennent) et
+/// reste valable ~60 min, ce qui survit aux brèves coupures sans nouvel aller-retour.
+public struct WebSocketToken: Codable, Sendable, Hashable {
+    public var token: String
+
+    public init(token: String) {
+        self.token = token
+    }
+}

@@ -255,6 +255,15 @@ public extension APIClient {
         try await get("/auth/me")
     }
 
+    /// Frappe un jeton court d'accès au WebSocket temps réel (`POST /auth/ws-token`).
+    ///
+    /// Le handshake WebSocket ne transporte pas l'en-tête `Authorization` ; le serveur (auth activée)
+    /// attend donc ce jeton opaque en `?token=` sur l'URL `…/ws`. JWT ou clé d'API l'obtiennent
+    /// (permission `WEBSOCKET_CONNECT`). Inoffensif si l'auth est désactivée.
+    func webSocketToken() async throws -> WebSocketToken {
+        try await send("/auth/ws-token", method: .post, body: nil)
+    }
+
     /// État de l'authentification à deux facteurs de l'utilisateur (`GET /auth/2fa/status`).
     func twoFactorStatus() async throws -> TwoFactorStatus {
         try await get("/auth/2fa/status")

@@ -19,8 +19,10 @@ public protocol WebSocketConnecting: Sendable {
 /// `WebSocketEvent` et entretient le keepalive (`ping`). La **reconnexion** est gérée par
 /// l'appelant (boucle avec back-off) en relançant `events()`.
 public struct WebSocketClient: Sendable {
-    private let url: URL
-    private let headers: [String: String]
+    /// URL d'upgrade effective (inclut `?token=` quand l'auth est activée).
+    public let url: URL
+    /// En-têtes posés sur la requête d'upgrade (auth Bearer/clé d'API, Cloudflare Access).
+    public let headers: [String: String]
     private let connector: any WebSocketConnecting
     private let pingInterval: Duration
 
