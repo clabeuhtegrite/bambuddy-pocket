@@ -98,6 +98,8 @@ private struct RealtimeBadge: View {
         case .connected: DSColor.statusOK
         case .connecting: DSColor.statusWarning
         case .reconnecting: DSColor.statusWarning
+        // Le repli REST fournit des données vivantes (rafraîchies) : on signale un état sain.
+        case .restMode: DSColor.statusOK
         }
     }
 
@@ -106,6 +108,7 @@ private struct RealtimeBadge: View {
         case .connected: "Live"
         case .connecting: "Connecting…"
         case .reconnecting: "Reconnecting…"
+        case .restMode: "Updating…"
         }
     }
 }
