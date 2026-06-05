@@ -68,6 +68,27 @@ enum HomeDashboardPresentation {
         snapshots.count(where: \.isPrinting)
     }
 
+    /// Nombre d'imprimantes **prêtes** : connectées, au repos (ni en impression, ni en erreur).
+    static func readyCount(_ snapshots: [PrinterSnapshot]) -> Int {
+        snapshots.count { snapshot in
+            guard let status = snapshot.status, status.connected != false else { return false }
+            if snapshot.isPrinting { return false }
+            if status.mostSevereError != nil { return false }
+            return true
+        }
+    }
+
+    /// Nombre d'imprimantes présentant une **alerte** (erreur HMS, plateau non vidé, bobine basse).
+    static func alertCount(_ snapshots: [PrinterSnapshot], lowFilamentThreshold: Int = 10) -> Int {
+        snapshots.count { snapshot in
+            guard let status = snapshot.status else { return false }
+            if status.mostSevereError != nil { return true }
+            if status.awaitingPlateClear == true { return true }
+            if let low = lowestFilament(in: status), low.remain <= lowFilamentThreshold { return true }
+            return false
+        }
+    }
+
     /// Bandeau d'alerte le plus prioritaire parmi toutes les imprimantes (ou `nil` si rien
     /// d'alarmant). Priorité : erreur HMS > plateau non vidé > bobine AMS presque vide.
     static func alert(_ snapshots: [PrinterSnapshot], lowFilamentThreshold: Int = 10) -> HomeAlert? {

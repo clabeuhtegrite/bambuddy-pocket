@@ -91,6 +91,51 @@ struct HomeDashboardPresentationTests {
         #expect(alert?.detail.contains("3") == true)
     }
 
+    @Test("readyCount : connectée, au repos, sans erreur (ni en impression ni hors ligne)")
+    func readyCountExcludesPrintingOfflineAndError() {
+        let printers = [printer(1, "Ready"), printer(2, "Printing"), printer(3, "Offline"), printer(4, "Error")]
+        var offline = PrinterStatus()
+        offline.connected = false
+        offline.state = .idle
+        var errored = PrinterStatus()
+        errored.connected = true
+        errored.state = .idle
+        errored.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        var ready = PrinterStatus()
+        ready.connected = true
+        ready.state = .idle
+        let statuses: [Int: PrinterStatus] = [
+            1: ready,
+            2: printingStatus(progress: 50),
+            3: offline,
+            4: errored
+        ]
+        let snapshots = HomeDashboardPresentation.snapshots(printers: printers) { statuses[$0.id] }
+        #expect(HomeDashboardPresentation.readyCount(snapshots) == 1)
+    }
+
+    @Test("alertCount : compte les imprimantes en alerte (erreur, plateau, bobine basse)")
+    func alertCountCountsAlertingPrinters() {
+        var errored = printingStatus(progress: 20)
+        errored.hmsErrors = [HMSError(code: "0x300010001", attr: 0x0300_0100, module: 3, severity: 1)]
+        var lowSpool = PrinterStatus()
+        lowSpool.connected = true
+        lowSpool.state = .idle
+        var unit = AMSUnit(id: 0)
+        var tray = AMSTray(id: 0)
+        tray.trayType = "PLA"
+        tray.remain = 5
+        unit.tray = [tray]
+        lowSpool.ams = [unit]
+        var healthy = PrinterStatus()
+        healthy.connected = true
+        healthy.state = .idle
+        let printers = [printer(1, "Err"), printer(2, "Low"), printer(3, "OK")]
+        let statuses: [Int: PrinterStatus] = [1: errored, 2: lowSpool, 3: healthy]
+        let snapshots = HomeDashboardPresentation.snapshots(printers: printers) { statuses[$0.id] }
+        #expect(HomeDashboardPresentation.alertCount(snapshots) == 2)
+    }
+
     @Test("alert : pas de fausse alarme (statut sain, slots pleins ou vides)")
     func alertNoFalseAlarm() {
         var status = PrinterStatus()

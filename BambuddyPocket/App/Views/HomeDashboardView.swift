@@ -16,6 +16,12 @@ struct HomeDashboardView: View {
 
     @State private var printers: PrinterListModel
     @State private var showingNotifications = false
+    /// Disposition d'accueil choisie par l'utilisateur, persistée entre les lancements.
+    @AppStorage("homeVariant") private var variantRaw = HomeVariant.dashboard.rawValue
+
+    private var variant: HomeVariant {
+        HomeVariant(rawValue: variantRaw) ?? .dashboard
+    }
 
     init(
         model: ServerListModel,
@@ -39,24 +45,9 @@ struct HomeDashboardView: View {
     }
 
     var body: some View {
-        let snapshots = snapshots
-        let hero = HomeDashboardPresentation.heroSnapshot(snapshots)
-        let alert = HomeDashboardPresentation.alert(snapshots)
-
         ScrollView {
             VStack(alignment: .leading, spacing: DSSpacing.lg) {
-                subtitle(snapshots)
-                if let hero {
-                    HeroPrintCard(snapshot: hero) { action in
-                        handle(action, for: hero.printer)
-                    }
-                }
-                if let alert {
-                    HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
-                }
-                printersSection(snapshots)
-                quickActionsSection
-                recentActivitySection
+                content(snapshots)
             }
             .padding(DSSpacing.md)
         }
@@ -76,6 +67,9 @@ struct HomeDashboardView: View {
                 RealtimeHeaderBadge(state: printers.realtimeState)
             }
             ToolbarItem(placement: .topBarTrailing) {
+                variantMenu
+            }
+            ToolbarItem(placement: .topBarTrailing) {
                 NotificationsToolbarButton(center: notificationCenter) {
                     showingNotifications = true
                 }
@@ -91,6 +85,78 @@ struct HomeDashboardView: View {
         }
         .refreshable { await printers.load() }
         .task { await printers.run() }
+    }
+
+    /// Contenu de l'accueil selon la disposition choisie (A tableau de bord, B focus, C grille).
+    @ViewBuilder
+    private func content(_ snapshots: [PrinterSnapshot]) -> some View {
+        let hero = HomeDashboardPresentation.heroSnapshot(snapshots)
+        let alert = HomeDashboardPresentation.alert(snapshots)
+        switch variant {
+        case .dashboard:
+            subtitle(snapshots)
+            if let hero {
+                HeroPrintCard(snapshot: hero) { handle($0, for: hero.printer) }
+            }
+            if let alert {
+                HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
+            }
+            printersSection(snapshots)
+            quickActionsSection
+            recentActivitySection
+        case .focus:
+            subtitle(snapshots)
+            if let hero {
+                HeroPrintCard(snapshot: hero) { handle($0, for: hero.printer) }
+            } else {
+                idlePlaceholder
+            }
+            if let alert {
+                HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
+            }
+            quickActionsSection
+        case .grid:
+            HomeStatStrip(
+                printing: HomeDashboardPresentation.printingCount(snapshots),
+                ready: HomeDashboardPresentation.readyCount(snapshots),
+                alerts: HomeDashboardPresentation.alertCount(snapshots)
+            ) { onSelectTab(.printers) }
+            if let alert {
+                HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
+            }
+            printersSection(snapshots)
+            quickActionsSection
+        }
+    }
+
+    /// Menu de sélection de la disposition d'accueil (A/B/C), persistée via `@AppStorage`.
+    private var variantMenu: some View {
+        Menu {
+            Picker("Home layout", selection: $variantRaw) {
+                ForEach(HomeVariant.allCases) { option in
+                    Label(option.label, systemImage: option.systemImage).tag(option.rawValue)
+                }
+            }
+        } label: {
+            Image(systemName: "rectangle.3.group")
+        }
+        .accessibilityLabel("Home layout")
+    }
+
+    /// Repère affiché en disposition Focus quand aucune impression n'est en cours.
+    private var idlePlaceholder: some View {
+        VStack(spacing: DSSpacing.sm) {
+            Image(systemName: "printer")
+                .font(.largeTitle)
+                .foregroundStyle(DSColor.textMuted)
+            Text("No active print")
+                .font(DSFont.body)
+                .foregroundStyle(DSColor.textSecondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, DSSpacing.xl)
+        .dsCardSurface()
+        .accessibilityElement(children: .combine)
     }
 
     /// Sous-titre sous le grand titre : nombre d'imprimantes et d'impressions en cours.
