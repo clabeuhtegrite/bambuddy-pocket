@@ -239,16 +239,21 @@ final class ServerNotificationCenter {
     /// pu faire tourner le jeton). Sur instance sans auth, renvoie `nil` sans aucun appel réseau.
     private func webSocketToken(forceRefresh: Bool) async -> String? {
         guard server.authMethod != .none else { return nil }
-        if !forceRefresh, let cached = cachedWebSocketToken,
-           Date().timeIntervalSince(cached.fetchedAt) < Self.webSocketTokenTTL
-        {
-            return cached.value
+        if !forceRefresh, let reusable = reusableCachedToken() {
+            return reusable
         }
         let fresh = await connectionFactory.webSocketToken(for: server)
         if let fresh {
             cachedWebSocketToken = (fresh, Date())
         }
         return fresh
+    }
+
+    /// Jeton en cache encore dans sa durée de vie utile, ou `nil` s'il manque ou est périmé.
+    private func reusableCachedToken() -> String? {
+        guard let cached = cachedWebSocketToken else { return nil }
+        let age = Date().timeIntervalSince(cached.fetchedAt)
+        return age < Self.webSocketTokenTTL ? cached.value : nil
     }
 
     /// Repli REST : amorce les statuts puis les rafraîchit périodiquement **tant que** le temps réel
