@@ -95,8 +95,10 @@ struct RealtimeStateMachineTests {
         defer { center.stop() }
 
         // Attend la bascule en repli REST (2 échecs d'upgrade), sans jamais rester en reconnexion.
+        // Budget large (jusqu'à ~30 s, sous la `.timeLimit` d'une minute) : sur un runner CI chargé,
+        // deux vrais handshakes WebSocket refusés + le back-off peuvent dépasser quelques secondes.
         var reachedRESTMode = false
-        for _ in 0 ..< 100 {
+        for _ in 0 ..< 600 {
             if center.realtimeState == .restMode {
                 reachedRESTMode = true
                 break
