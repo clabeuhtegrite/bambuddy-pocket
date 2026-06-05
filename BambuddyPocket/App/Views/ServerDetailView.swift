@@ -82,7 +82,9 @@ struct ServerDetailView: View {
             link("Activity", "bell") { ActivityListView(server: current, serverList: model) }
             link("Filaments", "circle.dashed") { InventoryListView(server: current, serverList: model) }
             link("Filament catalog", "books.vertical") { FilamentCatalogView(server: current, serverList: model) }
-            link("Spoolman", "spool") { SpoolmanView(server: current, serverList: model) }
+            // `spool` n'existe pas comme symbole SF sur le SDK cible → la ligne s'affichait sans
+            // icône. `cylinder` (présent) représente bien une bobine de filament.
+            link("Spoolman", "cylinder") { SpoolmanView(server: current, serverList: model) }
             link("Library", "folder") { LibraryListView(server: current, serverList: model) }
             link("Projects", "square.stack.3d.up") { ProjectListView(server: current, serverList: model) }
             link("Smart plugs", "powerplug") { SmartPlugsView(server: current, serverList: model) }

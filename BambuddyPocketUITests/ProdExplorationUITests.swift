@@ -51,6 +51,18 @@ final class ProdExplorationUITests: XCTestCase {
         app.launch()
     }
 
+    /// Capture le détail serveur pour vérifier que toutes les lignes (dont « Spoolman ») portent une
+    /// icône — `spool` n'existe pas comme symbole SF, l'icône était auparavant manquante.
+    func testServerDetailRowIcons() {
+        let timeout: TimeInterval = 20
+        let serverCell = app.cells.firstMatch
+        XCTAssertTrue(serverCell.waitForExistence(timeout: timeout), "server cell")
+        serverCell.tap()
+        XCTAssertTrue(app.staticTexts["Spoolman"].waitForExistence(timeout: timeout), "Spoolman row")
+        sleep(1)
+        capture("server-detail-icons")
+    }
+
     func testExploreEveryScreen() {
         let timeout: TimeInterval = 20
 
