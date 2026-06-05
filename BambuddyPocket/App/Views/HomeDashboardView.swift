@@ -5,10 +5,9 @@ import SwiftUI
 
 /// Page d'accueil / tableau de bord du serveur sélectionné (proposition A des maquettes).
 ///
-/// Cette première itération pose l'**en-tête** (nom du serveur, sous-titre imprimantes, badge
-/// temps réel, cloche de notifications, retour multi-serveurs) et un aperçu synthétique. Les
-/// composants riches (carte hero d'impression, cartes imprimantes compactes, bandeau d'alerte,
-/// chips, activité) sont ajoutés dans une brique dédiée.
+/// En-tête (nom du serveur, sous-titre imprimantes, badge temps réel, cloche de notifications,
+/// retour multi-serveurs), carte **hero** d'impression en cours, bandeau d'**alerte conditionnel**,
+/// cartes **imprimantes compactes**, **chips** d'actions rapides et **activité récente**.
 struct HomeDashboardView: View {
     let model: ServerListModel
     let server: ServerConfiguration
@@ -35,14 +34,29 @@ struct HomeDashboardView: View {
         printers.notificationCenter
     }
 
-    private var printingCount: Int {
-        printers.printers.count { printers.status(for: $0)?.isPrinting == true }
+    private var snapshots: [PrinterSnapshot] {
+        HomeDashboardPresentation.snapshots(printers: printers.printers) { printers.status(for: $0) }
     }
 
     var body: some View {
+        let snapshots = snapshots
+        let hero = HomeDashboardPresentation.heroSnapshot(snapshots)
+        let alert = HomeDashboardPresentation.alert(snapshots)
+
         ScrollView {
-            VStack(alignment: .leading, spacing: DSSpacing.md) {
-                summaryCard
+            VStack(alignment: .leading, spacing: DSSpacing.lg) {
+                subtitle(snapshots)
+                if let hero {
+                    HeroPrintCard(snapshot: hero) { action in
+                        handle(action, for: hero.printer)
+                    }
+                }
+                if let alert {
+                    HomeAlertBanner(alert: alert) { onSelectTab(.printers) }
+                }
+                printersSection(snapshots)
+                quickActionsSection
+                recentActivitySection
             }
             .padding(DSSpacing.md)
         }
@@ -79,31 +93,114 @@ struct HomeDashboardView: View {
         .task { await printers.run() }
     }
 
-    private var summaryCard: some View {
-        DSCard {
-            VStack(alignment: .leading, spacing: DSSpacing.sm) {
-                Text(printerSummary)
-                    .font(DSFont.headline)
-                    .foregroundStyle(DSColor.textPrimary)
-                Button {
-                    onSelectTab(.printers)
-                } label: {
-                    Label("View printers", systemImage: "printer")
-                }
-                .buttonStyle(.dsSecondary)
-            }
+    /// Sous-titre sous le grand titre : nombre d'imprimantes et d'impressions en cours.
+    private func subtitle(_ snapshots: [PrinterSnapshot]) -> some View {
+        let printing = HomeDashboardPresentation.printingCount(snapshots)
+        let text = if printing > 0 {
+            "\(String(localized: "\(snapshots.count) printers")) · " +
+                String(localized: "\(printing) printing")
+        } else {
+            String(localized: "\(snapshots.count) printers")
         }
-        .accessibilityElement(children: .combine)
+        return Text(text)
+            .font(DSFont.callout)
+            .foregroundStyle(DSColor.textSecondary)
+            .accessibilityLabel(text)
     }
 
-    private var printerSummary: String {
-        let count = printers.printers.count
-        let printersText = String(localized: "\(count) printers")
-        guard printingCount > 0 else {
-            return printersText
+    @ViewBuilder
+    private func printersSection(_ snapshots: [PrinterSnapshot]) -> some View {
+        if !snapshots.isEmpty {
+            VStack(alignment: .leading, spacing: DSSpacing.sm) {
+                SectionHeader("Printers")
+                LazyVGrid(
+                    columns: [GridItem(.flexible(), spacing: DSSpacing.sm), GridItem(.flexible())],
+                    spacing: DSSpacing.sm
+                ) {
+                    ForEach(snapshots) { snapshot in
+                        Button {
+                            onSelectTab(.printers)
+                        } label: {
+                            CompactPrinterCard(snapshot: snapshot)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
         }
-        let printingText = String(localized: "\(printingCount) printing")
-        return "\(printersText) · \(printingText)"
+    }
+
+    private var quickActionsSection: some View {
+        VStack(alignment: .leading, spacing: DSSpacing.sm) {
+            SectionHeader("Quick actions")
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: DSSpacing.sm) {
+                    QuickActionChip(titleKey: "Add to queue", systemImage: "plus") {
+                        onSelectTab(.queue)
+                    }
+                    QuickActionChip(titleKey: "Printers", systemImage: "printer") {
+                        onSelectTab(.printers)
+                    }
+                    QuickActionChip(titleKey: "Library", systemImage: "book") {
+                        onSelectTab(.library)
+                    }
+                }
+                .padding(.horizontal, 1)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var recentActivitySection: some View {
+        let recent = Array(notificationCenter.notifications.prefix(4))
+        if !recent.isEmpty {
+            VStack(alignment: .leading, spacing: DSSpacing.sm) {
+                SectionHeader("Recent activity")
+                VStack(spacing: 0) {
+                    ForEach(Array(recent.enumerated()), id: \.element.id) { index, note in
+                        RecentActivityRow(note: note)
+                        if index < recent.count - 1 {
+                            DSSeparator()
+                        }
+                    }
+                }
+                .padding(.horizontal, DSSpacing.md)
+                .dsCardSurface()
+            }
+        }
+    }
+
+    /// Exécute une action de la carte hero (pause/reprise/arrêt) sur l'imprimante concernée.
+    private func handle(_ action: HeroPrintCard.Action, for printer: Printer) {
+        Task {
+            switch action {
+            case .pauseOrResume:
+                if printers.status(for: printer)?.state == .pause {
+                    await printers.resume(printer)
+                } else {
+                    await printers.pause(printer)
+                }
+            case .stop:
+                await printers.stop(printer)
+            }
+        }
+    }
+}
+
+/// En-tête de section uniforme (libellé en capitales atténué, comme sur la maquette).
+struct SectionHeader: View {
+    let titleKey: LocalizedStringKey
+
+    init(_ titleKey: LocalizedStringKey) {
+        self.titleKey = titleKey
+    }
+
+    var body: some View {
+        Text(titleKey)
+            .font(DSFont.captionMedium)
+            .textCase(.uppercase)
+            .foregroundStyle(DSColor.textMuted)
+            .accessibilityAddTraits(.isHeader)
     }
 }
 
