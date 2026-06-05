@@ -31,7 +31,7 @@ struct PrinterReadoutSections: View {
                     temperatureRow("Nozzle 1", temps.nozzle, temps.nozzleTarget)
                     temperatureRow("Nozzle 2", temps.nozzle2, temps.nozzle2Target)
                     if let active = status?.activeExtruder {
-                        LabeledContent("Active extruder", value: "\(active + 1)")
+                        LabeledContent("Active extruder", value: PrinterPresentation.activeExtruderLabel(active))
                     }
                 } else {
                     temperatureRow("Nozzle", temps.nozzle, temps.nozzleTarget)

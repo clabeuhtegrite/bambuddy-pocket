@@ -226,6 +226,26 @@ public struct PrinterStatus: Codable, Sendable, Hashable {
         state?.isActivePrint ?? false
     }
 
+    /// État **vivant de la machine** à afficher comme statut de connexion, distinct du *résultat
+    /// du dernier print*.
+    ///
+    /// Le firmware conserve `state == FAILED` (ou `FINISH`) **après** une impression terminée :
+    /// c'est le résultat de ce print, pas l'état courant de la machine. Tant que l'imprimante est
+    /// **connectée** et qu'aucune impression n'est active, elle est en réalité **au repos** (prête) —
+    /// elle continue d'ailleurs de pousser du temps réel (températures, extrudeur actif). Afficher
+    /// alors un badge rouge « Échec » comme statut global est trompeur (l'imprimante n'est pas en
+    /// panne). On déclasse donc un `FAILED` résiduel en `.idle` dans ce cas précis.
+    ///
+    /// On ne touche **pas** : aux états d'impression actifs, à une imprimante déconnectée (le badge
+    /// « Hors ligne » prime en amont), ni à `FINISH` (un « Terminé » vert reste une information
+    /// neutre et exacte sur le dernier print).
+    public var liveState: PrinterState? {
+        guard connected != false, state == .failed, !isPrinting else {
+            return state
+        }
+        return .idle
+    }
+
     /// Progression en fraction (0…1) si disponible.
     public var progressFraction: Double? {
         progress.map { max(0, min(1, $0 / 100)) }
