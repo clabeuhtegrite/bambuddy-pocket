@@ -8,7 +8,7 @@ enum HomeTab: Hashable {
     case home
     case printers
     case queue
-    case library
+    case archives
     case more
 }
 
@@ -45,7 +45,7 @@ enum HomeVariant: String, CaseIterable, Identifiable {
 }
 
 /// Coquille de navigation par **onglets** appliquée au serveur sélectionné : Accueil · Imprimantes
-/// · File · Bibliothèque · Plus. Chaque onglet porte sa propre pile de navigation. La liste des
+/// · File · Archives · Plus. Chaque onglet porte sa propre pile de navigation. La liste des
 /// serveurs (multi-serveurs) reste accessible : retour via le bouton dédié de l'en-tête / depuis
 /// « Plus → Serveur ». Reflète l'architecture validée sur maquettes (`01-accueil-A`, `03-plus`).
 struct ServerHomeView: View {
@@ -90,12 +90,12 @@ struct ServerHomeView: View {
                 Label("Queue", systemImage: "list.bullet")
             }
 
-            Tab(value: HomeTab.library) {
+            Tab(value: HomeTab.archives) {
                 NavigationStack {
-                    LibraryListView(server: server, serverList: model)
+                    ArchiveListView(server: server, serverList: model)
                 }
             } label: {
-                Label("Library", systemImage: "book")
+                Label("Archives", systemImage: "archivebox")
             }
 
             Tab(value: HomeTab.more) {

@@ -21,7 +21,7 @@ final class ScreenshotTests: XCTestCase {
         static let printers = "Imprimantes"
         static let more = "Plus"
         static let queue = "File"
-        static let library = "Bibliothèque"
+        static let archives = "Archives"
         static let homeLayout = "Disposition d’accueil"
         static let grid = "Grille"
         static let bambuCloud = "Bambu Cloud"
@@ -87,6 +87,13 @@ final class ScreenshotTests: XCTestCase {
             sleep(3)
             capture("03-detail-imprimante-B")
             goBackIfPossible()
+        }
+
+        // 03b — Onglet Archives (remplace l'ancien onglet Bibliothèque).
+        if app.tabBars.buttons[L.archives].waitForExistence(timeout: timeout) {
+            app.tabBars.buttons[L.archives].tap()
+            sleep(2)
+            capture("03b-archives")
         }
 
         // 04 — Onglet Plus (groupé).

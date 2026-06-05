@@ -217,8 +217,8 @@ struct HomeDashboardView: View {
                     QuickActionChip(titleKey: "Printers", systemImage: "printer") {
                         onSelectTab(.printers)
                     }
-                    QuickActionChip(titleKey: "Library", systemImage: "book") {
-                        onSelectTab(.library)
+                    QuickActionChip(titleKey: "Archives", systemImage: "archivebox") {
+                        onSelectTab(.archives)
                     }
                 }
                 .padding(.horizontal, 1)
