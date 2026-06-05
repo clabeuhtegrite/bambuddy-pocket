@@ -102,6 +102,34 @@ final class ProdExplorationUITests: XCTestCase {
         XCTAssertFalse(unknown.exists, "Le statut ne doit plus être « Inconnu » (repli REST actif).")
     }
 
+    /// Vérifie le correctif **Bibliothèque** : un dossier non vide (« MakerWorld », badge « 7 »)
+    /// doit afficher ses fichiers à l'ouverture. Auparavant, le listing racine ne récupérait pas le
+    /// contenu des dossiers et le dossier s'affichait vide.
+    func testLibraryFolderShowsItsFiles() {
+        let timeout: TimeInterval = 20
+        let serverCell = app.cells.firstMatch
+        XCTAssertTrue(serverCell.waitForExistence(timeout: timeout), "server cell")
+        serverCell.tap()
+        XCTAssertTrue(app.buttons[L.edit].waitForExistence(timeout: timeout), "server detail")
+
+        XCTAssertTrue(openLink("Bibliothèque", timeout: timeout), "library link")
+        sleep(2)
+        capture("library-root")
+
+        // Ouvre le dossier « MakerWorld ».
+        let folder = app.staticTexts["MakerWorld"]
+        XCTAssertTrue(folder.waitForExistence(timeout: timeout), "MakerWorld folder")
+        folder.tap()
+        sleep(3) // Laisse le chargement par dossier (GET /library/files/?folder_id=…) aboutir.
+        capture("library-folder-makerworld")
+
+        // Le dossier ne doit plus être vide : le message « vide » a disparu et des fichiers (.3mf)
+        // sont listés.
+        let emptyMessage = app.staticTexts["Ce dossier est vide."]
+        XCTAssertFalse(emptyMessage.exists, "Le dossier MakerWorld (7 fichiers) ne doit plus s'afficher vide.")
+        XCTAssertTrue(app.cells.firstMatch.waitForExistence(timeout: timeout), "au moins un fichier listé")
+    }
+
     /// Valide la **matrice d'auth** sur les écrans d'administration (Clés d'API + Sauvegarde locale).
     /// Le comportement attendu dépend de `UITEST_AUTH_METHOD` :
     /// - `apikey` : le serveur renvoie 403 → message « admin requis » (pas d'état vide trompeur,

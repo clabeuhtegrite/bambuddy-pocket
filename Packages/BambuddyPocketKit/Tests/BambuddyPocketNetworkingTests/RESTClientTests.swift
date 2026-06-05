@@ -485,6 +485,21 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/")
     }
 
+    @Test("libraryFiles(inFolder:) cible /library/files/?folder_id= et décode")
+    func listsLibraryFolder() async throws {
+        MockURLProtocol.reset()
+        respond(
+            status: 200,
+            json: #"[{"id":5,"folder_id":1,"filename":"clip.3mf","file_type":"3mf","file_size":2048}]"#
+        )
+        let client = try makeClient()
+        let files = try await client.libraryFiles(inFolder: 1)
+        #expect(files.map(\.id) == [5])
+        #expect(files.first?.folderId == 1)
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/library/files/?folder_id=1")
+    }
+
     @Test("libraryFile(id:) cible /library/files/{id} et décode")
     func fetchesLibraryFile() async throws {
         MockURLProtocol.reset()

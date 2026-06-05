@@ -773,116 +773,6 @@
         }
       }
     },
-    "Admin features include managing API keys and backups.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zu den Administratorfunktionen gehören die Verwaltung von API-Schlüsseln und Backups."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las funciones de administrador incluyen la gestión de claves de API y copias de seguridad."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les fonctions d’administration incluent la gestion des clés d’API et les sauvegardes."
-          }
-        }
-      }
-    },
-    "Admin features — managing API keys and backups — require a username & password login.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Administratorfunktionen – Verwaltung von API-Schlüsseln und Backups – erfordern eine Anmeldung mit Benutzername und Passwort."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las funciones de administrador (gestión de claves de API y copias de seguridad) requieren iniciar sesión con usuario y contraseña."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les fonctions d’administration — gestion des clés d’API et sauvegardes — nécessitent une connexion par identifiants (utilisateur et mot de passe)."
-          }
-        }
-      }
-    },
-    "Admin login required": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anmeldung als Administrator erforderlich"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se requiere inicio de sesión de administrador"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Connexion administrateur requise"
-          }
-        }
-      }
-    },
-    "Admin login required — reconfigure this server with a username & password.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Administratoranmeldung erforderlich – richte diesen Server mit Benutzername und Passwort neu ein."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Se requiere inicio de sesión de administrador: vuelve a configurar este servidor con usuario y contraseña."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fonction réservée à une connexion par identifiants (admin). Reconfigure ce serveur en utilisateur/mot de passe."
-          }
-        }
-      }
-    },
-    "An API key allows monitoring and most actions.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mit einem API-Schlüssel sind Überwachung und die meisten Aktionen möglich."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Una clave de API permite la supervisión y la mayoría de las acciones."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Une clé d’API permet la consultation et la plupart des actions."
-          }
-        }
-      }
-    },
     "Add a Bambuddy server to get started.": {
       "localizations": {
         "de": {
@@ -1115,6 +1005,94 @@
         }
       }
     },
+    "Admin features include managing API keys and backups.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu den Administratorfunktionen gehören die Verwaltung von API-Schlüsseln und Backups."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las funciones de administrador incluyen la gestión de claves de API y copias de seguridad."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les fonctions d’administration incluent la gestion des clés d’API et les sauvegardes."
+          }
+        }
+      }
+    },
+    "Admin features — managing API keys and backups — require a username & password login.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Administratorfunktionen – Verwaltung von API-Schlüsseln und Backups – erfordern eine Anmeldung mit Benutzername und Passwort."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las funciones de administrador (gestión de claves de API y copias de seguridad) requieren iniciar sesión con usuario y contraseña."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les fonctions d’administration — gestion des clés d’API et sauvegardes — nécessitent une connexion par identifiants (utilisateur et mot de passe)."
+          }
+        }
+      }
+    },
+    "Admin login required": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anmeldung als Administrator erforderlich"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se requiere inicio de sesión de administrador"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connexion administrateur requise"
+          }
+        }
+      }
+    },
+    "Admin login required — reconfigure this server with a username & password.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Administratoranmeldung erforderlich – richte diesen Server mit Benutzername und Passwort neu ein."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se requiere inicio de sesión de administrador: vuelve a configurar este servidor con usuario y contraseña."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fonction réservée à une connexion par identifiants (admin). Reconfigure ce serveur en utilisateur/mot de passe."
+          }
+        }
+      }
+    },
     "Airduct": {
       "localizations": {
         "de": {
@@ -1239,6 +1217,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ein 8-stelliger Zugangscode. Leer lassen, um den bestehenden zu behalten."
+          }
+        }
+      }
+    },
+    "An API key allows monitoring and most actions.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit einem API-Schlüssel sind Überwachung und die meisten Aktionen möglich."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una clave de API permite la supervisión y la mayoría de las acciones."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une clé d’API permet la consultation et la plupart des actions."
           }
         }
       }
@@ -6819,6 +6819,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mehr laden"
+          }
+        }
+      }
+    },
+    "Loading…": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wird geladen…"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement…"
           }
         }
       }
