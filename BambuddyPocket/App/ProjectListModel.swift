@@ -126,4 +126,55 @@ final class ProjectListModel {
             return false
         }
     }
+
+    // MARK: Archives du projet
+
+    /// Archives rattachées au projet, ou `nil` en cas d'échec.
+    func projectArchives(for project: Project) async -> [Archive]? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.projectArchives(id: project.id)
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return nil
+        }
+    }
+
+    /// Charge une page d'archives pour le sélecteur d'« ajout d'archive » ; `nil` en cas d'échec.
+    func archives(limit: Int, offset: Int) async -> [Archive]? {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            return try await client.archives(limit: limit, offset: offset)
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return nil
+        }
+    }
+
+    /// Rattache des archives existantes au projet puis recharge la liste (stats). Renvoie `true` au succès.
+    func addArchives(to project: Project, archiveIDs: [Int]) async -> Bool {
+        guard !archiveIDs.isEmpty else { return false }
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.addArchivesToProject(projectID: project.id, archiveIDs: archiveIDs)
+            await load()
+            return true
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return false
+        }
+    }
+
+    /// Détache une archive du projet puis recharge la liste (stats). Renvoie `true` au succès.
+    func removeArchive(from project: Project, archiveID: Int) async -> Bool {
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            try await client.removeArchivesFromProject(projectID: project.id, archiveIDs: [archiveID])
+            await load()
+            return true
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+            return false
+        }
+    }
 }

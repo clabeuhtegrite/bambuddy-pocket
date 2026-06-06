@@ -175,6 +175,25 @@ public extension APIClient {
         try await get("/projects/\(id)/timeline")
     }
 
+    /// Archives rattachées à un projet (`GET /projects/{id}/archives`).
+    func projectArchives(id: Int) async throws -> [Archive] {
+        try await get("/projects/\(id)/archives")
+    }
+
+    /// Rattache des archives existantes à un projet (`POST /projects/{id}/add-archives`). Le serveur
+    /// pose `project_id` sur chaque archive trouvée et ignore silencieusement les identifiants inconnus.
+    func addArchivesToProject(projectID: Int, archiveIDs: [Int]) async throws {
+        let body = try JSONEncoder.bambuddy().encode(BatchAddArchives(archiveIDs: archiveIDs))
+        try await post("/projects/\(projectID)/add-archives", body: body)
+    }
+
+    /// Détache des archives d'un projet (`POST /projects/{id}/remove-archives`). Le serveur efface
+    /// `project_id` sur chaque archive trouvée et ignore silencieusement les identifiants inconnus.
+    func removeArchivesFromProject(projectID: Int, archiveIDs: [Int]) async throws {
+        let body = try JSONEncoder.bambuddy().encode(BatchAddArchives(archiveIDs: archiveIDs))
+        try await post("/projects/\(projectID)/remove-archives", body: body)
+    }
+
     /// Réordonne la file d'attente (`POST /queue/reorder`).
     func reorderQueue(_ items: [QueueReorderItem]) async throws {
         let body = try JSONEncoder.bambuddy().encode(QueueReorder(items: items))

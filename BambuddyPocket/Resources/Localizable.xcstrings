@@ -1211,6 +1211,28 @@
         }
       }
     },
+    "Add archives": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archive hinzufügen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir archivos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter des archives"
+          }
+        }
+      }
+    },
     "Add item": {
       "localizations": {
         "de": {
@@ -1899,6 +1921,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Archives"
+          }
+        }
+      }
+    },
+    "Attach completed prints to keep this project’s history in one place.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hängen Sie abgeschlossene Drucke an, um den Verlauf dieses Projekts zu bündeln."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adjunta impresiones completadas para reunir el historial de este proyecto."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rattachez des impressions terminées pour regrouper l’historique de ce projet."
           }
         }
       }
@@ -15710,6 +15754,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Der Slicer ist auf diesem Server nicht verfügbar."
+          }
+        }
+      }
+    },
+    "There are no prints in the archive to attach yet.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Es sind noch keine Drucke im Archiv zum Anhängen vorhanden."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todavía no hay impresiones en el archivo para adjuntar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune impression dans l’archive à rattacher pour le moment."
           }
         }
       }
