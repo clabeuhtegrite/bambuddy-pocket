@@ -13,6 +13,29 @@ public struct ServerConnectionFactory: Sendable {
         self.session = session
     }
 
+    /// `URLSessionConfiguration` **dédiée** à l'app, à préférer à `URLSession.shared` :
+    ///
+    /// - `timeoutIntervalForRequest = 15 s` : un appel qui n'a reçu aucun octet sous ce délai
+    ///   échoue (transport), au lieu de pendre ~60 s (défaut). Borne l'attente d'un re-fetch de
+    ///   statut ou d'une action de contrôle. Le délai se **réinitialise à chaque octet reçu**, donc
+    ///   il ne coupe pas un flux MJPEG qui débite (le streaming caméra reste vivant).
+    /// - `waitsForConnectivity = true` : hors ligne, une requête **attend** le retour de la
+    ///   connectivité plutôt que d'échouer aussitôt — sans ralentir le cas nominal (connectivité
+    ///   présente), donc sans casser ni le repli REST « En direct » rapide ni le feedback in-flight.
+    ///
+    /// Le timeout **ressource** reste au défaut (7 j) pour ne pas plafonner un flux caméra long.
+    public static func liveSessionConfiguration() -> URLSessionConfiguration {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 15
+        configuration.waitsForConnectivity = true
+        return configuration
+    }
+
+    /// `URLSession` dédiée prête à l'emploi (cf. `liveSessionConfiguration`).
+    public static func makeLiveSession() -> URLSession {
+        URLSession(configuration: liveSessionConfiguration())
+    }
+
     /// Construit un client REST authentifié pour ce serveur.
     public func makeClient(for configuration: ServerConfiguration) throws -> RESTClient {
         let secrets = try secretStore.secrets(for: configuration.id)
