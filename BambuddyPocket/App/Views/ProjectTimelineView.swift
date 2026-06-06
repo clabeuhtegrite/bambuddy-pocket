@@ -55,7 +55,7 @@ private struct TimelineRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: DSSpacing.sm) {
             Image(systemName: "circle.fill")
-                .font(.system(size: 8))
+                .font(DSFont.inter(8, relativeTo: .caption2))
                 .foregroundStyle(DSColor.accent)
                 .padding(.top, DSSpacing.xs)
                 .accessibilityHidden(true)
