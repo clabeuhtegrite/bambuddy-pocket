@@ -1277,6 +1277,34 @@
         }
       }
     },
+    "Add printer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add printer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une imprimante"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir impresora"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drucker hinzufügen"
+          }
+        }
+      }
+    },
     "Add server": {
       "localizations": {
         "de": {
@@ -3175,28 +3203,6 @@
         }
       }
     },
-    "Close": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schließen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cerrar"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fermer"
-          }
-        }
-      }
-    },
     "Cloud": {
       "localizations": {
         "de": {
@@ -3281,28 +3287,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Couleur"
-          }
-        }
-      }
-    },
-    "Coming soon": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Demnächst"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Próximamente"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bientôt disponible"
           }
         }
       }
@@ -5501,6 +5485,34 @@
         }
       }
     },
+    "Drying": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drying"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Séchage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Secado"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trocknen"
+          }
+        }
+      }
+    },
     "Dual nozzle": {
       "localizations": {
         "de": {
@@ -5905,28 +5917,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Catalogue vide"
-          }
-        }
-      }
-    },
-    "Empty slot": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leerer Slot"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ranura vacía"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Slot vide"
           }
         }
       }
@@ -7665,6 +7655,34 @@
         }
       }
     },
+    "Included": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Included"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inclus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incluido"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enthalten"
+          }
+        }
+      }
+    },
     "Included data": {
       "localizations": {
         "en": {
@@ -8673,6 +8691,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Échec de la connexion."
+          }
+        }
+      }
+    },
+    "Logs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Logs"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journaux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Registros"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protokolle"
           }
         }
       }
@@ -10539,6 +10585,34 @@
         }
       }
     },
+    "Not included": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not included"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non inclus"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No incluido"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht enthalten"
+          }
+        }
+      }
+    },
     "Note": {
       "localizations": {
         "de": {
@@ -11000,6 +11074,62 @@
           "stringUnit": {
             "state": "translated",
             "value": "Composants open source"
+          }
+        }
+      }
+    },
+    "Opens printer details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens printer details"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre les détails de l'imprimante"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre los detalles de la impresora"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet die Druckerdetails"
+          }
+        }
+      }
+    },
+    "Opens printers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens printers"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre les imprimantes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre las impresoras"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet die Drucker"
           }
         }
       }
@@ -11610,34 +11740,6 @@
         }
       }
     },
-    "Print log": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Print log"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Journal d’impression"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registro de impresión"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Druckprotokoll"
-          }
-        }
-      }
-    },
     "Print name": {
       "localizations": {
         "de": {
@@ -12222,28 +12324,6 @@
         }
       }
     },
-    "Quick actions": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schnellaktionen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Acciones rápidas"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Actions rapides"
-          }
-        }
-      }
-    },
     "Read status": {
       "localizations": {
         "de": {
@@ -12762,6 +12842,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Retirez l'impression de %@ pour continuer"
+          }
+        }
+      }
+    },
+    "Removes the printer from the server": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removes the printer from the server"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retire l'imprimante du serveur"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina la impresora del servidor"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entfernt den Drucker vom Server"
           }
         }
       }
@@ -13758,28 +13866,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "URL du serveur"
-          }
-        }
-      }
-    },
-    "Server management arrives in the next milestone.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Die Serververwaltung kommt im nächsten Meilenstein."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La gestión de servidores llegará en el próximo hito."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La gestion des serveurs arrive au prochain jalon."
           }
         }
       }
@@ -16265,50 +16351,6 @@
     "URL": {
       "shouldTranslate": false
     },
-    "Unaffiliated third-party client for the self-hosted Bambuddy server. BamPocket talks to it only over its public network API and bundles none of its source code.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unabhängiger, nicht zugehöriger Drittanbieter-Client für den selbst gehosteten Bambuddy-Server. BamPocket kommuniziert mit ihm nur über dessen öffentliche Netzwerk-API und enthält keinen seiner Quellcodes."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cliente de terceros independiente y no afiliado para el servidor autoalojado Bambuddy. BamPocket se comunica con él solo a través de su API de red pública y no incluye su código fuente."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Client tiers indépendant et non affilié pour le serveur auto-hébergé Bambuddy. BamPocket dialogue avec lui uniquement via son API réseau publique et n’embarque aucun de son code source."
-          }
-        }
-      }
-    },
-    "Unaffiliated third-party client. Trademarks belong to their respective owners.": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nicht verbundener Drittanbieter-Client. Marken gehören ihren jeweiligen Eigentümern."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cliente de terceros no afiliado. Las marcas pertenecen a sus respectivos dueños."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Client tiers non affilié. Les marques appartiennent à leurs détenteurs respectifs."
-          }
-        }
-      }
-    },
     "Unauthorized — check your credentials.": {
       "localizations": {
         "de": {
@@ -17017,28 +17059,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Voir le parcours G-code"
-          }
-        }
-      }
-    },
-    "View printers": {
-      "localizations": {
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drucker anzeigen"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ver impresoras"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Voir les imprimantes"
           }
         }
       }
