@@ -181,11 +181,6 @@ public extension APIClient {
         try await get("/virtual-printers")
     }
 
-    /// Détail d'une imprimante virtuelle (`GET /virtual-printers/{id}`).
-    func virtualPrinter(id: Int) async throws -> VirtualPrinter {
-        try await get("/virtual-printers/\(id)")
-    }
-
     /// Crée une imprimante virtuelle (`POST /virtual-printers`).
     @discardableResult
     func createVirtualPrinter(_ create: VirtualPrinterCreate) async throws -> VirtualPrinter {

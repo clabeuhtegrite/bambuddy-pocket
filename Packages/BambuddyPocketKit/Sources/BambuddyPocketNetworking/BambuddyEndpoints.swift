@@ -66,11 +66,6 @@ public extension APIClient {
         try await send("/inventory/spools/\(id)/reset-usage", method: .post, body: nil)
     }
 
-    /// Archive une bobine (`POST /inventory/spools/{id}/archive`).
-    func archiveSpool(id: Int) async throws -> Spool {
-        try await send("/inventory/spools/\(id)/archive", method: .post, body: nil)
-    }
-
     /// Supprime une bobine (`DELETE /inventory/spools/{id}`).
     func deleteSpool(id: Int) async throws {
         try await delete("/inventory/spools/\(id)")
