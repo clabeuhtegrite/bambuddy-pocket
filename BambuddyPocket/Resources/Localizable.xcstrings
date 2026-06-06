@@ -559,6 +559,34 @@
         }
       }
     },
+    "3D preview of %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D preview of %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aperçu 3D de %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vista 3D de %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D-Vorschau von %@"
+          }
+        }
+      }
+    },
     "3D preview unavailable": {
       "localizations": {
         "de": {
@@ -7655,6 +7683,34 @@
         }
       }
     },
+    "Interactive 3D viewer. Rotate, pan and zoom by touch.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interactive 3D viewer. Rotate, pan and zoom by touch."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visionneuse 3D interactive. Pivotez, déplacez et zoomez au toucher."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visor 3D interactivo. Gira, desplaza y amplía con el tacto."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interaktiver 3D-Viewer. Drehen, verschieben und zoomen per Touch."
+          }
+        }
+      }
+    },
     "Issues detected in server logs.": {
       "localizations": {
         "de": {
@@ -8209,6 +8265,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mehr laden"
+          }
+        }
+      }
+    },
+    "Loading 3D preview": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading 3D preview"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chargement de l’aperçu 3D"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargando vista 3D"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3D-Vorschau wird geladen"
           }
         }
       }
@@ -11098,6 +11182,34 @@
           "stringUnit": {
             "state": "translated",
             "value": "Plateforme"
+          }
+        }
+      }
+    },
+    "Position %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position %lld"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position %lld"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posición %lld"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position %lld"
           }
         }
       }
