@@ -30,17 +30,22 @@ enum RealtimeState: Equatable {
 @Observable
 final class ServerNotificationCenter {
     /// État temps réel fusionné, par identifiant d'imprimante (REST initial + deltas WebSocket).
-    private(set) var statuses: [Int: PrinterStatus] = [:]
+    /// Setter `internal` (et non `private(set)`) : l'extension `+Notifications` fusionne les deltas.
+    var statuses: [Int: PrinterStatus] = [:]
     private(set) var realtimeState: RealtimeState = .connecting
-    /// Feed horodaté, du plus récent au plus ancien (borné à `maxNotifications`).
-    private(set) var notifications: [AppNotification] = []
-    /// Dernière notification reçue non encore acquittée par une bannière (consommée par l'UI).
-    private(set) var latestBanner: AppNotification?
-    /// État courant de la distribution automatique en arrière-plan (`nil` si inactive).
-    private(set) var dispatchState: BackgroundDispatchState?
+    /// Feed horodaté, du plus récent au plus ancien (borné à `maxNotifications`). Setter `internal` :
+    /// alimenté par `record(_:)` dans l'extension `+Notifications`.
+    var notifications: [AppNotification] = []
+    /// Dernière notification reçue non encore acquittée par une bannière (consommée par l'UI). Setter
+    /// `internal` : alimenté par `record(_:)` dans l'extension `+Notifications`.
+    var latestBanner: AppNotification?
+    /// État courant de la distribution automatique en arrière-plan (`nil` si inactive). Setter
+    /// `internal` : mis à jour par `apply(_:)` dans l'extension `+Notifications`.
+    var dispatchState: BackgroundDispatchState?
 
-    private let server: ServerConfiguration
-    private let connectionFactory: ServerConnectionFactory
+    /// `internal` (et non `private`) : lus par l'extension `+Notifications` (`cancelDispatchJob`).
+    let server: ServerConfiguration
+    let connectionFactory: ServerConnectionFactory
     private var realtimeTask: Task<Void, Never>?
     private var pollTask: Task<Void, Never>?
     /// Sondage REST **rapide** dédié à l'imprimante actuellement à l'écran (détail/accueil) : tant
@@ -51,14 +56,17 @@ final class ServerNotificationCenter {
     /// peuvent observer la même imprimante). Le sondage rapide tourne tant que cet ensemble n'est
     /// pas vide.
     private var activePrinterRefcounts: [Int: Int] = [:]
-    /// Noms d'imprimante connus, pour enrichir les notifications.
-    private var printerNames: [Int: String] = [:]
-    /// Statuts précédents, pour ne notifier les erreurs HMS qu'à la transition.
-    private var previousStatuses: [Int: PrinterStatus] = [:]
+    /// Noms d'imprimante connus, pour enrichir les notifications. `internal` : lus par l'extension
+    /// `+Notifications` (`record`).
+    var printerNames: [Int: String] = [:]
+    /// Statuts précédents, pour ne notifier les erreurs HMS qu'à la transition. `internal` :
+    /// lus/écrits par `merge` dans l'extension `+Notifications`.
+    var previousStatuses: [Int: PrinterStatus] = [:]
     /// Dernière notification émise pour un code HMS alarmant donné (`"<printerID>:<code>"` → date),
     /// pour appliquer une **grâce** anti-flapping : un code qui réapparaît dans la fenêtre ne
     /// ré-alarme pas (la X2D fait clignoter certains codes ; cf. `_HMS_CLEAR_GRACE_SECONDS` amont).
-    private var lastHMSNotified: [String: Date] = [:]
+    /// `internal` : lue/écrite par `shouldNotifyHMS` dans l'extension `+Notifications`.
+    var lastHMSNotified: [String: Date] = [:]
     /// Jeton WebSocket mis en cache (`POST /auth/ws-token`) + date de frappe. Réutilisé entre
     /// reconnexions pour **éviter un aller-retour réseau à chaque repli** : le jeton dure ~60 min,
     /// on ne le refrappe que s'il manque, qu'il a dépassé sa durée de vie utile, ou après une
@@ -67,14 +75,30 @@ final class ServerNotificationCenter {
     /// Un statut frais a-t-il déjà été obtenu via le repli REST ? Sert au **retour device A2** : une
     /// fois vrai, le badge ne retombe plus en « Connexion… » pendant que le WebSocket retente.
     private var hasFreshRESTStatus = false
+    /// Horodatage du dernier `GET /printers/{id}/status` **réussi** par imprimante. Sert à
+    /// **coalescer** les sondages qui se superposent sur l'imprimante active : le repli global (10 s),
+    /// le sondage rapide (2,5 s) et le re-fetch post-action visent la même imprimante. Un fetch dont
+    /// l'âge est inférieur à `minStatusFetchInterval` est sauté (sauf `force`), évitant les requêtes
+    /// redondantes.
+    private var lastStatusFetched: [Int: Date] = [:]
+    /// Liste des imprimantes mise en cache (la composition du parc change rarement). Le repli REST ne
+    /// re-télécharge plus `printers()` à chaque tick : il réutilise ce cache et ne (re)charge la liste
+    /// que lorsqu'elle est vide. Un rafraîchissement explicite passe par `load()` du view-model.
+    private var cachedPrinters: [Printer]?
 
-    private static let maxNotifications = 100
+    /// `internal` : borne le feed dans `record(_:)` (extension `+Notifications`).
+    static let maxNotifications = 100
     /// Cadence du repli REST quand le temps réel (WebSocket) est indisponible.
     private static let restPollInterval = Duration.seconds(10)
     /// Cadence **rapide** du sondage de l'imprimante active (écran imprimante visible). Plus serrée
     /// que le repli global car ciblée sur une seule imprimante : l'écran reflète l'état quasi en
     /// temps réel quand le WebSocket ne passe pas Cloudflare (cf. web UI). Aligné sur ~2–3 s.
     private static let activePollInterval = Duration.milliseconds(2500)
+    /// Intervalle minimal entre deux `GET /printers/{id}/status` pour une **même** imprimante.
+    /// Sous ce délai, un sondage non forcé est sauté : il dédoublonne les requêtes que le repli
+    /// global, le sondage rapide et le re-fetch post-action lanceraient sinon en double. Calé un peu
+    /// sous la cadence rapide (2,5 s) pour ne jamais retarder un tick rapide légitime.
+    private static let minStatusFetchInterval: TimeInterval = 2
     /// Nombre d'échecs d'ouverture WebSocket **sans aucun événement reçu** avant de basculer en
     /// repli REST permanent (le handshake est rejeté, ex. Cloudflare Access refuse l'upgrade).
     private static let maxHandshakeFailuresBeforeRESTMode = 2
@@ -83,7 +107,8 @@ final class ServerNotificationCenter {
     private static let restModeProbeInterval = Duration.seconds(120)
     /// Fenêtre de grâce anti-flapping pour les erreurs HMS (aligné sur `_HMS_CLEAR_GRACE_SECONDS`
     /// amont) : un code alarmant déjà notifié il y a moins de ce délai ne ré-alarme pas.
-    private static let hmsClearGrace: TimeInterval = 30
+    /// `internal` : utilisé par `shouldNotifyHMS` (extension `+Notifications`).
+    static let hmsClearGrace: TimeInterval = 30
     /// Durée de vie utile d'un jeton WebSocket en cache. Le serveur émet des jetons ~60 min ; on
     /// reste prudemment en deçà pour qu'une reconnexion tardive ne tombe pas sur un jeton expiré.
     private static let webSocketTokenTTL: TimeInterval = 45 * 60
@@ -136,6 +161,7 @@ final class ServerNotificationCenter {
         activePollTask = nil
         activePrinterRefcounts.removeAll()
         hasFreshRESTStatus = false
+        lastStatusFetched.removeAll()
         cancelBadgeReconnectTask()
     }
 
@@ -144,6 +170,14 @@ final class ServerNotificationCenter {
         for printer in printers {
             printerNames[printer.id] = printer.name
         }
+    }
+
+    /// Synchronise le **cache de liste** depuis un chargement explicite (`load()` du view-model :
+    /// pull-to-refresh, ajout/suppression d'imprimante). Le repli REST réutilise ce cache au lieu de
+    /// re-télécharger `printers()` à chaque tick.
+    func updatePrinterList(_ printers: [Printer]) {
+        cachedPrinters = printers
+        updatePrinterNames(from: printers)
     }
 
     /// Marque tout le feed comme lu (à l'ouverture du centre de notifications).
@@ -303,18 +337,43 @@ final class ServerNotificationCenter {
     /// arrière-plan et peut toujours faire passer le badge en `.connected` (streaming).
     func refreshFromREST() async {
         guard let client = try? connectionFactory.makeClient(for: server) else { return }
-        guard let printers = try? await client.printers() else { return }
-        updatePrinterNames(from: printers)
-        var gotFreshStatus = false
-        for printer in printers {
-            if let status = try? await client.printerStatus(id: printer.id) {
-                merge(status, into: printer.id)
-                gotFreshStatus = true
+        // La liste des imprimantes change rarement : on ne la re-télécharge pas à chaque tick de
+        // 10 s. On réutilise le cache et on ne (re)charge `printers()` que s'il est vide ; un
+        // rafraîchissement explicite (ajout/suppression) passe par `load()` du view-model.
+        guard let printers = await cachedPrinterList(using: client) else { return }
+        // On **ne re-poll pas** en global les imprimantes déjà couvertes par le sondage rapide
+        // (écran imprimante visible) : elles sont déjà fraîches, ce serait un doublon.
+        let active = Set(activePrinterRefcounts.keys)
+        let targets = printers.filter { !active.contains($0.id) }
+        // Sondages en **parallèle** (au lieu de séquentiel) : la latence totale n'est plus la somme
+        // des appels mais celle du plus lent.
+        let results = await withTaskGroup(of: (Int, PrinterStatus?).self) { group in
+            for printer in targets {
+                group.addTask { await (printer.id, try? client.printerStatus(id: printer.id)) }
             }
+            var collected: [(Int, PrinterStatus)] = []
+            for await (id, status) in group {
+                if let status { collected.append((id, status)) }
+            }
+            return collected
         }
-        if gotFreshStatus {
+        for (id, status) in results {
+            merge(status, into: id)
+            lastStatusFetched[id] = Date()
+        }
+        if !results.isEmpty {
             promoteToRESTModeIfStillConnecting()
         }
+    }
+
+    /// Liste des imprimantes mise en cache (composition du parc rarement changeante). Recharge
+    /// `printers()` uniquement si le cache est vide. Met à jour les noms connus au passage.
+    private func cachedPrinterList(using client: RESTClient) async -> [Printer]? {
+        if let cachedPrinters { return cachedPrinters }
+        guard let printers = try? await client.printers() else { return nil }
+        cachedPrinters = printers
+        updatePrinterNames(from: printers)
+        return printers
     }
 
     /// Promeut le badge `.connecting` → `.restMode` dès qu'un statut frais est disponible (REST).
@@ -330,94 +389,53 @@ final class ServerNotificationCenter {
     /// Re-fetch **ciblé** du statut d'une seule imprimante (`GET /printers/{id}/status`) puis fusion
     /// dans l'état partagé. Appelé juste après une action de contrôle pour resynchroniser
     /// immédiatement tous les écrans (détail **et** accueil). Silencieux en cas d'échec réseau/auth.
+    /// Issue d'un re-fetch ciblé de statut, pour permettre à l'appelant de **sauter** une nouvelle
+    /// tentative immédiate quand l'échec relève du transport (réseau injoignable).
+    enum StatusFetchOutcome {
+        /// Statut frais fusionné (ou requête sautée par coalescing — l'état partagé reste à jour).
+        case refreshed
+        /// Échec **transport** (réseau injoignable / délai dépassé) : un re-fetch immédiat est vain.
+        case transportFailure
+        /// Échec non transport (HTTP/auth/décodage) ou client indisponible.
+        case otherFailure
+    }
+
     @discardableResult
     func refreshStatus(for printerID: Int) async -> PrinterStatus? {
-        guard let client = try? connectionFactory.makeClient(for: server) else { return nil }
-        guard let status = try? await client.printerStatus(id: printerID) else { return nil }
-        merge(status, into: printerID)
-        return statuses[printerID]
+        await refreshStatus(for: printerID, force: false).status
     }
 
-    /// Fusionne un statut déjà décodé (ex. update optimiste local) dans l'état partagé. Exposé pour
-    /// permettre une mise à jour optimiste d'un champ juste après l'envoi d'une commande, avant que
-    /// le re-fetch ne confirme.
-    func applyOptimistic(_ delta: PrinterStatus, into printerID: Int) {
-        merge(delta, into: printerID)
-    }
-
-    /// Injecte un événement comme s'il provenait du WebSocket (utilisé par les tests).
-    func ingest(_ event: WebSocketEvent) {
-        apply(event)
-    }
-
-    private func apply(_ event: WebSocketEvent) {
-        switch event {
-        case let .printerStatus(id, delta):
-            merge(delta, into: id)
-        case let .printStart(id, status), let .printComplete(id, status):
-            record(event.notableEvent)
-            if let status { merge(status, into: id) }
-        case .missingSpoolAssignment, .plateNotEmpty, .archiveCreated:
-            record(event.notableEvent)
-        case let .backgroundDispatch(state):
-            dispatchState = state.isActive ? state : nil
-        case .pong, .other:
-            break
+    /// Re-fetch ciblé avec contrôle du **coalescing** (`force` outrepasse l'intervalle minimal) et
+    /// remontée de l'issue (transport/autre) pour l'appelant. Un fetch trop récent et non forcé est
+    /// sauté : l'état partagé est déjà à jour, on évite une requête redondante.
+    @discardableResult
+    func refreshStatus(
+        for printerID: Int,
+        force: Bool
+    ) async -> (status: PrinterStatus?, outcome: StatusFetchOutcome) {
+        if !force, isStatusFresh(for: printerID) {
+            return (statuses[printerID], .refreshed)
         }
-    }
-
-    /// Annule un travail de distribution automatique en arrière-plan. L'état se met à jour via le
-    /// WebSocket (diffusion du nouvel état) ; renvoie `false` en cas d'échec.
-    func cancelDispatchJob(_ jobID: Int) async -> Bool {
+        guard let client = try? connectionFactory.makeClient(for: server) else {
+            return (statuses[printerID], .otherFailure)
+        }
         do {
-            let client = try connectionFactory.makeClient(for: server)
-            try await client.cancelDispatchJob(jobID: jobID)
-            return true
+            let status = try await client.printerStatus(id: printerID)
+            merge(status, into: printerID)
+            lastStatusFetched[printerID] = Date()
+            return (statuses[printerID], .refreshed)
+        } catch let error as APIError where error.isTransport {
+            return (statuses[printerID], .transportFailure)
         } catch {
-            return false
+            return (statuses[printerID], .otherFailure)
         }
     }
 
-    private func merge(_ delta: PrinterStatus, into id: Int) {
-        let current = statuses[id] ?? PrinterStatus()
-        let merged = current.merged(with: delta)
-        // Erreur HMS grave : ne notifier qu'à l'apparition (transition d'état) et hors fenêtre de
-        // grâce anti-flapping (un code qui clignote ne ré-alarme pas).
-        let hms = merged.severeHMSEvent(comparedTo: previousStatuses[id], printerID: id)
-        if let hms, shouldNotifyHMS(hms, printerID: id) {
-            record(hms)
-        }
-        previousStatuses[id] = merged
-        statuses[id] = merged
-    }
-
-    /// Le HMS grave doit-il alarmer ? Non s'il a déjà été notifié dans la fenêtre de grâce (anti-
-    /// flapping). Met à jour l'horodatage de dernière alarme quand la réponse est `true`.
-    private func shouldNotifyHMS(_ hms: NotableEvent, printerID: Int) -> Bool {
-        guard let detail = hms.detail else { return true }
-        let key = "\(printerID):\(detail)"
-        let now = Date()
-        if let last = lastHMSNotified[key], now.timeIntervalSince(last) < Self.hmsClearGrace {
-            return false
-        }
-        lastHMSNotified[key] = now
-        return true
-    }
-
-    private func record(_ notable: NotableEvent?) {
-        guard let notable else { return }
-        let name = notable.printerID.flatMap { printerNames[$0] }
-        let notification = AppNotification(
-            kind: notable.kind,
-            printerName: name,
-            detail: notable.detail,
-            date: Date()
-        )
-        notifications.insert(notification, at: 0)
-        if notifications.count > Self.maxNotifications {
-            notifications.removeLast(notifications.count - Self.maxNotifications)
-        }
-        latestBanner = notification
+    /// Le statut de cette imprimante a-t-il été rafraîchi assez récemment pour sauter un nouveau
+    /// fetch non forcé ? (`true` si l'âge du dernier fetch réussi est sous l'intervalle minimal.)
+    private func isStatusFresh(for printerID: Int) -> Bool {
+        guard let last = lastStatusFetched[printerID] else { return false }
+        return Date().timeIntervalSince(last) < Self.minStatusFetchInterval
     }
 }
 

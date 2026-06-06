@@ -52,6 +52,15 @@ public extension APIError {
         if case let .http(status, _) = self, status == 409 { return true }
         return false
     }
+
+    /// `true` quand l'échec relève du **transport** (réseau injoignable, délai dépassé, connexion
+    /// coupée) plutôt que d'une réponse HTTP. Un re-fetch immédiat n'a alors aucune chance d'aboutir :
+    /// l'appelant peut le **sauter** (ex. resync de statut post-action) sans casser le feedback
+    /// in-flight déjà rendu.
+    var isTransport: Bool {
+        if case .transport = self { return true }
+        return false
+    }
 }
 
 /// Contrat d'un client REST Bambuddy. L'implémentation concrète (URLSession, injection des
