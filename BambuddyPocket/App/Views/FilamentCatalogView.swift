@@ -89,7 +89,7 @@ private struct FilamentCatalogRow: View {
             }
             Spacer()
             if let cost = entry.costPerKg {
-                Text(String(format: "%.0f %@", cost, entry.currency ?? ""))
+                Text(verbatim: "\(cost.formatted(.number.precision(.fractionLength(0)))) \(entry.currency ?? "")")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(DSColor.textSecondary)
             }
@@ -116,10 +116,12 @@ private struct FilamentCatalogDetailView: View {
                     LabeledContent("Brand", value: brand)
                 }
                 if let cost = entry.costPerKg {
-                    LabeledContent("Cost per kg", value: String(format: "%.2f %@", cost, entry.currency ?? ""))
+                    let amount = cost.formatted(.number.precision(.fractionLength(2)))
+                    LabeledContent("Cost per kg", value: "\(amount) \(entry.currency ?? "")")
                 }
                 if let density = entry.density {
-                    LabeledContent("Density", value: String(format: "%.2f g/cm³", density))
+                    let value = density.formatted(.number.precision(.fractionLength(2)))
+                    LabeledContent("Density", value: "\(value) g/cm³")
                 }
             }
             if entry.nozzleTempRange != nil || entry.bedTempRange != nil {

@@ -82,7 +82,7 @@ private struct SmartPlugRow: View {
             }
             powerControls
             if let power = status?.energy?.power {
-                Text(verbatim: String(format: "%.1f W", power))
+                Text(verbatim: "\(power.formatted(.number.precision(.fractionLength(1)))) W")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(DSColor.textSecondary)
             }
