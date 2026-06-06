@@ -60,6 +60,15 @@ struct ServerHomeView: View {
     @State private var selection: HomeTab = .home
 
     var body: some View {
+        tabView
+            // Disposition **adaptative** : barre d'onglets sur iPhone (compact), **sidebar/colonnes**
+            // sur iPad (régulier). `.sidebarAdaptable` est l'approche Apple pour une coquille à
+            // onglets qui devient un split view sur grand écran — sans rien changer à l'iPhone.
+            .tabViewStyle(.sidebarAdaptable)
+            .tint(DSColor.accent)
+    }
+
+    private var tabView: some View {
         TabView(selection: $selection) {
             Tab(value: HomeTab.home) {
                 NavigationStack {
@@ -106,6 +115,5 @@ struct ServerHomeView: View {
                 Label("More", systemImage: "ellipsis")
             }
         }
-        .tint(DSColor.accent)
     }
 }
