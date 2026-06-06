@@ -52,6 +52,35 @@ struct GitHubBackupTests {
         #expect(config == nil)
     }
 
+    /// **Décodage tolérant** (B0) : une config réduite à ses champs requis (`id`, `repository_url`)
+    /// décode sans échec, les drapeaux/champs absents retombant sur les défauts du modèle.
+    @Test("GitHubBackupConfig tolère les champs absents (défauts)")
+    func decodesPartialConfig() throws {
+        let json = #"{"id":7,"repository_url":"https://example/repo"}"#
+        let config = try decode(GitHubBackupConfig.self, json)
+        #expect(config.id == 7)
+        #expect(config.repositoryUrl == "https://example/repo")
+        #expect(config.branch == "main")
+        #expect(config.provider == "github")
+        #expect(config.hasToken == false)
+        #expect(config.enabled == true)
+        #expect(config.backupKprofiles == true)
+        #expect(config.backupArchives == false)
+    }
+
+    /// **Décodage tolérant** (B0) : une entrée de journal sans `status`/`trigger`/`files_changed`
+    /// décode tout de même (défauts neutres) plutôt que de faire échouer toute la liste.
+    @Test("GitHubBackupLog tolère les champs absents")
+    func decodesPartialLog() throws {
+        let json = #"{"id":3,"config_id":1}"#
+        let log = try decode(GitHubBackupLog.self, json)
+        #expect(log.id == 3)
+        #expect(log.configId == 1)
+        #expect(log.status == "")
+        #expect(log.trigger == "")
+        #expect(log.filesChanged == 0)
+    }
+
     /// Charge réelle observée sur le Docker (`GET /github-backup/logs`) après seed.
     @Test("GitHubBackupLog décode une entrée de journal réelle")
     func decodesLog() throws {

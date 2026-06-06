@@ -7,11 +7,18 @@ import Foundation
 /// moment de soumettre, le client envoie un de ces objets par emplacement (imprimante, process,
 /// filament) pour que le serveur sache où récupérer le contenu du préset (`PresetRef` amont).
 public struct SlicePresetRef: Codable, Sendable, Hashable {
-    /// Tier de provenance du préset.
+    /// Tier de provenance du préset. **Décodage tolérant** : une valeur inconnue (nouveau tier
+    /// amont) retombe sur `.unknown` plutôt que de faire échouer tout le décodage (B0).
     public enum Source: String, Codable, Sendable, Hashable {
         case cloud
         case local
         case standard
+        case unknown
+
+        public init(from decoder: any Decoder) throws {
+            let raw = try decoder.singleValueContainer().decode(String.self)
+            self = Source(rawValue: raw) ?? .unknown
+        }
     }
 
     public var source: Source
@@ -74,17 +81,33 @@ public struct UnifiedPresetsBySlot: Codable, Sendable, Hashable {
         self.process = process
         self.filament = filament
     }
+
+    /// **Décodage tolérant** (B0) : chaque emplacement absent → liste vide, et chaque liste est
+    /// décodée **élément par élément** (`LossyArray`) pour qu'un préset malformé ne vide pas le tier.
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        printer = try container.decodeIfPresent(LossyArray<UnifiedPreset>.self, forKey: .printer)?.elements ?? []
+        process = try container.decodeIfPresent(LossyArray<UnifiedPreset>.self, forKey: .process)?.elements ?? []
+        filament = try container.decodeIfPresent(LossyArray<UnifiedPreset>.self, forKey: .filament)?.elements ?? []
+    }
 }
 
 /// Réponse de `GET /slicer/presets` : présets par tier (dédupliqués par nom, cloud > local >
 /// standard) + statut de l'accès cloud.
 public struct UnifiedPresetsResponse: Codable, Sendable, Hashable {
     /// État de l'accès aux présets cloud (explique pourquoi le tier cloud peut être vide).
+    /// **Décodage tolérant** : un nouveau statut amont retombe sur `.unknown` (B0).
     public enum CloudStatus: String, Codable, Sendable, Hashable {
         case ok
         case notAuthenticated = "not_authenticated"
         case expired
         case unreachable
+        case unknown
+
+        public init(from decoder: any Decoder) throws {
+            let raw = try decoder.singleValueContainer().decode(String.self)
+            self = CloudStatus(rawValue: raw) ?? .unknown
+        }
     }
 
     public var cloud: UnifiedPresetsBySlot
@@ -102,6 +125,16 @@ public struct UnifiedPresetsResponse: Codable, Sendable, Hashable {
         self.local = local
         self.standard = standard
         self.cloudStatus = cloudStatus
+    }
+
+    /// **Décodage tolérant** (B0) : un tier absent retombe sur un jeu de présets vide et un
+    /// `cloud_status` absent sur `.ok`, plutôt que de faire échouer toute la réponse de découpe.
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        cloud = try container.decodeIfPresent(UnifiedPresetsBySlot.self, forKey: .cloud) ?? UnifiedPresetsBySlot()
+        local = try container.decodeIfPresent(UnifiedPresetsBySlot.self, forKey: .local) ?? UnifiedPresetsBySlot()
+        standard = try container.decodeIfPresent(UnifiedPresetsBySlot.self, forKey: .standard) ?? UnifiedPresetsBySlot()
+        cloudStatus = try container.decodeIfPresent(CloudStatus.self, forKey: .cloudStatus) ?? .ok
     }
 
     /// Tous les présets imprimante (cloud puis local puis standard), pour alimenter un menu unique.
@@ -207,12 +240,20 @@ public struct SliceResult: Codable, Sendable, Hashable {
 /// État d'un job de découpe interrogé via `GET /slice-jobs/{id}`.
 public struct SliceJob: Codable, Sendable, Hashable, Identifiable {
     /// Statut du job tel que renvoyé par le dispatcher (`pending` → `running` → `completed`/
-    /// `failed`).
+    /// `failed`). **Décodage tolérant** : un statut inconnu (nouvel état amont) retombe sur
+    /// `.unknown` plutôt que de faire échouer le décodage (B0) — le polling le traite comme non
+    /// terminal (on continue d'interroger).
     public enum Status: String, Codable, Sendable, Hashable {
         case pending
         case running
         case completed
         case failed
+        case unknown
+
+        public init(from decoder: any Decoder) throws {
+            let raw = try decoder.singleValueContainer().decode(String.self)
+            self = Status(rawValue: raw) ?? .unknown
+        }
     }
 
     public var jobId: Int

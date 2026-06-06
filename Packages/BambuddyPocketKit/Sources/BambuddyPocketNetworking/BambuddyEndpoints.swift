@@ -33,9 +33,11 @@ public extension APIClient {
         try await get("/queue/")
     }
 
-    /// Flux d'activité du serveur (`GET /notifications/logs`).
+    /// Flux d'activité du serveur (`GET /notifications/logs`). **Décodage tolérant par élément**
+    /// (B0) : une entrée de log malformée est ignorée plutôt que de faire échouer tout le feed.
     func activityLog() async throws -> [ActivityEntry] {
-        try await get("/notifications/logs")
+        let lossy: LossyArray<ActivityEntry> = try await get("/notifications/logs")
+        return lossy.elements
     }
 
     /// Inventaire des bobines de filament (`GET /inventory/spools`).

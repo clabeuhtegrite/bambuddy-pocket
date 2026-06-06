@@ -135,7 +135,9 @@ final class SliceJobModel: Identifiable {
                 case .failed:
                     phase = .failed(job.errorDetail ?? String(localized: "Slicing failed."))
                     return
-                case .pending, .running:
+                case .pending, .running, .unknown:
+                    // `.unknown` (nouvel état amont) est traité comme non terminal : on continue
+                    // d'interroger plutôt que de conclure à tort (décodage tolérant B0).
                     break
                 }
             } catch {
