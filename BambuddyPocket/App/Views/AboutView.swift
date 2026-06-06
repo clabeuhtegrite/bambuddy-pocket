@@ -63,9 +63,8 @@ struct AboutView: View {
 
                 Section("Built with Bambuddy") {
                     Text(
-                        "Unaffiliated third-party client for the self-hosted Bambuddy server. "
-                            + "BamPocket talks to it only over its public network API and bundles none "
-                            + "of its source code."
+                        // swiftlint:disable:next line_length
+                        "Unaffiliated third-party client for the self-hosted Bambuddy server. BamPocket talks to it only over its public network API and bundles none of its source code."
                     )
                     .font(.footnote)
                     if let bambuddyURL {
