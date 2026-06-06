@@ -33,7 +33,6 @@ struct ServerEditView: View {
     @State private var saveError: String?
     @State private var loginToken: String?
     @State private var loginUsername: String?
-    @State private var showingLogin = false
     @State private var loginModel: LoginModel?
 
     init(model: ServerListModel, mode: ServerFormMode) {
@@ -93,12 +92,13 @@ struct ServerEditView: View {
             } message: {
                 Text(saveError ?? "")
             }
-            .sheet(isPresented: $showingLogin) {
-                if let loginModel {
-                    LoginView(model: loginModel) { token, user in
-                        loginToken = token
-                        loginUsername = user?.username
-                    }
+            // `sheet(item:)` (et non `isPresented`) : la sheet n'est présentée qu'une fois le modèle
+            // prêt, en un seul passage — sinon une **première sheet vide** apparaissait avant que le
+            // contenu ne soit disponible (retour device A3).
+            .sheet(item: $loginModel) { model in
+                LoginView(model: model) { token, user in
+                    loginToken = token
+                    loginUsername = user?.username
                 }
             }
         }
@@ -194,8 +194,8 @@ struct ServerEditView: View {
 
     private func startLogin() {
         guard let url = parsedURL else { return }
+        // Poser le modèle suffit : `sheet(item:)` présente la sheet dès que `loginModel` est non nil.
         loginModel = model.makeLoginModel(baseURL: url, secrets: draftSecrets, usesCloudflare: usesCloudflare)
-        showingLogin = true
     }
 
     private var cloudflareSection: some View {

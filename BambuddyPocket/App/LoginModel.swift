@@ -8,11 +8,16 @@ import Observation
 /// Au succès, `token` porte le JWT à stocker en Bearer.
 @MainActor
 @Observable
-final class LoginModel {
+final class LoginModel: Identifiable {
     enum Step: Equatable {
         case credentials
         case twoFactor
     }
+
+    /// Identité stable pour piloter la présentation par `sheet(item:)` (évite la double
+    /// présentation / la sheet vide quand `isPresented` et le modèle sont posés au même tour de
+    /// boucle — retour device A3).
+    let id = UUID()
 
     private(set) var step: Step = .credentials
     var username = ""
