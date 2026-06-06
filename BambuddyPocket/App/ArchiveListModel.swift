@@ -10,8 +10,16 @@ import Observation
 final class ArchiveListModel {
     private(set) var archives: [Archive] = []
     private(set) var hasLoaded = false
+    private(set) var isLoadingMore = false
     var loadError: String?
 
+    /// `true` quand la dernière page chargée était pleine (il reste potentiellement des éléments).
+    /// Mis à `false` dès qu'une page revient incomplète, ou en mode recherche (résultats non
+    /// paginés).
+    private(set) var canLoadMore = false
+    /// Une recherche est-elle active ? La recherche renvoie un jeu complet non paginé.
+    private var isSearching = false
+    private let pageSize = 50
     private let server: ServerConfiguration
     private let connectionFactory: ServerConnectionFactory
 
@@ -20,15 +28,36 @@ final class ArchiveListModel {
         self.connectionFactory = connectionFactory
     }
 
+    /// Charge la **première page** de l'archive. (Le pull-to-refresh repart de zéro.)
     func load() async {
+        isSearching = false
         do {
             let client = try connectionFactory.makeClient(for: server)
-            archives = try await client.archives()
+            let page = try await client.archives(limit: pageSize, offset: 0)
+            archives = page
+            canLoadMore = page.count == pageSize
             loadError = nil
         } catch {
             loadError = ErrorMessage.text(for: error)
         }
         hasLoaded = true
+    }
+
+    /// Charge la page suivante et l'ajoute (dédoublonnée par identifiant). Sans effet en recherche.
+    func loadMore() async {
+        guard canLoadMore, !isLoadingMore, !isSearching else { return }
+        isLoadingMore = true
+        defer { isLoadingMore = false }
+        do {
+            let client = try connectionFactory.makeClient(for: server)
+            let page = try await client.archives(limit: pageSize, offset: archives.count)
+            let known = Set(archives.map(\.id))
+            archives.append(contentsOf: page.filter { !known.contains($0.id) })
+            canLoadMore = page.count == pageSize
+            loadError = nil
+        } catch {
+            loadError = ErrorMessage.text(for: error)
+        }
     }
 
     /// Récupère les statistiques globales d'impression (`nil` en cas d'échec).
@@ -70,6 +99,8 @@ final class ArchiveListModel {
             await load()
             return
         }
+        isSearching = true
+        canLoadMore = false
         do {
             let client = try connectionFactory.makeClient(for: server)
             archives = try await client.searchArchives(trimmed)
