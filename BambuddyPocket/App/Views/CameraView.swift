@@ -2,6 +2,7 @@
 import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import BambuddyPocketNetworking
+import ImageIO
 import SwiftUI
 import UIKit
 
@@ -20,6 +21,22 @@ struct CameraView: View {
     /// (plutôt qu'un indicateur tournant à l'infini). Couvre le cas d'un flux/snapshot injoignable
     /// ou bloqué (ex. proxy Cloudflare qui ne renvoie jamais d'octet sur le MJPEG).
     private static let firstFrameTimeout = Duration.seconds(15)
+
+    /// Cadence d'affichage cible du flux MJPEG. La caméra émet souvent plus vite que ce que l'œil
+    /// (et le décodage/redimensionnement) peut suivre : on **throttle** à ~15 fps pour ne décoder
+    /// qu'une frame sur deux/trois, épargnant CPU et batterie sans perte visible.
+    private static let minFrameInterval: TimeInterval = 1.0 / 15.0
+
+    /// Côté le plus long, en pixels, vers lequel on **sous-échantillonne** les images décodées. Une
+    /// vue caméra plein écran n'a pas besoin de la pleine résolution capteur : on décode à la taille
+    /// d'affichage pour réduire mémoire et coût de rendu. `nonisolated` : lu depuis le décodage
+    /// détaché (hors MainActor).
+    private nonisolated static let maxDecodedDimension = 1280
+
+    /// Délai initial du repli snapshot après un échec, doublé à chaque échec consécutif (back-off
+    /// borné) pour ne pas marteler un serveur/caméra injoignable.
+    private static let snapshotBaseInterval: Duration = .seconds(1)
+    private static let snapshotMaxInterval: Duration = .seconds(8)
 
     /// Message d'erreur affiché quand le flux caméra reste injoignable.
     private static let unavailableDescription = LocalizedStringKey(
@@ -125,12 +142,20 @@ struct CameraView: View {
         let token = await model.cameraStreamToken()
         if let stream = model.cameraStream(for: printer, token: token) {
             do {
+                var lastDisplayed = ContinuousClock.now - .seconds(1)
                 for try await frame in stream.frames() {
                     try Task.checkCancellation()
-                    if let decoded = UIImage(data: frame) {
-                        image = decoded
-                        failed = false
-                    }
+                    // Throttle ~15 fps : on saute les frames qui arrivent plus vite que la cadence
+                    // cible **avant** de payer le décodage (coûteux), pas après.
+                    let now = ContinuousClock.now
+                    if now - lastDisplayed < .seconds(Self.minFrameInterval) { continue }
+                    lastDisplayed = now
+                    // Décodage + sous-échantillonnage **hors MainActor** : ne pas bloquer l'UI à
+                    // ~15 décodages/seconde. Seule l'affectation de `image` revient au principal.
+                    guard let decoded = await Self.decodedImage(from: frame) else { continue }
+                    try Task.checkCancellation()
+                    image = decoded
+                    failed = false
                 }
             } catch is CancellationError {
                 return
@@ -142,14 +167,49 @@ struct CameraView: View {
     }
 
     private func snapshotLoop(token: String?) async {
+        var interval = Self.snapshotBaseInterval
         while !Task.isCancelled {
-            if let data = await model.cameraSnapshot(for: printer, token: token), let decoded = UIImage(data: data) {
+            if let decoded = await nextSnapshot(token: token) {
                 image = decoded
                 failed = false
-            } else if image == nil {
-                failed = true
+                interval = Self.snapshotBaseInterval
+            } else {
+                if image == nil { failed = true }
+                // Back-off borné : un snapshot injoignable ne doit pas être martelé chaque seconde.
+                interval = min(interval * 2, Self.snapshotMaxInterval)
             }
-            try? await Task.sleep(for: .seconds(1))
+            try? await Task.sleep(for: interval)
         }
+    }
+
+    /// Récupère un snapshot et le décode (hors MainActor) ; `nil` si la requête ou le décodage échoue.
+    private func nextSnapshot(token: String?) async -> UIImage? {
+        guard let data = await model.cameraSnapshot(for: printer, token: token) else { return nil }
+        return await Self.decodedImage(from: data)
+    }
+
+    /// Décode et **sous-échantillonne** des données JPEG hors du MainActor via ImageIO
+    /// (`CGImageSourceCreateThumbnailAtIndex`) : ImageIO décode directement à la taille cible, ce qui
+    /// économise mémoire et CPU par rapport à `UIImage(data:)` suivi d'un redimensionnement. Retourne
+    /// `nil` si les données ne sont pas une image décodable.
+    private nonisolated static func decodedImage(from data: Data) async -> UIImage? {
+        await Task.detached(priority: .userInitiated) {
+            let options: [CFString: Any] = [
+                kCGImageSourceShouldCache: false
+            ]
+            guard let source = CGImageSourceCreateWithData(data as CFData, options as CFDictionary) else {
+                return nil
+            }
+            let thumbnailOptions: [CFString: Any] = [
+                kCGImageSourceCreateThumbnailFromImageAlways: true,
+                kCGImageSourceCreateThumbnailWithTransform: true,
+                kCGImageSourceShouldCacheImmediately: true,
+                kCGImageSourceThumbnailMaxPixelSize: maxDecodedDimension
+            ]
+            guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions as CFDictionary) else {
+                return nil
+            }
+            return UIImage(cgImage: cgImage)
+        }.value
     }
 }
