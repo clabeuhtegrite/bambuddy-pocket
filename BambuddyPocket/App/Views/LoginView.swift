@@ -23,11 +23,26 @@ struct LoginView: View {
                         SecureField("Password", text: $model.password)
                     }
                 case .twoFactor:
-                    Section("Two-factor code") {
+                    Section {
                         TextField("Code", text: $model.code)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
                             .keyboardType(.numberPad)
+                        if model.isEmailOTP {
+                            Button {
+                                Task { await model.resendEmailCode() }
+                            } label: {
+                                Label("Resend code", systemImage: "arrow.clockwise")
+                            }
+                            .disabled(model.isResending || model.isWorking)
+                        }
+                    } header: {
+                        Text("Two-factor code")
+                    } footer: {
+                        // Libellé adapté à la source du code (retour device A4) : mail vs app TOTP.
+                        Text(model.isEmailOTP
+                            ? "Enter the code we emailed you."
+                            : "Enter the code from your authenticator app.")
                     }
                 }
                 if let error = model.error {

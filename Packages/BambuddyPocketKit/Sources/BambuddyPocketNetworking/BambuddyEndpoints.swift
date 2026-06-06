@@ -198,6 +198,13 @@ public extension APIClient {
         return try await send("/auth/login", method: .post, body: body)
     }
 
+    /// Déclenche l'envoi d'un code OTP par email (`POST /auth/2fa/email/send`). Le serveur consomme
+    /// l'ancien `pre_auth_token` et en renvoie un **frais** à utiliser pour la vérification.
+    func sendEmailOTP(preAuthToken: String) async throws -> EmailOTPSendResponse {
+        let body = try JSONEncoder.bambuddy().encode(EmailOTPSendRequest(preAuthToken: preAuthToken))
+        return try await send("/auth/2fa/email/send", method: .post, body: body)
+    }
+
     /// Vérification du second facteur (`POST /auth/2fa/verify`).
     func verifyTwoFactor(preAuthToken: String, code: String, method: String?) async throws -> TwoFAVerifyResponse {
         let request = TwoFAVerifyRequest(preAuthToken: preAuthToken, code: code, method: method)
