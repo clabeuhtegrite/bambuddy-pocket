@@ -13,21 +13,58 @@
 ## Qu'est-ce que c'est
 
 Un client mobile **iPhone + iPad** (iOS 18+) qui se connecte à une ou plusieurs instances
-Bambuddy auto-hébergées pour : suivre l'état des imprimantes **en temps réel**, consulter
-l'**archive d'impressions**, voir la **caméra**, piloter la **file d'attente** et les
-**impressions**, le tout avec une expérience native (SwiftUI, mode sombre, VoiceOver, i18n
-FR/EN/ES/DE). Ce n'est **pas** un clone de l'interface web : l'app exploite l'API au mieux pour une
-UX mobile de qualité production.
+Bambuddy auto-hébergées et expose, dans une expérience native SwiftUI, l'essentiel de la gestion
+d'un parc d'imprimantes Bambu Lab : suivi **temps réel**, contrôles, file d'attente, archives,
+caméra, bibliothèque/projets, lancement d'impression et découpe. Ce n'est **pas** un clone de
+l'interface web : l'app exploite l'API au mieux pour une UX mobile soignée.
 
 ## État du projet
 
-🚧 **En cours de développement actif** — dépôt **public** dès la phase de dev (pour profiter de
-l'intégration continue GitHub Actions, gratuite sur les dépôts publics). **L'application n'est pas
-encore terminée ni prête pour la production** : fonctionnalités, API et UI évoluent rapidement.
-Voir [`PROGRESS.md`](PROGRESS.md) (état détaillé) et [`ROADMAP.md`](ROADMAP.md) (phases).
+**v0.1 — périmètre applicatif complet.** L'app couvre les parcours principaux de bout en bout ;
+elle reste en lecture seule vis-à-vis des imprimantes réelles pendant le développement (les
+écritures se testent sur une instance Docker de dev). Le dépôt est **public** pour bénéficier de
+l'intégration continue GitHub Actions. Restent volontairement hors v0.1 (Spoolman connecté, metrics
+Prometheus), un petit reste codable (rattachement d'un job de file à un projet) et les étapes de
+distribution liées à un compte Apple Developer. État détaillé : [`PROGRESS.md`](PROGRESS.md) ;
+phases : [`ROADMAP.md`](ROADMAP.md).
 
-> ⚠️ Avant toute **publication de l'app** (App Store) : vérification de marque « Bambuddy » et
-> relecture juridique AGPL/exception requises (cf. README ci-dessus et `docs/adr/`).
+> ⚠️ Avant toute **publication de l'app** (App Store) : la vérification de marque « Bambuddy » et la
+> relecture juridique AGPL/exception restent à la charge de l'utilisateur (cf. en-tête et `docs/adr/`).
+
+## Fonctionnalités
+
+- **Temps réel** : statut des imprimantes par **WebSocket** (fusion des deltas) avec **repli REST**
+  automatique ; multi-imprimantes, badge de connexion.
+- **Multi-serveurs** : plusieurs instances Bambuddy ajoutées par URL ; bascule rapide.
+- **Authentification** : clé d'API, **login utilisateur/mot de passe + 2FA par email**,
+  **Cloudflare Access** (service token) ; secrets au **Keychain**.
+- **Détail imprimante** : températures (buse(s)/plateau/chambre), progression (couches, temps
+  restant), ventilateurs détaillés, **AMS** (variantes standard/Lite/HT), **erreurs HMS**,
+  profils K (lecture), capacités adaptatives par modèle.
+- **Contrôles** : pause/reprise/stop, vitesse, lumière de chambre, clear HMS, AMS
+  load/unload/reset/séchage, skip-objects, clear/home/calibration, bed-jog, airduct, connect, etc.
+- **File d'attente** : liste + réordonnancement, ajout, start/stop/cancel/delete, édition d'item,
+  lots (batches), mise à jour en lot, distribution automatique (temps réel).
+- **Historique & archives** : liste **paginée**, détail (durée, filament, coût/énergie, timelapse),
+  recherche serveur, favoris, édition, suppression, **réimpression**, rattachement à un projet.
+- **Lancement d'impression & découpe** : lancer une impression depuis une archive ou un fichier de
+  bibliothèque ; **slicing** d'un modèle en fichier imprimable via le sidecar serveur.
+- **Bibliothèque, projets & inventaire** : arbre de dossiers, déplacement, corbeille, upload ;
+  projets (nomenclature/BOM, chronologie, archives) ; inventaire filaments (consommation, reset).
+- **Caméra** : snapshot + flux MJPEG, détection de plateau vide, **flux/snapshot/vignette
+  authentifiés** via jeton (`?token=`).
+- **Viewer 3D** embarqué (hors-ligne, Three.js) : **STL / 3MF** en maillage et **G-code** en
+  parcours d'outil.
+- **Cloud & écosystème** : compte Bambu Cloud, import **MakerWorld**, catalogue **firmware**
+  (lecture), prises connectées, maintenance, catalogue de filaments, liens externes.
+- **Sauvegardes** : locales (état/liste/déclenchement) et **distantes Git** (config/journal/run).
+- **Réglages & état serveur** : langue, devise, imprimante par défaut, coûts ; `/system/info` +
+  `/system/health`, clés d'API, journal d'impression, support/diagnostic.
+- **Expérience** : **iPad** (barre latérale adaptative), thèmes **clair/sombre**, design system
+  (Inter, Dynamic Type), **i18n FR/EN/ES/DE**, **accessibilité** VoiceOver.
+
+Captures : [`docs/appstore/screenshots/`](docs/appstore/screenshots/). Installation sur appareil
+sans compte payant : [`docs/SIDELOAD.md`](docs/SIDELOAD.md).
 
 ## Pile technique
 
