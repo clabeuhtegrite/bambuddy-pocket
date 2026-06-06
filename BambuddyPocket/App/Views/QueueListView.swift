@@ -230,7 +230,7 @@ private struct QueueRow: View {
             Spacer()
             VStack(alignment: .trailing, spacing: DSSpacing.xs) {
                 DSStatusBadge(
-                    item.status.capitalized,
+                    StatusPresentation.label(item.status),
                     intent: DSStatusIntent.forRawStatus(item.status),
                     showsDot: false
                 )

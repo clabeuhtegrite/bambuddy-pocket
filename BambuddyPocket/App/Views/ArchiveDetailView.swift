@@ -156,7 +156,7 @@ struct ArchiveDetailView: View {
         Section("Summary") {
             LabeledContent("Status") {
                 DSStatusBadge(
-                    archive.status.capitalized,
+                    StatusPresentation.label(archive.status),
                     intent: DSStatusIntent.forRawStatus(archive.status),
                     showsDot: false
                 )

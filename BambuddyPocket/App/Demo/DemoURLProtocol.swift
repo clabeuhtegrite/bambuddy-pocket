@@ -12,14 +12,18 @@ import Foundation
 /// N'est enregistré que lorsque `-uitest-demo` est passé au lancement (cf. `DemoMode`). Aucun effet
 /// en build normal.
 final class DemoURLProtocol: URLProtocol {
+    // `override class func` est imposé par l'API `URLProtocol` (impossible en `static`).
+    // swiftlint:disable static_over_final_class
     override class func canInit(with request: URLRequest) -> Bool {
         guard DemoMode.isEnabled else { return false }
-        return request.url?.host == "demo.local"
+        return request.url?.host == DemoMode.host
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
         request
     }
+
+    // swiftlint:enable static_over_final_class
 
     override func startLoading() {
         guard let url = request.url, let client else { return }

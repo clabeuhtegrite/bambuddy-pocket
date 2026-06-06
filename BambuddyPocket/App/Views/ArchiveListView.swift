@@ -144,7 +144,7 @@ private struct ArchiveRow: View {
                     .lineLimit(1)
                 Spacer()
                 DSStatusBadge(
-                    archive.status.capitalized,
+                    StatusPresentation.label(archive.status),
                     intent: DSStatusIntent.forRawStatus(archive.status),
                     showsDot: false
                 )

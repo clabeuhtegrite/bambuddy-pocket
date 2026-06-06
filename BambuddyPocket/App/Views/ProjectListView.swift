@@ -102,7 +102,7 @@ private struct ProjectRow: View {
                     .lineLimit(1)
                 Spacer()
                 DSStatusBadge(
-                    project.status.capitalized,
+                    StatusPresentation.label(project.status),
                     intent: DSStatusIntent.forRawStatus(project.status),
                     showsDot: false
                 )

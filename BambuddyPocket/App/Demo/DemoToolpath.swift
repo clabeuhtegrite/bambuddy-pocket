@@ -33,11 +33,11 @@ enum DemoToolpath {
             let x = centerX + radius * cos(angle)
             let y = centerY + radius * sin(angle)
             extrusion += 0.04
-            let e = (extrusion * 100).rounded() / 100
+            let ext = (extrusion * 100).rounded() / 100
             let fx = (x * 1000).rounded() / 1000
             let fy = (y * 1000).rounded() / 1000
             let fz = (z * 1000).rounded() / 1000
-            lines.append("G1 X\(fx) Y\(fy) Z\(fz) E\(e)")
+            lines.append("G1 X\(fx) Y\(fy) Z\(fz) E\(ext)")
         }
         return lines.joined(separator: "\n")
     }
