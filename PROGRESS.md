@@ -3,13 +3,26 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-05 — Vague **« maximum codable »** livrée (`main` vert) :
+**Dernière mise à jour** : 2026-06-06 — Vague **« assets App Store v0.1 + polish »** (PR #111).
+**Mode démo intégré** (`-uitest-demo`) : un `URLProtocol` local (`BambuddyPocket/App/Demo/`) sert
+des fixtures JSON synthétiques (imprimante en cours/au repos, AMS, archives, file, bibliothèque,
+G-code d'aperçu généré) — **aucun backend, aucune imprimante réelle, aucun secret**. **Captures
+marketing** des 5 écrans phares (Accueil, détail imprimante, Archives, viewer 3D, File) en **fr/en**,
+thème sombre, résolution **App Store 6.9" (1320×2868)** → `docs/appstore/screenshots/{fr,en}/`.
+**Fiche** prête à coller → `docs/appstore/listing.md` (nom, sous-titres, descriptions FR/EN, mots-clés,
+classification **4+** justifiée, catégorie Utilitaires/Productivité, notes v0.1, App Privacy, URL
+placeholders). **Polish** : statuts localisés FR/EN/ES/DE (`StatusPresentation`) dans Archives/File/
+Projets ; **VoiceOver** — lignes archive/file combinées + label/hint du viewer 3D ; tests unitaires
+(`StatusPresentationTests`, `DemoFixturesTests`). Build iOS sans warning, lint/format strict OK,
+Docker dev **inchangé** (lecture seule). Repo :
+https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
+
+**Vague précédente (2026-06-05)** — **« maximum codable »** (`main` vert) :
 **CI fiabilisée** (#87 — fin du flaky « objc duplicate class »), **intégrations Bambu Cloud +
 MakerWorld** (#88 — écrans compte cloud login/verify + MakerWorld status/resolve/import, gated admin),
 **Firmware enrichi** (#89 — catalogue `available_versions` du cloud, lecture seule), **accueil A/B/C**
 avec sélecteur de disposition + **variante C grille** (#90), **XCUITests** des nouveaux écrans (#91) et
-**captures** MakerWorld/Cloud/grille (#92). Repo :
-https://github.com/clabeuhtegrite/bambuddy-pocket (public, en dev).
+**captures** MakerWorld/Cloud/grille (#92).
 
 ## 🔆 Prochaine action (point de reprise)
 **Vague « maximum codable » livrée (`main` vert, dépôt = `main` seul).** Détail par brique :
