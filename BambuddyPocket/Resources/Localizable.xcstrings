@@ -17207,6 +17207,35 @@
         }
       }
     },
+    "color.brown": {
+      "comment": "Filament color family name (HSL bucketing). #8",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Braun"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brown"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marrón"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marron"
+          }
+        }
+      }
+    },
     "color.cyan": {
       "comment": "Filament color family name (HSL bucketing). #8",
       "localizations": {
