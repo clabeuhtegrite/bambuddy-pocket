@@ -79,7 +79,7 @@ final class PrinterListModel {
             printers = fetched.sorted {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
-            notificationCenter.updatePrinterNames(from: printers)
+            notificationCenter.updatePrinterList(printers)
             loadError = nil
         } catch {
             loadError = Self.message(for: error)
@@ -340,6 +340,7 @@ final class PrinterListModel {
                 }
             }
         }
+        var hitTransportError = false
         do {
             let client = try connectionFactory.makeClient(for: server)
             try await request(client)
@@ -347,12 +348,20 @@ final class PrinterListModel {
         } catch let error as APIError where error.isConflict {
             // 409 : l'état désiré est déjà atteint → succès du point de vue utilisateur.
             controlError = nil
+        } catch let error as APIError where error.isTransport {
+            hitTransportError = true
+            controlError = Self.message(for: error)
         } catch {
             controlError = Self.message(for: error)
         }
-        // Resynchronise le statut quel que soit le résultat (succès ou 409) : le re-fetch confirme
-        // l'état réel et fait bouger le toggle sur tous les écrans.
-        await notificationCenter.refreshStatus(for: printer.id)
+        // Resynchronise le statut quel que soit le résultat (succès ou 409) : le re-fetch **forcé**
+        // (il outrepasse le coalescing) confirme l'état réel et fait bouger le toggle sur tous les
+        // écrans. On le **saute** néanmoins si la commande vient d'échouer en transport : le réseau
+        // est injoignable, un re-fetch immédiat n'aboutirait pas et n'apporterait rien — le feedback
+        // in-flight (A1) reste intact (l'entrée est retirée par le `defer`).
+        if !hitTransportError {
+            await notificationCenter.refreshStatus(for: printer.id, force: true)
+        }
     }
 
     private static func message(for error: Error) -> String {
