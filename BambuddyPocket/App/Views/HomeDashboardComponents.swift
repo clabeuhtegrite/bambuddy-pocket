@@ -336,7 +336,8 @@ struct CompactPrinterCard: View {
     private func chip(systemImage: String, text: String, tint: Color) -> some View {
         HStack(spacing: DSSpacing.xs) {
             Image(systemName: systemImage)
-                .font(.system(size: 10))
+                .font(DSFont.inter(10, relativeTo: .caption2))
+                .accessibilityHidden(true)
             Text(text)
                 .font(DSFont.caption)
                 .lineLimit(1)

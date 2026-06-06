@@ -196,7 +196,8 @@ private struct AMSClimateChip: View {
     var body: some View {
         HStack(spacing: 2) {
             Image(systemName: systemImage)
-                .font(.system(size: 10))
+                .font(DSFont.inter(10, relativeTo: .caption2))
+                .accessibilityHidden(true)
             Text(value)
                 .font(DSFont.caption)
         }
@@ -234,7 +235,7 @@ struct AMSSlotView: View {
                 .minimumScaleFactor(0.7)
             if isLoaded, let colorName {
                 Text(colorName)
-                    .font(.system(size: 10))
+                    .font(DSFont.inter(10, relativeTo: .caption2))
                     .foregroundStyle(DSColor.textSecondary)
                     .lineLimit(1)
                     .minimumScaleFactor(0.7)
@@ -262,8 +263,9 @@ struct AMSSlotView: View {
                 .frame(width: 30, height: 30)
                 .overlay(Circle().strokeBorder(DSColor.border, lineWidth: DSBorder.thin))
             Text("\(slotNumber)")
-                .font(.system(size: 11, weight: .bold))
+                .font(DSFont.inter(11, weight: .bold, relativeTo: .caption2))
                 .foregroundStyle(slotNumberColor)
+                .minimumScaleFactor(0.7)
         }
     }
 
@@ -286,7 +288,7 @@ struct AMSSlotView: View {
             }
             .frame(height: 4)
             Text("\(fill)%")
-                .font(.system(size: 10))
+                .font(DSFont.inter(10, relativeTo: .caption2))
                 .foregroundStyle(isLow ? DSColor.statusWarning : DSColor.textSecondary)
         } else {
             // Réserve la même hauteur pour aligner les slots vides sur les slots chargés.

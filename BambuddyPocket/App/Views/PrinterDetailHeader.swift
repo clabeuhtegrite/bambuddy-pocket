@@ -72,8 +72,9 @@ struct PrinterFeedHero: View {
             )
             .overlay(
                 Image(systemName: "cube.transparent")
-                    .font(.system(size: 48))
+                    .font(DSFont.inter(48, relativeTo: .largeTitle))
                     .foregroundStyle(DSColor.accent.opacity(0.8))
+                    .accessibilityHidden(true)
             )
             .accessibilityLabel(showsCamera ? "Connecting to camera" : "No camera")
         }
