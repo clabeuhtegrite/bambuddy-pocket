@@ -3,7 +3,30 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-06 — Vague **« assets App Store v0.1 + polish »** (PR #111).
+**Dernière mise à jour** : 2026-06-06 — Vague **« retours device iPhone (A1–A7) + B0 »**
+(PR #113→#121, `main` vert, dépôt = `main` seul). Les **7 retours du test réel iPhone** corrigés :
+- **A1** (#113) — *feedback des contrôles* : état « en cours » (roue + contrôle désactivé) sur le
+  contrôle tapé jusqu'à confirmation (la X2D réelle reflète la commande MQTT en ~1 s). Suivi de
+  l'action en vol par imprimante dans `PrinterListModel` (`inFlightActions` / `isRunning(_:for:)`).
+- **A2** (#114) — *badge « Connexion » lent (~15 s)* : on passe « En direct » (vert/`restMode`) dès le
+  **1er statut REST frais**, sans attendre l'aboutissement/échec du handshake WebSocket (refusé sous
+  Cloudflare). Drapeau `hasFreshRESTStatus` empêchant la rétrogradation du badge.
+- **A3** (#115) — *sheet vide à l'ajout de serveur* : `LoginView` présenté via `sheet(item:)`
+  (`LoginModel: Identifiable`) → le formulaire s'affiche du **premier coup** (plus de double présentation).
+- **A4** (#116) — *2FA email non déclenchée* : `LoginModel` choisit la méthode (TOTP prioritaire, sinon
+  email) et, pour un flux email, appelle `POST /auth/2fa/email/send` (adopte le `pre_auth_token` frais),
+  libellé du prompt adapté + bouton « Renvoyer ». Endpoint `sendEmailOTP` + types domaine.
+- **A5/A7 + B0 états** (#117) — refonte cohérente de l'accueil : **états** (chargement/erreur/vide/
+  bannière de refresh échoué), **retrait des actions rapides**, **puissance de prise** (« 12 W ») sur
+  les cartes imprimantes liées à une prise joignable.
+- **A6** (#118) — bouton **+** dans Archives → import d'un fichier vers la **bibliothèque**
+  (`uploadLibraryFile`, multipart), proposition d'imprimer (réutilise `PrintSheet`). Vérifié sur Docker dev.
+**B0 restant** : `color.brown` ajoutée au catalogue + test durci (#119) ; **décodage tolérant** slicing/
+github-backup/feeds par élément (#120) ; **cycle de vie WS** — suspend en arrière-plan, stop des serveurs
+non sélectionnés, invalidation du cache `save()` si URL/auth/Cloudflare/secret change (#121).
+**Sécurité** : aucune action sur la X2D réelle, aucun secret committé, Docker dev `auth_enabled:false`.
+
+**Vague précédente** : **« assets App Store v0.1 + polish »** (PR #111).
 **Mode démo intégré** (`-uitest-demo`) : un `URLProtocol` local (`BambuddyPocket/App/Demo/`) sert
 des fixtures JSON synthétiques (imprimante en cours/au repos, AMS, archives, file, bibliothèque,
 G-code d'aperçu généré) — **aucun backend, aucune imprimante réelle, aucun secret**. **Captures
