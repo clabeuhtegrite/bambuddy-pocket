@@ -16417,6 +16417,28 @@
     "URL": {
       "shouldTranslate": false
     },
+    "Unaffiliated third-party client for the self-hosted Bambuddy server. BamPocket talks to it only over its public network API and bundles none of its source code.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unabhängiger Drittanbieter-Client für den selbst gehosteten Bambuddy-Server. BamPocket kommuniziert mit ihm nur über dessen öffentliche Netzwerk-API und enthält keinen seines Quellcodes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cliente de terceros independiente para el servidor autoalojado Bambuddy. BamPocket se comunica con él solo a través de su API de red pública y no incluye nada de su código fuente."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Client tiers indépendant pour le serveur auto-hébergé Bambuddy. BamPocket communique avec lui uniquement via son API réseau publique et n’embarque aucune partie de son code source."
+          }
+        }
+      }
+    },
     "Unauthorized — check your credentials.": {
       "localizations": {
         "de": {
