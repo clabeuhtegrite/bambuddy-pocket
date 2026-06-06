@@ -12,13 +12,10 @@ public actor RESTClient: APIClient {
         self.session = session
     }
 
-    public func send<Response: Decodable & Sendable>(
-        _ path: String,
-        method: HTTPMethod,
-        body: Data?
-    ) async throws -> Response {
-        let request = factory.makeRequest(path: path, method: method, body: body)
-
+    /// Exécute une requête et renvoie le corps + la réponse HTTP, en **uniformisant** les erreurs de
+    /// transport (réseau injoignable) et le cas d'une réponse non HTTP. Ne valide **pas** le code de
+    /// statut — c'est le rôle de `validate(_:data:includesErrorBody:)`.
+    private func perform(_ request: URLRequest) async throws -> (Data, HTTPURLResponse) {
         let data: Data
         let response: URLResponse
         do {
@@ -26,27 +23,46 @@ public actor RESTClient: APIClient {
         } catch {
             throw APIError.transport(error.localizedDescription)
         }
-
         guard let http = response as? HTTPURLResponse else {
             throw APIError.transport("Réponse non HTTP")
         }
+        return (data, http)
+    }
 
+    /// **Validation unique** du code de statut HTTP (factorisée des trois surfaces : JSON, données
+    /// brutes, upload). Ne lève rien pour un 2xx ; mappe 401 → `unauthorized`, 403 → `forbidden`
+    /// (motif extrait du corps), et tout autre code → `http`. `includesErrorBody` joint le corps au
+    /// `http` (utile pour les réponses JSON ; omis pour les téléchargements binaires).
+    private static func validate(_ http: HTTPURLResponse, data: Data, includesErrorBody: Bool) throws {
         switch http.statusCode {
         case 200 ..< 300:
-            if Response.self == EmptyResponse.self, let empty = EmptyResponse() as? Response {
-                return empty
-            }
-            do {
-                return try JSONDecoder.bambuddy().decode(Response.self, from: data)
-            } catch {
-                throw APIError.decoding(String(describing: error))
-            }
+            return
         case 401:
             throw APIError.unauthorized
         case 403:
-            throw APIError.forbidden(reason: Self.detail(from: data))
+            throw APIError.forbidden(reason: detail(from: data))
         default:
-            throw APIError.http(status: http.statusCode, body: String(data: data, encoding: .utf8))
+            let body = includesErrorBody ? String(data: data, encoding: .utf8) : nil
+            throw APIError.http(status: http.statusCode, body: body)
+        }
+    }
+
+    public func send<Response: Decodable & Sendable>(
+        _ path: String,
+        method: HTTPMethod,
+        body: Data?
+    ) async throws -> Response {
+        let request = factory.makeRequest(path: path, method: method, body: body)
+        let (data, http) = try await perform(request)
+        try Self.validate(http, data: data, includesErrorBody: true)
+
+        if Response.self == EmptyResponse.self, let empty = EmptyResponse() as? Response {
+            return empty
+        }
+        do {
+            return try JSONDecoder.bambuddy().decode(Response.self, from: data)
+        } catch {
+            throw APIError.decoding(String(describing: error))
         }
     }
 
@@ -64,26 +80,10 @@ public actor RESTClient: APIClient {
     /// Récupère le corps **brut** (non-JSON) d'une ressource : snapshot caméra, vignette, etc.
     public func data(forPath path: String, method: HTTPMethod = .get) async throws -> Data {
         let request = factory.makeRequest(path: path, method: method, body: nil)
-        let data: Data
-        let response: URLResponse
-        do {
-            (data, response) = try await session.data(for: request)
-        } catch {
-            throw APIError.transport(error.localizedDescription)
-        }
-        guard let http = response as? HTTPURLResponse else {
-            throw APIError.transport("Réponse non HTTP")
-        }
-        switch http.statusCode {
-        case 200 ..< 300:
-            return data
-        case 401:
-            throw APIError.unauthorized
-        case 403:
-            throw APIError.forbidden(reason: Self.detail(from: data))
-        default:
-            throw APIError.http(status: http.statusCode, body: nil)
-        }
+        let (data, http) = try await perform(request)
+        // Téléchargements binaires : on ne joint pas le corps (potentiellement non-texte) à l'erreur.
+        try Self.validate(http, data: data, includesErrorBody: false)
+        return data
     }
 
     /// Snapshot caméra (`GET /printers/{id}/camera/snapshot`) → données JPEG. Le jeton de flux,
@@ -136,29 +136,12 @@ public actor RESTClient: APIClient {
             body: body,
             contentType: "multipart/form-data; boundary=\(boundary)"
         )
-        let responseData: Data
-        let response: URLResponse
+        let (responseData, http) = try await perform(request)
+        try Self.validate(http, data: responseData, includesErrorBody: true)
         do {
-            (responseData, response) = try await session.data(for: request)
+            return try JSONDecoder.bambuddy().decode(LibraryUploadResult.self, from: responseData)
         } catch {
-            throw APIError.transport(error.localizedDescription)
-        }
-        guard let http = response as? HTTPURLResponse else {
-            throw APIError.transport("Réponse non HTTP")
-        }
-        switch http.statusCode {
-        case 200 ..< 300:
-            do {
-                return try JSONDecoder.bambuddy().decode(LibraryUploadResult.self, from: responseData)
-            } catch {
-                throw APIError.decoding(String(describing: error))
-            }
-        case 401:
-            throw APIError.unauthorized
-        case 403:
-            throw APIError.forbidden(reason: Self.detail(from: responseData))
-        default:
-            throw APIError.http(status: http.statusCode, body: String(data: responseData, encoding: .utf8))
+            throw APIError.decoding(String(describing: error))
         }
     }
 
