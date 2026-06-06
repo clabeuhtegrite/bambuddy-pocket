@@ -90,6 +90,20 @@ public struct BOMItemCreate: Encodable, Sendable, Hashable {
     }
 }
 
+/// Corps de `POST /projects/{id}/add-archives` : rattache des archives existantes au projet
+/// (`BatchAddArchives`, le serveur pose `project_id` sur chaque archive trouvée).
+public struct BatchAddArchives: Encodable, Sendable, Hashable {
+    public var archiveIDs: [Int]
+
+    public init(archiveIDs: [Int]) {
+        self.archiveIDs = archiveIDs
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case archiveIDs = "archive_ids"
+    }
+}
+
 /// Un événement de la chronologie d'un projet (`GET /projects/{id}/timeline`).
 public struct TimelineEvent: Codable, Sendable, Hashable, Identifiable {
     public var eventType: String

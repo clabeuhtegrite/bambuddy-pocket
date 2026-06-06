@@ -54,6 +54,11 @@ struct ProjectDetailView: View {
                     Label("Bill of materials", systemImage: "list.bullet.rectangle")
                 }
                 NavigationLink {
+                    ProjectArchivesView(project: project, model: model)
+                } label: {
+                    Label("Archives", systemImage: "archivebox")
+                }
+                NavigationLink {
                     ProjectTimelineView(project: project, model: model)
                 } label: {
                     Label("Timeline", systemImage: "clock")
