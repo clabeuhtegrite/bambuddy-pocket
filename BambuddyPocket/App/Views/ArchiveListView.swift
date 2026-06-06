@@ -241,7 +241,7 @@ private struct ArchiveRow: View {
             HStack {
                 if archive.isFavorite == true {
                     Image(systemName: "star.fill")
-                        .font(.caption)
+                        .font(DSFont.caption)
                         .foregroundStyle(DSColor.statusWarning)
                         .accessibilityLabel("Favorite")
                 }
@@ -258,7 +258,7 @@ private struct ArchiveRow: View {
             }
             if !archive.tagList.isEmpty {
                 Text(archive.tagList.joined(separator: " · "))
-                    .font(.caption2)
+                    .font(DSFont.inter(11, relativeTo: .caption2))
                     .foregroundStyle(DSColor.accent)
                     .lineLimit(1)
             }

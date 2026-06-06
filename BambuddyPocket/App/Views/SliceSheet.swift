@@ -84,7 +84,7 @@ struct SliceSheet: View {
             }
             Section {
                 Text("The sliced file will be added to your library. Nothing is printed automatically.")
-                    .font(.footnote)
+                    .font(DSFont.caption)
                     .foregroundStyle(DSColor.textSecondary)
             }
         }
@@ -128,7 +128,7 @@ struct SliceSheet: View {
                     .progressViewStyle(.linear)
                     .padding(.horizontal, DSSpacing.xl)
                 Text(progress.formatted(.percent.precision(.fractionLength(0))))
-                    .font(.headline)
+                    .font(DSFont.headline)
             } else {
                 ProgressView()
             }
@@ -158,7 +158,7 @@ struct SliceSheet: View {
             }
             Section {
                 Text("Added to your library. Open it to print or add it to the queue.")
-                    .font(.footnote)
+                    .font(DSFont.caption)
                     .foregroundStyle(DSColor.textSecondary)
             }
         }
@@ -167,14 +167,15 @@ struct SliceSheet: View {
     private func failedView(_ message: String) -> some View {
         VStack(spacing: DSSpacing.md) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.largeTitle)
+                .font(DSFont.inter(28, weight: .bold, relativeTo: .largeTitle))
                 .foregroundStyle(DSColor.statusError)
+                .accessibilityHidden(true)
             Text(message)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(DSColor.textSecondary)
                 .padding(.horizontal, DSSpacing.xl)
             Button("Retry") { Task { await model.loadPresets() } }
-                .buttonStyle(.bordered)
+                .buttonStyle(.dsSecondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
