@@ -23,6 +23,16 @@ final class ArchiveListModel {
     private let server: ServerConfiguration
     private let connectionFactory: ServerConnectionFactory
 
+    /// Jeton de flux mis en cache (`POST /printers/camera/stream-token`) + date de frappe. Les
+    /// vignettes d'archive se chargent **en rafale** (navigation entre archives, vignettes de
+    /// plateaux) et exigent chacune un `?token=` : sans cache, chaque vignette déclenche un POST. On
+    /// réutilise le jeton pendant une courte fenêtre (`tokenTTL`), ce qui suffit à couvrir une rafale
+    /// tout en restant bien en deçà de la durée de vie serveur.
+    private var cachedThumbnailToken: (value: String, fetchedAt: Date)?
+    /// Durée de vie utile du jeton de vignette en cache. Volontairement courte : juste assez pour
+    /// dédoublonner les POST d'une rafale de chargement, sans risquer un jeton périmé côté serveur.
+    private static let tokenTTL: TimeInterval = 60
+
     init(server: ServerConfiguration, connectionFactory: ServerConnectionFactory) {
         self.server = server
         self.connectionFactory = connectionFactory
@@ -173,11 +183,31 @@ final class ArchiveListModel {
     func thumbnail(_ archive: Archive) async -> Data? {
         do {
             let client = try connectionFactory.makeClient(for: server)
-            let token = try? await client.cameraStreamToken().token
+            let token = await streamToken(using: client)
             return try await client.archiveThumbnail(id: archive.id, token: token)
         } catch {
             return nil
         }
+    }
+
+    /// Jeton de flux pour les vignettes, **mis en cache** sur une courte fenêtre (`tokenTTL`).
+    /// Refrappé seulement s'il manque ou a expiré, évitant un `POST /printers/camera/stream-token`
+    /// par vignette pendant une rafale de chargement. Sur instance sans auth, renvoie `nil` sans
+    /// appel réseau (le `?token=` est alors inutile et inoffensif).
+    private func streamToken(using client: RESTClient) async -> String? {
+        guard server.authMethod != .none else { return nil }
+        if let reusable = reusableCachedToken() {
+            return reusable
+        }
+        guard let token = try? await client.cameraStreamToken().token else { return nil }
+        cachedThumbnailToken = (token, Date())
+        return token
+    }
+
+    /// Jeton en cache encore dans sa fenêtre de validité, ou `nil` s'il manque ou a expiré.
+    private func reusableCachedToken() -> String? {
+        guard let cached = cachedThumbnailToken else { return nil }
+        return Date().timeIntervalSince(cached.fetchedAt) < Self.tokenTTL ? cached.value : nil
     }
 
     /// Métadonnées du timelapse d'une archive ; `nil` si absent ou en cas d'échec.
