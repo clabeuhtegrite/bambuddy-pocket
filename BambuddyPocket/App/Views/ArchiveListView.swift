@@ -45,6 +45,9 @@ struct ArchiveListView: View {
                 }
                 .listRowBackground(DSColor.card)
             }
+            if model.canLoadMore {
+                loadMoreRow
+            }
         }
         .scrollContentBackground(.hidden)
         .background(DSColor.background)
@@ -79,6 +82,24 @@ struct ArchiveListView: View {
                 await model.load()
             }
         }
+    }
+
+    /// Ligne de fin de liste : déclenche automatiquement le chargement de la page suivante à son
+    /// apparition (et propose un bouton de repli explicite).
+    private var loadMoreRow: some View {
+        HStack {
+            Spacer()
+            if model.isLoadingMore {
+                ProgressView().tint(DSColor.accent)
+            } else {
+                Button("Load more") { Task { await model.loadMore() } }
+                    .font(DSFont.body)
+                    .foregroundStyle(DSColor.accent)
+            }
+            Spacer()
+        }
+        .listRowBackground(DSColor.card)
+        .task { await model.loadMore() }
     }
 
     @ViewBuilder
