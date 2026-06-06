@@ -301,8 +301,11 @@ public extension APIClient {
     }
 
     /// Journal des sauvegardes Git (`GET /github-backup/logs`), le plus récent en premier.
+    /// **Décodage tolérant par élément** (B0) : une entrée malformée est ignorée plutôt que de faire
+    /// échouer tout le journal.
     func gitHubBackupLogs() async throws -> [GitHubBackupLog] {
-        try await get("/github-backup/logs")
+        let lossy: LossyArray<GitHubBackupLog> = try await get("/github-backup/logs")
+        return lossy.elements
     }
 
     /// Déclenche une sauvegarde manuelle immédiate (`POST /github-backup/run`).

@@ -94,6 +94,32 @@ public struct GitHubBackupConfig: Codable, Sendable, Hashable, Identifiable {
         self.lastBackupCommitSha = lastBackupCommitSha
         self.nextScheduledRun = nextScheduledRun
     }
+
+    /// **Décodage tolérant** (B0) : seuls `id` et `repositoryUrl` sont requis ; tout drapeau/champ
+    /// absent retombe sur le défaut du modèle plutôt que de faire échouer le décodage si une version
+    /// serveur omet un champ.
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        repositoryUrl = try container.decode(String.self, forKey: .repositoryUrl)
+        hasToken = try container.decodeIfPresent(Bool.self, forKey: .hasToken) ?? false
+        branch = try container.decodeIfPresent(String.self, forKey: .branch) ?? "main"
+        provider = try container.decodeIfPresent(String.self, forKey: .provider) ?? "github"
+        allowInsecureHttp = try container.decodeIfPresent(Bool.self, forKey: .allowInsecureHttp) ?? false
+        scheduleEnabled = try container.decodeIfPresent(Bool.self, forKey: .scheduleEnabled) ?? false
+        scheduleType = try container.decodeIfPresent(String.self, forKey: .scheduleType) ?? "daily"
+        backupKprofiles = try container.decodeIfPresent(Bool.self, forKey: .backupKprofiles) ?? true
+        backupCloudProfiles = try container.decodeIfPresent(Bool.self, forKey: .backupCloudProfiles) ?? true
+        backupSettings = try container.decodeIfPresent(Bool.self, forKey: .backupSettings) ?? false
+        backupSpools = try container.decodeIfPresent(Bool.self, forKey: .backupSpools) ?? false
+        backupArchives = try container.decodeIfPresent(Bool.self, forKey: .backupArchives) ?? false
+        enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled) ?? true
+        lastBackupAt = try container.decodeIfPresent(String.self, forKey: .lastBackupAt)
+        lastBackupStatus = try container.decodeIfPresent(String.self, forKey: .lastBackupStatus)
+        lastBackupMessage = try container.decodeIfPresent(String.self, forKey: .lastBackupMessage)
+        lastBackupCommitSha = try container.decodeIfPresent(String.self, forKey: .lastBackupCommitSha)
+        nextScheduledRun = try container.decodeIfPresent(String.self, forKey: .nextScheduledRun)
+    }
 }
 
 /// Entrée du journal de sauvegarde Git (`GET /github-backup/logs`).
@@ -128,6 +154,21 @@ public struct GitHubBackupLog: Codable, Sendable, Hashable, Identifiable {
         self.commitSha = commitSha
         self.filesChanged = filesChanged
         self.errorMessage = errorMessage
+    }
+
+    /// **Décodage tolérant** (B0) : `status`/`trigger`/`filesChanged` absents retombent sur un défaut
+    /// neutre (chaîne vide / 0) plutôt que de faire échouer toute la liste de journaux.
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        configId = try container.decode(Int.self, forKey: .configId)
+        startedAt = try container.decodeIfPresent(String.self, forKey: .startedAt)
+        completedAt = try container.decodeIfPresent(String.self, forKey: .completedAt)
+        status = try container.decodeIfPresent(String.self, forKey: .status) ?? ""
+        trigger = try container.decodeIfPresent(String.self, forKey: .trigger) ?? ""
+        commitSha = try container.decodeIfPresent(String.self, forKey: .commitSha)
+        filesChanged = try container.decodeIfPresent(Int.self, forKey: .filesChanged) ?? 0
+        errorMessage = try container.decodeIfPresent(String.self, forKey: .errorMessage)
     }
 }
 
