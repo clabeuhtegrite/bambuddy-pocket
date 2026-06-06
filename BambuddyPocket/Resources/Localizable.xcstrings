@@ -1615,6 +1615,28 @@
         }
       }
     },
+    "Already in your library": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bereits in Ihrer Bibliothek"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya está en tu biblioteca"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Déjà dans votre bibliothèque"
+          }
+        }
+      }
+    },
     "Already in your library: %@": {
       "localizations": {
         "en": {
@@ -6587,6 +6609,28 @@
         }
       }
     },
+    "File imported": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei importiert"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Archivo importado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fichier importé"
+          }
+        }
+      }
+    },
     "File uploaded": {
       "localizations": {
         "de": {
@@ -7439,6 +7483,50 @@
           "stringUnit": {
             "state": "translated",
             "value": "Importieren"
+          }
+        }
+      }
+    },
+    "Import a file": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datei importieren"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importar un archivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Importer un fichier"
+          }
+        }
+      }
+    },
+    "Import failed": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import fehlgeschlagen"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error al importar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Échec de l'import"
           }
         }
       }
@@ -15270,6 +15358,28 @@
         }
       }
     },
+    "The file was added to your library.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Datei wurde Ihrer Bibliothek hinzugefügt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El archivo se añadió a tu biblioteca."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le fichier a été ajouté à votre bibliothèque."
+          }
+        }
+      }
+    },
     "The library is empty.": {
       "localizations": {
         "de": {
@@ -15570,6 +15680,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ce fichier est déjà dans la bibliothèque"
+          }
+        }
+      }
+    },
+    "This file is already in your library.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Datei ist bereits in Ihrer Bibliothek."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este archivo ya está en tu biblioteca."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce fichier est déjà dans votre bibliothèque."
           }
         }
       }

@@ -3,15 +3,28 @@ import BambuddyPocketDesignSystem
 import BambuddyPocketDomain
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 
-/// Archive d'impressions d'un serveur (liste, lecture seule).
+/// Archive d'impressions d'un serveur (liste, lecture seule + import d'un fichier vers la
+/// bibliothèque).
 struct ArchiveListView: View {
     @State private var model: ArchiveListModel
+    /// Modèle de bibliothèque, utilisé pour **importer** un fichier (gcode/3mf/STL) depuis l'écran
+    /// Archives (retour device A6) : il n'existe pas d'endpoint d'upload « archive », on dépose donc
+    /// le fichier dans la bibliothèque via `uploadLibraryFile`.
+    @State private var library: LibraryListModel
     @State private var query = ""
     @State private var editing: Archive?
+    /// Sélecteur de fichier ouvert ?
+    @State private var importing = false
+    /// Issue d'un import (alerte) — porte de quoi proposer l'impression au succès.
+    @State private var importOutcome: ArchiveImportOutcome?
+    /// Feuille d'impression, présentée si l'utilisateur choisit d'imprimer le fichier importé.
+    @State private var printModel: PrintDispatchModel?
 
     init(server: ServerConfiguration, serverList: ServerListModel) {
         _model = State(initialValue: serverList.makeArchiveListModel(for: server))
+        _library = State(initialValue: serverList.makeLibraryListModel(for: server))
     }
 
     var body: some View {
@@ -63,10 +76,27 @@ struct ArchiveListView: View {
         .sheet(item: $editing) { archive in
             ArchiveEditSheet(archive: archive, model: model)
         }
+        .sheet(item: $printModel) { printModel in
+            PrintSheet(model: printModel)
+        }
+        .fileImporter(isPresented: $importing, allowedContentTypes: ArchiveImport.contentTypes) { result in
+            handleImport(result)
+        }
+        .alert(item: $importOutcome) { outcome in
+            importAlert(outcome)
+        }
         .overlay { placeholder }
         .navigationTitle("Archives")
         .toolbarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    importing = true
+                } label: {
+                    Label("Import a file", systemImage: "plus")
+                }
+                .accessibilityLabel("Import a file")
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink {
                     ArchiveStatsView(model: model)
@@ -81,6 +111,54 @@ struct ArchiveListView: View {
             if !model.hasLoaded {
                 await model.load()
             }
+        }
+    }
+
+    /// Lit le fichier choisi (accès sécurisé), le téléverse dans la bibliothèque, puis présente le
+    /// résultat — en proposant d'imprimer au succès (retour device A6).
+    private func handleImport(_ result: Result<URL, any Error>) {
+        guard case let .success(url) = result else { return }
+        let needsAccess = url.startAccessingSecurityScopedResource()
+        let data = try? Data(contentsOf: url)
+        if needsAccess {
+            url.stopAccessingSecurityScopedResource()
+        }
+        guard let data else {
+            importOutcome = .failure
+            return
+        }
+        let filename = url.lastPathComponent
+        Task {
+            guard let uploaded = await library.upload(filename: filename, data: data, toFolder: nil) else {
+                importOutcome = .failure
+                return
+            }
+            importOutcome = uploaded.isDuplicate
+                ? .duplicate
+                : .uploaded(fileID: uploaded.id, name: uploaded.filename)
+        }
+    }
+
+    /// Alerte d'issue d'import : un succès propose **Imprimer** (réutilise `PrintSheet`) ou **OK**.
+    private func importAlert(_ outcome: ArchiveImportOutcome) -> Alert {
+        switch outcome {
+        case let .uploaded(fileID, name):
+            Alert(
+                title: Text("File imported"),
+                message: Text("The file was added to your library."),
+                primaryButton: .default(Text("Print")) {
+                    printModel = library.makePrintDispatchModel(forUploadedFileID: fileID, name: name)
+                },
+                secondaryButton: .cancel(Text("Done"))
+            )
+        case .duplicate:
+            Alert(
+                title: Text("Already in your library"),
+                message: Text("This file is already in your library."),
+                dismissButton: .default(Text("OK"))
+            )
+        case .failure:
+            Alert(title: Text("Import failed"), dismissButton: .default(Text("OK")))
         }
     }
 
@@ -121,6 +199,35 @@ struct ArchiveListView: View {
                 )
             }
         }
+    }
+}
+
+/// Issue d'un import depuis l'écran Archives. Un succès porte l'identité du fichier téléversé pour
+/// proposer l'impression (retour device A6).
+private enum ArchiveImportOutcome: Identifiable {
+    case uploaded(fileID: Int, name: String)
+    case duplicate
+    case failure
+
+    var id: Int {
+        switch self {
+        case .uploaded: 0
+        case .duplicate: 1
+        case .failure: 2
+        }
+    }
+}
+
+/// Types de fichiers acceptés à l'import (3MF / STL / G-code) + un repli générique.
+private enum ArchiveImport {
+    static var contentTypes: [UTType] {
+        var types: [UTType] = [.data]
+        for identifier in ["com.prusa3d.3mf", "public.standard-tesselated-geometry-format"] {
+            if let type = UTType(identifier) {
+                types.insert(type, at: 0)
+            }
+        }
+        return types
     }
 }
 
