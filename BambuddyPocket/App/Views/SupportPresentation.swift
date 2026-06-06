@@ -14,17 +14,9 @@ enum SupportPresentation {
         }
     }
 
-    /// Durée lisible (« 2 min », « 1 h 5 min ») à partir de secondes.
+    /// Durée lisible (« 2 min », « 1 h 5 min », « 45 s ») à partir de secondes. Délègue au formateur
+    /// unique `DurationPresentation` (granularité seconde sous la minute).
     static func duration(seconds: Int) -> String {
-        let totalMinutes = max(seconds, 0) / 60
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-        if hours > 0 {
-            return String(localized: "\(hours) h \(minutes) min")
-        }
-        if minutes > 0 {
-            return String(localized: "\(minutes) min")
-        }
-        return String(localized: "\(seconds) s")
+        DurationPresentation.string(seconds: seconds, showsSeconds: true)
     }
 }

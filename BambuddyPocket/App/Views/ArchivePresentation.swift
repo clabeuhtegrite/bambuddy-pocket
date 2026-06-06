@@ -11,18 +11,13 @@ enum ArchivePresentation {
         DSStatusIntent.forRawStatus(status).color
     }
 
-    /// Durée formatée (« 1 h 20 min » / « 12 min ») à partir de secondes.
+    /// Durée formatée (« 1 h 20 min » / « 12 min ») à partir de secondes. `nil` si absente ou ≤ 0
+    /// (pas de durée à afficher). Délègue au formateur unique `DurationPresentation`.
     static func duration(seconds: Int?) -> String? {
         guard let seconds, seconds > 0 else {
             return nil
         }
-        let totalMinutes = seconds / 60
-        let hours = totalMinutes / 60
-        let minutes = totalMinutes % 60
-        if hours > 0 {
-            return String(localized: "\(hours) h \(minutes) min")
-        }
-        return String(localized: "\(minutes) min")
+        return DurationPresentation.string(seconds: seconds, showsSeconds: false)
     }
 
     /// Masse de filament formatée (« 13 g »).
