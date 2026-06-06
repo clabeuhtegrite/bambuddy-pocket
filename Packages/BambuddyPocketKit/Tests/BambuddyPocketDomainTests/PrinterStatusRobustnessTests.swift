@@ -94,6 +94,74 @@ struct PrinterStatusRobustnessTests {
         #expect(unit.tray?.allSatisfy { ($0.trayType ?? "").isEmpty } == true)
     }
 
+    @Test("Unité AMS sans id → décode avec id par défaut 0, le reste du statut survit")
+    func amsUnitMissingID() throws {
+        let status = try decode(#"""
+        {
+          "name": "X1C", "state": "RUNNING", "progress": 40,
+          "temperatures": { "nozzle": 220, "bed": 60 }, "chamber_light": true,
+          "ams": [ { "humidity": 30, "tray": [ { "tray_type": "PLA" } ] } ]
+        }
+        """#)
+        // Température/impression/lumière intactes malgré un AMS sans id.
+        #expect(status.temperatures?.nozzle == 220)
+        #expect(status.progress == 40)
+        #expect(status.chamberLight == true)
+        let unit = try #require(status.ams?.first)
+        #expect(unit.id == 0)
+        #expect(unit.humidity == 30)
+        #expect(unit.tray?.first?.id == 0)
+        #expect(unit.tray?.first?.trayType == "PLA")
+    }
+
+    @Test("AMS id en String ou null → toléré (retombe sur 0), pas d'échec global")
+    func amsIDWrongType() throws {
+        let status = try decode(#"""
+        {
+          "temperatures": { "nozzle": 200 },
+          "ams": [
+            { "id": "1", "tray": [ { "id": "0", "tray_type": "PLA" } ] },
+            { "id": null }
+          ]
+        }
+        """#)
+        #expect(status.temperatures?.nozzle == 200)
+        #expect(status.ams?.count == 2)
+        #expect(status.ams?.first?.id == 1) // "1" toléré
+        #expect(status.ams?.first?.tray?.first?.id == 0)
+        #expect(status.ams?.last?.id == 0) // null → 0
+    }
+
+    @Test("Unité AMS structurellement invalide (scalaire) → ignorée, les bonnes survivent")
+    func amsMalformedElementSkipped() throws {
+        // Un élément non-objet dans `ams` ne doit pas effacer l'unité valide ni le reste du statut.
+        let status = try decode(#"""
+        {
+          "name": "X1C", "state": "RUNNING",
+          "temperatures": { "nozzle": 210 },
+          "ams": [ 12345, { "id": 0, "humidity": 25 } ]
+        }
+        """#)
+        #expect(status.temperatures?.nozzle == 210)
+        #expect(status.state == .running)
+        // Le scalaire est sauté ; l'unité valide est conservée.
+        #expect(status.ams?.count == 1)
+        #expect(status.ams?.first?.humidity == 25)
+    }
+
+    @Test("vt_tray malformé → plateaux valides conservés, statut intact")
+    func vtTrayLossy() throws {
+        let status = try decode(#"""
+        {
+          "temperatures": { "nozzle": 205 },
+          "vt_tray": [ { "id": 254, "tray_type": "PETG" }, "garbage" ]
+        }
+        """#)
+        #expect(status.temperatures?.nozzle == 205)
+        #expect(status.vtTray?.count == 1)
+        #expect(status.vtTray?.first?.trayType == "PETG")
+    }
+
     // MARK: Firmware ancien (sous-ensemble de champs)
 
     @Test("Firmware ancien : seuls quelques champs présents → décode")

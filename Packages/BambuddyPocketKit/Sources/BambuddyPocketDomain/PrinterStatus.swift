@@ -141,6 +141,10 @@ public struct HMSError: Codable, Sendable, Hashable, Identifiable {
 }
 
 /// Un slot de filament (plateau AMS ou bobine externe).
+///
+/// Décodage **tolérant** : `id` peut être absent, `null`, ou exposé en `String` selon le firmware /
+/// l'AMS. On retombe sur `0` plutôt que d'échouer (un seul plateau abîmé ne doit pas effacer tout le
+/// `PrinterStatus` — cf. `MakerWorldInstance`). Le tableau parent dédoublonne déjà via l'index.
 public struct AMSTray: Codable, Sendable, Hashable, Identifiable {
     public var id: Int
     public var trayColor: String?
@@ -157,9 +161,33 @@ public struct AMSTray: Codable, Sendable, Hashable, Identifiable {
     public init(id: Int) {
         self.id = id
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case trayColor, trayType, traySubBrands, trayIdName, remain
+        case tagUid, trayUuid, nozzleTempMin, nozzleTempMax, state
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = TolerantInt.decode(container, forKey: .id) ?? 0
+        trayColor = try container.decodeIfPresent(String.self, forKey: .trayColor)
+        trayType = try container.decodeIfPresent(String.self, forKey: .trayType)
+        traySubBrands = try container.decodeIfPresent(String.self, forKey: .traySubBrands)
+        trayIdName = try container.decodeIfPresent(String.self, forKey: .trayIdName)
+        remain = TolerantInt.decode(container, forKey: .remain)
+        tagUid = try container.decodeIfPresent(String.self, forKey: .tagUid)
+        trayUuid = try container.decodeIfPresent(String.self, forKey: .trayUuid)
+        nozzleTempMin = TolerantInt.decode(container, forKey: .nozzleTempMin)
+        nozzleTempMax = TolerantInt.decode(container, forKey: .nozzleTempMax)
+        state = TolerantInt.decode(container, forKey: .state)
+    }
 }
 
 /// Une unité AMS (ou AMS-HT). Contient ses plateaux (`tray`).
+///
+/// Décodage **tolérant** : `id` absent/`null`/`String` retombe sur `0`, et `tray` est décodé
+/// **plateau par plateau** (`LossyArray`) afin qu'un slot malformé n'efface pas l'unité entière.
 public struct AMSUnit: Codable, Sendable, Hashable, Identifiable {
     public var id: Int
     public var humidity: Int?
@@ -174,6 +202,25 @@ public struct AMSUnit: Codable, Sendable, Hashable, Identifiable {
 
     public init(id: Int) {
         self.id = id
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, humidity, temp, isAmsHt, dryTime, dryStatus
+        case moduleType, serialNumber, swVer, tray
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = TolerantInt.decode(container, forKey: .id) ?? 0
+        humidity = TolerantInt.decode(container, forKey: .humidity)
+        temp = try container.decodeIfPresent(Double.self, forKey: .temp)
+        isAmsHt = try container.decodeIfPresent(Bool.self, forKey: .isAmsHt)
+        dryTime = TolerantInt.decode(container, forKey: .dryTime)
+        dryStatus = TolerantInt.decode(container, forKey: .dryStatus)
+        moduleType = try container.decodeIfPresent(String.self, forKey: .moduleType)
+        serialNumber = try container.decodeIfPresent(String.self, forKey: .serialNumber)
+        swVer = try container.decodeIfPresent(String.self, forKey: .swVer)
+        tray = try container.decodeIfPresent(LossyArray<AMSTray>.self, forKey: .tray)?.elements
     }
 }
 
@@ -276,6 +323,63 @@ public struct PrinterStatus: Codable, Sendable, Hashable {
     public var airductMode: Int?
 
     public init() {}
+
+    private enum CodingKeys: String, CodingKey {
+        case name, model, connected, state
+        case currentPrint, subtaskName, gcodeFile, progress, remainingTime
+        case layerNum, totalLayers, coverUrl, currentArchiveId, currentPlateId
+        case temperatures, hmsErrors, ams, vtTray, wifiSignal, wiredNetwork, doorOpen
+        case coolingFanSpeed, bigFan1Speed, bigFan2Speed, heatbreakFanSpeed
+        case chamberLight, activeExtruder, speedLevel, stgCur, stgCurName
+        case printableObjectsCount, awaitingPlateClear, supportsDrying, firmwareVersion
+        case sdcard, timelapse, ipcam, printOptions, airductMode
+    }
+
+    /// Décodage **tolérant** : `ams` et `vtTray` sont décodés élément par élément (`LossyArray`) afin
+    /// qu'une unité/plateau AMS malformé n'efface pas température, impression, lumière, etc. Tous les
+    /// autres champs restent optionnels (un champ abîmé isolé est ignoré sans casser le statut).
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
+        model = try container.decodeIfPresent(String.self, forKey: .model)
+        connected = try container.decodeIfPresent(Bool.self, forKey: .connected)
+        state = try container.decodeIfPresent(PrinterState.self, forKey: .state)
+        currentPrint = try container.decodeIfPresent(String.self, forKey: .currentPrint)
+        subtaskName = try container.decodeIfPresent(String.self, forKey: .subtaskName)
+        gcodeFile = try container.decodeIfPresent(String.self, forKey: .gcodeFile)
+        progress = try container.decodeIfPresent(Double.self, forKey: .progress)
+        remainingTime = TolerantInt.decode(container, forKey: .remainingTime)
+        layerNum = TolerantInt.decode(container, forKey: .layerNum)
+        totalLayers = TolerantInt.decode(container, forKey: .totalLayers)
+        coverUrl = try container.decodeIfPresent(String.self, forKey: .coverUrl)
+        currentArchiveId = TolerantInt.decode(container, forKey: .currentArchiveId)
+        currentPlateId = TolerantInt.decode(container, forKey: .currentPlateId)
+        temperatures = try container.decodeIfPresent(Temperatures.self, forKey: .temperatures)
+        hmsErrors = try container.decodeIfPresent(LossyArray<HMSError>.self, forKey: .hmsErrors)?.elements
+        ams = try container.decodeIfPresent(LossyArray<AMSUnit>.self, forKey: .ams)?.elements
+        vtTray = try container.decodeIfPresent(LossyArray<AMSTray>.self, forKey: .vtTray)?.elements
+        wifiSignal = TolerantInt.decode(container, forKey: .wifiSignal)
+        wiredNetwork = try container.decodeIfPresent(Bool.self, forKey: .wiredNetwork)
+        doorOpen = try container.decodeIfPresent(Bool.self, forKey: .doorOpen)
+        coolingFanSpeed = TolerantInt.decode(container, forKey: .coolingFanSpeed)
+        bigFan1Speed = TolerantInt.decode(container, forKey: .bigFan1Speed)
+        bigFan2Speed = TolerantInt.decode(container, forKey: .bigFan2Speed)
+        heatbreakFanSpeed = TolerantInt.decode(container, forKey: .heatbreakFanSpeed)
+        chamberLight = try container.decodeIfPresent(Bool.self, forKey: .chamberLight)
+        activeExtruder = TolerantInt.decode(container, forKey: .activeExtruder)
+        speedLevel = TolerantInt.decode(container, forKey: .speedLevel)
+        stgCur = TolerantInt.decode(container, forKey: .stgCur)
+        stgCurName = try container.decodeIfPresent(String.self, forKey: .stgCurName)
+        printableObjectsCount = TolerantInt.decode(container, forKey: .printableObjectsCount)
+        awaitingPlateClear = try container.decodeIfPresent(Bool.self, forKey: .awaitingPlateClear)
+        supportsDrying = try container.decodeIfPresent(Bool.self, forKey: .supportsDrying)
+        firmwareVersion = try container.decodeIfPresent(String.self, forKey: .firmwareVersion)
+        sdcard = try container.decodeIfPresent(Bool.self, forKey: .sdcard)
+        timelapse = try container.decodeIfPresent(Bool.self, forKey: .timelapse)
+        ipcam = try container.decodeIfPresent(Bool.self, forKey: .ipcam)
+        printOptions = try container.decodeIfPresent(PrintOptions.self, forKey: .printOptions)
+        airductMode = TolerantInt.decode(container, forKey: .airductMode)
+    }
 
     // MARK: Helpers UI
 
