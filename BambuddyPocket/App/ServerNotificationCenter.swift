@@ -64,6 +64,9 @@ final class ServerNotificationCenter {
     /// on ne le refrappe que s'il manque, qu'il a dépassé sa durée de vie utile, ou après une
     /// connexion qui a vécu (où le serveur a pu le faire tourner).
     private var cachedWebSocketToken: (value: String, fetchedAt: Date)?
+    /// Un statut frais a-t-il déjà été obtenu via le repli REST ? Sert au **retour device A2** : une
+    /// fois vrai, le badge ne retombe plus en « Connexion… » pendant que le WebSocket retente.
+    private var hasFreshRESTStatus = false
 
     private static let maxNotifications = 100
     /// Cadence du repli REST quand le temps réel (WebSocket) est indisponible.
@@ -132,6 +135,7 @@ final class ServerNotificationCenter {
         activePollTask?.cancel()
         activePollTask = nil
         activePrinterRefcounts.removeAll()
+        hasFreshRESTStatus = false
         cancelBadgeReconnectTask()
     }
 
@@ -223,7 +227,12 @@ final class ServerNotificationCenter {
                     realtimeState = .restMode
                     try? await Task.sleep(for: Self.restModeProbeInterval)
                 } else {
-                    realtimeState = .connecting
+                    // On ne **rétrograde pas** le badge en « Connexion… » si le repli REST a déjà
+                    // fourni un statut frais (retour device A2) : on reste « En direct » (restMode)
+                    // pendant que le WebSocket retente en arrière-plan.
+                    if !hasFreshRESTStatus {
+                        realtimeState = .connecting
+                    }
                     try? await Task.sleep(for: backoff)
                     backoff = min(backoff * 2, .seconds(30))
                 }
@@ -286,14 +295,35 @@ final class ServerNotificationCenter {
 
     /// Récupère l'état complet de chaque imprimante via REST (`GET /printers/{id}/status`) et le
     /// fusionne dans l'état partagé. Sans effet (silencieux) en cas d'échec réseau/auth.
+    ///
+    /// **Retour device A2** : dès qu'un **premier statut frais** est obtenu par REST alors qu'on est
+    /// encore en `.connecting` (ouverture initiale du WebSocket pas encore aboutie), on promeut le
+    /// badge en `.restMode` (« En direct » / sain) **sans attendre** l'aboutissement ou l'échec du
+    /// handshake WebSocket (qui prenait ~15 s : tentatives + back-off). Le WebSocket continue en
+    /// arrière-plan et peut toujours faire passer le badge en `.connected` (streaming).
     func refreshFromREST() async {
         guard let client = try? connectionFactory.makeClient(for: server) else { return }
         guard let printers = try? await client.printers() else { return }
         updatePrinterNames(from: printers)
+        var gotFreshStatus = false
         for printer in printers {
             if let status = try? await client.printerStatus(id: printer.id) {
                 merge(status, into: printer.id)
+                gotFreshStatus = true
             }
+        }
+        if gotFreshStatus {
+            promoteToRESTModeIfStillConnecting()
+        }
+    }
+
+    /// Promeut le badge `.connecting` → `.restMode` dès qu'un statut frais est disponible (REST).
+    /// N'altère ni `.connected` (streaming WebSocket établi) ni `.reconnecting` (qui a sa propre
+    /// fenêtre de grâce), ni un `.restMode` déjà acquis : on quitte seulement l'attente initiale.
+    private func promoteToRESTModeIfStillConnecting() {
+        hasFreshRESTStatus = true
+        if realtimeState == .connecting {
+            realtimeState = .restMode
         }
     }
 
