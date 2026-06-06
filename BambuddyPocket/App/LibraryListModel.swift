@@ -132,6 +132,17 @@ final class LibraryListModel {
         )
     }
 
+    /// Construit le view-model de la feuille « Imprimer » pour un fichier qui vient d'être téléversé
+    /// (identifié par son id/nom de bibliothèque). Réutilisé par l'import depuis l'écran Archives
+    /// (retour device A6) : on propose d'imprimer juste après l'upload sans recharger un `LibraryFile`.
+    func makePrintDispatchModel(forUploadedFileID id: Int, name: String) -> PrintDispatchModel {
+        PrintDispatchModel(
+            source: .libraryFile(id: id, name: name),
+            server: server,
+            connectionFactory: connectionFactory
+        )
+    }
+
     /// Ajoute un fichier à la file d'attente d'impression. Renvoie `true` au succès.
     func enqueue(_ file: LibraryFile) async -> Bool {
         do {
