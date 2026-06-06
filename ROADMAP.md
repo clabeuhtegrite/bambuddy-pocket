@@ -25,8 +25,9 @@ Projet Xcode (iPhone+iPad, iOS 18), MVVM, et fondations transverses.
 - ✅ Design system (✅ tokens, ✅ **composants** — carte/badge/boutons/fond/séparateur, ✅
   **typographie Inter** Dynamic Type, ✅ palette adaptative), ✅ **mode sombre** (app adaptative
   clair/sombre suivant le système, DA Bambuddy — PR A).
-- ✅ i18n FR/EN/ES/DE (String Catalog) ; 🟦 accessibilité (VoiceOver) : éléments interactifs via
-  `Label`, icônes de statut décoratives masquées, lignes combinées (passe Tier 2/3).
+- ✅ i18n FR/EN/ES/DE (String Catalog) ; ✅ accessibilité (VoiceOver) : éléments interactifs via
+  `Label`, icônes décoratives masquées, lignes combinées, **Dynamic Type** sur les cartes
+  AMS/Accueil/Timeline (`DSFont` relatifs, audit B2 clos).
 - ✅ Privacy manifest + `NSLocalNetworkUsageDescription` + ATS (exception HTTP local).
 - ✅ CI : build + tests + lint (SwiftLint/SwiftFormat) + shellcheck sur push/PR.
 

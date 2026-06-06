@@ -3,7 +3,43 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-06 — Vague **« retours device iPhone (A1–A7) + B0 »**
+**Dernière mise à jour** : 2026-06-06 — Vague **« clôture audit B1 (perf) + B2 (polish) »**
+(PR #123→#135, `main` vert, dépôt = `main` seul). **Audit clos.**
+
+**B1 — performance temps réel & réseau** :
+- **B1 #1** (#123) — *coalescing des sondages de statut* : un `GET /printers/{id}/status` trop récent
+  (sous `minStatusFetchInterval`) est sauté (`lastStatusFetched[id]`), dédoublonnant repli global /
+  sondage rapide / re-fetch post-action. Repli REST allégé (cache de liste `cachedPrinters`,
+  `printerStatus` en parallèle via `withTaskGroup`). Extraction `ServerNotificationCenter+Notifications`
+  pour repasser sous les limites de lint.
+- **B1 #3** (#124) — *flux caméra* : parsing MJPEG **par blocs** (`MJPEGFrameParser`, recherche de
+  sous-séquence sur `Data` au lieu d'octet par octet) ; décodage + sous-échantillonnage **hors
+  MainActor** (ImageIO `CGImageSourceCreateThumbnailAtIndex`, max 1280 px) ; **throttle ~15 fps** ;
+  **back-off** snapshot (1→8 s).
+- **B1 #4** (#125) — *vignettes d'archive* : cache du jeton de flux (TTL 60 s) au lieu d'un
+  `POST /printers/camera/stream-token` par vignette ; aucun jeton si l'auth est désactivée.
+- **B1 #5** (#126) — *session réseau dédiée* (`timeoutIntervalForRequest = 15 s`,
+  `waitsForConnectivity`) via `ServerConnectionFactory.makeLiveSession()` au lieu de `URLSession.shared`,
+  sans casser le flux caméra ni « En direct ». La suspension des polls en arrière-plan était déjà
+  livrée par B0 (#121).
+
+**B2 — polish (i18n / a11y / DA / tests / dette)** :
+- **i18n** (#127) : 8 littéraux non catalogués traduits EN/FR/ES/DE ; nombres localisés
+  (`FilamentCatalogView`, `SmartPlugsView` via `.formatted`) ; 9 clés orphelines purgées.
+- **a11y / Dynamic Type** (#128) : cartes AMS/Accueil/Timeline `font(.system(size:))` → `DSFont`
+  relatifs ; icônes décoratives masquées à VoiceOver.
+- **DA** (#129) : `SliceSheet` & `.caption` résiduels d'`ArchiveListView` alignés sur `DSFont`/`.dsSecondary`.
+- **Tests** (#130) : `SliceJobModel` (transitions) + `AMSPresentation` (offset 128).
+- **Dette** : endpoints morts `archiveSpool`/`virtualPrinter(id:)` supprimés (#131) ; `App/Demo/` gaté
+  en `#if DEBUG` (#132, hors binaire Release, démo OK en Debug) ; formatage de durée unifié (#133) ;
+  validation HTTP de `RESTClient` factorisée 3→1 (#134) ; état d'échec 403/404/load-failure des
+  5 écrans cloud/sauvegarde extrait (`CloudLoadFailureView`, #135).
+
+**Sécurité** : aucune action sur la X2D réelle, aucun secret committé, Docker dev restauré propre.
+
+---
+
+**Vague précédente** : **« retours device iPhone (A1–A7) + B0 »**
 (PR #113→#121, `main` vert, dépôt = `main` seul). Les **7 retours du test réel iPhone** corrigés :
 - **A1** (#113) — *feedback des contrôles* : état « en cours » (roue + contrôle désactivé) sur le
   contrôle tapé jusqu'à confirmation (la X2D réelle reflète la commande MQTT en ~1 s). Suivi de
