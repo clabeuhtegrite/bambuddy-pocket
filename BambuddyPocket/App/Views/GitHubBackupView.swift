@@ -177,24 +177,13 @@ struct GitHubBackupView: View {
     private var placeholder: some View {
         if !model.hasLoaded {
             ProgressView().tint(DSColor.accent)
-        } else if model.isForbidden {
-            ContentUnavailableView {
-                Label("Admin login required", systemImage: "lock")
-            } description: {
-                Text("Admin login required — reconfigure this server with a username & password.")
-            }
-        } else if model.isUnavailable {
-            ContentUnavailableView {
-                Label("Not available", systemImage: "questionmark.circle")
-            } description: {
-                Text("Not available on this server.")
-            }
-        } else if showsLoadFailure, let error = model.loadError {
-            ContentUnavailableView {
-                Label("Couldn’t load remote backup", systemImage: "exclamationmark.triangle")
-            } description: {
-                Text(error)
-            }
+        } else {
+            CloudLoadFailureView(
+                loadFailureTitle: "Couldn’t load remote backup",
+                isForbidden: model.isForbidden,
+                isUnavailable: model.isUnavailable,
+                loadError: showsLoadFailure ? model.loadError : nil
+            )
         }
     }
 }

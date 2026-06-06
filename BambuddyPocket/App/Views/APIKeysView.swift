@@ -79,26 +79,18 @@ struct APIKeysView: View {
     private var placeholder: some View {
         if !model.hasLoaded, model.keys.isEmpty {
             ProgressView().tint(DSColor.accent)
-        } else if model.isForbidden {
-            ContentUnavailableView {
-                Label("Admin login required", systemImage: "lock")
-            } description: {
-                Text("Admin login required — reconfigure this server with a username & password.")
-            }
+        } else if model.isForbidden || (model.keys.isEmpty && model.loadError != nil) {
+            CloudLoadFailureView(
+                loadFailureTitle: "Couldn’t load API keys",
+                isForbidden: model.isForbidden,
+                loadError: model.loadError
+            )
         } else if model.keys.isEmpty {
-            if let error = model.loadError {
-                ContentUnavailableView {
-                    Label("Couldn’t load API keys", systemImage: "exclamationmark.triangle")
-                } description: {
-                    Text(error)
-                }
-            } else {
-                ContentUnavailableView(
-                    "No API keys",
-                    systemImage: "key",
-                    description: Text("Create a key to grant programmatic access.")
-                )
-            }
+            ContentUnavailableView(
+                "No API keys",
+                systemImage: "key",
+                description: Text("Create a key to grant programmatic access.")
+            )
         }
     }
 }
