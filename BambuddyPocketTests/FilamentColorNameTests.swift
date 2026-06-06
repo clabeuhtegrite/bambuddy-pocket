@@ -10,6 +10,7 @@ struct FilamentColorNameTests {
     private let green = String(localized: "color.green")
     private let blue = String(localized: "color.blue")
     private let yellow = String(localized: "color.yellow")
+    private let orange = String(localized: "color.orange")
     private let cyan = String(localized: "color.cyan")
     private let purple = String(localized: "color.purple")
     private let pink = String(localized: "color.pink")
@@ -58,7 +59,18 @@ struct FilamentColorNameTests {
 
     @Test("from(hex:) : brun (teinte orange/jaune à faible luminosité)")
     func fromBucketsBrown() {
+        // L'orange et le jaune **clairs** restent dans leur famille (la luminosité décide du brun).
+        #expect(FilamentColorName.from(hex: "FFA500") == orange)
+        #expect(FilamentColorName.from(hex: "FFFF00") == yellow)
+        // Les mêmes teintes assombries (sans tomber dans le noir) basculent en brun.
         #expect(FilamentColorName.from(hex: "5C3A1E") == brown)
+        #expect(FilamentColorName.from(hex: "7A4B1A") == brown)
+        // Garde-fou anti-assertion auto-référentielle : « brun » doit être une famille **distincte**
+        // (la clé `color.brown` est réellement présente au catalogue, pas un repli sur la clé brute).
+        #expect(brown != orange)
+        #expect(brown != yellow)
+        #expect(brown != red)
+        #expect(brown == String(localized: "color.brown"))
     }
 
     @Test("isBambuColorCode : détecte les codes internes (A06-D0) et épargne les noms lisibles")
