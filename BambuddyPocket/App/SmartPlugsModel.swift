@@ -36,6 +36,18 @@ final class SmartPlugsModel {
         hasLoaded = true
     }
 
+    /// Charge les prises puis rafraîchit leur état à cadence douce tant que la vue appelante est
+    /// affichée (à brancher sur `.task` : annulée à la disparition). Sert l'affichage de la
+    /// **puissance instantanée** sur les cartes d'accueil (retour device A7). Silencieux sans prise.
+    func observe(interval: Duration = .seconds(10)) async {
+        await load()
+        while !Task.isCancelled {
+            try? await Task.sleep(for: interval)
+            if Task.isCancelled { break }
+            await refreshStatuses()
+        }
+    }
+
     /// Recharge l'état temps réel de chaque prise (échecs individuels ignorés).
     func refreshStatuses() async {
         guard let client = try? connectionFactory.makeClient(for: server) else {

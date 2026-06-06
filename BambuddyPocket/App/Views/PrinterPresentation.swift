@@ -60,6 +60,14 @@ enum PrinterPresentation {
         return "\(Int(value.rounded()))°"
     }
 
+    /// Puissance instantanée d'une prise connectée, arrondie au watt (« 12 W »). Format localisé du
+    /// nombre (séparateurs de milliers selon la locale).
+    static func powerWatts(_ value: Double) -> String {
+        let watts = Int(value.rounded())
+        let formatted = watts.formatted(.number)
+        return String(localized: "\(formatted) W")
+    }
+
     /// Couple courant/cible (« 210° / 220° »).
     static func temperaturePair(_ current: Double?, _ target: Double?) -> String {
         guard let target, target > 0 else {
