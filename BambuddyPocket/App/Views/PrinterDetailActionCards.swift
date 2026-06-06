@@ -16,30 +16,45 @@ struct PrinterControlsCard: View {
     var body: some View {
         PrinterDetailCard("Controls", systemImage: "slider.horizontal.3") {
             if status.state == .pause {
-                actionButton("Resume", systemImage: "play.fill") {
+                actionButton("Resume", systemImage: "play.fill", running: pauseResumeRunning) {
                     Task { await model.resume(printer) }
                 }
             } else {
-                actionButton("Pause", systemImage: "pause.fill") {
+                actionButton("Pause", systemImage: "pause.fill", running: pauseResumeRunning) {
                     Task { await model.pause(printer) }
                 }
             }
-            actionButton("Stop", systemImage: "stop.fill", role: .destructive) {
+            actionButton(
+                "Stop",
+                systemImage: "stop.fill",
+                role: .destructive,
+                running: model.isRunning(.stop, for: printer)
+            ) {
                 confirmingStop = true
             }
             DSSeparator()
-            Picker("Speed", selection: speedBinding) {
-                Text("Silent").tag(1)
-                Text("Standard").tag(2)
-                Text("Sport").tag(3)
-                Text("Ludicrous").tag(4)
+            HStack {
+                Picker("Speed", selection: speedBinding) {
+                    Text("Silent").tag(1)
+                    Text("Standard").tag(2)
+                    Text("Sport").tag(3)
+                    Text("Ludicrous").tag(4)
+                }
+                .font(DSFont.body)
+                .disabled(model.isRunning(.speed, for: printer))
+                if model.isRunning(.speed, for: printer) {
+                    ProgressView().controlSize(.small)
+                }
             }
-            .font(DSFont.body)
             DSSeparator()
             actionButton("Skip objects", systemImage: "square.on.square.dashed") {
                 showingSkipObjects = true
             }
         }
+    }
+
+    private var pauseResumeRunning: Bool {
+        model.isRunning(.pauseResume, for: printer)
     }
 
     private var speedBinding: Binding<Int> {
@@ -53,15 +68,22 @@ struct PrinterControlsCard: View {
         _ titleKey: LocalizedStringKey,
         systemImage: String,
         role: ButtonRole? = nil,
+        running: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
         Button(role: role, action: action) {
-            Label(titleKey, systemImage: systemImage)
-                .font(DSFont.body)
-                .foregroundStyle(role == .destructive ? DSColor.statusError : DSColor.accent)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                Label(titleKey, systemImage: systemImage)
+                    .font(DSFont.body)
+                    .foregroundStyle(role == .destructive ? DSColor.statusError : DSColor.accent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if running {
+                    ProgressView().controlSize(.small)
+                }
+            }
         }
         .buttonStyle(.plain)
+        .disabled(running)
     }
 }
 
@@ -76,20 +98,42 @@ struct PrinterDeviceCard: View {
     var body: some View {
         PrinterDetailCard("Device", systemImage: "printer") {
             if status?.connected == true {
-                Toggle("Chamber light", isOn: lightBinding)
-                    .font(DSFont.body)
+                HStack {
+                    Toggle("Chamber light", isOn: lightBinding)
+                        .font(DSFont.body)
+                        .disabled(model.isRunning(.light, for: printer))
+                    if model.isRunning(.light, for: printer) {
+                        ProgressView().controlSize(.small)
+                    }
+                }
                 DSSeparator()
-                actionButton("Unload filament", systemImage: "arrow.up.bin") {
+                actionButton(
+                    "Unload filament",
+                    systemImage: "arrow.up.bin",
+                    running: model.isRunning(.unloadFilament, for: printer)
+                ) {
                     Task { await model.unloadFilament(printer) }
                 }
-                actionButton("Clear plate", systemImage: "checkmark.rectangle") {
+                actionButton(
+                    "Clear plate",
+                    systemImage: "checkmark.rectangle",
+                    running: model.isRunning(.clearPlate, for: printer)
+                ) {
                     Task { await model.clearPlate(printer) }
                 }
-                actionButton("Disconnect", systemImage: "wifi.slash") {
+                actionButton(
+                    "Disconnect",
+                    systemImage: "wifi.slash",
+                    running: model.isRunning(.disconnect, for: printer)
+                ) {
                     Task { await model.disconnect(printer) }
                 }
             } else {
-                actionButton("Connect", systemImage: "wifi") {
+                actionButton(
+                    "Connect",
+                    systemImage: "wifi",
+                    running: model.isRunning(.connect, for: printer)
+                ) {
                     Task { await model.connect(printer) }
                 }
             }
@@ -106,15 +150,22 @@ struct PrinterDeviceCard: View {
     private func actionButton(
         _ titleKey: LocalizedStringKey,
         systemImage: String,
+        running: Bool = false,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            Label(titleKey, systemImage: systemImage)
-                .font(DSFont.body)
-                .foregroundStyle(DSColor.accent)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+                Label(titleKey, systemImage: systemImage)
+                    .font(DSFont.body)
+                    .foregroundStyle(DSColor.accent)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                if running {
+                    ProgressView().controlSize(.small)
+                }
+            }
         }
         .buttonStyle(.plain)
+        .disabled(running)
     }
 }
 
@@ -132,12 +183,18 @@ struct PrinterMaintenanceCard: View {
             Button {
                 Task { await model.homeAxes(printer) }
             } label: {
-                Label("Home axes", systemImage: "house")
-                    .font(DSFont.body)
-                    .foregroundStyle(DSColor.accent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    Label("Home axes", systemImage: "house")
+                        .font(DSFont.body)
+                        .foregroundStyle(DSColor.accent)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if model.isRunning(.homeAxes, for: printer) {
+                        ProgressView().controlSize(.small)
+                    }
+                }
             }
             .buttonStyle(.plain)
+            .disabled(model.isRunning(.homeAxes, for: printer))
             Button {
                 showingCalibration = true
             } label: {
@@ -193,11 +250,17 @@ struct PrinterAirductPicker: View {
     let current: Int
 
     var body: some View {
-        Picker("Airduct", selection: binding) {
-            Text("Cooling").tag("cooling")
-            Text("Heating").tag("heating")
+        HStack {
+            Picker("Airduct", selection: binding) {
+                Text("Cooling").tag("cooling")
+                Text("Heating").tag("heating")
+            }
+            .font(DSFont.body)
+            .disabled(model.isRunning(.airduct, for: printer))
+            if model.isRunning(.airduct, for: printer) {
+                ProgressView().controlSize(.small)
+            }
         }
-        .font(DSFont.body)
     }
 
     private var binding: Binding<String> {
@@ -226,11 +289,18 @@ struct PrinterPrintOptionsCard: View {
     }
 
     private func toggle(_ titleKey: LocalizedStringKey, module: String, on: Bool?) -> some View {
-        Toggle(titleKey, isOn: Binding(
-            get: { on ?? false },
-            set: { newValue in Task { await model.setPrintOption(printer, moduleName: module, enabled: newValue) } }
-        ))
-        .font(DSFont.body)
+        let running = model.isRunning(.printOption(module), for: printer)
+        return HStack {
+            Toggle(titleKey, isOn: Binding(
+                get: { on ?? false },
+                set: { newValue in Task { await model.setPrintOption(printer, moduleName: module, enabled: newValue) } }
+            ))
+            .font(DSFont.body)
+            .disabled(running)
+            if running {
+                ProgressView().controlSize(.small)
+            }
+        }
     }
 }
 
@@ -252,12 +322,18 @@ struct PrinterErrorsCard: View {
             Button {
                 Task { await model.clearErrors(printer) }
             } label: {
-                Label("Clear errors", systemImage: "xmark.circle")
-                    .font(DSFont.body)
-                    .foregroundStyle(DSColor.accent)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                HStack {
+                    Label("Clear errors", systemImage: "xmark.circle")
+                        .font(DSFont.body)
+                        .foregroundStyle(DSColor.accent)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if model.isRunning(.clearErrors, for: printer) {
+                        ProgressView().controlSize(.small)
+                    }
+                }
             }
             .buttonStyle(.plain)
+            .disabled(model.isRunning(.clearErrors, for: printer))
         }
     }
 }

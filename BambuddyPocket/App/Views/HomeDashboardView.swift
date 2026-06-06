@@ -135,6 +135,8 @@ struct HomeDashboardView: View {
             HeroPrintCard(
                 snapshot: hero,
                 onOpenDetail: { heroDetailPrinter = hero.printer },
+                pauseResumeRunning: printers.isRunning(.pauseResume, for: hero.printer),
+                stopRunning: printers.isRunning(.stop, for: hero.printer),
                 onAction: { handle($0, for: hero.printer) }
             )
         }
@@ -156,18 +158,7 @@ struct HomeDashboardView: View {
 
     /// Repère affiché en disposition Focus quand aucune impression n'est en cours.
     private var idlePlaceholder: some View {
-        VStack(spacing: DSSpacing.sm) {
-            Image(systemName: "printer")
-                .font(.largeTitle)
-                .foregroundStyle(DSColor.textMuted)
-            Text("No active print")
-                .font(DSFont.body)
-                .foregroundStyle(DSColor.textSecondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, DSSpacing.xl)
-        .dsCardSurface()
-        .accessibilityElement(children: .combine)
+        HomeIdlePlaceholder()
     }
 
     /// Sous-titre sous le grand titre : nombre d'imprimantes et d'impressions en cours.
@@ -287,6 +278,24 @@ struct HomeDashboardView: View {
                 await printers.stop(printer)
             }
         }
+    }
+}
+
+/// Repère affiché en disposition Focus quand aucune impression n'est en cours.
+struct HomeIdlePlaceholder: View {
+    var body: some View {
+        VStack(spacing: DSSpacing.sm) {
+            Image(systemName: "printer")
+                .font(.largeTitle)
+                .foregroundStyle(DSColor.textMuted)
+            Text("No active print")
+                .font(DSFont.body)
+                .foregroundStyle(DSColor.textSecondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, DSSpacing.xl)
+        .dsCardSurface()
+        .accessibilityElement(children: .combine)
     }
 }
 

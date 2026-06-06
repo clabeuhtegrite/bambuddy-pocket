@@ -17,10 +17,22 @@ struct HeroPrintCard: View {
     let onAction: (Action) -> Void
     /// Ouvre le détail de l'imprimante (header tapotable), `nil` si non disponible.
     var onOpenDetail: (() -> Void)?
+    /// Une commande pause/reprise est-elle en vol ? (roue + bouton désactivé, retour device A1).
+    var pauseResumeRunning = false
+    /// Une commande d'arrêt est-elle en vol ?
+    var stopRunning = false
 
-    init(snapshot: PrinterSnapshot, onOpenDetail: (() -> Void)? = nil, onAction: @escaping (Action) -> Void) {
+    init(
+        snapshot: PrinterSnapshot,
+        onOpenDetail: (() -> Void)? = nil,
+        pauseResumeRunning: Bool = false,
+        stopRunning: Bool = false,
+        onAction: @escaping (Action) -> Void
+    ) {
         self.snapshot = snapshot
         self.onOpenDetail = onOpenDetail
+        self.pauseResumeRunning = pauseResumeRunning
+        self.stopRunning = stopRunning
         self.onAction = onAction
     }
 
@@ -126,15 +138,25 @@ struct HeroPrintCard: View {
             Button {
                 onAction(.pauseOrResume)
             } label: {
-                Label(isPaused ? "Resume" : "Pause", systemImage: isPaused ? "play.fill" : "pause.fill")
+                if pauseResumeRunning {
+                    ProgressView().controlSize(.small).frame(maxWidth: .infinity)
+                } else {
+                    Label(isPaused ? "Resume" : "Pause", systemImage: isPaused ? "play.fill" : "pause.fill")
+                }
             }
             .buttonStyle(.dsPrimary)
+            .disabled(pauseResumeRunning)
             Button {
                 onAction(.stop)
             } label: {
-                Label("Stop", systemImage: "stop.fill")
+                if stopRunning {
+                    ProgressView().controlSize(.small).frame(maxWidth: .infinity)
+                } else {
+                    Label("Stop", systemImage: "stop.fill")
+                }
             }
             .buttonStyle(.dsSecondary)
+            .disabled(stopRunning)
         }
     }
 

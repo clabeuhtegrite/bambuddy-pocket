@@ -7,6 +7,28 @@ import Observation
 /// View-model d'un serveur : liste des imprimantes (REST) + état temps réel partagé via le centre
 /// de notifications persistant du serveur.
 /// `@MainActor` : toutes les mutations d'état se font sur le thread principal.
+/// Action de contrôle identifiable, pour afficher un **état « en cours »** sur le contrôle précis
+/// tapé (roue/désactivation) tant que la commande n'est pas confirmée par le re-fetch. Sur la X2D
+/// réelle la commande MQTT met ~1 s à se refléter : sans cet état, l'utilisateur subit un long
+/// silence entre le tap et la confirmation (retour device A1).
+enum PrinterControlAction: Hashable {
+    case pauseResume
+    case stop
+    case light
+    case speed
+    case printOption(String)
+    case airduct
+    case unloadFilament
+    case loadFilament
+    case clearPlate
+    case homeAxes
+    case connect
+    case disconnect
+    case calibrate
+    case clearErrors
+    case drying
+}
+
 @MainActor
 @Observable
 final class PrinterListModel {
@@ -14,6 +36,11 @@ final class PrinterListModel {
     private(set) var hasLoaded = false
     var loadError: String?
     var controlError: String?
+
+    /// Actions de contrôle actuellement en vol, par identifiant d'imprimante. Une action y reste
+    /// du tap jusqu'à la fin du re-fetch de confirmation (`runControl`). Les vues interrogent
+    /// `isRunning(_:for:)` pour afficher une roue / désactiver le contrôle concerné.
+    private(set) var inFlightActions: [Int: Set<PrinterControlAction>] = [:]
 
     private let server: ServerConfiguration
     private let connectionFactory: ServerConnectionFactory
@@ -93,19 +120,19 @@ final class PrinterListModel {
     // MARK: Contrôles d'impression
 
     func pause(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.pausePrint(id: printer.id) }
+        await runControl(for: printer, action: .pauseResume) { try await $0.pausePrint(id: printer.id) }
     }
 
     func resume(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.resumePrint(id: printer.id) }
+        await runControl(for: printer, action: .pauseResume) { try await $0.resumePrint(id: printer.id) }
     }
 
     func stop(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.stopPrint(id: printer.id) }
+        await runControl(for: printer, action: .stop) { try await $0.stopPrint(id: printer.id) }
     }
 
     func clearErrors(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.clearHMS(id: printer.id) }
+        await runControl(for: printer, action: .clearErrors) { try await $0.clearHMS(id: printer.id) }
     }
 
     func setChamberLight(_ printer: Printer, on: Bool) async {
@@ -115,23 +142,23 @@ final class PrinterListModel {
         var optimistic = PrinterStatus()
         optimistic.chamberLight = on
         notificationCenter.applyOptimistic(optimistic, into: printer.id)
-        await runControl(for: printer) { try await $0.setChamberLight(id: printer.id, on: on) }
+        await runControl(for: printer, action: .light) { try await $0.setChamberLight(id: printer.id, on: on) }
     }
 
     func setSpeed(_ printer: Printer, mode: Int) async {
-        await runControl(for: printer) { try await $0.setPrintSpeed(id: printer.id, mode: mode) }
+        await runControl(for: printer, action: .speed) { try await $0.setPrintSpeed(id: printer.id, mode: mode) }
     }
 
     /// Active/désactive une option d'impression / détection IA.
     func setPrintOption(_ printer: Printer, moduleName: String, enabled: Bool) async {
-        await runControl(for: printer) {
+        await runControl(for: printer, action: .printOption(moduleName)) {
             try await $0.setPrintOption(id: printer.id, moduleName: moduleName, enabled: enabled)
         }
     }
 
     /// Règle le mode du conduit d'air (`cooling`/`heating`).
     func setAirductMode(_ printer: Printer, mode: String) async {
-        await runControl(for: printer) { try await $0.setAirductMode(id: printer.id, mode: mode) }
+        await runControl(for: printer, action: .airduct) { try await $0.setAirductMode(id: printer.id, mode: mode) }
     }
 
     /// Ajuste l'écart buse-plateau d'une distance relative (mm).
@@ -140,31 +167,31 @@ final class PrinterListModel {
     }
 
     func unloadFilament(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.amsUnload(id: printer.id) }
+        await runControl(for: printer, action: .unloadFilament) { try await $0.amsUnload(id: printer.id) }
     }
 
     func loadFilament(_ printer: Printer, trayID: Int) async {
-        await runControl(for: printer) { try await $0.amsLoad(id: printer.id, trayID: trayID) }
+        await runControl(for: printer, action: .loadFilament) { try await $0.amsLoad(id: printer.id, trayID: trayID) }
     }
 
     func clearPlate(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.clearPlate(id: printer.id) }
+        await runControl(for: printer, action: .clearPlate) { try await $0.clearPlate(id: printer.id) }
     }
 
     func homeAxes(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.homeAxes(id: printer.id) }
+        await runControl(for: printer, action: .homeAxes) { try await $0.homeAxes(id: printer.id) }
     }
 
     func connect(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.connectPrinter(id: printer.id) }
+        await runControl(for: printer, action: .connect) { try await $0.connectPrinter(id: printer.id) }
     }
 
     func disconnect(_ printer: Printer) async {
-        await runControl(for: printer) { try await $0.disconnectPrinter(id: printer.id) }
+        await runControl(for: printer, action: .disconnect) { try await $0.disconnectPrinter(id: printer.id) }
     }
 
     func calibrate(_ printer: Printer, options: CalibrationOptions) async {
-        await runControl(for: printer) { try await $0.calibrate(id: printer.id, options: options) }
+        await runControl(for: printer, action: .calibrate) { try await $0.calibrate(id: printer.id, options: options) }
     }
 
     func skipObjects(_ printer: Printer, objectIDs: [Int]) async {
@@ -223,11 +250,11 @@ final class PrinterListModel {
     }
 
     func startDrying(_ printer: Printer, amsID: Int) async {
-        await runControl(for: printer) { try await $0.startDrying(id: printer.id, amsID: amsID) }
+        await runControl(for: printer, action: .drying) { try await $0.startDrying(id: printer.id, amsID: amsID) }
     }
 
     func stopDrying(_ printer: Printer, amsID: Int) async {
-        await runControl(for: printer) { try await $0.stopDrying(id: printer.id, amsID: amsID) }
+        await runControl(for: printer, action: .drying) { try await $0.stopDrying(id: printer.id, amsID: amsID) }
     }
 
     /// Demande un jeton de flux caméra réutilisable (`POST /printers/camera/stream-token`).
@@ -296,11 +323,26 @@ final class PrinterListModel {
     /// restait figé jusqu'à un redémarrage de l'app (et un re-clic renvoyait 409).
     private func runControl(
         for printer: Printer,
-        _ action: (RESTClient) async throws -> Void
+        action controlAction: PrinterControlAction? = nil,
+        _ request: (RESTClient) async throws -> Void
     ) async {
+        // Marque l'action « en vol » dès le tap → l'UI affiche une roue / désactive le contrôle
+        // concerné, sans attendre la confirmation MQTT (~1 s sur la X2D réelle). L'entrée est
+        // retirée après le re-fetch de confirmation (succès, 409 ou erreur).
+        if let controlAction {
+            inFlightActions[printer.id, default: []].insert(controlAction)
+        }
+        defer {
+            if let controlAction {
+                inFlightActions[printer.id]?.remove(controlAction)
+                if inFlightActions[printer.id]?.isEmpty == true {
+                    inFlightActions[printer.id] = nil
+                }
+            }
+        }
         do {
             let client = try connectionFactory.makeClient(for: server)
-            try await action(client)
+            try await request(client)
             controlError = nil
         } catch let error as APIError where error.isConflict {
             // 409 : l'état désiré est déjà atteint → succès du point de vue utilisateur.
@@ -317,5 +359,19 @@ final class PrinterListModel {
         // Source unique de la traduction des erreurs (cf. `ErrorMessage`) : un seul mapping
         // 401/403/404 partagé par tous les view-models.
         ErrorMessage.text(for: error)
+    }
+}
+
+// MARK: - État « action en vol » (retour device A1)
+
+extension PrinterListModel {
+    /// Une action donnée est-elle en cours pour cette imprimante ?
+    func isRunning(_ action: PrinterControlAction, for printer: Printer) -> Bool {
+        inFlightActions[printer.id]?.contains(action) ?? false
+    }
+
+    /// Une **quelconque** action est-elle en cours pour cette imprimante (carte d'accueil) ?
+    func hasRunningAction(for printerID: Int) -> Bool {
+        !(inFlightActions[printerID]?.isEmpty ?? true)
     }
 }
