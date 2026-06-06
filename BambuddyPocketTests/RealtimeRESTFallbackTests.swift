@@ -86,6 +86,55 @@ struct RealtimeRESTFallbackTests {
         #expect(status.progress == 42)
     }
 
+    /// **Retour device A2** : dès le **premier statut frais** obtenu par REST, le badge quitte
+    /// « Connexion… » (`.connecting`) pour « En direct » sain (`.restMode`) — sans attendre que le
+    /// handshake WebSocket aboutisse ou échoue (~15 s).
+    @Test("Le premier statut REST frais promeut le badge connecting → restMode")
+    func firstFreshRESTPromotesBadge() async throws {
+        StubURLProtocol.reset()
+        defer { StubURLProtocol.reset() }
+        StubURLProtocol.responses["/api/v1/printers/"] = (
+            200,
+            Data(#"[{"id":1,"name":"X2D","model":"X2D"}]"#.utf8)
+        )
+        StubURLProtocol.responses["/api/v1/printers/1/status"] = (
+            200,
+            Data(#"{"id":1,"name":"X2D","connected":true,"state":"RUNNING"}"#.utf8)
+        )
+
+        let environment = AppEnvironment.inMemory(session: stubSession())
+        let url = try #require(URL(string: "http://host:8000"))
+        let server = try ServerConfiguration(label: "Prof", baseURL: url)
+        let center = ServerNotificationCenter(
+            server: server,
+            connectionFactory: environment.connectionFactory
+        )
+
+        #expect(center.realtimeState == .connecting)
+        await center.refreshFromREST()
+        #expect(center.realtimeState == .restMode)
+    }
+
+    /// Sans statut frais (réseau en échec), le badge **ne doit pas** être promu : il reste en
+    /// « Connexion… » (on ne ment pas sur la disponibilité des données).
+    @Test("Sans statut frais, le badge reste connecting")
+    func noPromotionWithoutFreshStatus() async throws {
+        StubURLProtocol.reset()
+        defer { StubURLProtocol.reset() }
+        // Aucune réponse enregistrée → 404 partout, donc aucun statut frais.
+        let environment = AppEnvironment.inMemory(session: stubSession())
+        let url = try #require(URL(string: "http://host:8000"))
+        let server = try ServerConfiguration(label: "Prof", baseURL: url)
+        let center = ServerNotificationCenter(
+            server: server,
+            connectionFactory: environment.connectionFactory
+        )
+
+        #expect(center.realtimeState == .connecting)
+        await center.refreshFromREST()
+        #expect(center.realtimeState == .connecting)
+    }
+
     /// Le repli ne doit jamais lever ni planter quand le réseau échoue : l'état reste simplement
     /// vide (l'UI affichera « Inconnu », sans bannière d'erreur trompeuse).
     @Test("refreshFromREST est silencieux en cas d'échec réseau")
