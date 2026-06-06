@@ -3,8 +3,22 @@
 > **But** : permettre une reprise propre (par moi-même après un blocage quota, ou par le
 > superviseur externe). Mis à jour et commité régulièrement. Voir [`ROADMAP.md`](ROADMAP.md).
 
-**Dernière mise à jour** : 2026-06-06 — Vague **« clôture audit B1 (perf) + B2 (polish) »**
-(PR #123→#135, `main` vert, dépôt = `main` seul). **Audit clos.**
+**Dernière mise à jour** : 2026-06-06 — Vague **« clôture v0.1 »** (PR #137→#139, `main` vert,
+dépôt = `main` seul).
+
+**Clôture v0.1** :
+- **#1** (#137) — *rattachement d'archives à un projet* : depuis le détail projet, section
+  **Archives** (liste `GET /projects/{id}/archives`), ajout par sélecteur multiple paginé
+  (`POST …/add-archives`) et détachement au swipe (`POST …/remove-archives`). Contrat vérifié de
+  bout en bout sur le Docker dev (create → add → list → remove → cleanup) ; tests modèle + i18n
+  EN/FR/ES/DE. Le rattachement d'un **job de file** (`add-queue`) reste le petit reste non livré.
+- **#2** (#138) — *i18n « Built with Bambuddy »* : le crédit/légal d'`AboutView` était concaténé
+  (`+`) donc non extrait par le String Catalog → collapse en un littéral unique localisable +
+  traductions FR/ES/DE. Liens et attributions OSS inchangés.
+- **doc** (#139) — `ROADMAP.md`/`PROGRESS.md` réalignés sur le code livré (login user/pass + 2FA
+  email #116, slicing #108, iPad #109, grille variante C #90, pagination #110, caméra `?token=`,
+  MakerWorld/Cloud/firmware #88/#89, lancement/réimpression #94/#103, audit perf/polish #123→#135).
+- **présentation** — `README.md` réécrit en présentation v0.1 mûre + description/topics GitHub à jour.
 
 **B1 — performance temps réel & réseau** :
 - **B1 #1** (#123) — *coalescing des sondages de statut* : un `GET /printers/{id}/status` trop récent
