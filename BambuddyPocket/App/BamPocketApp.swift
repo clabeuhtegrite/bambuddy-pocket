@@ -59,15 +59,19 @@ private enum UITestSeed {
     /// pointant sur l'hôte synthétique `demo.local`, dont toutes les requêtes sont servies par
     /// `DemoURLProtocol` (fixtures locales). Aucun secret, aucun backend, aucune imprimante réelle.
     static func seedDemoIfRequested() {
-        guard DemoMode.isEnabled, let url = URL(string: "http://\(DemoMode.host)") else { return }
-        let server = ServerConfiguration(
-            label: "Atelier",
-            baseURL: url,
-            authMethod: .none,
-            usesCloudflareAccess: false,
-            allowsInsecureLocalHTTP: true
-        )
-        try? UserDefaultsServerStore().save([server])
+        // Le mode démo (fixtures locales, captures marketing) n'existe qu'en Debug ; en Release,
+        // `DemoMode` est compilé hors binaire et cette amorce est un no-op.
+        #if DEBUG
+            guard DemoMode.isEnabled, let url = URL(string: "http://\(DemoMode.host)") else { return }
+            let server = ServerConfiguration(
+                label: "Atelier",
+                baseURL: url,
+                authMethod: .none,
+                usesCloudflareAccess: false,
+                allowsInsecureLocalHTTP: true
+            )
+            try? UserDefaultsServerStore().save([server])
+        #endif
     }
 
     static func seedIfRequested() {
