@@ -55,11 +55,17 @@ struct Model3DScreen: View {
             if let payload {
                 Model3DView(payload: payload)
                     .ignoresSafeArea(edges: .bottom)
+                    // Le canvas WebGL est invisible à VoiceOver : on expose un élément unique
+                    // décrivant l'aperçu interactif.
+                    .accessibilityElement()
+                    .accessibilityLabel(Text("3D preview of \(archive.displayName)"))
+                    .accessibilityHint(Text("Interactive 3D viewer. Rotate, pan and zoom by touch."))
             } else if failed {
                 ContentUnavailableView("3D preview unavailable", systemImage: "cube.transparent")
             } else {
                 ProgressView()
                     .tint(DSColor.accent)
+                    .accessibilityLabel(Text("Loading 3D preview"))
             }
         }
         .navigationTitle("3D model")

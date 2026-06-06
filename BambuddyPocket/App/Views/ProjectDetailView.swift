@@ -24,7 +24,7 @@ struct ProjectDetailView: View {
             Section("Overview") {
                 LabeledContent("Status") {
                     DSStatusBadge(
-                        current.status.capitalized,
+                        StatusPresentation.label(current.status),
                         intent: DSStatusIntent.forRawStatus(current.status),
                         showsDot: false
                     )

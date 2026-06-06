@@ -144,7 +144,7 @@ private struct ArchiveRow: View {
                     .lineLimit(1)
                 Spacer()
                 DSStatusBadge(
-                    archive.status.capitalized,
+                    StatusPresentation.label(archive.status),
                     intent: DSStatusIntent.forRawStatus(archive.status),
                     showsDot: false
                 )
@@ -167,5 +167,23 @@ private struct ArchiveRow: View {
             .foregroundStyle(DSColor.textSecondary)
         }
         .padding(.vertical, DSSpacing.xs)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(accessibilityLabel))
+    }
+
+    /// Libellé VoiceOver combiné : nom, statut, favori, durée et filament en une phrase cohérente.
+    private var accessibilityLabel: String {
+        var parts: [String] = [archive.displayName, StatusPresentation.label(archive.status)]
+        if archive.isFavorite == true {
+            parts.append(String(localized: "Favorite"))
+        }
+        let elapsed = archive.printTimeSeconds ?? archive.actualTimeSeconds
+        if let duration = ArchivePresentation.duration(seconds: elapsed) {
+            parts.append(duration)
+        }
+        if let filament = ArchivePresentation.filament(grams: archive.filamentUsedGrams) {
+            parts.append(filament)
+        }
+        return parts.joined(separator: ", ")
     }
 }

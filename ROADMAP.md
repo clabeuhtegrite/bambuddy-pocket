@@ -144,18 +144,27 @@ Nuances par modèle + décodage tolérant + UI adaptative + effets de bord. Sour
   - ⬜ **Variante C — grille flotte** (maquette `06-accueil-C-grille.png`) : disposition alternative
     de l'Accueil en grille de tuiles imprimantes pour parcs multi-machines. **Non implémentée** —
     amélioration future (A retenue comme défaut ; C envisageable en option/iPad).
-  - ⬜ **Données de revue riches** : les captures actuelles montrent l'X2D **au repos** (Docker dev
-    idle, sans AMS ni impression active) → la carte hero et le strip AMS restent en état vide. Pour
-    coller pleinement aux maquettes, piloter la VP en impression active (gcode + flux MQTT).
+  - ✅ **Données de revue riches** (#111) : ajout d'un **mode démo intégré** (`-uitest-demo`,
+    `BambuddyPocket/App/Demo/`) — un `URLProtocol` local sert des fixtures synthétiques (imprimante
+    en cours/au repos, AMS plein, archives, file, bibliothèque, G-code d'aperçu) **sans backend ni
+    imprimante réelle**. Remplace le besoin de piloter une VP : les captures phares affichent un
+    parc actif. Le Docker dev (X2D réel) reste en lecture seule.
+- ✅ **Captures marketing App Store + fiche** (#111) : 5 écrans phares (Accueil, détail imprimante,
+  Archives, viewer 3D, File) en **fr/en**, sombre, **6.9" (1320×2868)** →
+  `docs/appstore/screenshots/{fr,en}/` (`AppStoreScreenshotTests`, `SCREENSHOT_CAPTURE=1`) ; fiche
+  prête à coller → `docs/appstore/listing.md` (descriptions FR/EN, mots-clés, **4+**, catégorie,
+  notes v0.1, App Privacy). Jeu 6.5"/6.7" optionnel (App Store Connect accepte le 6.9").
 - 🟦 Tests **XCUITest sur chemins critiques** (`CriticalPathUITests`, exécutés en CI, sans backend) :
   ajout d'un serveur via le formulaire → détail → navigation vers Imprimantes → centre de
-  notifications ; écran À propos ; annulation d'ajout. Captures (`ScreenshotTests`) isolées
-  derrière `UITEST_LIVE=1` (skip en CI). ⬜ étendre l'unitaire encore. Build sans warning.
+  notifications ; écran À propos ; annulation d'ajout. Captures (`ScreenshotTests`,
+  `AppStoreScreenshotTests`) isolées derrière `UITEST_LIVE=1` / `SCREENSHOT_CAPTURE=1` (skip en CI).
+  ✅ unitaire étendu (`StatusPresentationTests`, `DemoFixturesTests` — #111). Build sans warning.
 - 🟦 **Icône d'app** (✅ DA BamPocket : « B » sombre dans une pastille verte sur fond `#1A1A1A`,
   générée par script reproductible Core Graphics, toutes tailles + master 1024) et **launch
   screen** (✅ logo centré + fond sombre via `UILaunchScreen`), ✅ **mentions open source**
   (écran À propos complet : licence AGPL + lien, attribution Bambuddy + lien, composants embarqués
-  three.js/examples/fflate/Inter avec licences et liens) ; ⬜ captures, classification d'âge.
+  three.js/examples/fflate/Inter avec licences et liens) ; ✅ **captures** App Store + ✅
+  **classification d'âge** (4+, justifiée dans `docs/appstore/listing.md`) — #111.
 - 🟦 **Privacy manifest** (`PrivacyInfo.xcprivacy`) : aucun tracking, aucune collecte ; **API à
   raison requise** déclarée (UserDefaults `CA92.1`). Clés Info.plist runtime :
   `NSLocalNetworkUsageDescription` (connexions directes aux serveurs/imprimantes locaux). Pas de

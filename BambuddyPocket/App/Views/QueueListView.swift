@@ -230,7 +230,7 @@ private struct QueueRow: View {
             Spacer()
             VStack(alignment: .trailing, spacing: DSSpacing.xs) {
                 DSStatusBadge(
-                    item.status.capitalized,
+                    StatusPresentation.label(item.status),
                     intent: DSStatusIntent.forRawStatus(item.status),
                     showsDot: false
                 )
@@ -243,6 +243,28 @@ private struct QueueRow: View {
             }
         }
         .padding(.vertical, DSSpacing.xs)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(accessibilityLabel))
+    }
+
+    /// Libellé VoiceOver combiné : position, nom, imprimante, statut, planification.
+    private var accessibilityLabel: String {
+        var parts: [String] = []
+        if let position = item.displayPosition {
+            parts.append(String(localized: "Position \(position)"))
+        }
+        parts.append(item.displayName)
+        if let printer = item.printerName {
+            parts.append(printer)
+        }
+        parts.append(StatusPresentation.label(item.status))
+        if let scheduled = QueuePresentation.scheduledLabel(item.scheduledTime) {
+            parts.append(scheduled)
+        }
+        if item.manualStart == true {
+            parts.append(String(localized: "Manual start"))
+        }
+        return parts.joined(separator: ", ")
     }
 }
 
