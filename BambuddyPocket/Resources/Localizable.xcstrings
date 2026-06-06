@@ -6075,6 +6075,50 @@
         }
       }
     },
+    "Enter the code from your authenticator app.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geben Sie den Code aus Ihrer Authenticator-App ein."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduce el código de tu aplicación de autenticación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisissez le code de votre application d’authentification."
+          }
+        }
+      }
+    },
+    "Enter the code we emailed you.": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geben Sie den per E-Mail gesendeten Code ein."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduce el código que te enviamos por correo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisissez le code reçu par e-mail."
+          }
+        }
+      }
+    },
     "Environment": {
       "localizations": {
         "de": {
@@ -12692,6 +12736,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Exiger le succès précédent"
+          }
+        }
+      }
+    },
+    "Resend code": {
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code erneut senden"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reenviar código"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renvoyer le code"
           }
         }
       }

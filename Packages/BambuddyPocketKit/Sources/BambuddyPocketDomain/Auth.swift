@@ -122,6 +122,28 @@ public struct LoginResponse: Decodable, Sendable, Hashable {
     }
 }
 
+/// Déclenchement de l'envoi d'un OTP par email (`POST /auth/2fa/email/send`). Requiert le
+/// `pre_auth_token` obtenu à l'étape identifiants.
+public struct EmailOTPSendRequest: Encodable, Sendable, Hashable {
+    public var preAuthToken: String
+
+    public init(preAuthToken: String) {
+        self.preAuthToken = preAuthToken
+    }
+}
+
+/// Réponse de `POST /auth/2fa/email/send`. Le serveur **consomme** l'ancien `pre_auth_token` et en
+/// renvoie un **frais** à utiliser pour l'étape de vérification (`POST /auth/2fa/verify`).
+public struct EmailOTPSendResponse: Decodable, Sendable, Hashable {
+    public var message: String?
+    public var preAuthToken: String?
+
+    public init(message: String? = nil, preAuthToken: String? = nil) {
+        self.message = message
+        self.preAuthToken = preAuthToken
+    }
+}
+
 /// Vérification du second facteur (`POST /auth/2fa/verify`).
 public struct TwoFAVerifyRequest: Codable, Sendable, Hashable {
     public var preAuthToken: String

@@ -983,6 +983,21 @@ struct MockNetworkingTests {
         #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/login")
     }
 
+    @Test("sendEmailOTP poste le pre_auth_token sur /auth/2fa/email/send et décode le jeton frais")
+    func sendsEmailOTP() async throws {
+        MockURLProtocol.reset()
+        respond(status: 200, json: #"{"message":"Code sent to your email address","pre_auth_token":"fresh-tok"}"#)
+        let client = try makeClient()
+        let response = try await client.sendEmailOTP(preAuthToken: "old-tok")
+        #expect(response.preAuthToken == "fresh-tok")
+        let request = try #require(MockURLProtocol.lastRequest)
+        #expect(request.httpMethod == "POST")
+        #expect(request.url?.absoluteString == "https://host.example.com/api/v1/auth/2fa/email/send")
+        let body = try #require(MockURLProtocol.lastBody)
+        let json = try #require(try JSONSerialization.jsonObject(with: body) as? [String: Any])
+        #expect(json["pre_auth_token"] as? String == "old-tok")
+    }
+
     @Test("clearPlate poste sur /printers/{id}/clear-plate")
     func clearsPlate() async throws {
         MockURLProtocol.reset()
