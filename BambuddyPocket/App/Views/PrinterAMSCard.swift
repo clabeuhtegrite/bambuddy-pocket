@@ -83,7 +83,9 @@ struct PrinterAMSCard: View {
 
     @ViewBuilder
     private var dryingButton: some View {
-        if isDrying {
+        if model.isRunning(.drying, for: printer) {
+            ProgressView().controlSize(.small)
+        } else if isDrying {
             Button {
                 Task { await model.stopDrying(printer, amsID: unit.id) }
             } label: {

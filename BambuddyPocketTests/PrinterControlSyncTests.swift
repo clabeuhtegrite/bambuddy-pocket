@@ -117,6 +117,36 @@ struct PrinterControlSyncTests {
         #expect(ControlStubURLProtocol.hits["/api/v1/printers/1/status"] == 1)
     }
 
+    /// L'état « action en vol » (retour device A1) est posé pendant la commande puis **toujours
+    /// retiré** à la fin — succès comme erreur — pour que la roue/désactivation disparaisse.
+    @Test("L'état « en vol » est posé puis retiré après l'action (succès et erreur)")
+    func inFlightStateIsClearedAfterAction() async throws {
+        ControlStubURLProtocol.reset()
+        defer { ControlStubURLProtocol.reset() }
+        ControlStubURLProtocol.responses["/api/v1/printers/1/chamber-light"] = (200, Data("{}".utf8))
+        ControlStubURLProtocol.responses["/api/v1/printers/1/print/pause"] = (500, Data("{}".utf8))
+        ControlStubURLProtocol.responses["/api/v1/printers/1/status"] = (
+            200,
+            Data(#"{"id":1,"name":"X2D","connected":true}"#.utf8)
+        )
+
+        let model = try makeModel(session: controlStubSession())
+        let printer = Printer(id: 1, name: "X2D", model: "X2D")
+
+        #expect(model.isRunning(.light, for: printer) == false)
+        #expect(model.hasRunningAction(for: printer.id) == false)
+
+        // Succès : l'état est retiré après le re-fetch de confirmation.
+        await model.setChamberLight(printer, on: true)
+        #expect(model.isRunning(.light, for: printer) == false)
+        #expect(model.hasRunningAction(for: printer.id) == false)
+
+        // Erreur serveur : l'état est tout de même retiré (le `defer` s'exécute).
+        await model.pause(printer)
+        #expect(model.isRunning(.pauseResume, for: printer) == false)
+        #expect(model.hasRunningAction(for: printer.id) == false)
+    }
+
     /// Une vraie erreur serveur (500) reste une erreur affichée, mais le statut est tout de même
     /// re-fetché (on resynchronise quoi qu'il arrive).
     @Test("Une erreur 500 reste affichée mais resynchronise quand même le statut")
