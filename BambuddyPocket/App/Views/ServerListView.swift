@@ -10,6 +10,7 @@ struct ServerListView: View {
     @State private var showingAbout = false
     /// Serveur sélectionné : présente la coquille à onglets (`ServerHomeView`) en plein écran.
     @State private var selectedServer: ServerConfiguration?
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         Group {
@@ -25,6 +26,27 @@ struct ServerListView: View {
                 .id(selectedServer.id)
             } else {
                 serverChooser
+            }
+        }
+        // Cycle de vie des sessions temps réel (B0) :
+        // - à la bascule de serveur (ou retour à la liste), on coupe les centres des serveurs qui ne
+        //   sont plus à l'écran → pas de fuite de WebSocket/poll en multi-serveurs ;
+        // - en arrière-plan, on suspend **tout** ; au retour au premier plan, les centres du serveur
+        //   sélectionné redémarrent à la demande (la coquille les redemande au `.task`).
+        .onChange(of: selectedServer?.id) { _, newID in
+            model.stopUnselectedCenters(keeping: newID)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            switch newPhase {
+            case .background:
+                model.suspendAllCenters()
+            case .active:
+                // Retour au premier plan : on relance la session du serveur affiché (idempotent).
+                model.resumeCenter(for: selectedServer?.id)
+            case .inactive:
+                break
+            @unknown default:
+                break
             }
         }
     }

@@ -44,7 +44,14 @@ final class ServerListModel {
     }
 
     /// Crée ou met à jour un serveur et ses secrets, puis persiste la liste.
+    ///
+    /// **Invalide le centre de notifications en cache** (B0) si la connexion change (URL, méthode
+    /// d'auth, Cloudflare ou secrets) : sinon, le centre garde une session WebSocket / un client REST
+    /// bâtis sur une configuration **périmée** (mauvaise URL ou mauvais en-têtes d'auth). Le centre
+    /// sera recréé à la demande avec la config fraîche.
     func save(_ configuration: ServerConfiguration, secrets: ServerSecrets) throws {
+        let previousConfig = servers.first { $0.id == configuration.id }
+        let previousSecrets = (try? secretStore.secrets(for: configuration.id)) ?? ServerSecrets()
         try secretStore.setSecrets(secrets, for: configuration.id)
         if let index = servers.firstIndex(where: { $0.id == configuration.id }) {
             servers[index] = configuration
@@ -52,6 +59,24 @@ final class ServerListModel {
             servers.append(configuration)
         }
         try serverStore.save(servers)
+        if connectionChanged(from: previousConfig, previousSecrets, to: configuration, secrets) {
+            stopNotificationCenter(for: configuration.id)
+        }
+    }
+
+    /// La connexion d'un serveur a-t-elle matériellement changé (URL / auth / Cloudflare / secrets) ?
+    /// Un changement purement cosmétique (libellé) **ne** justifie pas de relancer la session.
+    private func connectionChanged(
+        from previousConfig: ServerConfiguration?,
+        _ previousSecrets: ServerSecrets,
+        to newConfig: ServerConfiguration,
+        _ newSecrets: ServerSecrets
+    ) -> Bool {
+        guard let previousConfig else { return false } // Création : aucun centre en cache à invalider.
+        return previousConfig.baseURL != newConfig.baseURL
+            || previousConfig.authMethod != newConfig.authMethod
+            || previousConfig.usesCloudflareAccess != newConfig.usesCloudflareAccess
+            || previousSecrets != newSecrets
     }
 
     /// Secrets actuellement stockés pour ce serveur (vide si absent ou erreur Keychain).
@@ -246,6 +271,32 @@ final class ServerListModel {
 
     private func stopNotificationCenter(for id: ServerConfiguration.ID) {
         notificationCenters.removeValue(forKey: id)?.stop()
+    }
+
+    /// Suspend **tous** les centres de notifications (sessions WebSocket + polls) — à l'entrée en
+    /// arrière-plan : on ne maintient pas de connexions vivantes quand l'app n'est pas à l'écran
+    /// (économie réseau/batterie). Les instances **restent en cache** (les view-models y tiennent une
+    /// référence) ; on les **relance** au retour au premier plan via `resumeCenter(for:)`.
+    func suspendAllCenters() {
+        for center in notificationCenters.values {
+            center.stop()
+        }
+    }
+
+    /// Relance le centre d'un serveur après une suspension (retour au premier plan). `start()` est
+    /// idempotent : sans effet si la session tourne déjà.
+    func resumeCenter(for id: ServerConfiguration.ID?) {
+        guard let id, let center = notificationCenters[id] else { return }
+        center.start()
+    }
+
+    /// Arrête et libère les centres des serveurs **non sélectionnés** (B0) : en multi-serveurs,
+    /// chaque serveur visité gardait sinon une session WebSocket + un poll REST vivants indéfiniment.
+    /// On ne conserve que le centre du serveur actuellement à l'écran (ou aucun si `keeping` est nil).
+    func stopUnselectedCenters(keeping selectedID: ServerConfiguration.ID?) {
+        for id in notificationCenters.keys where id != selectedID {
+            stopNotificationCenter(for: id)
+        }
     }
 
     /// Teste la connexion via `GET /auth/status` (léger, ne requiert pas d'auth).
