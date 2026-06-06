@@ -13,12 +13,17 @@ struct AppEnvironment {
     let connectionFactory: ServerConnectionFactory
 
     /// Environnement de production : secrets au Keychain, liste en `UserDefaults`.
+    ///
+    /// En **mode démo** (`-uitest-demo`, captures marketing uniquement) la fabrique de connexion
+    /// utilise une `URLSession` instrumentée qui sert des fixtures locales (`DemoURLProtocol`) :
+    /// aucun trafic réseau réel, aucune imprimante touchée. Sans effet en build normal.
     static func live() -> AppEnvironment {
         let secretStore = KeychainSecretStore()
+        let session: URLSession = DemoMode.isEnabled ? DemoMode.makeSession() : .shared
         return AppEnvironment(
             serverStore: UserDefaultsServerStore(),
             secretStore: secretStore,
-            connectionFactory: ServerConnectionFactory(secretStore: secretStore)
+            connectionFactory: ServerConnectionFactory(secretStore: secretStore, session: session)
         )
     }
 

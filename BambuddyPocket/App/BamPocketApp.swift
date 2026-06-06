@@ -10,6 +10,7 @@ struct BamPocketApp: App {
 
     init() {
         UITestSeed.resetIfRequested()
+        UITestSeed.seedDemoIfRequested()
         UITestSeed.seedIfRequested()
         _model = State(initialValue: ServerListModel(environment: .live()))
     }
@@ -52,6 +53,21 @@ private enum UITestSeed {
     static func resetIfRequested() {
         guard ProcessInfo.processInfo.arguments.contains("-uitest-fresh") else { return }
         try? UserDefaultsServerStore().save([])
+    }
+
+    /// Amorçage du **mode démo** (`-uitest-demo`, captures marketing) : enregistre un serveur
+    /// pointant sur l'hôte synthétique `demo.local`, dont toutes les requêtes sont servies par
+    /// `DemoURLProtocol` (fixtures locales). Aucun secret, aucun backend, aucune imprimante réelle.
+    static func seedDemoIfRequested() {
+        guard DemoMode.isEnabled, let url = URL(string: "http://\(DemoMode.host)") else { return }
+        let server = ServerConfiguration(
+            label: "Atelier",
+            baseURL: url,
+            authMethod: .none,
+            usesCloudflareAccess: false,
+            allowsInsecureLocalHTTP: true
+        )
+        try? UserDefaultsServerStore().save([server])
     }
 
     static func seedIfRequested() {
