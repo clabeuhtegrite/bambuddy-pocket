@@ -19,12 +19,16 @@ struct AppEnvironment {
     /// aucun trafic réseau réel, aucune imprimante touchée. Sans effet en build normal.
     static func live() -> AppEnvironment {
         let secretStore = KeychainSecretStore()
-        // Hors démo : session dédiée (timeout 15 s, attente de connectivité) plutôt que
-        // `URLSession.shared`, pour borner les appels lents sans casser le flux caméra ni le repli
-        // « En direct ». En mode démo, on garde la session instrumentée qui sert les fixtures.
-        let session: URLSession = DemoMode.isEnabled
-            ? DemoMode.makeSession()
-            : ServerConnectionFactory.makeLiveSession()
+        // Session dédiée (timeout 15 s, attente de connectivité) plutôt que `URLSession.shared`, pour
+        // borner les appels lents sans casser le flux caméra ni le repli « En direct ».
+        // Le **mode démo** (fixtures locales, captures marketing) n'existe qu'en Debug : en Release,
+        // tout le dossier `App/Demo/` est compilé hors binaire (`#if DEBUG`).
+        let session: URLSession
+        #if DEBUG
+            session = DemoMode.isEnabled ? DemoMode.makeSession() : ServerConnectionFactory.makeLiveSession()
+        #else
+            session = ServerConnectionFactory.makeLiveSession()
+        #endif
         return AppEnvironment(
             serverStore: UserDefaultsServerStore(),
             secretStore: secretStore,
