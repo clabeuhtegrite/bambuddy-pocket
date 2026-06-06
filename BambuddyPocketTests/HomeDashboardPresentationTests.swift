@@ -228,4 +228,48 @@ struct HomeDashboardPresentationTests {
         let snapshots = HomeDashboardPresentation.snapshots(printers: [printer(1, "Atelier")]) { _ in status }
         #expect(HomeDashboardPresentation.alert(snapshots) == nil)
     }
+
+    // MARK: - Puissance smart-plug (retour device A7)
+
+    private func plug(_ id: Int, printerID: Int?) -> SmartPlug {
+        var plug = SmartPlug(id: id, name: "Plug \(id)")
+        plug.printerID = printerID
+        return plug
+    }
+
+    private func plugStatus(reachable: Bool, power: Double?) -> SmartPlugStatus {
+        SmartPlugStatus(
+            reachable: reachable,
+            energy: power.map { SmartPlugEnergy(power: $0) }
+        )
+    }
+
+    @Test("powerByPrinter : associe la puissance d'une prise joignable à son imprimante")
+    func powerMapsReachablePlug() {
+        let plugs = [plug(10, printerID: 1)]
+        let statuses = [10: plugStatus(reachable: true, power: 42)]
+        let map = HomeDashboardPresentation.powerByPrinter(plugs: plugs, statuses: statuses)
+        #expect(map[1] == 42)
+    }
+
+    @Test("powerByPrinter : ignore prise sans imprimante, injoignable, ou sans mesure ; additionne")
+    func powerIgnoresAndSums() {
+        let plugs = [
+            plug(10, printerID: 1), // joignable, 30 W
+            plug(11, printerID: 1), // joignable, 12 W → addition sur l'imprimante 1
+            plug(12, printerID: 2), // injoignable → ignorée
+            plug(13, printerID: 3), // joignable mais sans mesure → ignorée
+            plug(14, printerID: nil) // pas d'imprimante liée → ignorée
+        ]
+        let statuses: [Int: SmartPlugStatus] = [
+            10: plugStatus(reachable: true, power: 30),
+            11: plugStatus(reachable: true, power: 12),
+            12: plugStatus(reachable: false, power: 99),
+            13: plugStatus(reachable: true, power: nil)
+        ]
+        let map = HomeDashboardPresentation.powerByPrinter(plugs: plugs, statuses: statuses)
+        #expect(map[1] == 42)
+        #expect(map[2] == nil)
+        #expect(map[3] == nil)
+    }
 }

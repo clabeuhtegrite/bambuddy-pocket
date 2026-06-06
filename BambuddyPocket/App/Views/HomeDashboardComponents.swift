@@ -249,6 +249,14 @@ struct HomeStatStrip: View {
 /// buse/plateau), barre de progression mini et ligne %/temps si une impression tourne.
 struct CompactPrinterCard: View {
     let snapshot: PrinterSnapshot
+    /// Puissance instantanée (W) de la prise connectée liée à cette imprimante, `nil` si pas de
+    /// prise / pas de mesure (retour device A7). N'affiche rien quand absent.
+    var livePowerWatts: Double?
+
+    init(snapshot: PrinterSnapshot, livePowerWatts: Double? = nil) {
+        self.snapshot = snapshot
+        self.livePowerWatts = livePowerWatts
+    }
 
     private var status: PrinterStatus? {
         snapshot.status
@@ -290,7 +298,23 @@ struct CompactPrinterCard: View {
                     .lineLimit(1)
             }
             Spacer(minLength: DSSpacing.xs)
-            StateBadge(state: status?.liveState, connected: status?.connected)
+            VStack(alignment: .trailing, spacing: DSSpacing.xxs) {
+                StateBadge(state: status?.liveState, connected: status?.connected)
+                powerLabel
+            }
+        }
+    }
+
+    /// Puissance instantanée de la prise connectée (« 12 W »), affichée discrètement quand une prise
+    /// liée rapporte une mesure (retour device A7). Rien sinon.
+    @ViewBuilder
+    private var powerLabel: some View {
+        if let watts = livePowerWatts {
+            Label(PrinterPresentation.powerWatts(watts), systemImage: "bolt.fill")
+                .font(DSFont.caption)
+                .foregroundStyle(DSColor.textSecondary)
+                .labelStyle(.titleAndIcon)
+                .accessibilityLabel(Text("Power \(PrinterPresentation.powerWatts(watts))"))
         }
     }
 
@@ -413,40 +437,6 @@ struct CompactPrinterCard: View {
             return String(localized: "Offline")
         }
         return String(localized: "Idle")
-    }
-}
-
-// MARK: - Chip d'action rapide
-
-/// Pastille d'action rapide (icône accent + libellé), capsule sur surface de carte.
-struct QuickActionChip: View {
-    let titleKey: LocalizedStringKey
-    let systemImage: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Label(titleKey, systemImage: systemImage)
-                .font(DSFont.captionMedium)
-                .foregroundStyle(DSColor.textPrimary)
-                .labelStyle(ChipLabelStyle())
-                .padding(.vertical, DSSpacing.sm)
-                .padding(.horizontal, DSSpacing.md)
-                .dsCardSurface()
-                .clipShape(Capsule())
-        }
-        .buttonStyle(.plain)
-    }
-}
-
-/// Style de label des chips : icône en accent, texte en couleur primaire.
-private struct ChipLabelStyle: LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        HStack(spacing: DSSpacing.xs) {
-            configuration.icon
-                .foregroundStyle(DSColor.accent)
-            configuration.title
-        }
     }
 }
 

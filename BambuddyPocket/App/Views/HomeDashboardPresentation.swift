@@ -95,6 +95,24 @@ enum HomeDashboardPresentation {
         }
     }
 
+    /// Puissance instantanée (W) par imprimante, dérivée des prises connectées **liées** à une
+    /// imprimante et **joignables**, dont la mesure de puissance est disponible (retour device A7).
+    /// Une imprimante absente de la map n'a pas de prise/mesure → la carte n'affiche pas de watts.
+    /// Si plusieurs prises sont liées à la même imprimante, leurs puissances sont **additionnées**.
+    static func powerByPrinter(
+        plugs: [SmartPlug],
+        statuses: [Int: SmartPlugStatus]
+    ) -> [Int: Double] {
+        var result: [Int: Double] = [:]
+        for plug in plugs {
+            guard let printerID = plug.printerID else { continue }
+            guard let status = statuses[plug.id], status.isReachable else { continue }
+            guard let power = status.energy?.power else { continue }
+            result[printerID, default: 0] += power
+        }
+        return result
+    }
+
     /// Imprimante mise en avant dans la carte hero : la première en impression (la plus avancée),
     /// si une impression est active.
     static func heroSnapshot(_ snapshots: [PrinterSnapshot]) -> PrinterSnapshot? {

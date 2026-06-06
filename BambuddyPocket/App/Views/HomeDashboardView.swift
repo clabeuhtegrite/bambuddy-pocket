@@ -15,6 +15,9 @@ struct HomeDashboardView: View {
     let onSelectTab: (HomeTab) -> Void
 
     @State private var printers: PrinterListModel
+    /// Prises connectées du serveur : sert à afficher la **puissance instantanée** sur les cartes
+    /// imprimantes liées (retour device A7).
+    @State private var smartPlugs: SmartPlugsModel
     @State private var showingNotifications = false
     /// Imprimante dont le détail est poussé depuis la carte hero (navigation programmatique).
     @State private var heroDetailPrinter: Printer?
@@ -36,6 +39,12 @@ struct HomeDashboardView: View {
         self.onBackToServers = onBackToServers
         self.onSelectTab = onSelectTab
         _printers = State(initialValue: model.makePrinterListModel(for: server))
+        _smartPlugs = State(initialValue: model.makeSmartPlugsModel(for: server))
+    }
+
+    /// Puissance instantanée (W) par imprimante, dérivée des prises connectées liées (retour A7).
+    private var powerByPrinter: [Int: Double] {
+        HomeDashboardPresentation.powerByPrinter(plugs: smartPlugs.plugs, statuses: smartPlugs.statuses)
     }
 
     private var notificationCenter: ServerNotificationCenter {
@@ -49,9 +58,10 @@ struct HomeDashboardView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: DSSpacing.lg) {
-                content(snapshots)
+                stateAwareContent(snapshots)
             }
             .padding(DSSpacing.md)
+            .frame(maxWidth: .infinity, minHeight: 0, alignment: .top)
         }
         .background(DSColor.background)
         .navigationDestination(item: $heroDetailPrinter) { printer in
@@ -88,10 +98,39 @@ struct HomeDashboardView: View {
         .sheet(isPresented: $showingNotifications) {
             NotificationsView(center: notificationCenter)
         }
-        .refreshable { await printers.load() }
+        .refreshable {
+            await printers.load()
+            await smartPlugs.load()
+        }
         .task { await printers.run() }
+        .task { await smartPlugs.observe() }
         .task(id: printers.printers.map(\.id)) {
             await printers.observeActivePrinters(printers.printers.map(\.id))
+        }
+    }
+
+    /// Aiguille entre les **états globaux** de l'accueil (premier chargement, erreur, vide) et le
+    /// tableau de bord normal — pour ne plus afficher une page quasi blanche si `load()` échoue ou
+    /// si le serveur est hors ligne. Modèle de référence : `MakerWorldView.placeholder`.
+    ///
+    /// - Premier chargement (aucune donnée encore) → spinner.
+    /// - Erreur **sans** donnée exploitable → `ContentUnavailableView` avec bouton « Réessayer ».
+    /// - Chargé, sans erreur, **aucune** imprimante → état vide explicite (distinct de l'erreur).
+    /// - Sinon → tableau de bord, surmonté d'une **bannière d'erreur** si un refetch a échoué alors
+    ///   qu'on dispose encore de données (offline transitoire).
+    @ViewBuilder
+    private func stateAwareContent(_ snapshots: [PrinterSnapshot]) -> some View {
+        if !printers.hasLoaded, snapshots.isEmpty {
+            HomePlaceholders.loading
+        } else if let error = printers.loadError, snapshots.isEmpty {
+            HomePlaceholders.error(error) { Task { await printers.load() } }
+        } else if snapshots.isEmpty {
+            HomePlaceholders.empty
+        } else {
+            if let error = printers.loadError {
+                HomePlaceholders.refreshFailureBanner(error) { Task { await printers.load() } }
+            }
+            content(snapshots)
         }
     }
 
@@ -105,7 +144,6 @@ struct HomeDashboardView: View {
             heroCard(snapshots)
             if let alert { alertBanner(alert) }
             printersSection(snapshots)
-            quickActionsSection
             recentActivitySection
         case .focus:
             subtitle(snapshots)
@@ -115,7 +153,6 @@ struct HomeDashboardView: View {
                 idlePlaceholder
             }
             if let alert { alertBanner(alert) }
-            quickActionsSection
         case .grid:
             HomeStatStrip(
                 printing: HomeDashboardPresentation.printingCount(snapshots),
@@ -124,7 +161,6 @@ struct HomeDashboardView: View {
             ) { onSelectTab(.printers) }
             if let alert { alertBanner(alert) }
             printersSection(snapshots)
-            quickActionsSection
         }
     }
 
@@ -191,31 +227,14 @@ struct HomeDashboardView: View {
                         NavigationLink {
                             PrinterDetailView(printer: snapshot.printer, model: printers)
                         } label: {
-                            CompactPrinterCard(snapshot: snapshot)
+                            CompactPrinterCard(
+                                snapshot: snapshot,
+                                livePowerWatts: powerByPrinter[snapshot.id]
+                            )
                         }
                         .buttonStyle(.plain)
                     }
                 }
-            }
-        }
-    }
-
-    private var quickActionsSection: some View {
-        VStack(alignment: .leading, spacing: DSSpacing.sm) {
-            SectionHeader("Quick actions")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: DSSpacing.sm) {
-                    QuickActionChip(titleKey: "Add to queue", systemImage: "plus") {
-                        onSelectTab(.queue)
-                    }
-                    QuickActionChip(titleKey: "Printers", systemImage: "printer") {
-                        onSelectTab(.printers)
-                    }
-                    QuickActionChip(titleKey: "Archives", systemImage: "archivebox") {
-                        onSelectTab(.archives)
-                    }
-                }
-                .padding(.horizontal, 1)
             }
         }
     }
@@ -294,6 +313,66 @@ struct HomeIdlePlaceholder: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, DSSpacing.xl)
+        .dsCardSurface()
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// **États globaux** de l'accueil (B0) : premier chargement, erreur sans donnée, vide, et bannière
+/// de rafraîchissement échoué — pour ne plus afficher une page quasi blanche si `load()` échoue ou
+/// si le serveur est hors ligne. Modèle de référence : `MakerWorldView.placeholder`.
+@MainActor
+enum HomePlaceholders {
+    /// Spinner du tout premier chargement (aucune donnée en cache).
+    static var loading: some View {
+        VStack(spacing: DSSpacing.md) {
+            ProgressView().tint(DSColor.accent)
+            Text("Loading…")
+                .font(DSFont.callout)
+                .foregroundStyle(DSColor.textSecondary)
+        }
+        .frame(maxWidth: .infinity, minHeight: 240)
+        .accessibilityElement(children: .combine)
+    }
+
+    /// Erreur de chargement sans donnée à afficher : message + action de relance.
+    static func error(_ message: String, retry: @escaping () -> Void) -> some View {
+        ContentUnavailableView {
+            Label("Couldn’t load printers", systemImage: "exclamationmark.triangle")
+        } description: {
+            Text(message)
+        } actions: {
+            Button("Retry", action: retry)
+                .buttonStyle(.borderedProminent)
+        }
+        .frame(maxWidth: .infinity, minHeight: 240)
+    }
+
+    /// Aucun serveur n'a renvoyé d'imprimante (chargement réussi mais liste vide).
+    static var empty: some View {
+        ContentUnavailableView {
+            Label("No printers", systemImage: "printer")
+        } description: {
+            Text("No printers are configured on this server.")
+        }
+        .frame(maxWidth: .infinity, minHeight: 240)
+    }
+
+    /// Bannière non bloquante quand un rafraîchissement échoue alors qu'on a encore des données
+    /// (réseau transitoire) : on garde le tableau de bord visible et on signale l'échec en haut.
+    static func refreshFailureBanner(_ message: String, retry: @escaping () -> Void) -> some View {
+        HStack(spacing: DSSpacing.sm) {
+            Image(systemName: "wifi.exclamationmark")
+                .foregroundStyle(DSColor.statusWarning)
+            Text(message)
+                .font(DSFont.caption)
+                .foregroundStyle(DSColor.textSecondary)
+            Spacer(minLength: 0)
+            Button("Retry", action: retry)
+                .font(DSFont.captionMedium)
+        }
+        .padding(DSSpacing.sm)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .dsCardSurface()
         .accessibilityElement(children: .combine)
     }
